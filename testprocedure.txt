@@ -1,0 +1,61 @@
+
+	
+
+
+
+	*** EFIBER TESTPROCEDURE *** 
+
+	edgecases & risicofactoren
+
+
+
+	CROSSBROWSERTEST
+
+
+
+	POSTCODES
+
+	# test van ieder gebied van het begin, eind en het midden van de excel een adres.
+
+
+
+	FORMULIEREN
+
+	# worden alle formulieren geladen
+	# zijn alle formulieren bruikbaar (test aanmeldformulier met AI1)
+	# worden alle formulieren aan de achterkant correct ontvangen
+
+
+
+	COAX / UTP
+
+	# Test de filtering van pakketten in de vergelijker adhv Internetsnelheid + Beloptie + kabeloptie
+	# Eenmalige prijzen pakketten corresponderen met bekabeling
+
+
+
+	TOEWIJZINGEN
+
+	# alle toewijzingen nalopen
+
+
+
+	LAYOUT
+
+	# worden tabellen correct getoond; lopen ze niet de content-box uit
+	# tabellen mobiel
+
+
+
+	PRIJZEN / OPTIECONFIG
+
+	# prijsberekeningen telefoniepakketten meengenomen in maandtotalen
+	# zijn de juiste opties vooringevuld aanmeldformulier: telefonie, tv, tv opties
+	# corresponderen prijzen op de vergelijkingstabel, ik weet wat ik wil en aanmeldformulier
+	# worden vooringevuld opties correct doorberekend
+
+
+
+	URLS
+
+	# campagnepagina's verwijzen correct 'heen-en-weer'

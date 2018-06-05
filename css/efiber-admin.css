@@ -1,0 +1,41 @@
+form[class*="efiber"] {
+	padding: 20px;
+	color: white;
+	display: inline-block;
+	vertical-align: top;
+	max-width: 400px;
+}
+	form[class*="efiber"] .button {
+		box-shadow: none;
+		text-shadow: none;
+		font-weight: 900;		
+		border: none !important;
+	}
+			
+	form[class*="efiber"] legend {
+		font-weight: 800;
+		font-size: 20px;
+	}
+	form[class*="efiber"] label { 
+		color: white;
+	}
+
+	form.efiber-insert {
+		background:  linear-gradient(to right bottom,#b4157f 0%,#a31e83 50%,#7a338d 100%);
+	}
+		form.efiber-insert .button {
+			background-color: #31084bdd;
+		}
+			form.efiber-insert .button:hover {
+				background-color: #31084bff;
+			}
+	form.efiber-delete {
+		background:  linear-gradient(to right bottom,#010101 0%,#112111 50%,#212191 100%);
+	}	
+		form.efiber-delete .button {
+			background-color: #b91543dd;
+		}
+			form.efiber-delete .button:hover {
+				background-color: #b91543ff;
+			}
+

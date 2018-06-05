@@ -1,0 +1,120 @@
+
+.efiber-niveau-knoppen.inactief {
+	display: none;
+}
+	.efiber-niveau-knoppen-torso {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+
+	}
+		.efiber-niveau-knoppen-torso.knoppendoos {
+			margin: 0 -5px;
+		}
+			.efiber-niveau-knoppen-torso.knoppendoos .knop {
+				margin: 0 5px 30px 5px;
+				min-width: 143px;
+				max-width: 143px;
+				filter: saturate(50%);
+			}
+				.efiber-niveau-knoppen-torso.knoppendoos .knop:hover {
+					filter: saturate(100%);
+				}
+				.efiber-niveau-knoppen-torso.knoppendoos .knop span {
+					font-size: .8em;
+					margin-top: 5px;
+					text-align: left;
+				}
+				.efiber-niveau-knoppen-torso.knoppendoos .knop::after {
+					top: 72px;
+					right: 8px;
+					background-size: 30px 30px;
+					width: 30px;
+					height: 30px;
+				}
+
+	[data-efiber-stap="2"] .keuzehulp .verpakking,
+	[data-efiber-stap="20"] .keuzehulp .verpakking,
+	[data-efiber-stap="21"] .keuzehulp .verpakking,
+	[data-efiber-stap="23"] .keuzehulp .verpakking,
+	[data-efiber-stap="50"] .keuzehulp .verpakking,
+	[data-efiber-stap="100"] .keuzehulp .verpakking,
+	[data-efiber-stap="51"] .keuzehulp .verpakking {
+		position: static !important;
+	}
+
+	#sticky-keuzes {
+		position: absolute;
+		right: 0;
+		width: 216px;
+		transition: 0.4s opacity ease-in-out;
+		background-color: #dfdde6;
+		padding: 20px;
+		display: none;
+		opacity:0;
+
+	}
+
+		[data-efiber-stap="51"] #sticky-keuzes,
+		[data-efiber-stap="50"] #sticky-keuzes,
+		[data-efiber-stap="100"] #sticky-keuzes{
+			display: none !important;
+		}
+
+		.sticky-binnen {
+			position: sticky;
+			top: 20px;
+		}
+			.sticky-binnen h2 {
+				font-size: 1.4em !important;
+			}
+				.sticky-binnen .efiber-niveau-knoppen-torso.knoppendoos {
+					flex-wrap: wrap;
+				}
+					.sticky-binnen .efiber-niveau-knoppen-torso.knoppendoos .knop {
+						min-width: 83px;
+						max-width: 83px;
+						margin-bottom: 10px;
+					}
+						.sticky-binnen .efiber-niveau-knoppen-torso.knoppendoos .knop img{
+							border-width: 2px;
+							max-height: 65px;
+						}
+						.sticky-binnen .efiber-niveau-knoppen-torso.knoppendoos .knop span {
+							line-height: 1;
+							font-size: .6em;
+							padding: 0 5px;
+						}
+						.sticky-binnen .efiber-niveau-knoppen-torso.knoppendoos .knop::after{
+							top: 36px;
+							right: 8px;
+							background-size: 20px 20px;
+							width: 20px;
+							height: 20px;
+						}
+
+
+	.img-huishouden {
+		order: 1;
+	}
+	.img-internet {
+		order: 2;
+	}
+	.img-bellen {
+		order: 3;
+	}
+	.img-nummer {
+		order: 4;
+	}
+	.img-televisie {
+		order: 5;
+	}
+	.img-televisie-opties {
+		order: 6;
+	}
+	.img-installatie {
+		order: 7;
+	}
+	.img-coax {
+		order: 8;
+	}

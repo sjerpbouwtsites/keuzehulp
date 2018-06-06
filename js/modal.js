@@ -44,7 +44,7 @@ function efiberModal(tekst, tijd){
 		$modalBinnen.append(jQuery("<p>"+tekst+"</p>"));
 	}
 
-	var $sluiten = jQuery("<span class='knop efiber-modal-sluiten' data-efiber-func='verwijder-modal'>X</span>");
+	var $sluiten = jQuery("<a class='knop efiber-modal-sluiten' data-efiber-func='verwijder-modal'>X</a>");
 	$modalBinnen.append($sluiten);
 
 	$modal.append($modalBinnen);

@@ -141,19 +141,18 @@ function ikWeetWatIkWilPakkettenAjax() {
 
 			$print.append($dezeRij);
 
-			$print.on('click', '.pakket', function(){
-
-				if ($(this).hasClass('open')) {
-					$(this).toggleClass('open');
-				} else {
-					$print.find('.pakket.open').removeClass('open');
-					$(this).toggleClass('open');
-				}
-
-			});
-
-
 		}
+
+		$print.on('click', '.pakket', function(){
+
+			if ($(this).hasClass('open')) {
+				$(this).toggleClass('open');
+			} else {
+				$print.find('.pakket.open').removeClass('open');
+				$(this).toggleClass('open');
+			}
+
+		});
 
 		efiberFormStijlKlassen();
 

@@ -9,6 +9,7 @@ function knoppenDispatcher() {
 	body.addEventListener('click', function(e){
 
 		var t = e.target;
+
 		var knop = efiberVindKnop(t, 'knop');
 		if (knop) {
 			e.preventDefault();

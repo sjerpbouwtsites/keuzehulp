@@ -38,11 +38,11 @@ function efiberAjax (params){
 
 }
 
-function efiberAjaxKleineFormulieren(backendFunctie, printElID) {
+function efiberAjaxKleineFormulieren(backendFunctie, printElID, data) {
 	var ajf = new efiberAjax({
 		ajaxData :{
 			'action': backendFunctie,
-			data: {},
+			data: data,
 		},
 		cb: function(r){
 

@@ -131,7 +131,7 @@ var knoppenFuncs = {
 	},
 	haalZakelijkFormulier: function(){
 
-		efiberAjaxKleineFormulieren('efiber_haal_zakelijk_formulier', 'print-zakelijk-formulier');
+		efiberAjaxKleineFormulieren('efiber_haal_zakelijk_formulier', 'print-zakelijk-formulier', {gebiedscode: sessionStorage.getItem('efiber-gebiedscode')});
 
 	},
 	zetKeuzeInternet: function(knop) {

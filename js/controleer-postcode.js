@@ -91,7 +91,7 @@ function controleerPostcode() {
 					} else {
 						efiberModal(teksten['nietInUwGebied'], 5000);
 						efiberRouting.ga(51);
-						efiberAjaxKleineFormulieren('efiber_haal_lead_formulier', 'print-lead-formulier');
+						efiberAjaxKleineFormulieren('efiber_haal_lead_formulier', 'print-lead-formulier', {});
 						//efiberHaalLeadFormulier();
 					}
 				}

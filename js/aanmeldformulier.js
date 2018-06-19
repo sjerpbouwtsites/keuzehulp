@@ -13,6 +13,8 @@ function haalPrintAanmeldformulier(knop) {
 		},
 		cb: function(r){
 
+
+
 			jQuery('#print-aanmeldformulier').empty();
 
 			if (!r) {
@@ -22,7 +24,7 @@ function haalPrintAanmeldformulier(knop) {
 			var $form = jQuery(r.print);
 
 			delete r.print;
-			//console.dir(r);
+			//console.dir(r); 
 
 			$form.find('form').attr('action', location.href);
 
@@ -31,9 +33,12 @@ function haalPrintAanmeldformulier(knop) {
 			var adres = JSON.parse(sessionStorage.getItem('efiber-adres'));
 			var keuzehulp = JSON.parse(sessionStorage.getItem('efiber-keuzehulp'));
 
+
+
 			jQuery('#print-aanmeldformulier').on('change', 'input[type="number"], #huidige_nummer, #huidige_extra_nummer', function(){
 				this.click(); //dan stuurt t door naar de dispatcher
 			});
+
 
 			// geen niet-getallen !!
 		    $('input[type="number"], #huidige_nummer, #huidige_extra_nummer, #input_1_21').keydown(function (e) {
@@ -57,6 +62,8 @@ function haalPrintAanmeldformulier(knop) {
 				'input_1_23' : 'kamer',
 				'input_1_73' : 'gebiedscode',
 		    };
+
+
 
 		    for (var input in adresDataToewijzing) {
 
@@ -151,7 +158,7 @@ function haalPrintAanmeldformulier(knop) {
 
 			// @TODO LELIJKE HACK
 
-			setInterval(function(){
+			var vervangAlgemeneVoorwaarden = setInterval(function(){
 
 				var e = $("#field_1_72");
 				var tekstFaal = e.text().indexOf('%PRINT_ALGEMENE_VOORWAARDEN%') !== -1;
@@ -162,6 +169,8 @@ function haalPrintAanmeldformulier(knop) {
 					var t = r.pakket.eigenschappen.pakket_meta.provider.ik_ga_akkoord_met;
 					t = t.replace(/\\\//g, "/");
 					e.append($(t));
+
+					clearInterval(vervangAlgemeneVoorwaarden);
 
 				}
 

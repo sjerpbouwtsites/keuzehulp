@@ -1018,6 +1018,8 @@ function efiber_haal_aanmeldformulier() {
 
 	$gf = str_replace('%PRINT_ALGEMENE_VOORWAARDEN%', $algemene_voorwaarden, $gf);
 
+	$gf = str_replace("id='input_1_32'", "id='input_1_32' autocomplete='off'", $gf);
+
 	$print .= $gf;
 
 	$r = array(

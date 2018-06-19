@@ -9,6 +9,7 @@ function efiber_pakket_eigenschappen($p)  {
 
 	$pm['provider']->minimale_contractsduur = get_field('minimale_contractsduur', $pm['provider']->ID);
 	$pm['provider']->ik_ga_akkoord_met = get_field('ik_ga_akkoord_met', $pm['provider']->ID);
+	$pm['provider']->inschrijving_telefoonboek_mogelijk = get_field('inschrijving_telefoonboek_mogelijk', $pm['provider']->ID);
 
 	return array(
 		'thumb'				=> get_the_post_thumbnail($pm['provider']->ID),

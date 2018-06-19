@@ -810,6 +810,22 @@ function efiber_haal_aanmeldformulier() {
 
 		endif; // extra tel mogelijk
 
+
+		$bel_inhoud .= efiber_form_rij (
+			"Inschrijving telefoonboek",
+			efiber_input (array(
+				'naam'		=> 'inschrijving_telefoonboek',
+				'type'		=> "checkbox",
+				'label'		=> $svgs,
+				'value'		=> 0
+			)),
+			$pakket['eigenschappen']['pakket_meta']['provider']['inschrijving_telefoonboek_mogelijk'] !== 'false' ? '' : 'onzichtbaar'
+		);
+
+
+
+
+
 	} // if telefonie
 
 
@@ -1027,7 +1043,7 @@ function efiber_haal_aanmeldformulier() {
 		'eigenschappen'	=> $_POST['data'][1],
 		'print'			=> $print,
 		'keuzehulp'		=> $keuzehulp,
-		'console'		=> $console
+		'console'		=> $pakket
 	);
 
 	echo json_encode($r);

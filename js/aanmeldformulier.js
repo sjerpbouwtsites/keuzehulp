@@ -24,7 +24,6 @@ function haalPrintAanmeldformulier(knop) {
 			var $form = jQuery(r.print);
 
 			delete r.print;
-			//console.dir(r); 
 
 			$form.find('form').attr('action', location.href);
 
@@ -386,6 +385,7 @@ function efiberUpdateHidden() {
 		'provider': 						doc.getElementById('input_1_64'),
 		'pakket_key': 						doc.getElementById('input_1_65'),
 		'pakket': 							doc.getElementById('input_1_66'),
+		'inschrijving_telefoonboek': 		doc.getElementById('input_1_74'),
 	};
 
 

@@ -396,7 +396,7 @@ function efiber_keuzehulp_pak_afb ($str = '') {
 
 		$knop->class = '';
 		$knop->tekst = $coax_teksten['houd_coax'];
-		$knop->func = 'zet-niveau-knop toon-stap zet-keuze-bekabeling vergelijking animeer';
+		$knop->func = 'zet-niveau-knop toon-stap zet-keuze-bekabeling animeer';
 		$knop->link = '#11';
 		$knop->attr = 'data-efiber-bekabeling-keuze="1"';
 		$knop->geen_ikoon = false;

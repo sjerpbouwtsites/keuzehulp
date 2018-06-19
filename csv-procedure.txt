@@ -1,0 +1,66 @@
+EXPORTPROCEDURE EFIBER CSVS
+
+
+
+
+backup volledige database
+
+gooi inzendingen uit prullenbak weg
+
+selecteer alles behalve input 22, 23 en 24 en 43 - 54
+
+open in apart scherm lijst met providers
+
+voorwaardelijke logica toevoegen provider (tweede voorkomen, in lijst ònder publieke naam) = per provider export draaien en csv naam provider geven en noteer tijd aanmaken CSVs in bestandsnaam
+
+controleer integriteit CSVs
+
+controleer of in tussentijd geen nieuwe inzending is geweest
+
+gooi alle inzendingen in de prullenbak
+
+kopieer CSVs naar map 'origineel' en naar map 'bewerkt'
+
+vervang in alle bestanden:
+    ","                         => ";"
+    span-class--radio-naam--     => [niets]
+    --span--                     => [niets]
+    --span                         => [niets]
+    basis-installatie--s         => basis-installatie
+
+controleer of 'span' nog voorkomt, zo ja, hele vervangprocedure is afgekeurd.
+
+loop CSVs na op dubbele inzendingen en verwijder die
+
+
+
+leeg prullenbak leadformulier
+
+export leadformulier inzending met velden: email, postcode, huisnummer
+
+controleer integriteit CSV
+
+vervang "," met ";"
+
+gooi inzendingen in prullenbak
+
+
+
+leeg prullenbak leadformulier
+
+export leadformulier inzending met velden: bedrijfsnaam tot telefoonnummer
+
+controleer integriteit CSV
+
+vervang "," met ";"
+
+gooi inzendingen in prullenbak
+
+
+
+in crm naar overdracht
+
+nieuwe bestanden toevoegen onder contactpersoon dennis roet
+
+verander van de csvs van het aanmeldformulier de eigenaar naar de respectieve provider
+

@@ -36,7 +36,7 @@ function haalPrintAanmeldformulier(knop) {
 			});
 
 			// geen niet-getallen !!
-		    $('input[type="number"], #huidige_nummer, #huidige_extra_nummer, #input_1_21, #input_1_30').keydown(function (e) {
+		    $('input[type="number"], #huidige_nummer, #huidige_extra_nummer, #input_1_21').keydown(function (e) {
 		        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
 		            (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
 		            (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
@@ -69,12 +69,6 @@ function haalPrintAanmeldformulier(knop) {
 		    	}
 
 		    }
-
-/*			doc.getElementById('input_1_20').value = adres.postcode;
-			doc.getElementById('input_1_21').value = adres.huisnummer;
-			doc.getElementById('input_1_22').value = adres.toevoeging;
-			doc.getElementById('input_1_23').value = adres.kamer;
-			doc.getElementById('input_1_73').value = adres.gebiedscode;*/
 
 			doc.getElementById('kopieer-de-prijs').textContent = doc.getElementById('print-maandelijks-totaal').textContent;
 
@@ -141,6 +135,16 @@ function haalPrintAanmeldformulier(knop) {
 						$("#gform_submit_button_1").show();
 					}
 				}
+			});
+
+			$("#input_1_30").on('blur', function(){
+				var vastNummer = /^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$/;
+    			var mobielNummer = /^(((\\+31|0|0031)6){1}[1-9]{1}[0-9]{7})$/i;
+
+    			if (	 	!(vastNummer.test(this.value) || mobielNummer.test(this.value))	) {
+    				efiberModal(efiberTekst('correctTel'), 1500);
+    			}
+					
 			});
 
 			// is er misschien via ajax een nieuwe ingezet en heeft die %PRINT_ALGEMENE_VOORWAARDEN%?

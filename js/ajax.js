@@ -139,7 +139,7 @@ function ikWeetWatIkWilPakkettenAjax() {
 
 			}
 
-			$print.append($dezeRij);
+			$print.append($dezeRij); 
 
 		}
 

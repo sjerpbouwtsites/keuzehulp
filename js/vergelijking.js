@@ -1,6 +1,5 @@
   function vergelijkingAjax(){
 
-
 	var ajf = new efiberAjax({
 		ajaxData: {
 			'action': 'efiber_vergelijking',
@@ -15,7 +14,7 @@
 
 			if (r.pakketten && r.pakketten.length) {
 
-				var tabel = {};
+				var tabel = {}; 
 
 				for (var i = 0; i < r.pakketten.length; i++){
 					tabel = tabelMiddelware(tabel, r.pakketten[i]);
@@ -23,6 +22,8 @@
 
 				// ONDUIDELIJK OF DIT GEWENST IS.
 				// tabel = efiberVergelijkingstabelOpVolgorde(tabel);
+
+				
 
 				efiberPrintFormSectie(
 					null,

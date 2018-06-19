@@ -62,11 +62,16 @@ var efiberRouting = {
 
 	},
 
-	uitzonderingen: [7], // bellen -> nummers
+	uitzonderingen: [7, 2], // bellen -> nummers
 
 	verwerkUitzondering: function (stapNr){
 
 		switch(stapNr) {
+			case 2: 
+
+				sessionStorage.setItem('efiber-keuzehulp', JSON.stringify({}));
+				break;
+
 		    case 7:
 
 		    	// als gekozen voor 'ik bel alleen mobiel' cq telefoon = 1
@@ -74,8 +79,8 @@ var efiberRouting = {
 			    if ((JSON.parse(sessionStorage.getItem('efiber-keuzehulp'))).bellen === '1') {
 			    	stapNr = 8;
 			    }
-
 		        break;
+		        
 		    default:
 		        console.warn('uitzondering verwerk naar nummer niet gevonden');
 		        break;

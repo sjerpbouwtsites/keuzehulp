@@ -6,6 +6,7 @@ teksten = {
 	interactieveTVGeenCoax: 		'Interactieve TV gaat niet over coax. U kunt straks kiezen voor UTP kabels',
 	vulHuisnummerIn: 				"Vul een huisnummer in",
 	minimum18: 						"Om een glasvezelcontract af te sluiten dien je minimaal 18 te zijn.",
+	correctTel: 					"Dit is geen correct mobiel of vast nummer"
 };
 
 window.onload = function(){ efiberInit() };

@@ -192,6 +192,7 @@ function efiber_vergelijking() {
 
 		echo json_encode(array(
 			'pakketten'		=> $paketten_met,
+			'console'		=> $paketten_met,
 		));
 
 	else :

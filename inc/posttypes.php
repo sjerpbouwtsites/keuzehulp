@@ -109,8 +109,9 @@ class Ef_posttype_voorb {
 					'singular_name' 	=> _x($tax_enkelvoud, 'taxonomy singular name'),
 				),
 				'public' 	=> true,
-				'rewrite'	=> true
-
+				'rewrite'	=> true,
+	            'show_ui'           => true,
+	            'show_admin_column' => true,
 			)
 		);
 	}

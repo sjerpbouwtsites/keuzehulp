@@ -101,6 +101,16 @@ function Ef_init () {
 
 function Ef_registreer_posttypes() {
 
+    $zakelijke_provider = new Ef_posttype_voorb('zakelijke-provider', 'zakelijke-providers');
+    $zakelijke_provider->pas_args_aan(array(
+        'menu_icon'           => 'dashicons-building',
+        'supports'              => array(
+            'title', 
+        )        
+    ));
+    $zakelijke_provider->maak_taxonomie('regio', 'regios');
+    $zakelijke_provider->registreer();
+
     $provider = new Ef_posttype_voorb('provider', 'providers');
     $provider->pas_args_aan(array(
         'menu_icon'           => 'dashicons-admin-site',
@@ -114,10 +124,45 @@ function Ef_registreer_posttypes() {
             'title', 'editor'
         )
     ));
-    $pakket->maak_taxonomie('regio', 'regios');
+    //$pakket->maak_taxonomie('regio', 'regios');
     $pakket->maak_taxonomie('type', 'typen');
     $pakket->maak_taxonomie('bekabeling', 'bekabelingen');
     $pakket->registreer();
+
+
+
+
+
+    $labels = array(
+            'name'              => _x( 'Regios', 'taxonomy general name' ),
+            'singular_name'     => _x( 'Regio', 'taxonomy singular name' ),
+            'search_items'      => __( 'Doorzoek regios' ),
+            'all_items'         => __( 'Alle regios' ),
+            'parent_item'       => __( 'Ouder regio' ),
+            'parent_item_colon' => __( 'Ouder regio:' ),
+            'edit_item'         => __( 'Bewerk regio' ),
+            'update_item'       => __( 'Vernieuw regio' ),
+            'add_new_item'      => __( 'Voeg nieuwe regio toe' ),
+            'new_item_name'     => __( 'Naam nieuwe regio' ),
+            'menu_name'         => __( 'Regio' ),
+        );
+
+        $args = array(
+            'hierarchical'      => false,
+            'labels'            => $labels,
+            'show_ui'           => true,
+            'show_admin_column' => true,
+            'query_var'         => true,
+            'rewrite'           => array( 'slug' => 'regio' ),
+        );
+
+        register_taxonomy( 'regio', array( 'pakket', 'zakelijke-provider' ), $args );
+
+
+
+
+
+
 
 }
 

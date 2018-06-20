@@ -24,6 +24,7 @@ function efiber_pakket_eigenschappen($p)  {
 		'heeft_tv' 			=> get_field('heeft_tv', $p->ID),
 		'tv' 				=> get_field('tv', $p->ID),
 		'telefonie' 		=> get_field('telefonie', $p->ID),
+		'extra' 			=> get_field('extra', $p->ID),
 	);
 }
 

@@ -386,16 +386,17 @@ function efiberUpdateHidden() {
 		'pakket_key': 						doc.getElementById('input_1_65'),
 		'pakket': 							doc.getElementById('input_1_66'),
 		'inschrijving_telefoonboek': 		doc.getElementById('input_1_74'),
+		'extra-optie': 						doc.getElementById('input_1_75'),
 	};
 
 
 	//uitzondering als input = radio
 
-	var di, dp, uitzondering, pmid, dev;
+	var di, dp, uitzondering, pmid, dev, s;
 	for (var i = 0; i < inputs.length; i++) {
 		di = inputs[i];
 
-		uitzondering = di.id.indexOf('belpakket') !== -1 || di.id.indexOf('installatie') !== -1
+		uitzondering = di.id.indexOf('belpakket') !== -1 || di.id.indexOf('installatie') !== -1 || di.id.indexOf('extra-optie') !== -1;
 
 		if (!uitzondering) {
 
@@ -403,7 +404,7 @@ function efiberUpdateHidden() {
 
 			//geef harde error alert als undefined
 			if (typeof dp === 'undefined') {
-				alert(di.id +' heeft geen GF invoerveld of komt niet (correct) voor in mapping. Einde programma.');
+				console.warn(di.id +' heeft geen GF invoerveld of komt niet (correct) voor in mapping.');
 				return false;
 			} else {
 				dp.value = !!di.value ? di.value : !!di.getAttribute('data-efiber-value') ? di.getAttribute('data-efiber-value') : false;
@@ -417,7 +418,32 @@ function efiberUpdateHidden() {
 
 			//altijd maar één radio aan, dus diegene die aanstaat mag printen
 			if (dev && dev !== '0') {
-				dp.value = di.id.split('_')[1].replace('keuze-', '').replace('-',' ').replace('---', ' ');
+
+				// dit kan voorkomen als 
+				// 1) extra-optie of
+				// 2) bla_fdsf-sdf
+
+				// hier is een poging gedaan om het op te ruimen. Dit is niet afdoende. Dat moet nog eens uitgebreider.
+				// eigenlijk slaat het hier helemaal nergens op
+				s = di.id.split('_');
+
+				if (s.length > 1) {
+					dp.value = s[1].replace('keuze-', '').replace('-',' ').replace('---', ' ');
+				} else {
+
+					if (di.id.indexOf('extra-optie') !== -1) {
+
+						var rij = di.parentNode;
+						while(rij.className.indexOf('rij') === -1) {
+							rij = rij.parentNode;
+						}
+
+						dp.value = rij.getElementsByClassName('veld-1')[0].textContent.trim();
+
+					}
+					
+				}
+
 			}
 
 		}

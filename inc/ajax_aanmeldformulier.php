@@ -947,20 +947,23 @@ function efiber_haal_aanmeldformulier() {
 
 	// louter voor debug
 
-/*	$print .= efiber_form_rij (
-		'Eenmalige kosten zonder opties',
-			efiber_maak_geld_op(
-				( (float) $pakket['eigenschappen']['financieel']['eenmalig'])
-			)
-	);
 
-	$print .= efiber_form_rij (
-		'Eenmalige optie kosten',
-			efiber_maak_geld_op(
-				( (float) $eenmalige_opties_prijs)
-			)
-	);*/
+	$extra = $pakket['eigenschappen']['extra'];
 
+	if ($extra['heeft_extra_optie'] === 'true') {
+
+		$meta_inhoud .= efiber_form_rij (
+			$extra['extra_inhoud']['naam'],
+			efiber_input (array(
+				'naam'		=> 'extra-optie',
+				'type'		=> "checkbox",
+				'label'		=> $svgs,
+				'value'		=> 0,
+				'waarde'	=> $extra['extra_inhoud']['prijs']
+			))
+		);
+
+	}
 
 
 	$meta_inhoud .= efiber_form_rij (

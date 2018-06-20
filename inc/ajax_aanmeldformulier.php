@@ -258,6 +258,7 @@ function efiber_haal_aanmeldformulier() {
 		// LET OP DE SPELFOUTEN extra_tv_onvanger = zonder T
 		// extra_tv_ontvangen_eenmalig is met een N ipv R
 
+
 		if ($tv['extra_tv_onvanger'] !== '-1') {
 
 			$heeft_extra_tv = in_array('6', $keuzehulp['televisie-opties']);
@@ -265,11 +266,17 @@ function efiber_haal_aanmeldformulier() {
 			// maandelijkse kosten worden berekend op vergelijkingstabel,
 			// eenmalige kosten hier.
 
-			if (
-					$heeft_extra_tv and
-					array_key_exists('extra_tv_ontvangen_eenmalig', $tv) and
-					$tv['extra_tv_ontvangen_eenmalig'] !== '-1'
-				) 	$eenmalige_opties_prijs += (float) $tv['extra_tv_ontvangen_eenmalig'];
+			// aanname = pakketten hebben nooit èn eenmalige kosten voor de extra TV ontvanger 
+			// èn maandelijkste kosten voor de extra TV ontvanger.
+
+
+			if (	
+				$heeft_extra_tv and
+				array_key_exists('extra_tv_ontvangen_eenmalig', $tv) and
+				$tv['extra_tv_ontvangen_eenmalig'] !== '-1'
+				) {
+				$eenmalige_opties_prijs += (float) $tv['extra_tv_ontvangen_eenmalig'];	
+			}
 
 			$tv_inhoud .= efiber_form_rij (
 				'Extra TV ontvangers',
@@ -278,7 +285,8 @@ function efiber_haal_aanmeldformulier() {
 					'type'		=> "number",
 					'value'		=> $heeft_extra_tv ? 1 : 0,
 					'func'		=> 'aanmelding-schakel',
-					'waarde'	=> $tv['extra_tv_onvanger']
+					'waarde'	=> $tv['extra_tv_ontvangen_eenmalig'] != 0 ? (float) $tv['extra_tv_ontvangen_eenmalig'] : (float) $tv['extra_tv_onvanger'],
+					'eclass'	=> $tv['extra_tv_ontvangen_eenmalig'] != 0 ? 'eenmalig ' : ''
 				))
 			);
 

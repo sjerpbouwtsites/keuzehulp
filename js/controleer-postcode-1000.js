@@ -51,7 +51,20 @@ function controleerPostcode() {
 				},
 				cb: function(r){
 
+					console.log(r);
+
 					if (r && r.gevonden) {
+
+						if (r.aanvraag_al_gedaan) {
+
+							// "Er is al een aanvraag gedaan vanaf uw adres bij %provider%. Bezoekt u de website op %providerURL% of mailt u naar %providerMail%"
+
+							efiberModal(efiberTekst ('aanvraagAlGedaan', [r.aanvraag_info.naam,	r.aanvraag_info.URL, r.aanvraag_info.naam, r.aanvraag_info.email ]), 60000);
+							efiberRouting.ga(1);
+							//efiberAjaxKleineFormulieren('efiber_haal_lead_formulier', 'print-lead-formulier', {});
+							return;
+						}
+
 
 						r.data.gebiedscode = r.gebiedscode;
 

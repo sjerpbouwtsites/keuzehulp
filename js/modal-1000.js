@@ -6,7 +6,8 @@ teksten = {
 	interactieveTVGeenCoax: 		'Interactieve TV gaat niet over coax. U kunt straks kiezen voor UTP kabels',
 	vulHuisnummerIn: 				"Vul een huisnummer in",
 	minimum18: 						"Om een glasvezelcontract af te sluiten dien je minimaal 18 te zijn.",
-	correctTel: 					"Dit is geen correct mobiel of vast nummer"
+	correctTel: 					"Dit is geen correct mobiel of vast nummer",
+	aanvraagAlGedaan: 				"Iemand heeft reeds een aanvraag gedaan vanaf uw adres bij de provider %s0. Wij kunnen u niet verder helpen.<br>Bezoekt u <a href='%s1'>%s2s website</a> of mailt u naar %s3"
 };
 
 window.onload = function(){ efiberInit() };
@@ -18,7 +19,23 @@ function efiberTekst (snede, invoeging) {
 		return '';
 	}
 
-	return teksten[snede].replace('%s', invoeging);
+	if (!invoeging) {
+		return teksten[snede];
+	}
+
+	if (typeof invoeging === 'string') {
+		return teksten[snede].replace('%s', invoeging);
+	} else {
+
+		var r = teksten[snede];
+
+		for (var i = 0; i < invoeging.length; i++) {
+			r = r.replace("%s"+i, invoeging[i]);
+		}
+
+		return r;
+
+	}
 
 }
 

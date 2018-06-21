@@ -364,7 +364,7 @@ function efiberUpdateHidden() {
 		'extra_vast_nummer': 				doc.getElementById('input_1_41'),
 		'nummerbehoud_extra_vast_nummer': 	doc.getElementById('input_1_42'),
 		'huidige_extra_nummer': 			doc.getElementById('input_1_43'),
-		'installatie': 						doc.getElementById('input_1_44'), // zet op 45 46 missen
+		'installatie': 						doc.getElementById('input_1_44'), // let op 45 46 missen
 		'pakket_key': 						doc.getElementById('input_1_47'),
 		'provider': 						doc.getElementById('input_1_48'),
 		'pakket': 							doc.getElementById('input_1_49'),

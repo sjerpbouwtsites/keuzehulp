@@ -390,9 +390,12 @@ function efiberUpdateHidden() {
 	};
 
 
-	//uitzondering als input = radio
+	//uitzondering als input = radio & checkbox
 
 	var di, dp, uitzondering, pmid, dev, s;
+
+	console.clear();
+
 	for (var i = 0; i < inputs.length; i++) {
 		di = inputs[i];
 
@@ -416,33 +419,54 @@ function efiberUpdateHidden() {
 			dp = printMapping[pmid];
 			dev = di.getAttribute('data-efiber-value');
 
-			//altijd maar één radio aan, dus diegene die aanstaat mag printen
-			if (dev && dev !== '0') {
+			// is er een input in deze verzameling aan? 
 
-				// dit kan voorkomen als 
-				// 1) extra-optie of
-				// 2) bla_fdsf-sdf
 
-				// hier is een poging gedaan om het op te ruimen. Dit is niet afdoende. Dat moet nog eens uitgebreider.
-				// eigenlijk slaat het hier helemaal nergens op
-				s = di.id.split('_');
+			var dezeInputVerzameling = document.querySelectorAll("[id^='"+pmid+"']");
+			var erIsEenGekozen = false;
 
-				if (s.length > 1) {
-					dp.value = s[1].replace('keuze-', '').replace('-',' ').replace('---', ' ');
-				} else {
+			for (var j = dezeInputVerzameling.length - 1; j >= 0; j--) {
+				if (dezeInputVerzameling[j].className.indexOf('actief') !== -1) erIsEenGekozen = true;
+			}
 
-					if (di.id.indexOf('extra-optie') !== -1) {
+			if (erIsEenGekozen) {
 
-						var rij = di.parentNode;
-						while(rij.className.indexOf('rij') === -1) {
-							rij = rij.parentNode;
+				//altijd maar één radio aan, dus diegene die aanstaat mag printen
+				if (dev && dev !== '0') {
+
+					// dit kan voorkomen als 
+					// 1) extra-optie of
+					// 2) bla_fdsf-sdf
+
+					// hier is een poging gedaan om het op te ruimen. Dit is niet afdoende. Dat moet nog eens uitgebreider.
+					// eigenlijk slaat het hier helemaal nergens op
+					s = di.id.split('_');
+
+					if (s.length > 1) {
+						dp.value = s[1];
+					} else {
+
+						// dit is de extra optie. Die heeft in de ID geen _ 
+
+						if (di.id.indexOf('extra-optie') !== -1) {
+
+							var rij = di.parentNode;
+							while(rij.className.indexOf('rij') === -1) {
+								rij = rij.parentNode;
+							}
+
+							dp.value = rij.getElementsByClassName('veld-1')[0].textContent.trim();
+
 						}
-
-						dp.value = rij.getElementsByClassName('veld-1')[0].textContent.trim();
-
+						
 					}
-					
+
 				}
+
+			} else {
+
+				// geen input aan in verzameling
+				dp.value = '';
 
 			}
 

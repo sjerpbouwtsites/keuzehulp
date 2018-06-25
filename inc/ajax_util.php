@@ -123,8 +123,14 @@ function efiber_input ($params = array()) {
 	$id = ($type === 'radio' ?
 		$naam . '-' .
 			strtolower(
-				preg_replace("/\W|_/", '-',
-					substr($label, 0, 45)
+				str_replace(' ', '-', 
+					preg_replace(
+						"/[^A-Za-z0-9 ]/", '', (
+							explode('.', 
+								strip_tags($label)
+							)
+						)[0]
+					)
 				)
 			) :
 		$naam

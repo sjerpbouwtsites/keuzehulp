@@ -5,6 +5,38 @@ $func_n = "efiber_controleer_postcode";
 add_action( 'wp_ajax_'.$func_n, $func_n );
 add_action( 'wp_ajax_nopriv_'.$func_n, $func_n );
 
+
+function efiber_controleer_aanvraag_al_gedaan ($ajax_data, $con) {
+
+   	$sql = "SELECT * FROM postcodes WHERE postcode='{$ajax_data['postcode']}' AND huisnummer='{$ajax_data['huisnummer']}' AND toevoeging='{$ajax_data['toevoeging']}' AND kamer='{$ajax_data['kamer']}' AND aanvraag_gedaan = 1";
+
+    $result = mysqli_query($con, $sql);
+
+    if ($result->num_rows > 0) {
+
+    	$provider_naam = (mysqli_fetch_assoc($result))['provider'];
+
+    	$provider = get_page_by_title( $provider_naam, 'object', 'provider' );
+
+		echo json_encode(array(
+			'gevonden'			=> true,
+			'aanvraag_al_gedaan'=> true,
+			'aanvraag_info'		=> array(
+				'naam'		=> $provider_naam,
+				'URL'		=> get_field('website', $provider->ID),
+				'email'		=> get_field('email', $provider->ID),
+			)
+		));	    	
+		die();
+    } else {
+    	return array(
+    		$sql,
+    		$result,
+    		mysqli_fetch_assoc($result)	
+    	);
+    }
+}
+
 function efiber_controleer_postcode() {
 
 	$fout = json_encode(array(
@@ -14,23 +46,28 @@ function efiber_controleer_postcode() {
 
 	$ajax_data = $_POST['data'];
 
-	$con = $con = getdb();
+	$con = getdb();
 
    	$sql = "SELECT * FROM postcodes WHERE postcode='{$ajax_data['postcode']}' AND huisnummer='{$ajax_data['huisnummer']}' AND toevoeging='{$ajax_data['toevoeging']}' AND kamer='{$ajax_data['kamer']}'";
 
     $result = mysqli_query($con, $sql);
 
     if ($result) {
+
+    	$gezocht_naar_aanvraag = efiber_controleer_aanvraag_al_gedaan($ajax_data, $con);
+
 	    $rij = mysqli_fetch_assoc($result);
 	    if ($rij and count($rij)) {
 
 	    	$regio = get_term_by('slug', strtolower($rij['gebiedscode']), 'regio', 'object');
 
 			echo json_encode(array(
-				'gevonden'		=> true,
-				'gebiedscode'	=> $rij['gebiedscode'],
-				'regio'			=> $regio->name,
-				'data'			=> $ajax_data
+				'gevonden'				=> true,
+				'gebiedscode'			=> $rij['gebiedscode'],
+				'regio'					=> $regio->name,
+				'data'					=> $ajax_data,
+				'aanvraag_al_gedaan'	=> false,
+				'aanvraag_info'			=> false,
 			));
 	    } else {
 
@@ -43,16 +80,21 @@ function efiber_controleer_postcode() {
 	    	$result = mysqli_query($con, $sql);
 
 		   if ($result) {
+
+				$gezocht_naar_aanvraag = efiber_controleer_aanvraag_al_gedaan($ajax_data, $con);
+
 			    $rij = mysqli_fetch_assoc($result);
 			    if ($rij and count($rij)) {
 
 			    	$regio = get_term_by('slug', strtolower($rij['gebiedscode']), 'regio', 'object');
 
 					echo json_encode(array(
-						'gevonden'		=> true,
-						'gebiedscode'	=> $rij['gebiedscode'],
-						'regio'			=> $regio->name,
-						'data'			=> $ajax_data
+						'gevonden'				=> true,
+						'gebiedscode'			=> $rij['gebiedscode'],
+						'regio'					=> $regio->name,
+						'data'					=> $ajax_data,
+						'aanvraag_al_gedaan'	=> false,
+						'aanvraag_info'			=> false,
 					));
 			    } else {
 

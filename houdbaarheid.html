@@ -83,6 +83,7 @@
 			<li>Tabelmiddelware functioneel herschrijven</li>
 			<li>Afsplitsen financieele berekening van rendering</li>
 			<li>CSS refactoren</li>
+			<li>CSS splitsen in 'thematisch' en 'logisch' (oid)</li>
 			<li>Afsplitsen formvalidatie naar apart bestand en generieke logica</li>
 		</ol>
 	</section>
@@ -94,6 +95,8 @@
 				<ul>
 					<li>ipv MULINT250, MULINT500, MULTINT800 &eacute;&eacute;n MULINT met variaties 250, 500, 800 en bijbehorende prijzen</li>
 					<li>Snelheid internet sorteert niet meer voor op pakkettoewijzingen, maar pakketvariatie</li>
+					<li>Dit ook met TV, bellen, etc</li>
+					<li>Om overzicht te kunnen houden van welk pakket waar is, overzichtspagina maken met tax_blok.</li>
 				</ul>
 			</li>
 			<li>Financieele berekening 'gelaagd, benoemd' maken ipv 'platte, ontoegewezen bedragen'
@@ -102,15 +105,14 @@
 					<li>Object heeft API zoals lees, zet, totaal, subtotaal</li>
 					<li>Vergelijking en aanmelding verkrijgen data indirect, dus via object API, ipv vanuit procedure</li>
 			 	</ul>
-			<li>Pakketopties product & bundelgebaseerd
+			<li>(Verder) reduceren 'endpoints' pakkettoewijzingen door abstractielaag toe te voegen genaamd 'pakketkeuze'. Lost op 100 & 101 = zelfde uitkomst.</li>
+			<li>Naar provider verplaatsen bepaalde zaken
 				<ul>
-					<li>Nieuwe CPT producten onderverdelen in taxonomieen: provider, soort</li>
-					<li>Heeft maandelijkse & eenmalige prijs</li>
-					<li>Producten zitten in nieuwe CPT bundel, deelt taxonomieen met producten</li>
+					<li>Installatie</li>
 				</ul>
 			</li>
-			<li>(Verder) reduceren 'endpoints' pakkettoewijzingen door abstractielaag toe te voegen genaamd 'pakketkeuze'. Lost op 100 & 101 = zelfde uitkomst.</li>
 		</ol>
+
 	</section>
 
 
@@ -120,6 +122,20 @@
 			<li>COAX - UTP verhaal</li>
 		</ol>
 
+	</section>
+
+
+	<section>
+		<h2>GEANNULLEERD</h2>
+		<ol>
+			<li><del>Pakketopties product & bundelgebaseerd</del>
+				<ul>
+					<li><del>Nieuwe CPT producten onderverdelen in taxonomieen: provider, soort</del></li>
+					<li><del>Heeft maandelijkse & eenmalige prijs</del></li>
+					<li><del>Producten zitten in nieuwe CPT bundel, deelt taxonomieen met producten</del></li>
+				</ul>
+			</li>		
+		</ol>
 	</section>
 
 </body>

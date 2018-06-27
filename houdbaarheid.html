@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Plan houdbaarheid keuzehulp</title>
+	<style>
+
+		:root {
+		  --zwart: #111;
+		}
+
+		h1 {
+			display: inline-block;
+			position: relative;
+		}
+			h1::after {
+				position: absolute;
+				bottom: -.1em;
+				left: 0;
+				content: '';
+				display: block;
+				width: 110%;
+				border-bottom: 5px solid var(--zwart);
+			}
+
+		body {
+			padding: 30px;
+			background-color: #ededed;
+			font-family: "Georgia";
+			max-width: 760px;
+			margin: 0 auto;
+			line-height: 1.35;
+			color: var(--zwart);
+			font-size: 1.2rem;
+		}
+
+		section {
+			padding: 30px;
+			background-color: #fffcfc;
+			margin: 15px 0;
+		}
+
+		h2 {
+			margin-top: 0;
+		}
+		ol {
+			margin-bottom: 0;
+		}
+
+		abbr:hover {
+			cursor: help;
+		}
+		li {
+			margin-bottom: .25em;
+		}
+		li ul {
+			margin-top: .16em;
+		}
+		li li {
+			font-size: .8em;
+		}
+	</style>
+</head>
+<body>
+	
+
+	<h1>Plan houdbaarheid keuzehulp.</h1>
+
+
+	<section>
+		<h2>Laaghangend fruit</h2>
+		<ol>
+			<li>Instructie HP & Alex</li>
+			<li>Uitgebreidere functieniveau documentatie PHP</li>
+			<li>Documentatie architectuur JS, CSS, PHP</li>
+		</ol>
+	</section>
+
+	<section>
+		<h2>Herbouw binnen bestaande architectuur</h2>
+		<ol>
+			<li>Modulariteit PHP omhoog mn. aanmeldformulier</li>
+			<li>Tabelmiddelware functioneel herschrijven</li>
+			<li>Afsplitsen financieele berekening van rendering</li>
+			<li>CSS refactoren</li>
+			<li>Afsplitsen formvalidatie naar apart bestand en generieke logica</li>
+		</ol>
+	</section>
+
+	<section>
+		<h2>Architecturele veranderingen</h2>
+		<ol>
+			<li>Pakket-variaties
+				<ul>
+					<li>ipv MULINT250, MULINT500, MULTINT800 &eacute;&eacute;n MULINT met variaties 250, 500, 800 en bijbehorende prijzen</li>
+					<li>Snelheid internet sorteert niet meer voor op pakkettoewijzingen, maar pakketvariatie</li>
+				</ul>
+			</li>
+			<li>Financieele berekening 'gelaagd, benoemd' maken ipv 'platte, ontoegewezen bedragen'
+				<ul>
+					<li>Bestellingsobject, gegenereerd vanuit pakket</li>
+					<li>Object heeft API zoals lees, zet, totaal, subtotaal</li>
+					<li>Vergelijking en aanmelding verkrijgen data indirect, dus via object API, ipv vanuit procedure</li>
+			 	</ul>
+			<li>Pakketopties product & bundelgebaseerd
+				<ul>
+					<li>Nieuwe CPT producten onderverdelen in taxonomieen: provider, soort</li>
+					<li>Heeft maandelijkse & eenmalige prijs</li>
+					<li>Producten zitten in nieuwe CPT bundel, deelt taxonomieen met producten</li>
+				</ul>
+			</li>
+			<li>(Verder) reduceren 'endpoints' pakkettoewijzingen door abstractielaag toe te voegen genaamd 'pakketkeuze'. Lost op 100 & 101 = zelfde uitkomst.</li>
+		</ol>
+	</section>
+
+
+	<section>
+		<h2>Onopgelost</h2>
+		<ol>
+			<li>COAX - UTP verhaal</li>
+		</ol>
+
+	</section>
+
+</body>
+</html>

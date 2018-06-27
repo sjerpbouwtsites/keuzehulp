@@ -44,13 +44,14 @@ function Ef_scripts_in_rij() {
     );
 
 
+    $script_postfix = "1000";
 
     foreach ($pak_scripts as $s) {
-        wp_register_script( "efiber-$s", plugins_url("efiber/js/{$s}.js"), array(), null, true );
+        wp_register_script( "efiber-$s", plugins_url("efiber/js/{$s}-".$script_postfix.".js"), array(), null, true );
         wp_enqueue_script( "efiber-$s" );
     }
 
-    wp_register_script( 'efiber-script', plugins_url('efiber/js/efiber.js'), array(), null, true );
+    wp_register_script( 'efiber-script', plugins_url('efiber/js/{efiber}-'.$script_postfix.'.js'), array(), null, true );
     wp_enqueue_script( 'efiber-script' );
 
     foreach ($pak_stijlen as $s) {

@@ -54,7 +54,7 @@ function efiber_insert() {
 				continue;
 			}
 
-			$postcode_cols = "postcode, huisnummer, toevoeging, kamer, straatnaam, plaatsnaam, gemeentenaam, gebiedscode";
+			$postcode_cols = "postcode, huisnummer, toevoeging, kamer, straatnaam, plaatsnaam, gemeentenaam, gebiedscode, aanvraag_gedaan";
 			$waardes = 
 				 addslashes($getData[0])."','".
 				 addslashes($getData[1])."','".
@@ -63,7 +63,8 @@ function efiber_insert() {
 				 addslashes($getData[4])."','".
 				 addslashes($getData[5])."','".
 				 addslashes($getData[6])."','".
-				 addslashes($getData[7]);
+				 addslashes($getData[7])."','".
+				 "0";
 
 		   $sql = "INSERT into postcodes ($postcode_cols) 
 		       values ('$waardes')";

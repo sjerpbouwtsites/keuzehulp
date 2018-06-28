@@ -1,8 +1,6 @@
 <?php
 
 
-
-
 $func_n = "efiber_ik_weet_wat_ik_wil_pakketten";
 
 add_action( 'wp_ajax_'.$func_n, $func_n );
@@ -10,6 +8,12 @@ add_action( 'wp_ajax_nopriv_'.$func_n, $func_n );
 
 function efiber_ik_weet_wat_ik_wil_pakketten() {
 
+
+	/*---------------------------------------------------------
+	|
+	| 	
+	|
+	-----------------------------------------------------------*/
 
 
 	$ajax_data = $_POST['data'];
@@ -42,8 +46,6 @@ function efiber_ik_weet_wat_ik_wil_pakketten() {
 	        )
 	    )
 	);
-
-
 
 	//sorteer ze per provider
 

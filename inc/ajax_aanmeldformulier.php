@@ -1,107 +1,22 @@
 <?php
 
 
-$func_n = "efiber_ik_weet_wat_ik_wil_pakketten";
-
-add_action( 'wp_ajax_'.$func_n, $func_n );
-add_action( 'wp_ajax_nopriv_'.$func_n, $func_n );
-
-function efiber_ik_weet_wat_ik_wil_pakketten() {
-
-
-	/*---------------------------------------------------------
-	|
-	| 	
-	|
-	-----------------------------------------------------------*/
-
-
-	$ajax_data = $_POST['data'];
-	$keuzehulp = $ajax_data['keuzehulp'];
-
-	$slug_ar = array(
-		'1'		=> 'alleen-internet',
-		'2'		=> 'internet-en-bellen',
-		'3'		=> 'internet-en-tv',
-		'4'		=> 'alles-in-1',
-	);
-
-	$type_slug = $slug_ar[($keuzehulp['ik-weet-wat-ik-wil'])];
-
-	$pakketten = get_posts(
-	    array(
-	        'posts_per_page' => -1,
-	        'post_type' => 'pakket',
-	        'tax_query' => array(
-	            array(
-	                'taxonomy' => 'regio',
-	                'field' => 'slug',
-	                'terms' => strtolower($ajax_data['gebiedscode']),
-	            ),
-	            array(
-	                'taxonomy' => 'type',
-	                'field' => 'slug',
-	                'terms' => $type_slug,
-	            )
-	        )
-	    )
-	);
-
-	//sorteer ze per provider
-
-	$providers = array();
-
-	$providers['Netrebel'] = array();
-
-	$pitches = array();
-
-	if ($pakketten and count($pakketten)) : foreach ($pakketten as $p) :
-
-		$p->eigenschappen = efiber_pakket_eigenschappen($p);
-
-		$pv = $p->eigenschappen['pakket_meta']['provider'];
-
-		if (!array_key_exists($pv->post_title, $providers)) {
-
-			$providers[$pv->post_title] = array();
-			$pitches[$pv->post_title] = "<p>".$pv->post_content . "</p>";
-		}
-
-		$providers[$pv->post_title][] = $p;
-
-		endforeach;
-
-	echo json_encode(array(
-		'providers' => $providers,
-		'pitches'	=> $pitches
-	));
-    wp_die();
-
-	else :
-
-		echo json_encode(array(
-			'providers' 	=> false,
-			'console' 		=> 'geen pakketten gevonden'
-		));
-	    wp_die();
-
-	endif;
-
-}
-
-
-
-
-
-
 $func_n = "efiber_haal_aanmeldformulier";
 
 add_action( 'wp_ajax_'.$func_n, $func_n );
 add_action( 'wp_ajax_nopriv_'.$func_n, $func_n );
 
 
-
 function efiber_haal_aanmeldformulier() {
+
+
+	/*---------------------------------------------------------
+	|
+	|	Mengt financieele berekening van EENMALIGE kosten met viewlogica
+	| 	Genereerd vrnl. lijst met opties met knoppen en inputs
+	| 	en plakt dit weer aan een Gravity Form vast.
+	|
+	-----------------------------------------------------------*/
 
 
 	$svgs = "
@@ -120,65 +35,86 @@ function efiber_haal_aanmeldformulier() {
 		<path class='cls-2' d='M76.57,27.25a9,9,0,0,1,.6-3.42,7.2,7.2,0,0,1,1.58-2.43A6.35,6.35,0,0,1,81,19.92a7.07,7.07,0,0,1,2.6-.5,6.47,6.47,0,0,1,4.93,1.91,7.84,7.84,0,0,1,1.81,5.61c0,.24,0,.51,0,.79s0,.55,0,.77H80.83a2.8,2.8,0,0,0,1.2,2,4.83,4.83,0,0,0,2.84.76,12.08,12.08,0,0,0,2.25-.21,8.08,8.08,0,0,0,1.79-.52l.56,3.37a6.77,6.77,0,0,1-.89.34,11.39,11.39,0,0,1-1.24.29c-.46.08-.94.15-1.46.21s-1,.08-1.56.08a9.21,9.21,0,0,1-3.44-.58,6.67,6.67,0,0,1-2.43-1.61A6.34,6.34,0,0,1,77,30.25,9.67,9.67,0,0,1,76.57,27.25Zm9.75-1.59a4.45,4.45,0,0,0-.18-1,2.47,2.47,0,0,0-1.28-1.53,2.61,2.61,0,0,0-1.21-.26,2.73,2.73,0,0,0-1.2.24,2.65,2.65,0,0,0-.84.63,2.84,2.84,0,0,0-.51.9,6.75,6.75,0,0,0-.27,1.05Z'/><path class='cls-2' d='M92.84,27.25a9,9,0,0,1,.6-3.42A7.34,7.34,0,0,1,95,21.4a6.48,6.48,0,0,1,2.25-1.48,7.07,7.07,0,0,1,2.6-.5,6.48,6.48,0,0,1,4.93,1.91,7.84,7.84,0,0,1,1.81,5.61c0,.24,0,.51,0,.79s0,.55,0,.77H97.1a2.77,2.77,0,0,0,1.2,2,4.83,4.83,0,0,0,2.84.76,11.89,11.89,0,0,0,2.24-.21,8,8,0,0,0,1.8-.52l.56,3.37a6.77,6.77,0,0,1-.89.34,12,12,0,0,1-1.24.29q-.69.12-1.47.21c-.52,0-1,.08-1.56.08a9.29,9.29,0,0,1-3.44-.58,6.71,6.71,0,0,1-2.42-1.61,6.34,6.34,0,0,1-1.42-2.41A9.38,9.38,0,0,1,92.84,27.25Zm9.75-1.59a4.45,4.45,0,0,0-.18-1,2.47,2.47,0,0,0-1.28-1.53,2.61,2.61,0,0,0-1.21-.26,2.73,2.73,0,0,0-1.2.24,2.54,2.54,0,0,0-.84.63,2.84,2.84,0,0,0-.51.9,6.75,6.75,0,0,0-.27,1.05Z'/>
 	</svg>";
 
-
-
-
+	// hierin wordt de HTML opgeslagen. Pas aan het eind printen want ajaxfunctie.
 	$print = '';
+
+	// console kan gebruikt worden om mee te geven aan de console key in de JSON. 
+	// De console key veroorzaakt een console.log
 	$console = array();
+
+	// verrijkte pakketobject afkomstig uit efiber_pakket_eigenschappen($p) + data afkomstig van vergelijker.
 	$pakket = $_POST['data'][0];
+	$eigenschappen = $pakket['eigenschappen'];
+
+	// bevat gebiedscode, regio en adres.
 	$adres = $_POST['adres'];
+
+	// zie onder bij keuzecode voor voorbeeld. Sommige sleutels kunnen ontbreken omdat ze pas gecreeert worden als
+	// een bijbehorende optie aangevinkt wordt. 
 	$keuzehulp = $_POST['keuzehulp'];
-	$keuzecode = array(
+
+	// initialisatie
+	$eenmalige_opties_prijs = 0;
+
+	// zoals 102, 431
+	// @TODO incorrecte weergave op iwwiw omdat keuzehulp object niet bestaat.
+	$keuzecode_tekst = array(
 		"Internet",
 		((int) $keuzehulp['televisie'] == 2 || (int) $keuzehulp['televisie'] == 3) ? "Televisie" : '',
 		(int) $keuzehulp['bellen'] > 1 ? "Bellen" : ''
 	);
 
-
 	// als geen voorberekening gedaan, dan ook geen pakketten, dus maandelijksTotaal = beginprijs.
-	if (!array_key_exists('maandelijksTotaal', $pakket['eigenschappen'])) {
-		$pakket['eigenschappen']['maandelijksTotaal'] = $pakket['eigenschappen']['financieel']['maandelijks'];
+	// dit is het geval bij totaaloverzicht / iwwiw
+	if (!array_key_exists('maandelijksTotaal', $eigenschappen)) {
+		$eigenschappen['maandelijksTotaal'] = $eigenschappen['financieel']['maandelijks'];
 	}
 
+	// totaaloverzicht / iwwiw
 	$op_iwwiw = !!array_key_exists('ik-weet-wat-ik-wil', $keuzehulp);
-	$console['iwwiw'] = $op_iwwiw;
 
 
+	/*	
 
+	// voorbeeld
+	$print .= efiber_form_sectie(
+		'SECTIE TITEL',
+		efiber_form_rij (
+			RIJ VELD 1,
+			RIJ VELD 2 - vaak input, kan ook tekst of afbeelding zijn
+		)
+	);
 
+	*/
 
-
-	// $opties_prijs = 0; wordt vanaf vorige pagina gehaald
-
-	$eenmalige_opties_prijs = 0;
 
 	$print .= efiber_form_sectie(
-		'Samenvatting',
+		'Samenvatting', // sectie titel
 		efiber_form_rij (
-			'',
-			str_replace('\\', '', $pakket['eigenschappen']['thumb'])
+			'', // rij zonder titel
+			str_replace('\\', '', $eigenschappen['thumb']) // post thumbnail - backslashes worden ergens door de ajax veroorzaakt ?
 		) .
 
 		efiber_form_rij (
 			'Internet snelheid',
-			$pakket['eigenschappen']['snelheid'] . " Mb/s"
+			$eigenschappen['snelheid'] . " Mb/s"
 		) .
 
 		efiber_form_rij(
 			'Pakket inhoud',
-			implode('<br>', $keuzecode)
+			implode('<br>', $keuzecode_tekst)
 		) .
 
 		efiber_form_rij(
 			'Pakket prijs per maand',
-			"<span id='kopieer-de-prijs'></span>"
+			"<span id='kopieer-de-prijs'></span>" // er wordt geprint naar een ander element, hiernaar wordt gekopieerd.
 		) .
 
 		(
-			(array_key_exists('usp', $pakket['eigenschappen']) and $pakket['eigenschappen']['usp'] !== '') ?
+			(array_key_exists('usp', $eigenschappen) and $eigenschappen['usp'] !== '') ?
 				efiber_form_rij (
 					'Bijzonderheden',
-					$pakket['eigenschappen']['usp']
+					$eigenschappen['usp']
 
 				)
 			:
@@ -196,9 +132,9 @@ function efiber_haal_aanmeldformulier() {
 			efiber_input (array(
 				'naam'		=>	'publieke_naam',
 				'type'		=> "hidden",
-				'value'		=> $pakket['eigenschappen']['pakket_meta']['publieke_naam'],
+				'value'		=> $eigenschappen['pakket_meta']['publieke_naam'],
 				'func'		=> '',
-				'waarde'	=> 'waarde'
+				'waarde'	=> 'waarde' // @TODO raar?
 			))
 		) .
 		efiber_form_rij (
@@ -206,9 +142,9 @@ function efiber_haal_aanmeldformulier() {
 			efiber_input (array(
 				'naam'		=>	'provider',
 				'type'		=> "hidden",
-				'value'		=> $pakket['eigenschappen']['pakket_meta']['provider']['post_title'],
+				'value'		=> $eigenschappen['pakket_meta']['provider']['post_title'],
 				'func'		=> '',
-				'waarde'	=> 'waarde'
+				'waarde'	=> 'waarde' // @TODO raar?
 			))
 		) .
 		efiber_form_rij(
@@ -216,9 +152,9 @@ function efiber_haal_aanmeldformulier() {
 			efiber_input (array(
 				'naam'		=>	'pakket_key',
 				'type'		=> "hidden",
-				'value'		=> $pakket['eigenschappen']['pakket_meta']['pakket_key'],
+				'value'		=> $eigenschappen['pakket_meta']['pakket_key'],
 				'func'		=> '',
-				'waarde'	=> 'waarde'
+				'waarde'	=> 'waarde' // @TODO raar?
 			))
 		) .
 		efiber_form_rij(
@@ -226,9 +162,9 @@ function efiber_haal_aanmeldformulier() {
 			efiber_input (array(
 				'naam'		=>	'pakket',
 				'type'		=> "hidden",
-				'value'		=> $pakket['eigenschappen']['pakket_meta']['pakket'],
+				'value'		=> $eigenschappen['pakket_meta']['pakket'],
 				'func'		=> '',
-				'waarde'	=> 'waarde'
+				'waarde'	=> 'waarde' // @TODO raar?
 			))
 		)
 	);
@@ -236,18 +172,17 @@ function efiber_haal_aanmeldformulier() {
 	$print .=  "<p><strong>Jouw gekozen opties</strong></p>";
 
 
-	if ($pakket['eigenschappen']['heeft_tv'] === "true") :
+	if ($eigenschappen['heeft_tv'] === "true") :
 
-		$tv = $pakket['eigenschappen']['tv'];
-
-/*		$tv_inhoud .= efiber_form_rij (
-			'Heef TV',
-			($pakket['eigenschappen']['heeft_tv'] === "true" ? "Ja" : "Nee")
-		);*/
+		$tv = $eigenschappen['tv'];
 
 		$tv_inhoud .= efiber_form_rij (
 			'TV interactief',
-			(array_key_exists('type_tv', $tv) ? ( $tv['type_tv'] === 'interactief' ? 'Ja' : 'Nee' ) : 'Niet ingevuld.')
+			(array_key_exists('type_tv', $tv) ? 
+				( $tv['type_tv'] === 'interactief' ? 'Ja' : 'Nee' ) 
+			: 
+				'Niet ingevuld.' // onwaarschijnlijk
+			)
 		);
 
 		if (array_key_exists('opmerkingen', $tv) and $tv['opmerkingen'] !== '') {
@@ -260,8 +195,11 @@ function efiber_haal_aanmeldformulier() {
 		// LET OP DE SPELFOUTEN extra_tv_onvanger = zonder T
 		// extra_tv_ontvangen_eenmalig is met een N ipv R
 
+		// Dit is onbegrijpelijke bagger, wees voorzichtig
 
 		if ($tv['extra_tv_onvanger'] !== '-1') {
+
+			// extra_tv_onvanger kan ook 0 zijn, dat is als eenmalige kosten gerekend worden.
 
 			$heeft_extra_tv = in_array('6', $keuzehulp['televisie-opties']);
 
@@ -271,13 +209,12 @@ function efiber_haal_aanmeldformulier() {
 			// aanname = pakketten hebben nooit èn eenmalige kosten voor de extra TV ontvanger 
 			// èn maandelijkste kosten voor de extra TV ontvanger.
 
-
 			if (	
 				$heeft_extra_tv and
 				array_key_exists('extra_tv_ontvangen_eenmalig', $tv) and
 				$tv['extra_tv_ontvangen_eenmalig'] !== '-1'
 				) {
-				$eenmalige_opties_prijs += (float) $tv['extra_tv_ontvangen_eenmalig'];	
+				$eenmalige_opties_prijs += (float) $tv['extra_tv_ontvangen_eenmalig']; // als voor een extra TV eenmalige kosten worden gereken en dit pakket het mogelijk maakt en de gebruiker gekozen heeft voor een extra TV, tel dan die kosten op bij de eenmalige kosten.
 			}
 
 			$tv_inhoud .= efiber_form_rij (
@@ -285,10 +222,10 @@ function efiber_haal_aanmeldformulier() {
 				efiber_input (array(
 					'naam'		=>	'extra_tv_ontvangers',
 					'type'		=> "number",
-					'value'		=> $heeft_extra_tv ? 1 : 0,
+					'value'		=> $heeft_extra_tv ? 1 : 0, // als gekozen voor extra TV, initialiseer dan met waarde 1
 					'func'		=> 'aanmelding-schakel',
-					'waarde'	=> $tv['extra_tv_ontvangen_eenmalig'] != 0 ? (float) $tv['extra_tv_ontvangen_eenmalig'] : (float) $tv['extra_tv_onvanger'],
-					'eclass'	=> $tv['extra_tv_ontvangen_eenmalig'] != 0 ? 'eenmalig ' : ''
+					'waarde'	=> $tv['extra_tv_ontvangen_eenmalig'] != 0 ? (float) $tv['extra_tv_ontvangen_eenmalig'] : (float) $tv['extra_tv_onvanger'], //extra_tv_onvanger zijn de maandelijkse kosten
+					'eclass'	=> $tv['extra_tv_ontvangen_eenmalig'] != 0 ? 'eenmalig ' : '' // sommige providers rekenen eenmalige kosten voor een extra TV ontvanger, anderen maandelijkse
 				))
 			);
 
@@ -299,10 +236,15 @@ function efiber_haal_aanmeldformulier() {
 		////////////////////////////////////////////////
 
 		// als je vanaf IWWIW komt dan zijn de maandtotalen zonder de kosten
-		// van on demand.
+		// van on demand. Dus waarde ook op 0. Want ook niet ingevuld in keuzehulp.
 		// als je een 'interactief pakket' hebt maar digitaal heb gekozen, dan value 0.
 
 		$on_demand = $tv['on_demand'];
+
+		// varia ondemand pakketten kunnen  op verschillende wijzen voorkomen:
+		// - totaalprijs ('samen')
+		// - losse prijzen (komt niet voor)
+		// - de een betaald en de ander inclusief
 
 		if ($on_demand['opnemen_replay_begin_gemist_samen'] !== '-1') :
 
@@ -317,7 +259,7 @@ function efiber_haal_aanmeldformulier() {
 				))
 			);
 
-		else :
+		else : // dus on demand niet samen
 
 			if ($on_demand['opnemen'] !== '-1') :
 
@@ -329,20 +271,20 @@ function efiber_haal_aanmeldformulier() {
 							'type'		=> "checkbox",
 							'waarde'	=> $on_demand['opnemen'],
 							'value'		=> $op_iwwiw ? 0 : (
-								($keuzehulp['televisie'] === '3' and array_key_exists('televisie', $keuzehulp)) ? 1 : 0
-							),
+								($keuzehulp['televisie'] === '3' and array_key_exists('televisie', $keuzehulp)) ? 1 : 0 
+							), // als niet op iwwiw en ITV gekozen. iwwiw heeft ook ITV pakketten maar daar zijn de prijzen nog niet opgeteld.
 							'label'		=> $svgs
 						))
 
 					);
-				} else {
+				} else { // gratis optie, waarde is 0
 					$tv_inhoud .= efiber_form_rij (
 						'Opnemen',
 						'Inclusief'
 					);
 				}
 
-			endif;
+			endif; //opnemen beschikbaar
 
 			if ($on_demand['replay'] !== '-1') :
 
@@ -353,19 +295,19 @@ function efiber_haal_aanmeldformulier() {
 							'naam'		=> 'replay',
 							'type'		=> "checkbox",
 							'waarde'	=> $on_demand['replay'],
-							'value'		=> 0,
+							'value'		=> 0, // kan nergens buiten aanmeldformulier gekozen worden
 							'label'		=> $svgs
 						))
 
 					);
-				} else {
+				} else { // gratis optie, waarde is 0
 					$tv_inhoud .= efiber_form_rij (
 						'Terugkijken',
 						'Inclusief'
 					);
 				}
 
-			endif;
+			endif; // replay beschikbaar
 
 			if ($on_demand['begin_gemist'] !== '-1') :
 
@@ -376,23 +318,21 @@ function efiber_haal_aanmeldformulier() {
 							'naam'		=> 'begin gemist',
 							'type'		=> "checkbox",
 							'waarde'	=> $on_demand['begin_gemist'],
-							'value'		=> 0,
+							'value'		=> 0, // kan nergens buiten aanmeldformulier gekozen worden
 							'label'		=> $svgs
 						))
 
 					);
-				} else {
+				} else { // gratis optie, waarde is 0
 					$tv_inhoud .= efiber_form_rij (
 						'Begin gemist',
 						'Inclusief'
 					);
 				}
 
-			endif;
+			endif; // begin gemist beschikbaar
 
-
-
-		endif; // on demand samen
+		endif; // on demand samen of niet
 
 
 
@@ -423,18 +363,16 @@ function efiber_haal_aanmeldformulier() {
 				);
 			}
 
-		endif;
+		endif; // tv app beschikbaar
 
 
 
 		$tv_pakketten = $tv['paketten'];
 
-
 		if ($tv_pakketten['film1'] !== '-1') :
 			if ($tv_pakketten['film1'] !== '0') {
 
 				$heeft_film_1 = in_array('5', $keuzehulp['televisie-opties']);
-				//if ($heeft_extra_tv) $opties_prijs += (float) $tv_pakketten['film1'];
 
 				$tv_inhoud .= efiber_form_rij (
 					"Film1",
@@ -447,36 +385,36 @@ function efiber_haal_aanmeldformulier() {
 					))
 				);
 
-			} else {
+			} else { // gratis optie
 				$tv_inhoud .= efiber_form_rij (
 					"Film1",
 					'Inclusief'
 				);
 			}
-		endif;
+		endif; // film1 beschikbaar
+
+
 
 		if ($tv_pakketten['erotiek_pakket'] !== '-1') :
 			if ($tv_pakketten['erotiek_pakket'] !== '0') {
-
-				//$heeft_plus_pakket = in_array('4', $keuzehulp['televisie-opties']);
 
 				$tv_inhoud .= efiber_form_rij (
 					"Erotiek pakket",
 					efiber_input (array(
 						'naam'		=>	'erotiek_pakket',
 						'type'		=> "checkbox",
-						'value'		=> 0,
+						'value'		=> 0, // nooit kiesbaar buiten aanmeldformulier
 						'waarde'	=> $tv_pakketten['erotiek_pakket'],
 						'label'		=> $svgs
 					))
 				);
-			} else {
+			} else { // gratis optie
 				$tv_inhoud .= efiber_form_rij (
 					"Erotiek pakket",
 					'Inclusief'
 				);
 			}
-		endif;
+		endif; // erotiek beschikbaar
 
 
 
@@ -484,7 +422,6 @@ function efiber_haal_aanmeldformulier() {
 			if ($tv_pakketten['plus_pakket'] !== '0') {
 
 				$heeft_plus_pakket = in_array('4', $keuzehulp['televisie-opties']);
-			//	if ($heeft_extra_tv) $opties_prijs += (float) $tv_pakketten['plus_pakket'];
 
 				$tv_inhoud .= efiber_form_rij (
 					"Plus pakket",
@@ -496,20 +433,20 @@ function efiber_haal_aanmeldformulier() {
 						'label'		=> $svgs
 					))
 				);
-			} else {
+			} else { // gratis optie
 				$tv_inhoud .= efiber_form_rij (
 					"Plus pakket",
 					'Inclusief'
 				);
 			}
-		endif;
+		endif; // plus pakket beschikbaar
+
 
 
 		if ($tv_pakketten['ziggo_sport_totaal'] !== '-1') :
 			if ($tv_pakketten['ziggo_sport_totaal'] !== '0') {
 
 				$heeft_ziggo_totaal = in_array('2', $keuzehulp['televisie-opties']);
-				//if ($heeft_extra_tv) $opties_prijs += (float) $tv_pakketten['ziggo_sport_totaal'];
 
 				$tv_inhoud .= efiber_form_rij (
 					"Ziggo sport totaal",
@@ -521,22 +458,20 @@ function efiber_haal_aanmeldformulier() {
 						'label'		=> $svgs
 					))
 				);
-			} else {
+			} else { // gratis optie
 				$tv_inhoud .= efiber_form_rij (
 					"Ziggo sport totaal",
 					'Inclusief'
 				);
 			}
-		endif;
+		endif; // ziggo sport totaal beschikbaar
 
 
 		$heeft_eredvisie = in_array('1', $keuzehulp['televisie-opties']);
 		$heeft_fox_sports_int = in_array('3', $keuzehulp['televisie-opties']);
 
-		//bepaalde providers bieden fox sports compleet aan, een bundel van fox eredivisie en fox internationaal.
+		// bepaalde providers bieden fox sports compleet aan, een bundel van fox eredivisie en fox internationaal.
 		if ($heeft_eredvisie && $heeft_fox_sports_int && $tv_pakketten['fox_sports_compl'] !== '-1') :
-
-			// $opties_prijs += (float) $tv_pakketten['fox_sports_compl'];
 
 			$tv_inhoud .= efiber_form_rij (
 				"Fox sports Compleet",
@@ -544,60 +479,37 @@ function efiber_haal_aanmeldformulier() {
 					'naam'		=> 'fox_sports_compl',
 					'type'		=> "checkbox",
 					'func'		=> 'fox-sports-compl',
-					'value'		=> 1,
+					'value'		=> 1, // want combinatie van ED & INT
 					'waarde'	=> $tv_pakketten['fox_sports_compl'],
 					'label'		=> $svgs
 				))
 			);
 
+			// is altijd beschikbaar indien fox sports compl beschikbaar is en is altijd niet gratis.
+			$tv_inhoud .= efiber_form_rij (
+				"Fox Sports Eredivisie",
+				efiber_input (array(
+					'naam'		=> 'fox_sports_ed',
+					'type'		=> "checkbox",
+					'value'		=> 0,// want combinatie van ED & INT
+					'waarde'	=> $tv_pakketten['fox_sports_ed'],
+					'label'		=> $svgs
+				))
+			);
 
-			if ($tv_pakketten['fox_sports_ed'] !== '-1') :
-				if ($tv_pakketten['fox_sports_ed'] !== '0') {
+			// is altijd beschikbaar indien fox sports compl beschikbaar is en is altijd niet gratis.
+			$tv_inhoud .= efiber_form_rij (
+				"Fox Sports Eredivisie",
+				efiber_input (array(
+					'naam'		=> 'fox_sports_int',
+					'type'		=> "checkbox",
+					'value'		=> 0,
+					'waarde'	=> $tv_pakketten['fox_sports_int'],
+					'label'		=> $svgs
+				))
+			);
 
-					$tv_inhoud .= efiber_form_rij (
-						"Fox Sports Eredivisie",
-						efiber_input (array(
-							'naam'		=> 'fox_sports_ed',
-							'type'		=> "checkbox",
-							'value'		=> 0,
-							'waarde'	=> $tv_pakketten['fox_sports_ed'],
-							'label'		=> $svgs
-						))
-					);
-
-				} else {
-					$tv_inhoud .= efiber_form_rij (
-						"Fox Sports Eredivisie",
-						'Inclusief'
-					);
-				}
-			endif;
-
-
-			if ($tv_pakketten['fox_sports_int'] !== '0') :
-				if ($tv_pakketten['fox_sports_int'] !== '0') {
-
-					$tv_inhoud .= efiber_form_rij (
-						"Fox Sports Eredivisie",
-						efiber_input (array(
-							'naam'		=> 'fox_sports_int',
-							'type'		=> "checkbox",
-							'value'		=> 0,
-							'waarde'	=> $tv_pakketten['fox_sports_int'],
-							'label'		=> $svgs
-						))
-					);
-
-				} else {
-					$tv_inhoud .= efiber_form_rij (
-						"Fox Sports Internationaal",
-						'Inclusief'
-					);
-				}
-			endif;
-
-
-		else :
+		else : // niet èn heeft eredivisie èn heeft fox sports int èn heeft mogelijkheid fox sports compleet
 
 
 			if ($tv_pakketten['fox_sports_compl'] !== '-1') {
@@ -607,7 +519,7 @@ function efiber_haal_aanmeldformulier() {
 						'naam'		=> 'fox_sports_compl',
 						'type'		=> "checkbox",
 						'func'		=> 'fox-sports',
-						'value'		=> 0,
+						'value'		=> 0, // want niet èn ED èn INT
 						'waarde'	=> $tv_pakketten['fox_sports_compl'],
 						'label'		=> $svgs
 					))
@@ -617,8 +529,6 @@ function efiber_haal_aanmeldformulier() {
 
 			if ($tv_pakketten['fox_sports_ed'] !== '-1') :
 				if ($tv_pakketten['fox_sports_ed'] !== '0') {
-
-					// if ($heeft_eredvisie) $opties_prijs += (float) $tv_pakketten['fox_sports_ed'];
 
 					$tv_inhoud .= efiber_form_rij (
 						"Fox Sports Eredivisie",
@@ -631,7 +541,7 @@ function efiber_haal_aanmeldformulier() {
 						))
 					);
 
-				} else {
+				} else { // gratis optie
 					$tv_inhoud .= efiber_form_rij (
 						"Fox Sports Eredivisie",
 						'Inclusief'
@@ -642,8 +552,6 @@ function efiber_haal_aanmeldformulier() {
 
 			if ($tv_pakketten['fox_sports_int'] !== '-1') :
 				if ($tv_pakketten['fox_sports_int'] !== '0') {
-
-					// if ($heeft_fox_sports_int) $opties_prijs += (float) $tv_pakketten['fox_sports_int'];
 
 					$tv_inhoud .= efiber_form_rij (
 						"Fox Sports Internationaal",
@@ -656,7 +564,7 @@ function efiber_haal_aanmeldformulier() {
 						))
 					);
 
-				} else {
+				} else { // gratis optie
 					$tv_inhoud .= efiber_form_rij (
 						"Fox Sports Internationaal",
 						'Inclusief'
@@ -667,7 +575,7 @@ function efiber_haal_aanmeldformulier() {
 
 		endif; //eredivisie + int = compl
 
-
+		// tekstmogelijkheid
 		if (array_key_exists('opmerkingen', $tv['paketten']) and $tv['paketten']['opmerkingen'] !== '') {
 			$tv_inhoud .= efiber_form_rij (
 				'Opmerkingen',
@@ -677,6 +585,7 @@ function efiber_haal_aanmeldformulier() {
 
 	endif; //heeft TV
 
+	// zet de TV_inhoud in print
 	if ($tv_inhoud && $tv_inhoud !== '') {
 		$print .= efiber_form_sectie(
 			'Televisie',
@@ -684,12 +593,12 @@ function efiber_haal_aanmeldformulier() {
 		);
 	}
 
-
+	// HTML houder
 	$bel_inhoud = '';
 
-	$telefonie = $pakket['eigenschappen']['telefonie'];
+	$telefonie = $eigenschappen['telefonie'];
 
-	if ($telefonie['heeft_telefonie'] === 'true') {
+	if ($telefonie['heeft_telefonie'] === 'true') :
 
 		$tel_opts = $telefonie['telefonie_opties'];
 
@@ -711,13 +620,14 @@ function efiber_haal_aanmeldformulier() {
 
 		// belpakket kan vanuit vanuit pakket komen. Als in keuzehulp internationaal aangegeven, dat overschrijven.
 
-/*		$console[] = array(
-			'voorignevuld' 	=> $pakket['belbundel_nl_vooringevuld'],
-			'truthy' 		=> !!$pakket['belbundel_nl_vooringevuld'],
-		);*/
+		// @TODO
+		// dit is superdubbelop! dit bugt aan alle kanten. maar ook op vergelijker wordt NL pakket nog niet meegegeven.
+		// neergelegd bij niet functioneren.
+		// buitenland pakket wordt wel correct doorgegeven, zowel in vergelijker als hier.
 
 		$vogv = ($pakket['belbundel_nl_vooringevuld'] !== 'false') && !in_array('2', $keuzehulp['nummers']);
 
+		// s = computercode w = menselijk
 		foreach ($prijs_namen as $s => $w) :
 
 			if ($tel_opts[$s] !== '-1') {
@@ -737,7 +647,13 @@ function efiber_haal_aanmeldformulier() {
 				$belknoppen .= efiber_input (array(
 					'naam'		=> 'belpakket_keuze',
 					'type'		=> "radio",
-					'value'		=> $op_iwwiw ? 0 : in_array($s, $nederland_pakketten) ? ($is_nl_ok ? 1 : 0) : in_array('2', $keuzehulp['nummers']) ? 1 : 0,
+					'value'		=> $op_iwwiw ? 
+										0 // belpakket keuze altijd 0 vanaf iwwiw want prijs nog niet meegerekend
+									: 
+										in_array($s, $nederland_pakketten) ? 
+											($is_nl_ok ? 1 : 0)
+										: 
+											in_array('2', $keuzehulp['nummers']) ? 1 : 0,
 					'waarde'	=> $telefonie['telefonie_opties'][$s],
 					'label'		=> "<span class='radio-naam'>".$w."</span>" .  $svgs
 				));
@@ -746,12 +662,14 @@ function efiber_haal_aanmeldformulier() {
 
 		endforeach; // alle belpakketten
 
+		// belknoppen naar bel inhoud HTML
 		if ($belknoppen !== '') {
 			$bel_inhoud .= efiber_form_rij (
 				'Belpakketten',
 				$belknoppen
 			);
 
+			// tekst mogelijkheid
 			if (array_key_exists('opmerkingen', $telefonie['telefonie_opties']) and $telefonie['telefonie_opties']['opmerkingen'] !== '') {
 				$bel_inhoud .= efiber_form_rij (
 					'Opmerkingen',
@@ -779,12 +697,12 @@ function efiber_haal_aanmeldformulier() {
 				'type'		=> "text",
 				'func'		=> '',
 			)),
-			'onzichtbaar'
+			'onzichtbaar' // wordt zichtbaar als geklikt op nummerbehoud
 		);
 
 		if ($tel_opts['extra_tel'] !== '-1') :
 
-			$koos_extra_nummer = in_array('2', $keuzehulp['nummers']);
+			$koos_extra_nummer = in_array('1', $keuzehulp['nummers']);
 
 			$bel_inhoud .= efiber_form_rij (
 				"Extra vast nummer",
@@ -806,7 +724,7 @@ function efiber_haal_aanmeldformulier() {
 					'func'		=> 'form-toon-rij',
 					'label'		=> $svgs
 				)),
-				($koos_extra_nummer ? '' : 'onzichtbaar')
+				($koos_extra_nummer ? '' : 'onzichtbaar') // wordt zichtbaar als geklikt op nummerbehoud
 			);
 
 			$bel_inhoud .= efiber_form_rij (
@@ -815,7 +733,7 @@ function efiber_haal_aanmeldformulier() {
 						'naam'		=> 'huidige_extra_nummer',
 						'type'		=> "text",
 				)),
-				'onzichtbaar'
+				'onzichtbaar' // wordt zichtbaar als extra nummer gekozen en nummerbehoud
 			);
 
 		endif; // extra tel mogelijk
@@ -829,16 +747,13 @@ function efiber_haal_aanmeldformulier() {
 				'label'		=> $svgs,
 				'value'		=> 0
 			)),
-			$pakket['eigenschappen']['pakket_meta']['provider']['inschrijving_telefoonboek_mogelijk'] !== 'false' ? '' : 'onzichtbaar'
+			$eigenschappen['pakket_meta']['provider']['inschrijving_telefoonboek_mogelijk'] !== 'false' ? '' : 'onzichtbaar' // alleen bepaalde providers bieden dit aan.
 		);
 
+	endif; // if telefonie
 
 
-
-
-	} // if telefonie
-
-
+	// zet bel inhoud op print HTML
 	if ($bel_inhoud && $bel_inhoud !== '') {
 		$print .= efiber_form_sectie(
 			'Bellen',
@@ -846,6 +761,7 @@ function efiber_haal_aanmeldformulier() {
 		);
 	}
 
+	// HTML houder
 	$meta_inhoud = '';
 
 
@@ -854,14 +770,14 @@ function efiber_haal_aanmeldformulier() {
 
 	$installatie_knoppen = '';
 
-	//controleren of deze installatie vorm ok is, anders anderen nemen
-	$ik = (int) $keuzehulp['installatie'] - 1;
-/*
-	ob_start();
-	var_dump($keuzehulp);
-	$print .= ob_get_clean();*/
+	// controleren of deze installatie vorm ok is, anders anderen nemen
+	// wederom onnavolgbare logica.. 
+	// probeert eerst 'meest dichtbij liggende optie' te nemen, valt anders terug tot derde, minst wenselijke optie.
 
-	$installatie_beschikbaar = $pakket['eigenschappen']['installatie'][($installatie_sleutels[$ik])] != '-1';
+	$ik = (int) $keuzehulp['installatie'] - 1;
+
+	// mazzel... installatie keuze is beschikbaar?
+	$installatie_beschikbaar = $eigenschappen['installatie'][($installatie_sleutels[$ik])] != '-1';
 
 	if (!$installatie_beschikbaar) {
 
@@ -870,7 +786,7 @@ function efiber_haal_aanmeldformulier() {
 		if ($keuzehulp['installatie'] == '1') {
 
 			//kijken of 2 beschikbaar is
-			$installatie_beschikbaar = $pakket['eigenschappen']['installatie'][($installatie_sleutels[1])] != '-1';
+			$installatie_beschikbaar = $eigenschappen['installatie'][($installatie_sleutels[1])] != '-1';
 
 			if ($installatie_beschikbaar) {
 				$keuzehulp['installatie'] = 2;
@@ -880,7 +796,7 @@ function efiber_haal_aanmeldformulier() {
 
 		} else if ($keuzehulp['installatie'] == '2') {
 
-			$installatie_beschikbaar = $pakket['eigenschappen']['installatie'][($installatie_sleutels[2])] != '-1';
+			$installatie_beschikbaar = $eigenschappen['installatie'][($installatie_sleutels[2])] != '-1';
 
 			if ($installatie_beschikbaar) {
 				$keuzehulp['installatie'] = 3;
@@ -891,7 +807,7 @@ function efiber_haal_aanmeldformulier() {
 		} else if ($keuzehulp['installatie'] == '3') {
 
 			//kijken of 2 beschikbaar is
-			$installatie_beschikbaar = $pakket['eigenschappen']['installatie'][($installatie_sleutels[1])] != '-1';
+			$installatie_beschikbaar = $eigenschappen['installatie'][($installatie_sleutels[1])] != '-1';
 
 			if ($installatie_beschikbaar) {
 				$keuzehulp['installatie'] = 2;
@@ -903,25 +819,24 @@ function efiber_haal_aanmeldformulier() {
 
 	}
 
-//	$print .= ob_get_clean();
 
 	$i = 1;
 	$j = 0;
 
 	// zijn er niet meerdere installatiemogelijkheden? voeg invalide klasse toe.
+	// invalide klasse voorkomt klikken. Minstens één installatiemogelijkheid vereist.
+	// dat is dit bs verhaal
 	$bs = 0;
-	foreach ($pakket['eigenschappen']['installatie'] as $inst_naam => $inst_prijs) :
+	foreach ($eigenschappen['installatie'] as $inst_naam => $inst_prijs) :
 		if ($inst_prijs !== '-1') $bs++;
 	endforeach;
 
-	foreach ($pakket['eigenschappen']['installatie'] as $inst_naam => $inst_prijs) :
+	foreach ($eigenschappen['installatie'] as $inst_naam => $inst_prijs) :
 
 		$deze_inst_gekozen = ((int) $keuzehulp['installatie']) == $i;
 
-		if ($deze_inst_gekozen) {
-
+		if ($deze_inst_gekozen) { // installatieprijzen = deel van eenmalige kosten = nog niet berekend op vergelijking
 			$eenmalige_opties_prijs += $inst_prijs;
-
 		}
 
 		if ($inst_prijs !== '-1') {
@@ -940,18 +855,16 @@ function efiber_haal_aanmeldformulier() {
 
 	endforeach; // alle installatiekeuzes
 
+	// zet installatieknoppen in meta inhoud HTML
 	$meta_inhoud .= efiber_form_rij (
 		'Installatie',
 		$installatie_knoppen
 	);
 
 
+	$extra = $eigenschappen['extra'];
 
-	// louter voor debug
-
-
-	$extra = $pakket['eigenschappen']['extra'];
-
+	// is bijvoorbeeld Netrebels TV optie
 	if ($extra['heeft_extra_optie'] === 'true') {
 
 		$meta_inhoud .= efiber_form_rij (
@@ -968,54 +881,53 @@ function efiber_haal_aanmeldformulier() {
 	}
 
 
-	$meta_inhoud .= efiber_form_rij (
-		'Incl. wifi router',
-		(($pakket['eigenschappen']['incl_wifi_router']) === "true" ? "Ja" : "Nee")
+	$meta_inhoud .= (
+		efiber_form_rij (
+			'Incl. wifi router',
+			(($eigenschappen['incl_wifi_router']) === "true" ? "Ja" : "Nee")
+		) . 
+		"<br>" .
+		efiber_form_rij (
+			'Eenmalige kosten',
+			"<span id='print-eenmalig-totaal'>" .
+				efiber_maak_geld_op(
+					( (float) $eigenschappen['financieel']['eenmalig'] + $eenmalige_opties_prijs)
+				) .
+			"</span>"
+		) .
+		efiber_form_rij (
+			'Borg',
+			efiber_maak_geld_op($eigenschappen['financieel']['borg'])
+		) . 
+		efiber_form_rij (
+			'Totaal maandelijks',
+			"<span id='print-maandelijks-totaal'>" .
+				efiber_maak_geld_op(
+					((float)$eigenschappen['maandelijksTotaal'])
+				) .
+			"</span>"
+		) . 
+		"<br>" . 
+		efiber_form_rij (
+			'Minimale contractsduur',
+			get_field('minimale_contractsduur', $eigenschappen['pakket_meta']['provider']['ID'])
+		)
 	);
 
-	$meta_inhoud .= "<br>";
-
-	$meta_inhoud .= efiber_form_rij (
-		'Eenmalige kosten',
-		"<span id='print-eenmalig-totaal'>" .
-			efiber_maak_geld_op(
-				( (float) $pakket['eigenschappen']['financieel']['eenmalig'] + $eenmalige_opties_prijs)
-			) .
-		"</span>"
-	);
-
-	$meta_inhoud .= efiber_form_rij (
-		'Borg',
-		efiber_maak_geld_op($pakket['eigenschappen']['financieel']['borg'])
-	);
-
-	$meta_inhoud .= efiber_form_rij (
-		'Totaal maandelijks',
-		"<span id='print-maandelijks-totaal'>" .
-			efiber_maak_geld_op(
-				((float)$pakket['eigenschappen']['maandelijksTotaal'])
-			) .
-		"</span>"
-	);
-
-	$meta_inhoud .= "<br>";
-
-	$meta_inhoud .= efiber_form_rij (
-		'Minimale contractsduur',
-		get_field('minimale_contractsduur', $pakket['eigenschappen']['pakket_meta']['provider']['ID'])
-	);
-
-
-	if (array_key_exists('opmerkingen', $pakket['eigenschappen']['financieel']) and $pakket['eigenschappen']['financieel']['opmerkingen'] !== '') {
+	// tekstmogelijkheid
+	if (array_key_exists('opmerkingen', $eigenschappen['financieel']) and $eigenschappen['financieel']['opmerkingen'] !== '') {
 		$meta_inhoud .= efiber_form_rij (
 			'Opmerkingen',
-			$pakket['eigenschappen']['financieel']['opmerkingen']
+			$eigenschappen['financieel']['opmerkingen']
 		);
 	}
 
+
+	// bij klein zakelijk kan een waarschuwing komen dat sommigen geen zakelijke factuur kunnen sturen aan een consumentenpakket (=kleinzakelijk)
 	if ($keuzehulp['situatie'] === 'kleinZakelijk') {
 
-		$klein_zakelijk_waarschuwing = get_field('klein_zakelijk_waarschuwing', $pakket['eigenschappen']['pakket_meta']['provider']['ID']);
+		// @TODO verkeerde plek om get field te doen. Zou moeten gebeuren in ajax hulpfunctie die pakketeigenschappen schrijft.
+		$klein_zakelijk_waarschuwing = get_field('klein_zakelijk_waarschuwing', $eigenschappen['pakket_meta']['provider']['ID']);
 
 		if ($klein_zakelijk_waarschuwing and $klein_zakelijk_waarschuwing !== '') {
 			$meta_inhoud .= "<small>" . $klein_zakelijk_waarschuwing . "</small>";
@@ -1025,28 +937,30 @@ function efiber_haal_aanmeldformulier() {
 
 	$meta_inhoud .= "<small>Bovenstaande gegevens zijn overgenomen van de provider. Wijzigingen voorbehouden.</small>";
 
-
-
+	// en de meta inhoud in print HTML houder
 	$print .= efiber_form_sectie (
 		'Meta',
 		$meta_inhoud
 	);
 
 
-
+	// hier wordt het aanmeldformulier opgehaald
+	// @TODO is die echo & buffer nodig?
 	ob_start();
-
 	echo do_shortcode('[gravityform id="1" ajax=true]');
-
 	$gf = ob_get_clean();
 
 
 	// nu de algemene voorwaarden van de provider er in zetten.
-	$algemene_voorwaarden = $pakket['eigenschappen']['pakket_meta']['provider']['ik_ga_akkoord_met'];
-	$algemene_voorwaarden = str_replace("\\", '', $algemene_voorwaarden);
-
+	// gaat via stringherkenning
+	$algemene_voorwaarden = $eigenschappen['pakket_meta']['provider']['ik_ga_akkoord_met'];
+	$algemene_voorwaarden = str_replace("\\", '', $algemene_voorwaarden); // ook kapotge-ajaxt
 	$gf = str_replace('%PRINT_ALGEMENE_VOORWAARDEN%', $algemene_voorwaarden, $gf);
 
+	// datumveld mag niet automatisch vullen ivm iphone bug
+	// iphone vult het op een andere wijze dan formulier verwacht
+	// vervolgens verdwijnt vanwege de validatie de submitknop 
+	// maar de gebruiker krijgt geen notificatie
 	$gf = str_replace("id='input_1_32'", "id='input_1_32' autocomplete='off'", $gf);
 
 	$print .= $gf;
@@ -1059,6 +973,7 @@ function efiber_haal_aanmeldformulier() {
 		'console'		=> $pakket
 	);
 
+	// @TODO hier is geen foutafhandeling?
 	echo json_encode($r);
 
 	wp_die();

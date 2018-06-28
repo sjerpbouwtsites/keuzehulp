@@ -345,3 +345,97 @@ function efiber_vergelijking() {
 	wp_die();
 
 }
+
+
+
+$func_n = "efiber_ik_weet_wat_ik_wil_pakketten";
+
+add_action( 'wp_ajax_'.$func_n, $func_n );
+add_action( 'wp_ajax_nopriv_'.$func_n, $func_n );
+
+function efiber_ik_weet_wat_ik_wil_pakketten() {
+
+
+	/*---------------------------------------------------------
+	|
+	| 	Genereert lijst met pakketten per provider + provider pitch
+	| 	adhv keuzehulp data & gebiedscode
+	| 	pakketten worden gesorteerd met Netrebel als eerste
+	|
+	-----------------------------------------------------------*/
+
+
+	$ajax_data = $_POST['data'];
+	$keuzehulp = $ajax_data['keuzehulp'];
+
+	$slug_ar = array(
+		'1'		=> 'alleen-internet',
+		'2'		=> 'internet-en-bellen',
+		'3'		=> 'internet-en-tv',
+		'4'		=> 'alles-in-1',
+	);
+
+	$type_slug = $slug_ar[($keuzehulp['ik-weet-wat-ik-wil'])];
+
+	$pakketten = get_posts(
+	    array(
+	        'posts_per_page' => -1,
+	        'post_type' => 'pakket',
+	        'tax_query' => array(
+	            array(
+	                'taxonomy' => 'regio',
+	                'field' => 'slug',
+	                'terms' => strtolower($ajax_data['gebiedscode']),
+	            ),
+	            array(
+	                'taxonomy' => 'type',
+	                'field' => 'slug',
+	                'terms' => $type_slug,
+	            )
+	        )
+	    )
+	);
+
+	// sorteer ze per provider
+	// maar sorteer netrebel net wat beter dan de rest
+
+	$providers = array();
+	$providers['Netrebel'] = array();
+	$pitches = array();
+
+	if ($pakketten and count($pakketten)) : 
+
+		foreach ($pakketten as $p) :
+
+			// eigenschappen als provider, minimale contractsduur en pakketopties
+			$p->eigenschappen = efiber_pakket_eigenschappen($p);
+
+			$pv = $p->eigenschappen['pakket_meta']['provider'];
+
+			if (!array_key_exists($pv->post_title, $providers)) {
+				// er zijn nog geen pakketten van deze provider. initialiseer de array.
+				$providers[$pv->post_title] = array();
+				$pitches[$pv->post_title] = "<p>".$pv->post_content . "</p>";
+			}
+
+			$providers[$pv->post_title][] = $p;
+
+		endforeach;
+
+		echo json_encode(array(
+			'providers' => $providers,
+			'pitches'	=> $pitches
+		));
+	    wp_die();
+
+	else :
+
+		echo json_encode(array(
+			'providers' 	=> false,
+			'console' 		=> 'geen pakketten gevonden'
+		));
+	    wp_die();
+
+	endif;
+
+}

@@ -4,7 +4,14 @@
 
 function efiber_pakket_eigenschappen($p)  {
 
-	//$p->thumb = get_the_post_thumbnail($p->ID);
+
+	/*---------------------------------------------------------
+	|
+	|	Hulpfunctie die pakket postobject verreikt met ACF data & provider data
+	|
+	-----------------------------------------------------------*/
+
+
 	$pm = get_field('pakket_meta', $p->ID);
 
 	$pm['provider']->minimale_contractsduur = get_field('minimale_contractsduur', $pm['provider']->ID);
@@ -31,17 +38,19 @@ function efiber_pakket_eigenschappen($p)  {
 
 function getdb(){
 
-    $servername = "localhost";
-    $username = "huscqxzwaw";
-    $password = "2WWKxxxxHr";
-    $db = DB_NAME;
+
+	/*---------------------------------------------------------
+	|
+	|	Hulpfunctie die databaseverbinding opent op basis van WP constanten
+	|
+	-----------------------------------------------------------*/
+
+	// @TODO waardeloze naam
 
     try {
-
         $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-         //echo "Connected successfully";
     } catch(exception $e) {
-        echo "Connection failed: " . $e->getMessage();
+    	return false;
     }
 
     return $conn;
@@ -49,7 +58,17 @@ function getdb(){
 
 function efiber_form_sectie ($titel = '', $inh = '') {
 
+
+	/*---------------------------------------------------------
+	|
+	|	Hulpfunctie voor aanmeldformulier die HTML in template plaatst
+	|
+	-----------------------------------------------------------*/
+
+
 	$header = "";
+
+	//tbv stijling
 	$slak = strtolower(preg_replace("/[^A-Za-z0-9 ]/", '', $titel));
 
 	if ($titel !== '') {
@@ -71,8 +90,17 @@ function efiber_form_sectie ($titel = '', $inh = '') {
 
 function efiber_form_rij ($veld1, $veld2, $extra_klasse = '') {
 
+
+	/*---------------------------------------------------------
+	|
+	|	Hulpfunctie voor aanmeldformulier die HTML in template plaatst
+	|
+	-----------------------------------------------------------*/
+
+
 	$e = explode('<', $veld1);
 
+	//tbv stijling
 	$klasse = strtolower(str_replace(' ', '-', preg_replace("/[^A-Za-z0-9 ]/", '', $e[0])));
 
 	return "<div class='rij $klasse $extra_klasse'>
@@ -87,8 +115,18 @@ function efiber_form_rij ($veld1, $veld2, $extra_klasse = '') {
 
 function efiber_input ($params = array()) {
 
-	// rommelig
 
+	/*---------------------------------------------------------
+	|
+	|	Lucas 16:10-13
+	| 	Functie die tekst, nummer, (nep)-radio en checkboxes uitdraait
+	|	zonder idee vooraf gemaakt DUS extreem rommelig
+	|
+	-----------------------------------------------------------*/
+
+	// @TODO scheiden in radio/nepradio/checkbox en nummer/tekst functie. Dit is té
+
+	// initialisatie
 	$terugval = array(
 		'naam'		=> '',
 		'waarde'	=> '',
@@ -99,41 +137,40 @@ function efiber_input ($params = array()) {
 		'eclass'	=> '',
 		'label'		=> '',
 	);
-
 	foreach ($terugval as $s => $w) {
 		if (!(array_key_exists($s, $params))) {
 			$params[$s] = $terugval[$s];
 		}
 	}
 
-	$naam = $params['naam'];
-	$waarde = $params['waarde'];
-	$value = $params['value'];
-	$label = $params['label'];
-	$func = $params['func'];
-	$type = $params['type'];
-	$class = !!$value ? 'actief' : '';
-	$eclass = $params['eclass'];
-	$label = $params['label'];
+	$naam = $params['naam']; 		// de name
+	$waarde = $params['waarde']; 	// de prijs
+	$value = $params['value']; 		// het aantal
+	$label = $params['label'];		// label, bv SVGs
+	$func = $params['func'];		// welke dispatcher-functie aangeroepenen worden op klik
+	$type = $params['type'];		// text, number, etc
+	$class = !!$value ? 'actief' : ''; // checked unchecked
+	$eclass = $params['eclass'];	// zoals hidden
 
 	$tekst = $waarde !== '' ? efiber_maak_geld_op($waarde) : '';
 
 	$v = ($value ? " value='$value' " : "");
 	$f = ($func ? "data-efiber-func='$func'" : "");
-	$id = ($type === 'radio' ?
+
+	$id = ($type === 'radio' ? // radio's hebben een tekstuitkomst afhankelijk van de invoer. In dit algoritme wordt HTML geduwd en er komen ids uit.
 		$naam . '-' .
 			strtolower(
 				str_replace(' ', '-', 
 					preg_replace(
 						"/[^A-Za-z0-9 ]/", '', (
-							explode('.', 
+							explode('.', // afbreken op eerste SVG
 								strip_tags($label)
 							)
 						)[0]
 					)
 				)
 			) :
-		$naam
+		$naam // want is geen radio.
 	);
 
 	if (!in_array($type, array('radio', 'checkbox'))) {
@@ -177,6 +214,14 @@ function efiber_input ($params = array()) {
 }
 
 function efiber_maak_geld_op($euros = '') {
+
+
+	/*---------------------------------------------------------
+	|
+	| 	Veranderd getallen in €4,95 format
+	|
+	-----------------------------------------------------------*/
+
 
 	$euros = number_format ( $euros, 2 );
 	$euros = str_replace('.', ',', $euros);

@@ -1,10 +1,24 @@
 function knoppenDispatcher() {
 
-	// een knop (class='knop') kan 0 tot n functies hebben
-	// data-efiber-func='efiber-stap-terug efiber-drink-koffie'
-	// doet: knoppenFuncs['efiberStapTerug'](knop) en
-	// knoppenFuncs['efiberDrinkKoffie'](knop)
-	// met de knop dus als parameter.
+
+	/*------------------------------------------------------
+	|
+	|	een knop (class='knop') kan 0 tot n functies hebben
+	|	data-efiber-func='efiber-stap-terug efiber-drink-koffie'
+	|	doet: knoppenFuncs['efiberStapTerug'](knop) en
+	|	knoppenFuncs['efiberDrinkKoffie'](knop)
+	|	met de knop dus als parameter.
+	|
+	|	Het nut van deze dispatcher zit er in dat pas op het moment dat de daadwerkelijke
+	| 	klik gedaan wordt, en deze dus aankomt bij de body, de functie wordt aangeroepen. 
+	| 	Het eea. is dus niet HTML of JS-volgorde afhankelijk, louter van of de body bestaat als
+	| 	deze dispatcherfunctie wordt gedraaid.
+	| 
+	| 	In principe stuur de dispatcher alleen aan maar voor zeer kleine functies is een uitzondering gemaakt.
+	|
+	|-----------------------------------------------------*/
+
+
 
 	body.addEventListener('click', function(e){
 

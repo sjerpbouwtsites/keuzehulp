@@ -18,7 +18,7 @@ function efiber_haal_aanmeldformulier() {
 	|
 	-----------------------------------------------------------*/
 
-
+	// efiber_input gaat er van uit dat de SVGs een klasse hebben
 	$svgs = "
 	<svg data-name='svg-ja' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 122 51'><defs><style>.cls-1-1{fill:#921c80;}.cls-2-1{fill:#e6007e;}.cls-3-1{fill:#fff;}</style></defs><title>Knopjes</title><rect class='cls-1-1' x='0.46' y='0.64' width='120.54' height='49.14' rx='24.57' ry='24.57'/><circle class='cls-2-1' cx='96.47' cy='25.21' r='19.35'/><path class='cls-3-1' d='M33.05,28a10.85,10.85,0,0,1-.32,2.67,5.19,5.19,0,0,1-3.26,3.67,9.29,9.29,0,0,1-3.42.54,10.17,10.17,0,0,1-3.26-.46,9.08,9.08,0,0,1-2.25-1.07L22,30a13,13,0,0,0,1.72.83,5.32,5.32,0,0,0,2,.37A2.91,2.91,0,0,0,28,30.37a3.9,3.9,0,0,0,.7-2.62V15.16h4.35Z'/><path class='cls-3-1' d='M42.21,19.42a9.49,9.49,0,0,1,3.06.42,4.75,4.75,0,0,1,2,1.19,4.41,4.41,0,0,1,1,1.9,9.1,9.1,0,0,1,.31,2.48V34c-.6.13-1.42.29-2.48.46a23.35,23.35,0,0,1-3.84.27,12.69,12.69,0,0,1-2.58-.25,5.43,5.43,0,0,1-2-.83,3.63,3.63,0,0,1-1.28-1.49A5.07,5.07,0,0,1,36,30a4.18,4.18,0,0,1,.52-2.17,4,4,0,0,1,1.37-1.43,6.43,6.43,0,0,1,2-.76,11,11,0,0,1,2.31-.24c.54,0,1,0,1.44.07a7.44,7.44,0,0,1,1,.18v-.39a2.34,2.34,0,0,0-.64-1.7,3.14,3.14,0,0,0-2.23-.64,13.1,13.1,0,0,0-2.09.16,8.71,8.71,0,0,0-1.79.43l-.52-3.34a9.28,9.28,0,0,1,.9-.24,11.86,11.86,0,0,1,1.18-.22c.43-.07.88-.13,1.36-.17A13.56,13.56,0,0,1,42.21,19.42Zm.33,12.14,1.17,0a7.72,7.72,0,0,0,.9-.09V28.3l-.76-.11c-.33,0-.64-.05-.92-.05a7.73,7.73,0,0,0-1.1.07,2.71,2.71,0,0,0-.9.26,1.51,1.51,0,0,0-.61.53,1.46,1.46,0,0,0-.23.84,1.42,1.42,0,0,0,.66,1.35A3.59,3.59,0,0,0,42.54,31.56Z'/></svg>
 	<svg
@@ -70,7 +70,7 @@ function efiber_haal_aanmeldformulier() {
 		$eigenschappen['maandelijksTotaal'] = $eigenschappen['financieel']['maandelijks'];
 	}
 
-	// totaaloverzicht / iwwiw
+	// totaaloverzicht aka iwwiw
 	$op_iwwiw = !!array_key_exists('ik-weet-wat-ik-wil', $keuzehulp);
 
 
@@ -965,12 +965,13 @@ function efiber_haal_aanmeldformulier() {
 
 	$print .= $gf;
 
+	// @TODO het is onduidelijk wat hiervan daadwerkelijk wordt gebruikt en wat overbodig is.
 	$r = array(
 		'pakket'		=> $pakket,
 		'eigenschappen'	=> $_POST['data'][1],
 		'print'			=> $print,
 		'keuzehulp'		=> $keuzehulp,
-		'console'		=> $pakket
+		'console'		=> $pakket // dit komt in de console terecht van de 
 	);
 
 	// @TODO hier is geen foutafhandeling?

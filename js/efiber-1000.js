@@ -3,9 +3,14 @@ body 	= doc.body;
 
 $;
 
-// deze functie start alles op
-
 function efiberInit() {
+
+	/*------------------------------------------------------
+	|
+	| 	Deze functie start alles op!
+	|
+	|-----------------------------------------------------*/
+
 
 	// alleen draaien op keuzehulp !
 	if (location.href.indexOf('keuzehulp') === -1) {
@@ -14,7 +19,7 @@ function efiberInit() {
 
 	console.clear();
 
-	$ = jQuery
+	$ = jQuery; 
 
 	// afhandeling van navigatie 
 	efiberRouting.init();
@@ -34,6 +39,15 @@ function efiberInit() {
 }
 
 function ankerRedirect() {
+
+
+	/*------------------------------------------------------
+	|
+	| 	Indien iemand afkomstig is van een campagnepagina, dan worden links aangepast.
+	|
+	|-----------------------------------------------------*/
+
+
 	var ankers = doc.querySelectorAll("a[href^='https://iedereenglasvezel']");
 	var ankers2 = doc.querySelectorAll("a[href^='https://e-fiber']");
 
@@ -59,8 +73,14 @@ function ankerRedirect() {
 
 function opSubmitDisable(){
 
-	// voorkomt dubbele verzending van Gravity Forms
-	// moet vanuit body luisteren omdat formulieren ingeajaxt worden.
+
+	/*------------------------------------------------------
+	|
+	|	voorkomt dubbele verzending van Gravity Forms
+	|	moet vanuit body luisteren omdat formulieren ingeajaxt worden.
+	|
+	|-----------------------------------------------------*/
+
 
 	doc.body.addEventListener('submit', function(e){
 		e.target.id.indexOf('gform') !== -1 && e.target.querySelector("[type='submit']").setAttribute('disabled', 'disabled');		
@@ -70,6 +90,15 @@ function opSubmitDisable(){
 
 
 function efiberSorteerIWWIW(pakketten){
+
+
+	/*------------------------------------------------------
+	|
+	|	neemt een hoeveelheid pakketten en sorteert die op prijs
+	| 	gebruikt in IWWIW
+	|
+	|-----------------------------------------------------*/
+
 
 	// maak verzameling met bedragen aan
 	var bedragen = pakketten.map(function(w){

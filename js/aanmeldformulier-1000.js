@@ -1,5 +1,20 @@
 
+
+
 function haalPrintAanmeldformulier(knop) {
+
+
+	/*------------------------------------------------------
+	|
+	| 	Haalt het formulier op van efiber_haal_aanmeldformulier
+	| 	Doe formulier nabewerking, zet wat eventhandlers er op
+	| 	Doet wat inputvalidatie
+	| 	Zet de datepicker 'juist aan'
+	| 	Kent de klasse 'actief' toen aan rijen met een geactiveerde optie
+	| 	Vervangt %ALGEMENE VOORWAARDEN% in html met providerspecifieke tekst.
+	|
+	|-----------------------------------------------------*/
+
 
 	var knopID = knop.getAttribute('efiber-data-pakket-id');
 	sessionStorage.setItem('knopID', knopID);
@@ -13,8 +28,7 @@ function haalPrintAanmeldformulier(knop) {
 		},
 		cb: function(r){
 
-
-
+			// wellicht is er al een eerder formulier ingeladen.
 			jQuery('#print-aanmeldformulier').empty();
 
 			if (!r) {
@@ -25,6 +39,7 @@ function haalPrintAanmeldformulier(knop) {
 
 			delete r.print;
 
+			// formulier schrijft nog niet naar huidige locatie...
 			$form.find('form').attr('action', location.href);
 
 			jQuery('#print-aanmeldformulier').append($form);
@@ -32,14 +47,14 @@ function haalPrintAanmeldformulier(knop) {
 			var adres = JSON.parse(sessionStorage.getItem('efiber-adres'));
 			var keuzehulp = JSON.parse(sessionStorage.getItem('efiber-keuzehulp'));
 
-
-
+			// het zijn de click events die de verwerking van de data aanjagen..
 			jQuery('#print-aanmeldformulier').on('change', 'input[type="number"], #huidige_nummer, #huidige_extra_nummer', function(){
 				this.click(); //dan stuurt t door naar de dispatcher
 			});
 
 
 			// geen niet-getallen !!
+			// @TODO afsplitsen naar te bouwen generieke validatie
 		    $('input[type="number"], #huidige_nummer, #huidige_extra_nummer, #input_1_21').keydown(function (e) {
 		        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
 		            (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
@@ -76,6 +91,7 @@ function haalPrintAanmeldformulier(knop) {
 
 		    }
 
+		    // initialiseer de maandprijs bovenaan het formulier
 			doc.getElementById('kopieer-de-prijs').textContent = doc.getElementById('print-maandelijks-totaal').textContent;
 
 			// alle rijen met actieve knoppen op actief
@@ -128,6 +144,8 @@ function haalPrintAanmeldformulier(knop) {
 			// date field interactief.
 			gformInitDatepicker();
 
+
+			// valideert minimumleeftijd = 18 want je moet minstens in 2000 geboren zijn. 
 			$(".datepicker_with_icon").on('change', function(){
 
 				var v = this.value;
@@ -185,6 +203,15 @@ function haalPrintAanmeldformulier(knop) {
 
 function efiberSchakelCheckbox(knop) {
 
+
+	/*------------------------------------------------------
+	|
+	| 	Stuurt functies aan die de klassen schakelen, 
+	| 	value van input schakelt en prijsberekening en -printen doen.
+	|
+	|-----------------------------------------------------*/
+
+
 	efiberSchakelInputGeneriek(knop);
 
 	var val = efiberPakKnopValue (knop);
@@ -202,6 +229,16 @@ function efiberSchakelCheckbox(knop) {
 }
 
 function efiberSchakelRadio(knop) {
+
+
+	/*------------------------------------------------------
+	|
+	|	Zorgt er voor dat (quasi)-radio's hun werk doen
+	| 	En gebruikt efiberSchakelCheckbox voor het effectueren van keuzes.
+	| 	Je zou een verzameling radio's als een verzameling gekoppelde checkboxes kunnen zien, daar maakt het gebruik van.
+	| 
+	|-----------------------------------------------------*/
+
 
 	var dezeKnopEnBroers = knop.parentNode.parentNode.getElementsByClassName('knop');
 
@@ -248,6 +285,14 @@ function efiberSchakelRadio(knop) {
 
 function efiberSchakelInputGeneriek(knop) {
 
+
+	/*------------------------------------------------------
+	|
+	|	Vindt de rij en schakelt op rij en knop de klasse actief.
+	| 
+	|-----------------------------------------------------*/
+
+
 	var rij = knop;
 	do {
 		rij = rij.parentNode;
@@ -265,11 +310,29 @@ function efiberSchakelInputGeneriek(knop) {
 
 function efiberSchakelNumber(knop){
 
+
+	/*------------------------------------------------------
+	|
+	|	Een nummer input is lekker simpel.
+	| 
+	|-----------------------------------------------------*/
+
+
 	efiberUpdatePrijs(knop);
 
 }
 
 function efiberPakKnopValue (knop) {
+
+
+	/*------------------------------------------------------
+	|
+	|	Een number of text input gebruikt de 'echte' input.
+	| 	Een zelfgebouwde radio of checkbox gebruikt data-efiber-value
+	| 	Dit normaliseert dat.
+	| 
+	|-----------------------------------------------------*/
+
 
 	if (knop.hasAttribute('value') || typeof knop.value !== 'undefined') {
 		return Number(knop.value);
@@ -279,6 +342,15 @@ function efiberPakKnopValue (knop) {
 }
 
 function efiberUpdatePrijs(knop) {
+
+
+	/*------------------------------------------------------
+	|
+	| 	Huidige product data wordt uit HTML gelezen
+	| 	Veranderen worden berekend en geprint naar knop & respectieve totalen
+	| 
+	|-----------------------------------------------------*/
+
 
 	var dv = efiberPakKnopValue(knop);
 
@@ -294,6 +366,7 @@ function efiberUpdatePrijs(knop) {
 		print = doc.getElementById('print-eenmalig-totaal');
 	}
 
+	// van €35,35 naar 35.35
 	var huiPrijs = Number(print.textContent.trim().substr(1).replace(',', '.'));
 
 	var dvv = Number(knop.getAttribute('data-efiber-vorige-value'));
@@ -301,6 +374,7 @@ function efiberUpdatePrijs(knop) {
 	var basisPrijs = huiPrijs - (dvv * dw);
 	var eindPrijs = basisPrijs + (dv * dw);
 
+	// van 35.35 naar €35,35
 	var printDit = "\u20AC" + eindPrijs.toFixed(2).toString().replace('.', ',');
 	print.textContent = printDit;
 
@@ -313,6 +387,15 @@ function efiberUpdatePrijs(knop) {
 }
 
 function efiberFoxSports (knop){
+
+
+	/*------------------------------------------------------
+	|
+	| 	regelt het schakelen tussen de fox sports abonnementen.
+	| 
+	|-----------------------------------------------------*/
+
+	//@TODO dit werkt niet goed
 
 	var eredivisie 		= doc.getElementById('fox_sports_ed');
 	var internationaal 	= doc.getElementById('fox_sports_int');
@@ -340,6 +423,14 @@ function efiberFoxSports (knop){
 
 function efiberToonRij(knop){
 
+
+	/*------------------------------------------------------
+	|
+	| 	Een knop kan de volgende rij tevoorschijn toveren met deze functie.
+	| 
+	|-----------------------------------------------------*/
+
+
 	var rij = knop.parentNode.parentNode.nextSibling;
 
 	if (rij.className.indexOf('onzichtbaar') !== -1) {
@@ -352,8 +443,13 @@ function efiberToonRij(knop){
 
 function efiberUpdateHidden() {
 
-	// functie draait iedere keer dat een knop wordt aangeklikt
-	// print waarden van dynamische formulier in hidden velden GF.
+
+	/*------------------------------------------------------
+	|
+	| 	functie draait iedere keer dat een knop wordt aangeklikt
+	| 	print waarden van dynamische formulier in hidden velden GF.
+	| 
+	|-----------------------------------------------------*/
 
 	var inputs = doc.getElementById('print-aanmeldformulier').getElementsByClassName('knop');
 
@@ -393,8 +489,6 @@ function efiberUpdateHidden() {
 	//uitzondering als input = radio & checkbox
 
 	var di, dp, uitzondering, pmid, dev, s;
-
-	console.clear();
 
 	for (var i = 0; i < inputs.length; i++) {
 		di = inputs[i];
@@ -475,5 +569,7 @@ function efiberUpdateHidden() {
 	}
 
 	// nu nog pakket uit keuzehulp
+
+	// @TODO WAT DOET DIT COMMENTAAR HIER BOVEN !??!?!
 
 }

@@ -2,6 +2,20 @@
 
 var efiberRouting = {
 
+
+	/*------------------------------------------------------
+	|
+	| 	Dit object doet de 'routing' via hide/show
+	| 	op basis van niveau nummers...die corresponderen met een data-keuzehulp-stap waarde
+	| 	Navigatie wordt opgeslagen in een geschiedenis en geschreven naar de URL-balk
+	| 	Naar een eerdere stap kan teruggenavigeerd worden via stapTerug functie
+	| 	Niet consequent gebouwd in opvatting van wat een niveau nu is.
+	| 	Wordt opgelost door te zoeken, achteraf, naar het niveau als het niet gevonden is.
+	| 	De uitzonderingsmogelijkheid, om hier nog routing bij te sturen, is uitaard misbruikt voor andere doeleinden.
+	|
+	|-----------------------------------------------------*/
+
+
 	// 1  : postcode controle
 	// 2  : keuzehulp of niet
 	// 3  : situatie
@@ -43,12 +57,11 @@ var efiberRouting = {
 				_t.stapTerug();
 			}
 
-
 		}, false);
 
 	},
 
-	gs: [1],
+	gs: [1], // initiele waarde.
 
 	laatsteInGs: function (){
 		return efiberRouting.gs[efiberRouting.gs.length-1];
@@ -62,13 +75,17 @@ var efiberRouting = {
 
 	},
 
+	// als stapNr in deze array, dan draait de code bij die 'case'
 	uitzonderingen: [7, 2], // bellen -> nummers
 
 	verwerkUitzondering: function (stapNr){
 
+		// bedoelt als bewerker van het stapNr.
+
 		switch(stapNr) {
 			case 2: 
 
+				// @TODO dit hoort hier niet thuis
 				sessionStorage.setItem('efiber-keuzehulp', JSON.stringify({}));
 				break;
 

@@ -4,6 +4,15 @@ register_activation_hook( __FILE__, 'installeer_efiber' );
 
 function installeer_efiber(){
 
+
+        /*---------------------------------------------------------
+        |
+        |       Maakt op installatie pagina's aan voor GF bedanktpagina's
+        |
+        -----------------------------------------------------------*/
+
+        // @TODO incompleet
+
         $new_page_title = 'Bedankt voor uw bestelling';
         $new_page_content = 'Bedankt voor uw bestelling';
         $new_page_template = '';

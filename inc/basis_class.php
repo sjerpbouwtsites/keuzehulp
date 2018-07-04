@@ -1,6 +1,20 @@
 <?php
 
+
+
 class Ef_basis_class {
+
+
+	/*---------------------------------------------------------
+	|
+	| 	Gebruikt om te extenden. 
+	| 	De construct laat je een klasse initialiseren via een array
+	| 	alle keys worden properties
+	| 	cp_truthy doet ... een JS truthy op een property.
+	|
+	-----------------------------------------------------------*/
+
+
 	function __construct($a = array()) {
 		if (is_array($a)) {
 			foreach ($a as $k=>$v) {
@@ -18,7 +32,7 @@ class Ef_basis_class {
 		} else if (empty($this->$eigenschap)) {
 			return false;
 		} else {
-			return true;
+			return !!$this->$eigenschap;
 		}
 
 	}

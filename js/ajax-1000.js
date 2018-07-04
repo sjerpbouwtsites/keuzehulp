@@ -1,6 +1,14 @@
 
 function efiberAjax (params){
 
+
+	/*------------------------------------------------------
+	|
+	| 	Wrapperklasse voor ajaxcalls naar achterkant.
+	|
+	|-----------------------------------------------------*/
+
+
 	// als iets niet gedefinieerd in params, terugval gebruiken.
 
 	var _t = this;
@@ -39,6 +47,13 @@ function efiberAjax (params){
 }
 
 function efiberAjaxKleineFormulieren(backendFunctie, printElID, data) {
+
+	/*------------------------------------------------------
+	|
+	|	Generieke functie die ajaxcalls aanstuurt voor lead en zakelijk formulier.
+	|
+	|-----------------------------------------------------*/
+
 	var ajf = new efiberAjax({
 		ajaxData :{
 			'action': backendFunctie,
@@ -58,6 +73,16 @@ function efiberAjaxKleineFormulieren(backendFunctie, printElID, data) {
 }
 
 function efiberFormStijlKlassen() {
+
+
+	/*------------------------------------------------------
+	|
+	|	Focus is op input-niveau, 
+	| 	deze functie tilt dat naar li niveau voor alle GF.
+	|
+	|-----------------------------------------------------*/
+
+
 	jQuery(".gform_wrapper").on('focus', 'input, textarea, select', function(){
 		var $form = $(this).closest('.gform_wrapper form');
 		$form.find('li').removeClass('heeft-focus');
@@ -67,6 +92,16 @@ function efiberFormStijlKlassen() {
 
 
 function ikWeetWatIkWilPakkettenAjax() {
+
+
+	/*------------------------------------------------------
+	|
+	|	Haalt pakketten op van achterkant adhv type (internet, interet&bellen etc)
+	| 	Laat het op prijs sorteren
+	| 	Print die vervolgens een voor een per provider
+	|
+	|-----------------------------------------------------*/
+
 
 	$print = jQuery('#print-provider-pakketten');
 

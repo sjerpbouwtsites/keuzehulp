@@ -2,6 +2,13 @@
 
 class EfiberSectie extends Ef_basis_class {
 
+
+	/*---------------------------------------------------------
+	|
+	|	Hulpfunctie die de "pagina's" cq secties van de app uitdraait.
+	|
+	-----------------------------------------------------------*/
+
 	function __construct($init) {
 		parent::__construct($init);
 		$zet_leeg_als_ongedefinieerd = array(

@@ -2,6 +2,28 @@
 
 class Ef_knop extends Ef_basis_class {
 
+
+    /*---------------------------------------------------------
+    |
+    |	maakt en print knoppen
+    | 	afkomstig uit agitatie
+    |
+    -----------------------------------------------------------*/
+
+
+//  VOORBEELD
+
+//	$knop = new Ef_knop(array(
+//		'func'		=> "zet-niveau-knop toon-stap animeer",
+//		'link'		=> '#3',
+//		'tekst'		=> 'mooie tekst',
+//		'geen_ikoon'=> false,
+//		'ikoon'		=> afb_url,
+//	));
+//	$knop->print();
+
+
+
 	public $class, $link, $tekst, $extern, $schakel, $html;
 
 	public function __construct ($a = array()) {

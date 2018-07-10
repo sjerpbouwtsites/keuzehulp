@@ -1,0 +1,89 @@
+
+
+.keuzehulp [data-keuzehulp-stap="1"] .binnen {
+	display: flex;
+}
+
+	.keuzehulp [data-keuzehulp-stap="1"] .binnen > p {
+		margin-left: 40px;
+		order: 2;
+	}
+
+	@media(max-width: 800px) {
+		.keuzehulp [data-keuzehulp-stap="1"] .binnen {
+			flex-direction: column;
+		}
+		.keuzehulp [data-keuzehulp-stap="1"] .binnen > p {
+			margin-left: 0;
+			margin-top: 0;
+			order: 1;
+		}
+		.keuzehulp [data-keuzehulp-stap="1"] .binnen > form {
+			order: 2;
+			margin-bottom: 0;
+			margin-top: 20px;
+		}
+
+	}
+
+.keuzehulp [data-keuzehulp-stap="1"] form {
+	margin-top: 0;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #9d378e;
+}
+
+
+
+.keuzehulp [data-keuzehulp-stap="1"] form input {
+	border: none;
+	background: #fff;
+	color: #5c4959;
+	padding: 10px 15px;
+	border-radius: 0;
+	height: inherit;
+	font-size: 16px;
+  	box-shadow: inset 1px 2px 3px rgba(0, 0, 0, 0.2);
+	-webkit-transition: .18s ease-out;
+	-moz-transition: .18s ease-out;
+	-o-transition: .18s ease-out;
+	transition: .18s ease-out;
+	max-width:100%;
+}
+	.keuzehulp [data-keuzehulp-stap="1"] form select,
+	.keuzehulp [data-keuzehulp-stap="1"] form textarea {
+		color: #5c4959;
+	}
+	.keuzehulp [data-keuzehulp-stap="1"] form input:hover {
+		box-shadow: inset 1px 2px 3px rgba(0, 0, 0, 0.3);
+	}
+	.keuzehulp [data-keuzehulp-stap="1"] form input:focus {
+		box-shadow: inset 1px 2px 3px rgba(0, 0, 0, 0.5);
+	}
+
+.keuzehulp [data-keuzehulp-stap="1"] form [type='submit'] {
+	margin-top: 20px;
+	font-weight: bold;
+	display: block;
+	box-shadow: none;
+	transition: .18s ease-out;
+}
+	.keuzehulp [data-keuzehulp-stap="1"] form [type='submit']:hover {
+		background-color: #46297e;
+		color: #f9f9f9;
+	}
+
+
+
+#keuze-postcodeform {
+	width: 320px;
+	max-width: 100%;
+}
+	#keuze-postcodeform label {
+		margin-right: 0;
+		display: block;
+	}
+	#keuze-postcodeform input {
+		display: block;
+		width:100%;
+	}

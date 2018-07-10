@@ -44,7 +44,7 @@ function Ef_scripts_in_rij() {
     );
 
 
-    $script_postfix = "1000";
+    $script_postfix = "1001";
 
     foreach ($pak_scripts as $s) {
         wp_register_script( "efiber-$s", plugins_url("efiber/js/{$s}-".$script_postfix.".js"), array(), null, true );
@@ -56,7 +56,7 @@ function Ef_scripts_in_rij() {
 
     foreach ($pak_stijlen as $s) {
         $v = ($s !== '' ? "-$s" : $s);
-        wp_register_style( "efiber$v", plugins_url("efiber/css/efiber{$v}.css"), array(), null);
+        wp_register_style( "efiber$v", plugins_url("efiber/css/efiber{$v}-".$script_postfix.".css"), array(), null);
         wp_enqueue_style( "efiber$v" );
     }
 

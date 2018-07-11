@@ -10,19 +10,14 @@ $notificatie = array(
 	'status' => false,
 	'tekst' => '',
 );
-
  
-if(isset($_POST["csv_import"])){
-	
-	if( array_key_exists('efiber_insert', $_POST) ){
-		$notificatie = efiber_insert();
-	} else if (array_key_exists('efiber_delete', $_POST) ) {
-		$notificatie = efiber_delete();
-	}
-
-} else {
-	//niets geimporteerd
+if( array_key_exists('efiber_insert', $_POST) ){
+	$notificatie = efiber_insert();
+} else if (array_key_exists('efiber_delete_gebiedscode', $_POST) ) {
+	$notificatie = efiber_delete($_POST['efiber_delete_gebiedscode']);
 }
+
+
 
 function efiber_insert() {
 
@@ -32,6 +27,7 @@ function efiber_insert() {
 	$filename=$_FILES["csv"]["tmp_name"];		
 
 	if($_FILES["csv"]["size"] > 0) :
+
 		$file = fopen($filename, "r");
 
 		$eerste_geweest = false;
@@ -54,9 +50,9 @@ function efiber_insert() {
 				continue;
 			}
 
-			$postcode_cols = "postcode, huisnummer, toevoeging, kamer, straatnaam, plaatsnaam, gemeentenaam, gebiedscode, aanvraag_gedaan";
+			$postcode_cols = "postcode, huisnummer, toevoeging, kamer, straatnaam, plaatsnaam, gemeentenaam, gebiedscode, aanvraag_gedaan, provider";
 			$waardes = 
-				 addslashes($getData[0])."','".
+				 "'".addslashes($getData[0])."','".
 				 addslashes($getData[1])."','".
 				 addslashes($getData[2])."','".
 				 addslashes($getData[3])."','".
@@ -64,10 +60,10 @@ function efiber_insert() {
 				 addslashes($getData[5])."','".
 				 addslashes($getData[6])."','".
 				 addslashes($getData[7])."','".
-				 "0";
+				 "0', ''";
 
 		   $sql = "INSERT into postcodes ($postcode_cols) 
-		       values ('$waardes')";
+		       values ($waardes)";
 
 		       $result = mysqli_query($con, $sql);
 
@@ -93,114 +89,36 @@ function efiber_insert() {
 	return $notificatie;
 }
 
-function efiber_delete() {
+function efiber_delete($gebiedscode) {
+
+	if (!$gebiedscode) {
+		return array(
+			'status' => "error",
+			'tekst' => "Geen gebiedscode doorgekregen",
+		);		
+	}
 
 	global $notificatie;
 
-	$filename=$_FILES["csv"]["tmp_name"];		
+	$con = getdb();
+	$sql = "DELETE FROM postcodes WHERE `gebiedscode` = '$gebiedscode' AND `aanvraag_gedaan` = '0'";
+	$result = mysqli_query($con, $sql);
 
-	if($_FILES["csv"]["size"] > 0) :
-
-		$file = fopen($filename, "r");
-
-		$eerste_geweest = false;
-
-		$con = getdb();
-
+	if ($result) :
 		$notificatie = array(
-			'status' => 'success',
-			'tekst' => 'Verwijdering gelukt :)',
-		);
-
-		while (($getData = fgetcsv($file, 10000, ";")) !== FALSE) :
-
-			if (!$eerste_geweest) {
-				$eerste_geweest = true;
-				continue;
-			}
-
-			if (!$getData[0]) { //leeg
-				continue;
-			}
-
-			$sql = "DELETE FROM postcodes
-			WHERE postcode='{$getData[0]}' 
-			AND huisnummer='{$getData[1]}'
-			AND toevoeging='{$getData[2]}'
-			AND kamer='{$getData[3]}'
-			";
-
-			$result = mysqli_query($con, $sql);
-
-			if(!isset($result)) {
-
-				$notificatie = array(
-					'status' => 'error',
-					'tekst' => 'Query mislukt',
-				);
-
-			} 
-
-		endwhile; //while getdata
-
-		fclose($file);	
-
+			'status' => "success",
+			'tekst' => "gebiedscode $gebeidscode succesvol verwijderd. SQL: $sql",
+		);		
 	else : 
 		$notificatie = array(
 			'status' => 'error',
-			'tekst' => 'Vergeet niet de CSV te uploaden',
+			'tekst' => 'Er ging iets bruut mis.',
 		);
 	endif; //if files csv size	
 
 	return $notificatie;
 }
 
-
-/*function get_all_records(){
-    $con = getdb();
-    $Sql = "SELECT * FROM postcodes";
-    $result = mysqli_query($con, $Sql);  
- 
-    $teller = 0;
-
-    if ($result and (mysqli_num_rows($result) > 0) ) : ?>
-    	<div class='table-responsive'>
-    		<table id='myTable' class='table table-striped table-bordered'>
-            	<thead>
-            		<tr>
-            			<th>postcode</th>
-                        <th>huisnummer</th>
-                        <th>toevoeging</th>
-                        <th>kamer</th>
-                        <th>straatnaam</th>
-                        <th>plaatsnaam</th>
-                        <th>gemeentenaam</th>
-                        <th>gebiedscode</th>
-                    </tr>
-                </thead>
-            <tbody>
-    <?php while($row = mysqli_fetch_assoc($result) and $teller < 51) :
- 
- 		echo "<tr>
-    			<th>".$row['postcode']."</th>
-                <th>".$row['huisnummer']."</th>
-                <th>".$row['toevoeging']."</th>
-                <th>".$row['kamer']."</th>
-                <th>".$row['straatnaam']."</th>
-                <th>".$row['plaatsnaam']."</th>
-                <th>".$row['gemeentenaam']."</th>
-                <th>".$row['gebiedscode']."</th>
-            </tr>";        
-        $teller++;
-    endwhile;
-    
-    	echo "</tbody></table></div>";
-     
-	else :
-    	echo "Geen adressen opgeslagen!";
-	endif; //als adressen
-}*/
- 
 ?>
 
 
@@ -241,7 +159,6 @@ function csv_fieldset_print($str) { ?>
 
 <div class='wrap'>
 
-
 	<?php if ($notificatie['status']) : ?>
 	<div class="notice notice-<?=$notificatie['status']?> is-dismissible">
         <p><?=$notificatie['tekst']?></p>
@@ -249,7 +166,7 @@ function csv_fieldset_print($str) { ?>
 	<?php endif; 
 	?>
 
-<h1>Efiber postcode naar database</h1>
+	<h1>Efiber postcode naar database</h1>
 
 	<form class="form-table efiber-insert" action="#" method="post" name="upload_excel" enctype="multipart/form-data">
 
@@ -260,9 +177,31 @@ function csv_fieldset_print($str) { ?>
 	</form
 
 
-	><form class="form-table efiber-delete" action="#" method="post" name="upload_excel" enctype="multipart/form-data">
-		<input type='hidden' name='efiber_delete'>
-	    <?php csv_fieldset_print('Verwijder adressen'); ?>
+	>
+
+	<hr>
+
+	<form class="form-table efiber-delete" action="#" method="post"">
+
+		<h2>Verwijder per gebiedscode zonder die met abo</h2>
+	    
+		<select name='efiber_delete_gebiedscode'>
+			<option>Kies</option>
+			<?php $con = getdb();
+
+	    		$Sql = "SELECT gebiedscode FROM postcodes GROUP BY (gebiedscode)";
+	    		$result = mysqli_query($con, $Sql);  
+
+			    while ($rij = mysqli_fetch_assoc($result)) {
+			        echo "<option value='{$rij['gebiedscode']}'>{$rij['gebiedscode']}</option>";
+			    }
+
+
+			?>			
+		</select>
+
+		<button type="submit" id="verstuur_delete" class="button button-primary" >Verstuur</button>
+
 	</form>
 
 	<?php //get_all_records(); ?>

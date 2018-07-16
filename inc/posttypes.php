@@ -124,50 +124,59 @@ class Ef_posttype_voorb {
 function Ef_registreer_posttypes() {
 
     $zakelijke_provider = new Ef_posttype_voorb('zakelijke-provider', 'zakelijke-providers');
-    $zakelijke_provider->pas_args_aan(array(
-        'menu_icon'           => 'dashicons-building',
-        'supports'              => array(
-            'title', 
-        )        
-    ));
-    $zakelijke_provider->maak_taxonomie('regio', 'regios');
+    $zakelijke_provider->pas_args_aan(array( 'menu_icon'  => 'dashicons-building', 'supports' => array( 'title', ) ));
     $zakelijke_provider->registreer();
 
     $provider = new Ef_posttype_voorb('provider', 'providers');
-    $provider->pas_args_aan(array(
-        'menu_icon'           => 'dashicons-admin-site',
-        'supports'              => array(
-            'title', 
-        )                
-    ));
+    $provider->pas_args_aan(array( 'menu_icon'  => 'dashicons-admin-site', 'supports'  => array( 'title',  ) ));
     $provider->registreer();
 
-
-    $pakket = new Ef_posttype_voorb('pakket', 'pakketten');
-    $pakket->pas_args_aan(array(
-        'menu_icon'             => 'dashicons-thumbs-down',
-        'supports'              => array(
-            'title', 'editor'
-        )
-    ));
-    //$pakket->maak_taxonomie('regio', 'regios');
+/*    $pakket = new Ef_posttype_voorb('pakket', 'pakketten');
+    $pakket->pas_args_aan(array( 'menu_icon' => 'dashicons-thumbs-down', 'supports'  => array( 'title', 'editor' ) ));
     $pakket->maak_taxonomie('type', 'typen');
-    $pakket->maak_taxonomie('bekabeling', 'bekabelingen');
-    $pakket->registreer();
-
+    $pakket->registreer();*/
 
     $nieuw_pakket = new Ef_posttype_voorb('nieuw-pakket', 'nieuwe-pakketten');
-    $nieuw_pakket->pas_args_aan(array(
-        'menu_icon'             => 'dashicons-cart',
-        'supports'              => array(
-            'title'
-        )
-    ));    
-    $nieuw_pakket->maak_taxonomie('provider', 'providers');
+    $nieuw_pakket->pas_args_aan(array( 'menu_icon'   => 'dashicons-cart', 'supports' => array( 'title' ) ));    
+    $nieuw_pakket->maak_taxonomie('tv-type', 'tv-typen');
+    $nieuw_pakket->maak_taxonomie('bekabeling', 'bekabelingen');    
+    $nieuw_pakket->maak_taxonomie('type', 'typen');
     $nieuw_pakket->registreer();
 
+    $tv_bundel = new Ef_posttype_voorb('tv-bundel', 'tv-bundels');
+    $tv_bundel->pas_args_aan(array( 'menu_icon'  => 'dashicons-video-alt3', 'supports'  => array( 'title' ) ));    
+    $tv_bundel->registreer();
+
+    $telefonie_bundel = new Ef_posttype_voorb('telefonie-bundel', 'telefonie-bundels');
+    $telefonie_bundel->pas_args_aan(array( 'menu_icon'  => 'dashicons-phone', 'supports'  => array( 'title' ) ));    
+    $telefonie_bundel->maak_taxonomie('bereik', 'bereiken');
+    $telefonie_bundel->registreer();
 
 
+    $labels = array(
+            'name'              => _x( 'Providers', 'taxonomy general name' ),
+            'singular_name'     => _x( 'Provider', 'taxonomy singular name' ),
+            'search_items'      => __( 'Doorzoek providers' ),
+            'all_items'         => __( 'Alle providers' ),
+            'parent_item'       => __( 'Ouder provider' ),
+            'parent_item_colon' => __( 'Ouder provider:' ),
+            'edit_item'         => __( 'Bewerk provider' ),
+            'update_item'       => __( 'Vernieuw provider' ),
+            'add_new_item'      => __( 'Voeg nieuwe provider toe' ),
+            'new_item_name'     => __( 'Naam nieuwe provider' ),
+            'menu_name'         => __( 'Provider' ),
+        );
+
+    $args = array(
+        'hierarchical'      => true,
+        'labels'            => $labels,
+        'show_ui'           => true,
+        'show_admin_column' => true,
+        'query_var'         => true,
+        'rewrite'           => array( 'slug' => 'provider' ),
+    );
+
+    register_taxonomy( 'provider', array( 'telefonie-bundel', 'tv-bundel', 'nieuw-pakket' ), $args );
 
     $labels = array(
             'name'              => _x( 'Regios', 'taxonomy general name' ),
@@ -192,34 +201,8 @@ function Ef_registreer_posttypes() {
         'rewrite'           => array( 'slug' => 'regio' ),
     );
 
-    register_taxonomy( 'regio', array( 'pakket', 'provider', 'zakelijke-provider' ), $args );
+    register_taxonomy( 'regio', array('provider', 'zakelijke-provider' ), $args );
 
-
-
-    $labels = array(
-            'name'              => _x( 'Typen', 'taxonomy general name' ),
-            'singular_name'     => _x( 'Type', 'taxonomy singular name' ),
-            'search_items'      => __( 'Doorzoek typen' ),
-            'all_items'         => __( 'Alle typen' ),
-            'parent_item'       => __( 'Ouder type' ),
-            'parent_item_colon' => __( 'Ouder type:' ),
-            'edit_item'         => __( 'Bewerk type' ),
-            'update_item'       => __( 'Vernieuw type' ),
-            'add_new_item'      => __( 'Voeg nieuw type toe' ),
-            'new_item_name'     => __( 'Naam nieuw type' ),
-            'menu_name'         => __( 'Type' ),
-        );
-
-    $args = array(
-        'hierarchical'      => true,
-        'labels'            => $labels,
-        'show_ui'           => true,
-        'show_admin_column' => true,
-        'query_var'         => true,
-        'rewrite'           => array( 'slug' => 'type' ),
-    );
-
-    register_taxonomy( 'type', array( 'pakket', 'nieuw-pakket', ), $args );
 
 
 }

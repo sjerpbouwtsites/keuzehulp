@@ -62,7 +62,7 @@ function efiberAjaxKleineFormulieren(backendFunctie, printElID, data) {
 		cb: function(r){
 
 			jQuery('#'+printElID).append($(r.print));
-			jQuery('#'+printElID).find('form').attr('action', location.href);
+			jQuery('#'+printElID).find('form').attr('action', 'https://iedereenglasvezel.nl/keuzehulp/');
 
 			efiberFormStijlKlassen();
 

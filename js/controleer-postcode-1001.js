@@ -17,14 +17,6 @@ function controleerPostcode() {
 
 	var postcodeForm = doc.getElementById('keuze-postcodeform');
 
-	// @TODO LELIJKE HACK
-	// zou in htaccess moeten
-	if (!postcodeForm) {
-		doc.getElementsByTagName('body')[0].style.display = "none";
-		location.href = location.origin + "/keuzehulp";
-		return false;
-	}
-
 	var getVars = {};
 
 	//binnenkomend via formulier op iedereenglasvel.nl?
@@ -54,11 +46,6 @@ function controleerPostcode() {
 		}
 
 	}
-
-	// erg.indrukwekkend.nl/keuzehulp?postcode=1713HD&huisnummer=12
-	// erg.indrukwekkend.nl/keuzehulp?postcode=1713HD&huisnummer=120
-	// erg.indrukwekkend.nl/keuzehulp?postcode=5386GG&huisnummer=13&toevoeging=A
-
 
 
 	// houdt toetsaanslagen tegen die geen nummer zijn.

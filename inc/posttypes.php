@@ -118,3 +118,109 @@ class Ef_posttype_voorb {
 	}
 
 }
+
+
+
+function Ef_registreer_posttypes() {
+
+    $zakelijke_provider = new Ef_posttype_voorb('zakelijke-provider', 'zakelijke-providers');
+    $zakelijke_provider->pas_args_aan(array(
+        'menu_icon'           => 'dashicons-building',
+        'supports'              => array(
+            'title', 
+        )        
+    ));
+    $zakelijke_provider->maak_taxonomie('regio', 'regios');
+    $zakelijke_provider->registreer();
+
+    $provider = new Ef_posttype_voorb('provider', 'providers');
+    $provider->pas_args_aan(array(
+        'menu_icon'           => 'dashicons-admin-site',
+        'supports'              => array(
+            'title', 
+        )                
+    ));
+    $provider->registreer();
+
+
+    $pakket = new Ef_posttype_voorb('pakket', 'pakketten');
+    $pakket->pas_args_aan(array(
+        'menu_icon'             => 'dashicons-thumbs-down',
+        'supports'              => array(
+            'title', 'editor'
+        )
+    ));
+    //$pakket->maak_taxonomie('regio', 'regios');
+    $pakket->maak_taxonomie('type', 'typen');
+    $pakket->maak_taxonomie('bekabeling', 'bekabelingen');
+    $pakket->registreer();
+
+
+    $nieuw_pakket = new Ef_posttype_voorb('nieuw-pakket', 'nieuwe-pakketten');
+    $nieuw_pakket->pas_args_aan(array(
+        'menu_icon'             => 'dashicons-cart',
+        'supports'              => array(
+            'title'
+        )
+    ));    
+    $nieuw_pakket->maak_taxonomie('provider', 'providers');
+    $nieuw_pakket->registreer();
+
+
+
+
+    $labels = array(
+            'name'              => _x( 'Regios', 'taxonomy general name' ),
+            'singular_name'     => _x( 'Regio', 'taxonomy singular name' ),
+            'search_items'      => __( 'Doorzoek regios' ),
+            'all_items'         => __( 'Alle regios' ),
+            'parent_item'       => __( 'Ouder regio' ),
+            'parent_item_colon' => __( 'Ouder regio:' ),
+            'edit_item'         => __( 'Bewerk regio' ),
+            'update_item'       => __( 'Vernieuw regio' ),
+            'add_new_item'      => __( 'Voeg nieuwe regio toe' ),
+            'new_item_name'     => __( 'Naam nieuwe regio' ),
+            'menu_name'         => __( 'Regio' ),
+        );
+
+    $args = array(
+        'hierarchical'      => true,
+        'labels'            => $labels,
+        'show_ui'           => true,
+        'show_admin_column' => true,
+        'query_var'         => true,
+        'rewrite'           => array( 'slug' => 'regio' ),
+    );
+
+    register_taxonomy( 'regio', array( 'pakket', 'provider', 'zakelijke-provider' ), $args );
+
+
+
+    $labels = array(
+            'name'              => _x( 'Typen', 'taxonomy general name' ),
+            'singular_name'     => _x( 'Type', 'taxonomy singular name' ),
+            'search_items'      => __( 'Doorzoek typen' ),
+            'all_items'         => __( 'Alle typen' ),
+            'parent_item'       => __( 'Ouder type' ),
+            'parent_item_colon' => __( 'Ouder type:' ),
+            'edit_item'         => __( 'Bewerk type' ),
+            'update_item'       => __( 'Vernieuw type' ),
+            'add_new_item'      => __( 'Voeg nieuw type toe' ),
+            'new_item_name'     => __( 'Naam nieuw type' ),
+            'menu_name'         => __( 'Type' ),
+        );
+
+    $args = array(
+        'hierarchical'      => true,
+        'labels'            => $labels,
+        'show_ui'           => true,
+        'show_admin_column' => true,
+        'query_var'         => true,
+        'rewrite'           => array( 'slug' => 'type' ),
+    );
+
+    register_taxonomy( 'type', array( 'pakket', 'nieuw-pakket', ), $args );
+
+
+}
+

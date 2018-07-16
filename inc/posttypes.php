@@ -112,6 +112,7 @@ class Ef_posttype_voorb {
 				'rewrite'	=> true,
 	            'show_ui'           => true,
 	            'show_admin_column' => true,
+	            'hierarchical' 		=> true,
 			)
 		);
 	}

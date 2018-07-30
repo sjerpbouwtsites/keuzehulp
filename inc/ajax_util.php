@@ -1,40 +1,492 @@
 <?php
 
-
-
-function efiber_pakket_eigenschappen($p)  {
+function efiber_pakket_eigenschappen_snelheid_prijs_concreet($snelheid_prijs, $gc_id){
 
 
 	/*---------------------------------------------------------
 	|
-	|	Hulpfunctie die pakket postobject verreikt met ACF data & provider data
+	|	maakt snelheden-prijs combinaties 'concreet', toegepast op deze regio. 
 	|
 	-----------------------------------------------------------*/
 
+	
+	//maak array met waarden zonder gebiedscode.
+	$werk = array();
 
-	$pm = get_field('pakket_meta', $p->ID);
+	foreach ($snelheid_prijs as $s) {
+		if (!$s['regio_specifiek']) $werk[($s['snelheid'])] = (float) $s['prijs'];
+	}
 
-	$pm['provider']->minimale_contractsduur = get_field('minimale_contractsduur', $pm['provider']->ID);
-	$pm['provider']->ik_ga_akkoord_met = get_field('ik_ga_akkoord_met', $pm['provider']->ID);
-	$pm['provider']->inschrijving_telefoonboek_mogelijk = get_field('inschrijving_telefoonboek_mogelijk', $pm['provider']->ID);
+	// nu waarden uit werk overschrijven met waarden die regiospecifiek zijn, als dit de huidige gc_id heeft.
+	foreach ($snelheid_prijs as $s) {
+		if ($s['regio_specifiek'] and in_array($gc_id, $s['regio_specifiek'])) {
+			$werk[($s['snelheid'])] = (float) $s['prijs'];
+		}
+	}
 
-	return array(
-		'thumb'				=> get_the_post_thumbnail($pm['provider']->ID),
-		'pakket_meta' 		=> $pm,
-		'usp' 				=> get_field('usp', $p->ID),
-		'snelheid' 			=> get_field('snelheid', $p->ID),
-		'financieel' 		=> get_field('financieel', $p->ID),
-		'incl_wifi_router' 	=> get_field('incl_wifi_router', $p->ID),
-		'incl_glasconnector'=> get_field('incl_glasconnector', $p->ID),
-		'vast_ip' 			=> get_field('vast_ip', $p->ID),
-		'installatie' 		=> get_field('installatie', $p->ID),
-		'heeft_tv' 			=> get_field('heeft_tv', $p->ID),
-		'tv' 				=> get_field('tv', $p->ID),
-		'telefonie' 		=> get_field('telefonie', $p->ID),
-		'extra' 			=> get_field('extra', $p->ID),
-	);
+	return $werk;
+
 }
 
+function efiber_pakket_eigenschappen_basis_eenmalig_concreet($eenmalig, $gc_id){
+
+
+	/*---------------------------------------------------------
+	|
+	|	maakt basis eenmalige prijs 'concreet', toegepast op deze regio. 
+	|
+	-----------------------------------------------------------*/
+
+	
+	// vind waarde zonder gebiedscode
+	// aanname: niet meer dan één regioloze eenmalige prijs opgegeven.
+	$werk = 0;
+
+	foreach ($eenmalig as $e) {
+		if (!$e['regio_specifiek']) $werk = (float) $e['prijs'];
+	}
+
+	// nu waarde uit werk overschrijven met waarden die regiospecifiek zijn, als dit de huidige gc_id heeft.
+	foreach ($eenmalig as $e) {
+		if ($e['regio_specifiek'] and in_array($gc_id, $e['regio_specifiek'])) {
+			$werk = (float) $e['prijs'];
+		}
+	}
+
+	return $werk;
+
+}
+
+function efiber_telefonie_bundels($slug = ''){
+	return get_posts(array(
+		'posts_per_page'	=> -1,
+		'post_type'			=> 'telefonie-bundel',
+		'tax_query'	=> array(
+			array(
+				'taxonomy' => 'provider',
+				'field' => 'slug',
+				'terms' => $slug,
+			),
+		)
+	));
+}
+
+function efiber_televisie_bundels($provider_naam = '') {
+	$bundels =  get_posts(array(
+		'posts_per_page'	=> -1,
+		'post_type'			=> 'tv-bundel',
+		'tax_query'	=> array(
+			array(
+				'taxonomy' => 'provider',
+				'field' => 'slug',
+				'terms' => $provider_naam,
+			),
+		)
+	));
+
+	foreach ($bundels as $b) {
+		$b->pakketten = get_field('pakketten', $b->ID);
+		$b->snelheid = get_field('snelheid', $b->ID);
+		$b->tekst = get_field('tekst', $b->ID);
+	}
+
+	return $bundels;
+}
+
+function efiber_pakket_eigenschappen($p, $gc = '')  {
+
+
+	/*---------------------------------------------------------
+	|
+	|	pakket bewerken zodat het regioconcrete informatie bevat
+	| 	klaar is om te rekenen
+	|
+	-----------------------------------------------------------*/
+
+	{
+		$gebiedscode_data = get_term_by( 'slug', $gc, 'regio');
+		$gebiedscode_id = $gebiedscode_data->term_id;
+
+		$provider_tax_data = wp_get_post_terms($p->ID, 'provider');
+		if (!count($provider_tax_data)) return false;
+		$provider_post = get_page_by_title($provider_tax_data[0]->name, 'object', 'provider' );
+
+		$financieel = get_field('financieel', $p->ID);
+
+		$teksten = get_field('teksten', $p->ID);
+
+		$extra_optie = get_field('extra_optie', $p->ID);
+
+		$extra_telefoon = get_field('extra_telefoon', $provider_post->ID);
+
+		$pakket_type = array_map(function($verz){ return $verz->name; }, wp_get_post_terms($p->ID, 'type'));
+
+		$return = array(
+			'pakket_type' => $pakket_type,
+			'eenmalig' => array(), 
+			'maandelijks' => array(),
+		);
+	}
+
+
+	/////////////////////////////////////////////////////
+	// - - - - - - - - - - - - - - - - - - - - - - - - //
+	/////////////////////////////////////////////////////
+
+
+	// TEKSTEN
+
+	{
+		$return['teksten'] = $teksten;
+		$return['teksten']['extra_telefoon'] = $extra_telefoon['tekst'];
+		$prov_teksten = get_field('teksten', $provider_post->ID);
+		$return['teksten'] = array_merge($return['teksten'], $prov_teksten);
+	}
+
+
+	/////////////////////////////////////////////////////
+	// - - - - - - - - - - - - - - - - - - - - - - - - //
+	/////////////////////////////////////////////////////
+
+
+	// SNELHEDEN
+
+	// bewerkte, per regio geconcretiseerde verzameling. 
+	{
+		$snelheid_prijs_concreet = efiber_pakket_eigenschappen_snelheid_prijs_concreet(
+			$financieel['snelheid-prijs'], 
+			$gebiedscode_id
+		);
+
+		// lijst met snelheden.
+		$snelheden = array_keys($snelheid_prijs_concreet);
+
+		// sorteer oplopend
+		sort($snelheden);	
+
+		// origineel weggooien.
+		unset($financieel['snelheid-prijs']);
+
+		//$return['snelheid_prijs']		= $snelheid_prijs_concreet;
+		$return['snelheden']			= $snelheden;
+	}
+
+
+	/////////////////////////////////////////////////////
+	// - - - - - - - - - - - - - - - - - - - - - - - - //
+	/////////////////////////////////////////////////////
+
+
+	// EENMALIGE KOSTEN BASIS
+
+	{
+		$return['eenmalig']['basis'] = array(
+			'aantal'	=> 1,
+			'prijs'		=> efiber_pakket_eigenschappen_basis_eenmalig_concreet(
+				$financieel['eenmalig'], 
+				$gebiedscode_id
+			)
+		);
+
+		$return['eenmalig']['borg'] = array(
+			'aantal'	=> 1,
+			'prijs'		=> (float) $financieel['borg'], 
+		);
+	}
+
+
+	/////////////////////////////////////////////////////
+	// - - - - - - - - - - - - - - - - - - - - - - - - //
+	/////////////////////////////////////////////////////
+
+
+	// MAANDELIJKSE KOSTEN BASIS
+
+	foreach ($snelheid_prijs_concreet as $snelheid => $prijs) {
+		$return['maandelijks']['snelheid-'.$snelheid] = array(
+			'aantal'	=> 0,
+			'prijs'		=> $prijs
+		);
+	}
+
+
+	/////////////////////////////////////////////////////
+	// - - - - - - - - - - - - - - - - - - - - - - - - //
+	/////////////////////////////////////////////////////
+
+
+	// PROVIDER META
+
+	{
+		$return['provider_meta'] = get_field('eigenschappen', $provider_post->ID);
+		$return['provider_meta']['naam'] = $provider_post->post_title;
+		$return['provider_meta']['thumb'] = get_the_post_thumbnail($provider_post->ID);
+	}
+
+	/////////////////////////////////////////////////////
+	// - - - - - - - - - - - - - - - - - - - - - - - - //
+	/////////////////////////////////////////////////////
+
+
+	// TELEFONIE
+
+	{
+		$return['maandelijks']['extra_telefoon'] = array(
+			'aantal'	=> 0,
+			'prijs'		=> (float) $extra_telefoon['prijs']
+		);
+
+		$telefonie_bundel_posts = efiber_telefonie_bundels($provider_tax_data[0]->slug);
+
+		$telefonie_bundels = array();
+
+		foreach ($telefonie_bundel_posts as $tpb) {
+
+			$tarieven_teksten = get_field('tarieven', $tpb->ID);
+
+			$bundel_tax_data = wp_get_post_terms($tpb->ID, 'bereik');
+
+			$telefonie_bundels[] = array(
+				'naam'			=> $tpb->post_title,
+				'tarieven'		=> $tarieven_teksten,
+				'bereik'		=> $bundel_tax_data[0]->slug
+			);
+
+			// basis bundel staat altijd aan!
+
+			$return['maandelijks'][$tpb->post_title] = array(
+				'aantal'	=> $bundel_tax_data[0]->slug === 'basis' ? 1 : 0,
+				'prijs'		=> (float) $tarieven_teksten['maandbedrag']['prijs'],
+			);
+
+			$return['teksten'][$tpb->post_title] = get_field('tekst', $tpb->ID);
+			$return['teksten'][$tpb->post_title.'-maandbedrag'] = $tarieven_teksten['maandbedrag']['tekst'];
+			$return['teksten'][$tpb->post_title.'-starttarief'] = $tarieven_teksten['starttarief']['tekst'];
+			$return['teksten'][$tpb->post_title.'-vast_nl'] = $tarieven_teksten['vast_nl']['tekst'];
+			$return['teksten'][$tpb->post_title.'-mobiel_nl'] = $tarieven_teksten['mobiel_nl']['tekst'];
+				
+		}
+
+		$return['telefonie_bundels'] = $telefonie_bundels;
+	}
+
+
+	/////////////////////////////////////////////////////
+	// - - - - - - - - - - - - - - - - - - - - - - - - //
+	/////////////////////////////////////////////////////
+
+
+	// TELEVISIE
+	{
+		$zenders = get_field('zenders', $p->ID);
+		$zender_uitzonderingen = get_field('zender_uitzonderingen', $p->ID);
+		$nonlineair = get_field('nonlineair', $p->ID);
+		$extra_tv_ontvanger = get_field('extra_tv_ontvanger', $p->ID);
+		$dvb_c = get_field('dvb-c', $p->ID);
+		
+		//voorbewerken zenderuitzonderingen
+		$zo_verz = array();
+		foreach ($zender_uitzonderingen as $zo) {
+			$zo_verz[(string)($zo['snelheid'])] = $zo['uitzondering_zenders'];
+		}
+
+		foreach ($snelheden as $s){
+
+			$ss = (string) $s;
+
+			// uitzondering bekend? dan uitzonderingen halen. Anders uit standaard halen. 
+
+			if (array_key_exists($ss, $zo_verz)) {
+
+				$return['zenders-'.$ss] = array(
+					'totaal'	=> $zo_verz[$ss]['totaal'],
+					'hd'		=> $zo_verz[$ss]['hd']
+				);
+				$return['teksten']['zenders-'.$ss.'-totaal'] = $zo_verz[$ss]['totaal_tekst'];
+				$return['teksten']['hd-'.$ss.'-totaal'] = $zo_verz[$ss]['hd_tekst'];
+
+			} else {
+				$return['zenders-'.$ss] = array(
+					'totaal'	=> $zenders['totaal'],
+					'hd'		=> $zenders['hd']
+				);
+				$return['teksten']['zenders-'.$ss.'-totaal'] = $zenders['totaal_tekst'];
+				$return['teksten']['hd-'.$ss.'-totaal'] = $zenders['hd_tekst'];
+			}
+		}
+
+
+		$televisie_bundels = efiber_televisie_bundels($provider_post->post_name);
+
+		// zijn de bundels voor specifieke snelheden?
+		// dat is zo als er meer dan één bundel is.
+		// we zetten het voor alle snelheden er in.
+
+		if (count($televisie_bundels) > 1) {
+			foreach ($televisie_bundels as $tv_bundel) {
+				foreach ($tv_bundel->pakketten as $pakketgroep) {
+					foreach ($pakketgroep['opties'] as $optie) {
+						$str = $pakketgroep['pakket_naam'] . '-' . $optie['publieke_naam'] . '-' . $tv_bundel->snelheid;
+						$return['maandelijks'][$str] = array(
+							'aantal' => 0,
+							'prijs' => (float) $optie['prijs']
+						);
+						$return['teksten'][$str] = $optie['tekst'];
+					}
+				}
+			}
+		} else {
+			foreach ($televisie_bundels[0]->pakketten as $pakketgroep) {
+				foreach ($pakketgroep['opties'] as $optie) {
+					foreach ($snelheden as $snelheid) {
+						$str = $pakketgroep['pakket_naam'] . '-' . $optie['publieke_naam'] . '-' . $snelheid;
+						$return['maandelijks'][$str] = array(
+							'aantal' => 0,
+							'prijs' => (float) $optie['prijs']
+						);						
+						$return['teksten'][$str] = $optie['tekst'];
+					}
+				}
+			}			
+		}
+
+
+		if ($nonlineair['heeft_non_lineair']) :
+
+			$return['teksten'] = array_merge($return['teksten'], $nonlineair['teksten']);
+
+			if ($nonlineair['opnemen_replay_begin_gemist_samen']) {
+				$return['maandelijks']['opnemen_replay_begin_gemist_samen'] = array(
+					'aantal' 	=> 0,
+					'prijs'		=> (float) $nonlineair['opnemen_replay_begin_gemist_samen_prijs']
+				);
+			} else {
+				
+				$nl = array('opnemen', 'replay', 'begin_gemist');
+				foreach ($nl as $n) {
+					if ($nonlineair[$n]) {
+						$return['maandelijks'][$n] = array(
+							'aantal' => 0,
+							'prijs'	 => (float) $nonlineair[$n]
+						);
+					}
+				}
+
+			}
+
+			if ($nonlineair['app_beschikbaar']) {
+				$return['maandelijks']['app'] = array(
+					'aantal' => 0,
+					'prijs'  => (float) $nonlineair['app_prijs']
+				);
+			}
+			
+		endif; // heeft non-lineair
+
+		$return['teksten']['extra_tv_ontvanger'] = $extra_tv_ontvanger['tekst'];
+
+		if (   $extra_tv_ontvanger['eenmalig'] != 0 ) {
+			$return['eenmalig']['extra_tv_ontvanger'] = array(
+				'aantal' => 0,
+				'prijs'  => (float) $extra_tv_ontvanger['eenmalig'],
+			);
+		}
+
+		if (  $extra_tv_ontvanger['maandelijks'] != 0 ) {
+			$return['maandelijks']['extra_tv_ontvanger'] = array(
+				'aantal' => 0,
+				'prijs'  => (float) $extra_tv_ontvanger['maandelijks'],
+			);
+		}		
+
+		if ($dvb_c and $dvb_c['kan_dvb-c_doen']) {
+
+			$return['teksten']['dvb-c'] = $dvb_c['tekst'];
+
+			if (   $dvb_c['dvb-c_eenmalig'] != 0 ) {
+				$return['eenmalig']['dvb-c_eenmalig'] = array(
+					'aantal' => 0,
+					'prijs'  => (float) $dvb_c['dvb-c_eenmalig'],
+				);
+			}
+
+			if (  $dvb_c['dvb-c_maandelijks'] != 0 ) {
+				$return['maandelijks']['dvb-c_maandelijks'] = array(
+					'aantal' => 0,
+					'prijs'  => (float) $dvb-c_['dvb-c_maandelijks'],
+				);
+			}		
+
+		}
+
+
+		$return['tv_type'] = wp_get_post_terms($p->ID, 'tv-type')[0]->name;
+
+	}
+
+
+
+	/////////////////////////////////////////////////////
+	// - - - - - - - - - - - - - - - - - - - - - - - - //
+	/////////////////////////////////////////////////////
+
+	// EXTRA OPTIE
+
+	if ($extra_optie['heeft_extra_optie']) {
+
+		$return['teksten']['extra_optie_naam'] = $extra_optie['extra_optie_naam'];
+
+		if (!!$extra_optie['extra_optie_eenmalig']) {
+			$return['eenmalig']['extra_optie'] = array(
+				'aantal'	=> 0,
+				'prijs'		=> (float) $extra_optie['extra_optie_eenmalig'],
+			);
+		}
+
+		if (!!$extra_optie['extra_optie_maandelijks']) {
+			$return['maandelijks']['extra_optie'] = array(
+				'aantal'	=> 0,
+				'prijs'		=> (float) $extra_optie['extra_optie_maandelijks'],
+			);
+		}
+
+	}
+
+
+	/////////////////////////////////////////////////////
+	// - - - - - - - - - - - - - - - - - - - - - - - - //
+	/////////////////////////////////////////////////////
+
+
+	// INSTALLATIE
+
+	$installatie = get_field('installatie', $provider_post->ID);
+	foreach ($installatie as $i) {
+		$return['eenmalig']['installatie-'.($i['naam'])] = array(
+			'aantal' => 0,
+			'prijs'	=> (float) $i['prijs'],
+		);
+	}
+
+
+	/////////////////////////////////////////////////////
+	// - - - - - - - - - - - - - - - - - - - - - - - - //
+	/////////////////////////////////////////////////////
+
+
+	// SNELHEID
+
+	$return['huidige_snelheid'] = '';
+
+	/////////////////////////////////////////////////////
+	// - - - - - - - - - - - - - - - - - - - - - - - - //
+	/////////////////////////////////////////////////////
+
+	// RETURN 
+
+	return $return;
+
+}
 
 function getdb(){
 

@@ -17,6 +17,10 @@ function controleerPostcode() {
 
 	var postcodeForm = doc.getElementById('keuze-postcodeform');
 
+	if (!postcodeForm) {
+		location.href = "http://rekam.local/keuzehulp";
+	}
+
 	var getVars = {};
 
 	//binnenkomend via formulier op iedereenglasvel.nl?

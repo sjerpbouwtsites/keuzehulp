@@ -128,7 +128,7 @@ function Ef_registreer_posttypes() {
     $zakelijke_provider->registreer();
 
     $provider = new Ef_posttype_voorb('provider', 'providers');
-    $provider->pas_args_aan(array( 'menu_icon'  => 'dashicons-admin-site', 'supports'  => array( 'title',  ) ));
+    $provider->pas_args_aan(array( 'menu_icon'  => 'dashicons-admin-site', 'supports'  => array( 'title', 'thumbnail' ) ));
     $provider->registreer();
 
 /*    $pakket = new Ef_posttype_voorb('pakket', 'pakketten');

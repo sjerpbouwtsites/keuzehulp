@@ -375,62 +375,88 @@ function efiber_ik_weet_wat_ik_wil_pakketten() {
 		'4'		=> 'alles-in-1',
 	);
 
+	$naam_ar = array(
+		'1'		=> 'Internet',
+		'2'		=> 'Internet en bellen',
+		'3'		=> 'Internet en TV',
+		'4'		=> 'Alles in 1',		
+	);
+
 	$type_slug = $slug_ar[($keuzehulp['ik-weet-wat-ik-wil'])];
 
 	$pakketten = get_posts(
 	    array(
 	        'posts_per_page' => -1,
-	        'post_type' => 'pakket',
+	        'post_type' => 'nieuw-pakket',
 	        'tax_query' => array(
-	            array(
-	                'taxonomy' => 'regio',
-	                'field' => 'slug',
-	                'terms' => strtolower($ajax_data['gebiedscode']),
-	            ),
 	            array(
 	                'taxonomy' => 'type',
 	                'field' => 'slug',
 	                'terms' => $type_slug,
-	            )
+	            ),
 	        )
 	    )
 	);
 
-	// sorteer ze per provider
-	// maar sorteer netrebel net wat beter dan de rest
+	// alle provider namen in deze regio.
+
+	$toegestane_providers = array_map(
+		function($provider_post){
+			return $provider_post->post_title;
+		}, 
+		get_posts( array(
+        	'posts_per_page' => -1,
+        	'post_type' => 'provider',
+        	'tax_query' => array( array( 'taxonomy' => 'regio', 'field' => 'slug', 'terms' => strtolower($ajax_data['gebiedscode']) ), )
+        ) )
+	);
+
+	//@TODO komt deze provider in deze regio voor?
 
 	$providers = array();
-	$providers['Netrebel'] = array();
-	$pitches = array();
 
 	if ($pakketten and count($pakketten)) : 
+
+		// stript overbodige properties van post obj af.
+
+		$pakketten = array_map(function($verz){
+			return (object) array( 'ID'  => $verz->ID, );
+		}, $pakketten);
 
 		foreach ($pakketten as $p) :
 
 			// eigenschappen als provider, minimale contractsduur en pakketopties
-			$p->eigenschappen = efiber_pakket_eigenschappen($p);
+			$p->eigenschappen = efiber_pakket_eigenschappen($p, $ajax_data['gebiedscode']);
+			$p->provider = $p->eigenschappen['provider_meta']['naam'];
 
-			$pv = $p->eigenschappen['pakket_meta']['provider'];
+			// nu pakketten filteren op provider cq filteren op regio.
+			if (!in_array($p->provider, $toegestane_providers)) continue;
 
-			if (!array_key_exists($pv->post_title, $providers)) {
+			$p->naam_composiet = $p->provider . " " . $naam_ar[($keuzehulp['ik-weet-wat-ik-wil'])] . (
+				($keuzehulp['ik-weet-wat-ik-wil'] == 3 || $keuzehulp['ik-weet-wat-ik-wil'] == 4) ? 
+					" " . $p->eigenschappen['tv_type']
+				:
+					''
+			);
+
+			if (!array_key_exists($p->provider, $providers)) {
 				// er zijn nog geen pakketten van deze provider. initialiseer de array.
-				$providers[$pv->post_title] = array();
-				$pitches[$pv->post_title] = "<p>".$pv->post_content . "</p>";
+				$providers[$p->provider] = array();
 			}
 
-			$providers[$pv->post_title][] = $p;
+			$providers[$p->provider][] = $p;
 
 		endforeach;
 
 		echo json_encode(array(
 			'providers' => $providers,
-			'pitches'	=> $pitches
 		));
 	    wp_die();
 
 	else :
 
 		echo json_encode(array(
+			'error'			=> true,
 			'providers' 	=> false,
 			'console' 		=> 'geen pakketten gevonden'
 		));

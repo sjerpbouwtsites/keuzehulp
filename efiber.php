@@ -31,7 +31,7 @@ define('EF_JS_URI', EF_THEME_URI . "/js");
 function Ef_scripts_in_rij() {
 
     $pak_scripts = array(
-        'nuts', 'ajax', 'controleer-postcode', 'routing', 'dispatcher', 'geheugen', 'route-keuze-consequenties',
+        'nuts', 'ajax', 'iwwiw', 'controleer-postcode', 'routing', 'dispatcher', 'geheugen', 'route-keuze-consequenties', 'pakket',
         'vergelijking', 'aanmeldformulier', 'modal', 'keuze-niveaus'
     );
 

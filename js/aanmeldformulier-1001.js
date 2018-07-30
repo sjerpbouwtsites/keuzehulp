@@ -16,19 +16,21 @@ function haalPrintAanmeldformulier(knop) {
 	|-----------------------------------------------------*/
 
 
-	var knopID = knop.getAttribute('efiber-data-pakket-id');
-	sessionStorage.setItem('knopID', knopID);
+	// bereid pakket voor voor verzending
+	var pakket = window['efiber-pakket-'+knop.getAttribute('efiber-data-pakket-id')];
+	pakket.bereidJSONverzendingVoor();
 
 	var ajf = new efiberAjax({
 		ajaxData: {
 			'action': 'efiber_haal_aanmeldformulier',
-			data: JSON.parse(sessionStorage.getItem('pakket-'+knopID)),
 			adres: JSON.parse(sessionStorage.getItem('efiber-adres')),
 			keuzehulp: JSON.parse(sessionStorage.getItem('efiber-keuzehulp')),
+			pakket: pakket.klaarVoorJSON
 		},
 		cb: function(r){
 
 			// wellicht is er al een eerder formulier ingeladen.
+
 			jQuery('#print-aanmeldformulier').empty();
 
 			if (!r) {
@@ -38,6 +40,8 @@ function haalPrintAanmeldformulier(knop) {
 			var $form = jQuery(r.print);
 
 			delete r.print;
+
+			var huiPakket = window['efiber-pakket-'+r.id];
 
 			// formulier schrijft nog niet naar huidige locatie...
 			$form.find('form').attr('action', location.href);
@@ -90,9 +94,6 @@ function haalPrintAanmeldformulier(knop) {
 		    	}
 
 		    }
-
-		    // initialiseer de maandprijs bovenaan het formulier
-			doc.getElementById('kopieer-de-prijs').textContent = doc.getElementById('print-maandelijks-totaal').textContent;
 
 			// alle rijen met actieve knoppen op actief
 			jQuery('#print-aanmeldformulier').find('.knop').each(function(){
@@ -192,6 +193,19 @@ function haalPrintAanmeldformulier(knop) {
 				}
 
 			}, 500);
+
+			huiPakket.printPrijzen();
+
+			//op veranderen snelheid, opnieuw pakket versturen naar dit formulier.
+			doc.getElementById('schakel-snelheid').addEventListener('change', () => {
+
+				huiPakket.veranderSnelheid(doc.getElementById('schakel-snelheid').value);
+
+				huiPakket.bereidJSONverzendingVoor();
+				this.ajaxData.pakket = huiPakket.klaarVoorJSON;
+				this.doeAjax();
+
+			});			
 
 		}
 
@@ -352,7 +366,9 @@ function efiberUpdatePrijs(knop) {
 	|-----------------------------------------------------*/
 
 
-	var dv = efiberPakKnopValue(knop);
+	console.log('update gestopt '+knop.id);
+
+/*	var dv = efiberPakKnopValue(knop);
 
 	if (dv < 0) {
 		efiberModal('Negatief niet toegestaan');
@@ -382,7 +398,7 @@ function efiberUpdatePrijs(knop) {
 		doc.getElementById('kopieer-de-prijs').textContent = printDit;
 	}
 
-	knop.setAttribute('data-efiber-vorige-value', dv);
+	knop.setAttribute('data-efiber-vorige-value', dv);*/
 
 }
 

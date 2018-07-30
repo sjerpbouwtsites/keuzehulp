@@ -17,8 +17,6 @@ function efiberInit() {
 		return false;
 	}
 
-	console.clear();
-
 	$ = jQuery; 
 
 	// afhandeling van navigatie 

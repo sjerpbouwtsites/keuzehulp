@@ -1,6 +1,7 @@
+/* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren  */
 // ROUTING
 
-var efiberRouting = {
+const efiberRouting = {
 
 
 	/*------------------------------------------------------
@@ -11,7 +12,8 @@ var efiberRouting = {
 	| 	Naar een eerdere stap kan teruggenavigeerd worden via stapTerug functie
 	| 	Niet consequent gebouwd in opvatting van wat een niveau nu is.
 	| 	Wordt opgelost door te zoeken, achteraf, naar het niveau als het niet gevonden is.
-	| 	De uitzonderingsmogelijkheid, om hier nog routing bij te sturen, is uitaard misbruikt voor andere doeleinden.
+	| 	De uitzonderingsmogelijkheid, om hier nog routing bij te sturen,
+	|	is uitaard misbruikt voor andere doeleinden.
 	|
 	|-----------------------------------------------------*/
 
@@ -39,115 +41,104 @@ var efiberRouting = {
 	// 100: aanmeldformulier
 
 
-	init: function (){
+	init() {
+		this.stappen = doc.querySelectorAll('[data-keuzehulp-stap]');
 
-		var _t = this;
-
-		_t.stappen = doc.querySelectorAll('[data-keuzehulp-stap]');
-
-		window.addEventListener('popstate', function(e) {
-
+		window.addEventListener('popstate', (e) => {
 			e.preventDefault();
 
 			// apple heeft een andere implementatie van popstate.
 			// ook laden v/d pagina is popstate
 			// als gs nog length 1 dan is pagina net geladen en is deze popstate van apple.
 
-			if (_t.gs.length > 1) {
-				_t.stapTerug();
+			if (this.gs.length > 1) {
+				this.stapTerug();
 			}
-
 		}, false);
-
 	},
 
 	gs: [1], // initiele waarde.
 
-	laatsteInGs: function (){
-		return efiberRouting.gs[efiberRouting.gs.length-1];
+	laatsteInGs() {
+		return efiberRouting.gs[efiberRouting.gs.length - 1];
 	},
 
-	stapTerug: function(){
-
-		//laatste eraf
+	stapTerug() {
+		// laatste eraf
 		this.gs.pop();
 		this.ga(this.laatsteInGs());
-
 	},
 
 	// als stapNr in deze array, dan draait de code bij die 'case'
 	uitzonderingen: [7, 2], // bellen -> nummers
 
-	verwerkUitzondering: function (stapNr){
+	verwerkUitzondering(stapNr) {
+	// bedoelt als bewerker van het stapNr.
 
-		// bedoelt als bewerker van het stapNr.
+		switch (stapNr) {
+			case 2:
 
-		switch(stapNr) {
-			case 2: 
+			// @TODO dit hoort hier niet thuis
+			sessionStorage.setItem('efiber-keuzehulp', JSON.stringify({}));
+		break;
 
-				// @TODO dit hoort hier niet thuis
-				sessionStorage.setItem('efiber-keuzehulp', JSON.stringify({}));
-				break;
+		case 7:
 
-		    case 7:
+		// als gekozen voor 'ik bel alleen mobiel' cq telefoon = 1
+		// dan niet door naar nummerkeuze.
+		if ((JSON.parse(sessionStorage.getItem('efiber-keuzehulp'))).bellen === '1') {
+			stapNr = 8;
+		}
+		break;
 
-		    	// als gekozen voor 'ik bel alleen mobiel' cq telefoon = 1
-			    // dan niet door naar nummerkeuze.
-			    if ((JSON.parse(sessionStorage.getItem('efiber-keuzehulp'))).bellen === '1') {
-			    	stapNr = 8;
-			    }
-		        break;
-		        
-		    default:
-		        console.warn('uitzondering verwerk naar nummer niet gevonden');
-		        break;
+		default:
+			console.warn('uitzondering verwerk naar nummer niet gevonden');
+		break;
 		}
 
-		return stapNr;
-
+	return stapNr;
 	},
 
-	ga: function(stap){
-
+	ga(stap) {
 		// als de stap als nummer wordt gegeven,
 		// worden alle stappen als literal array genomen en wordt gegaan naar de index.
 		// als de stap als string wordt gegeven wordt gekeken naar het
 		// data-keuzehulp-stap attribuut.
 
-		//controle
+		// controle
 		if (!this.stappen) this.init();
 
-		var _s = this.stappen;
+		const _s = this.stappen;
 
-		var dezeStap = doc.querySelector('[data-keuzehulp-stap="'+stap+'"]'); //dit is de section
+		let dezeStap = doc.querySelector(`[data-keuzehulp-stap="${stap}"]`); // dit is de section
 
 		if (!dezeStap) {
-			console.error('stap onbekend', dezeStap, 'stap ' + stap, typeof stap);
+			console.error('stap onbekend', dezeStap, `stap ${stap}`, typeof stap);
 			console.trace();
 			return false;
 		}
 
-		var nummerDezeStap = Number(dezeStap.getAttribute('data-keuzehulp-stap'));
+		let nummerDezeStap = Number(dezeStap.getAttribute('data-keuzehulp-stap'));
 
 		// is er een uitzonderingssituatie?
 		// mogelijk door naar andere stap.
 		if (this.uitzonderingen.indexOf(nummerDezeStap) !== -1) {
 			nummerDezeStap = this.verwerkUitzondering(nummerDezeStap);
-			dezeStap = doc.querySelector('[data-keuzehulp-stap="'+nummerDezeStap+'"]');
+			dezeStap = doc.querySelector(`[data-keuzehulp-stap="${nummerDezeStap}"]`);
 		}
 
 		// zet alle stappen op none en de komende op block
-		for(var i = 0; i < _s.length; i++) {
-			_s[i].style.display = "none";
+		for (let i = 0; i < _s.length; i++) {
+			_s[i].style.display = 'none';
 		}
-		dezeStap.style.display = "block";
+		dezeStap.style.display = 'block';
 
 
 		// ook de evt. knop in de navigatie onderaan schakelen.
 
-		var knopOnder = doc.querySelector('.efiber-navigatie-binnen [data-keuzehulp-stap="'+stap+'"]');
+		const knopOnder = doc.querySelector(`.efiber-navigatie-binnen [data-keuzehulp-stap="${stap}"]`);
 		if (knopOnder) {
-			knopOnder.style.display = "inline-block";
+			knopOnder.style.display = 'inline-block';
 		}
 
 
@@ -164,21 +155,17 @@ var efiberRouting = {
 
 
 		// @TODO scroll functie
-	    $('html, body').animate({
-	        scrollTop: $(dezeStap).offset().top - 50
-	    }, 100);
-
+		$('html, body').animate({
+			scrollTop: $(dezeStap).offset().top - 50,
+		}, 100);
+		return true;
 	},
-	zetHistory: function(dezeStap, nummerDezeStap){
-
+	zetHistory(dezeStap, nummerDezeStap) {
 		// dit is een afgeleide... het zou opgehaald kunnen worden via laatsteInGs?
 		// stabieler? dit is sneller...
 
-		var titel  = dezeStap.getElementsByTagName('header')[0].getElementsByTagName('h2')[0].textContent.trim();
-		var url = '/keuzehulp/' + encodeURI(titel.replace(/[\W_]+/g,"-")).toLowerCase();
+		const titel = dezeStap.getElementsByTagName('header')[0].getElementsByTagName('h2')[0].textContent.trim(),
+		 url = `/keuzehulp/${encodeURI(titel.replace(/[\W_]+/g, '-')).toLowerCase()}`;
 		history.pushState(null, titel, url);
-
-
-	}
+	},
 };
-

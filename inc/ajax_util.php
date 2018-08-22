@@ -5,11 +5,11 @@ function efiber_pakket_eigenschappen_snelheid_prijs_concreet($snelheid_prijs, $g
 
 	/*---------------------------------------------------------
 	|
-	|	maakt snelheden-prijs combinaties 'concreet', toegepast op deze regio. 
+	|	maakt snelheden-prijs combinaties 'concreet', toegepast op deze regio.
 	|
 	-----------------------------------------------------------*/
 
-	
+
 	//maak array met waarden zonder gebiedscode.
 	$werk = array();
 
@@ -33,11 +33,11 @@ function efiber_pakket_eigenschappen_basis_eenmalig_concreet($eenmalig, $gc_id){
 
 	/*---------------------------------------------------------
 	|
-	|	maakt basis eenmalige prijs 'concreet', toegepast op deze regio. 
+	|	maakt basis eenmalige prijs 'concreet', toegepast op deze regio.
 	|
 	-----------------------------------------------------------*/
 
-	
+
 	// vind waarde zonder gebiedscode
 	// aanname: niet meer dan één regioloze eenmalige prijs opgegeven.
 	$werk = 0;
@@ -123,7 +123,7 @@ function efiber_pakket_eigenschappen($p, $gc = '')  {
 
 		$return = array(
 			'pakket_type' => $pakket_type,
-			'eenmalig' => array(), 
+			'eenmalig' => array(),
 			'maandelijks' => array(),
 		);
 	}
@@ -138,7 +138,7 @@ function efiber_pakket_eigenschappen($p, $gc = '')  {
 
 	{
 		$return['teksten'] = $teksten;
-		$return['teksten']['extra_telefoon'] = $extra_telefoon['tekst'];
+		$return['teksten']['extra-vast-nummer'] = $extra_telefoon['tekst'];
 		$prov_teksten = get_field('teksten', $provider_post->ID);
 		$return['teksten'] = array_merge($return['teksten'], $prov_teksten);
 	}
@@ -151,10 +151,10 @@ function efiber_pakket_eigenschappen($p, $gc = '')  {
 
 	// SNELHEDEN
 
-	// bewerkte, per regio geconcretiseerde verzameling. 
+	// bewerkte, per regio geconcretiseerde verzameling.
 	{
 		$snelheid_prijs_concreet = efiber_pakket_eigenschappen_snelheid_prijs_concreet(
-			$financieel['snelheid-prijs'], 
+			$financieel['snelheid-prijs'],
 			$gebiedscode_id
 		);
 
@@ -162,7 +162,7 @@ function efiber_pakket_eigenschappen($p, $gc = '')  {
 		$snelheden = array_keys($snelheid_prijs_concreet);
 
 		// sorteer oplopend
-		sort($snelheden);	
+		sort($snelheden);
 
 		// origineel weggooien.
 		unset($financieel['snelheid-prijs']);
@@ -183,14 +183,14 @@ function efiber_pakket_eigenschappen($p, $gc = '')  {
 		$return['eenmalig']['basis'] = array(
 			'aantal'	=> 1,
 			'prijs'		=> efiber_pakket_eigenschappen_basis_eenmalig_concreet(
-				$financieel['eenmalig'], 
+				$financieel['eenmalig'],
 				$gebiedscode_id
 			)
 		);
 
 		$return['eenmalig']['borg'] = array(
 			'aantal'	=> 1,
-			'prijs'		=> (float) $financieel['borg'], 
+			'prijs'		=> (float) $financieel['borg'],
 		);
 	}
 
@@ -231,9 +231,10 @@ function efiber_pakket_eigenschappen($p, $gc = '')  {
 	// TELEFONIE
 
 	{
-		$return['maandelijks']['extra_telefoon'] = array(
-			'aantal'	=> 0,
-			'prijs'		=> (float) $extra_telefoon['prijs']
+		$prijs = (float) $extra_telefoon['prijs'];
+		$return['maandelijks']['extra-vast-nummer'] = array(
+			'aantal'	=> $prijs < 0.01 ? 1 : 0,
+			'prijs'		=> $prijs
 		);
 
 		$telefonie_bundel_posts = efiber_telefonie_bundels($provider_tax_data[0]->slug);
@@ -246,16 +247,22 @@ function efiber_pakket_eigenschappen($p, $gc = '')  {
 
 			$bundel_tax_data = wp_get_post_terms($tpb->ID, 'bereik');
 
-			$telefonie_bundels[] = array(
+			$slug = slugify($tpb->post_title);
+			$bereik = $bundel_tax_data[0]->slug;
+
+			if (!array_key_exists($bereik, $telefonie_bundels)) {
+				$telefonie_bundels[$bereik] = array();
+			}
+
+			$telefonie_bundels[$bereik][] = array(
 				'naam'			=> $tpb->post_title,
+				'slug'			=> $slug,
 				'tarieven'		=> $tarieven_teksten,
-				'bereik'		=> $bundel_tax_data[0]->slug
+				'bereik'		=> $bereik
 			);
 
-			// basis bundel staat altijd aan!
-
-			$return['maandelijks'][$tpb->post_title] = array(
-				'aantal'	=> $bundel_tax_data[0]->slug === 'basis' ? 1 : 0,
+			$return['maandelijks'][$slug] = array(
+				'aantal'	=> 0,
 				'prijs'		=> (float) $tarieven_teksten['maandbedrag']['prijs'],
 			);
 
@@ -264,7 +271,7 @@ function efiber_pakket_eigenschappen($p, $gc = '')  {
 			$return['teksten'][$tpb->post_title.'-starttarief'] = $tarieven_teksten['starttarief']['tekst'];
 			$return['teksten'][$tpb->post_title.'-vast_nl'] = $tarieven_teksten['vast_nl']['tekst'];
 			$return['teksten'][$tpb->post_title.'-mobiel_nl'] = $tarieven_teksten['mobiel_nl']['tekst'];
-				
+
 		}
 
 		$return['telefonie_bundels'] = $telefonie_bundels;
@@ -283,7 +290,7 @@ function efiber_pakket_eigenschappen($p, $gc = '')  {
 		$nonlineair = get_field('nonlineair', $p->ID);
 		$extra_tv_ontvanger = get_field('extra_tv_ontvanger', $p->ID);
 		$dvb_c = get_field('dvb-c', $p->ID);
-		
+
 		//voorbewerken zenderuitzonderingen
 		$zo_verz = array();
 		foreach ($zender_uitzonderingen as $zo) {
@@ -294,7 +301,7 @@ function efiber_pakket_eigenschappen($p, $gc = '')  {
 
 			$ss = (string) $s;
 
-			// uitzondering bekend? dan uitzonderingen halen. Anders uit standaard halen. 
+			// uitzondering bekend? dan uitzonderingen halen. Anders uit standaard halen.
 
 			if (array_key_exists($ss, $zo_verz)) {
 
@@ -327,9 +334,10 @@ function efiber_pakket_eigenschappen($p, $gc = '')  {
 				foreach ($tv_bundel->pakketten as $pakketgroep) {
 					foreach ($pakketgroep['opties'] as $optie) {
 						$str = $pakketgroep['pakket_naam'] . '-' . $optie['publieke_naam'] . '-' . $tv_bundel->snelheid;
-						$return['maandelijks'][$str] = array(
-							'aantal' => 0,
-							'prijs' => (float) $optie['prijs']
+						$prijs = (float) $optie['prijs'];
+						$return['maandelijks'][slugify($str)] = array(
+							'aantal' => $prijs < 0.01 ? 1 : 0,
+							'prijs' => $prijs
 						);
 						$return['teksten'][$str] = $optie['tekst'];
 					}
@@ -340,14 +348,15 @@ function efiber_pakket_eigenschappen($p, $gc = '')  {
 				foreach ($pakketgroep['opties'] as $optie) {
 					foreach ($snelheden as $snelheid) {
 						$str = $pakketgroep['pakket_naam'] . '-' . $optie['publieke_naam'] . '-' . $snelheid;
-						$return['maandelijks'][$str] = array(
-							'aantal' => 0,
-							'prijs' => (float) $optie['prijs']
-						);						
+						$prijs = (float) $optie['prijs'];
+						$return['maandelijks'][slugify($str)] = array(
+							'aantal' => $prijs < 0.01 ? 1 : 0,
+							'prijs' => $prijs
+						);
 						$return['teksten'][$str] = $optie['tekst'];
 					}
 				}
-			}			
+			}
 		}
 
 
@@ -356,66 +365,73 @@ function efiber_pakket_eigenschappen($p, $gc = '')  {
 			$return['teksten'] = array_merge($return['teksten'], $nonlineair['teksten']);
 
 			if ($nonlineair['opnemen_replay_begin_gemist_samen']) {
-				$return['maandelijks']['opnemen_replay_begin_gemist_samen'] = array(
-					'aantal' 	=> 0,
-					'prijs'		=> (float) $nonlineair['opnemen_replay_begin_gemist_samen_prijs']
+				$prijs = (float) $nonlineair['opnemen_replay_begin_gemist_samen_prijs'];
+				$return['maandelijks']['opnemen-replay-begin-gemist-samen'] = array(
+					'aantal' 	=> $prijs < 0.01 ? 1 : 0,
+					'prijs'		=> $prijs
 				);
 			} else {
-				
+
 				$nl = array('opnemen', 'replay', 'begin_gemist');
 				foreach ($nl as $n) {
-					if ($nonlineair[$n]) {
-						$return['maandelijks'][$n] = array(
-							'aantal' => 0,
-							'prijs'	 => (float) $nonlineair[$n]
+					if ($nonlineair[$n] || $nonlineair[$n] == 0) {
+						$prijs = (float) $nonlineair[$n];
+						$return['maandelijks'][slugify($n)] = array(
+							'aantal' => $prijs < 0.01 ? 1 : 0,
+							'prijs'	 => $prijs
 						);
-					}
+					} 
 				}
+				$return['nonlineair'] = $nonlineair;
 
 			}
 
 			if ($nonlineair['app_beschikbaar']) {
+				$prijs = (float) $nonlineair['app_prijs'];
 				$return['maandelijks']['app'] = array(
-					'aantal' => 0,
-					'prijs'  => (float) $nonlineair['app_prijs']
+					'aantal' => $prijs < 0.01 ? 1 : 0,
+					'prijs'  => $prijs
 				);
 			}
-			
+
 		endif; // heeft non-lineair
 
-		$return['teksten']['extra_tv_ontvanger'] = $extra_tv_ontvanger['tekst'];
+		$return['teksten']['extra-tv-ontvangers'] = $extra_tv_ontvanger['tekst'];
 
+		//
 		if (   $extra_tv_ontvanger['eenmalig'] != 0 ) {
-			$return['eenmalig']['extra_tv_ontvanger'] = array(
-				'aantal' => 0,
-				'prijs'  => (float) $extra_tv_ontvanger['eenmalig'],
+			$prijs = (float) $extra_tv_ontvanger['eenmalig'];
+			$return['eenmalig']['extra-tv-ontvangers'] = array(
+				'aantal' => $prijs < 0.01 ? 1 : 0,
+				'prijs'  => $prijs
 			);
 		}
 
-		if (  $extra_tv_ontvanger['maandelijks'] != 0 ) {
-			$return['maandelijks']['extra_tv_ontvanger'] = array(
-				'aantal' => 0,
-				'prijs'  => (float) $extra_tv_ontvanger['maandelijks'],
+		if ( $extra_tv_ontvanger['maandelijks'] != 0 ) {
+			$prijs = (float) $extra_tv_ontvanger['maandelijks'];
+			$return['maandelijks']['extra-tv-ontvangers'] = array(
+				'aantal' => $prijs < 0.01 ? 1 : 0,
+				'prijs'  => $prijs,
 			);
-		}		
+		}
 
 		if ($dvb_c and $dvb_c['kan_dvb-c_doen']) {
 
 			$return['teksten']['dvb-c'] = $dvb_c['tekst'];
 
 			if (   $dvb_c['dvb-c_eenmalig'] != 0 ) {
-				$return['eenmalig']['dvb-c_eenmalig'] = array(
+				$return['eenmalig']['dvb-c-eenmalig'] = array(
 					'aantal' => 0,
 					'prijs'  => (float) $dvb_c['dvb-c_eenmalig'],
 				);
 			}
 
 			if (  $dvb_c['dvb-c_maandelijks'] != 0 ) {
-				$return['maandelijks']['dvb-c_maandelijks'] = array(
+				$return['maandelijks']['dvb-c-maandelijks'] = array(
 					'aantal' => 0,
 					'prijs'  => (float) $dvb-c_['dvb-c_maandelijks'],
 				);
-			}		
+			}
 
 		}
 
@@ -437,14 +453,14 @@ function efiber_pakket_eigenschappen($p, $gc = '')  {
 		$return['teksten']['extra_optie_naam'] = $extra_optie['extra_optie_naam'];
 
 		if (!!$extra_optie['extra_optie_eenmalig']) {
-			$return['eenmalig']['extra_optie'] = array(
+			$return['eenmalig']['extra-optie'] = array(
 				'aantal'	=> 0,
 				'prijs'		=> (float) $extra_optie['extra_optie_eenmalig'],
 			);
 		}
 
 		if (!!$extra_optie['extra_optie_maandelijks']) {
-			$return['maandelijks']['extra_optie'] = array(
+			$return['maandelijks']['extra-optie'] = array(
 				'aantal'	=> 0,
 				'prijs'		=> (float) $extra_optie['extra_optie_maandelijks'],
 			);
@@ -462,7 +478,7 @@ function efiber_pakket_eigenschappen($p, $gc = '')  {
 
 	$installatie = get_field('installatie', $provider_post->ID);
 	foreach ($installatie as $i) {
-		$return['eenmalig']['installatie-'.($i['naam'])] = array(
+		$return['eenmalig']['installatie-'.strtolower($i['naam'])] = array(
 			'aantal' => 0,
 			'prijs'	=> (float) $i['prijs'],
 		);
@@ -482,7 +498,7 @@ function efiber_pakket_eigenschappen($p, $gc = '')  {
 	// - - - - - - - - - - - - - - - - - - - - - - - - //
 	/////////////////////////////////////////////////////
 
-	// RETURN 
+	// RETURN
 
 	return $return;
 
@@ -609,21 +625,7 @@ function efiber_input ($params = array()) {
 	$v = ($value ? " value='$value' " : "");
 	$f = ($func ? "data-efiber-func='$func'" : "");
 
-	$id = ($type === 'radio' ? // radio's hebben een tekstuitkomst afhankelijk van de invoer. In dit algoritme wordt HTML geduwd en er komen ids uit.
-		$naam . '-' .
-			strtolower(
-				str_replace(' ', '-', 
-					preg_replace(
-						"/[^A-Za-z0-9 ]/", '', (
-							explode('.', // afbreken op eerste SVG
-								strip_tags($label)
-							)
-						)[0]
-					)
-				)
-			) :
-		$naam // want is geen radio.
-	);
+	$id = slugify($naam);
 
 	if (!in_array($type, array('radio', 'checkbox'))) {
 

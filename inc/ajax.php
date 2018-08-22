@@ -153,6 +153,50 @@ function efiber_controleer_postcode() {
 	
 }
 
+function filter_op_regio_en_verrijk_pakket ($pakketten, $toegestane_providers, $naam_postfix = '') {
+
+	$providers = array();
+
+	// stript overbodige properties van post obj af.
+	$pakketten = array_map(function($verz){
+		return (object) array( 'ID'  => $verz->ID, );
+	}, $pakketten);
+
+	foreach ($pakketten as $p) :
+
+		// eigenschappen als provider, minimale contractsduur en pakketopties
+		$p->eigenschappen = efiber_pakket_eigenschappen($p, $ajax_data['gebiedscode']);
+		$p->provider = $p->eigenschappen['provider_meta']['naam'];
+
+		// nu pakketten filteren op provider cq filteren op regio.
+		if (!in_array($p->provider, $toegestane_providers)) continue;
+
+		$p->naam_composiet = $p->provider . " " . $naam_postfix;
+
+		if (!array_key_exists($p->provider, $providers)) {
+			// er zijn nog geen pakketten van deze provider. initialiseer de array.
+			$providers[$p->provider] = array();
+		}
+
+		$providers[$p->provider][] = $p;
+
+	endforeach;	
+
+	return $providers;
+}
+
+function toegestane_providers($regio = '') {
+	return array_map(
+		function($provider_post){
+			return $provider_post->post_title;
+		}, 
+		get_posts( array(
+        	'posts_per_page' => -1,
+        	'post_type' => 'provider',
+        	'tax_query' => array( array( 'taxonomy' => 'regio', 'field' => 'slug', 'terms' => $regio ), )
+        ) )
+	);
+}
 
 
 $func_n = "efiber_vergelijking";
@@ -191,160 +235,94 @@ function efiber_vergelijking() {
 	// pakketten hebben regio taxonomy waarvan slug = gebiedscode in onderkast
 	$gebiedscode = strtolower($ajax_data['gebiedscode']);
 
-	// eerste 'emmertje' om pakketten in te gooien
-	$gevonden = array();
 
-	// legacy debug
-	$hulp = array();
-
-	// emmertje met daarin gevonden pakketten die ook een passende regio hebben
-	$regio_ok = array();
-
-	// derde en laatste emmertje waarmee, als nodig, wordt gefilterd op bekabelingstype
-	// Bepaalde providers leveren ITV via coax oid... onnavolgbaar.
-	// hiervoor hebben pakketten bekabelingstaxonomy met waarden utp en coax.
-	$kabel_gecontroleerd = array();
-	
-	// kabel gecontroleerd met de pakketeigenschappen erop geplakt.
-	$pakketten_met = array();
+	$tax_query = array();
 
 
+	if ($keuzehulp['televisie'] === '2' || $keuzehulp['televisie'] === '3') {
 
-	if ($bundels) :
+        $tax_query[] = array(
+            'taxonomy' 	=> 'tv-type',
+            'field' 	=> 'slug',
+            'terms' 	=> $keuzehulp['televisie'] === '2' ? "DTV" : "ITV",
+        );
 
-		// @TODO dit is een loze if statement. Moet ook kijken of count correct is. 
-		// else statement toevoegen: afbreken functie en foutmelding terugschrijven.
+		if ($keuzehulp['bellen'] !== '1') {
 
-		// $bundel is dus 
-		// 		keuze_uitkomst zoals 101
-		//		pakketten => array (pakket, pakket, pakket...)
-		//		belbundel_nl_vooringevuld true/false
+			$postfix = 'alles in 1 '. ($keuzehulp['televisie'] === '2' ? "DTV" : "ITV");
 
-		// houdt rekening met mogelijk meerdere keren dezelfde keuzecode in de toewijzingen.
-		// $gevonden kan dus meerdere bundels hebben
+	        $tax_query[] = array(
+	            'taxonomy' 	=> 'type',
+	            'field' 	=> 'slug',
+	            'terms' 	=> array( "alles-in-1"),
+	        );
 
-		foreach ($bundels as $bundel) :
-
-			if ($bundel['keuze_uitkomst'] == $keuzecode) {
-				$gevonden[] = $bundel;
-			}
-
-		endforeach;
-
-	endif;
-
-
-
-	if ($gevonden) :
-
-		// @TODO loze if statement... controleer ook count
-
-		foreach ($gevonden as $g) :
-
-			$pakketten = $g['pakketten'];
-
-			// @TODO loze if statement... controleer ook count
-
-			if ($pakketten) :
-
-				foreach ($pakketten as $pakket_a) :
-
-					$regio_terms = wp_get_post_terms($pakket_a['pakket']->ID, 'regio');
-
-					// pakketten kunnen meer dan één regio hebben toegewezen.
-					// loop over regios heen, als gelijk aan dit pakket, dan doorlaten, en door naar volgende pakket.
-					// belbundel info wordt hier ook direct op het pakket geschreven. 
-
-					foreach ($regio_terms as $regio) {
-						if ($regio->slug === $gebiedscode) {
-							$pakket_a['pakket']->belbundel_nl_vooringevuld = $g['belbundel_nl_vooringevuld'];
-							$regio_ok[] = $pakket_a['pakket'];
-							break 1; // niet meer dan één keer in zetten.
-						}
-					}
-
-				endforeach; // pakketten as pakket_a
-
-			else :
-
-				// gaat naar evt. foutmelding
-				$hulp[] = "$pakketten leeg";
-
-			endif;
-
-		endforeach; // gevonden as g
-
-		///////////
-		///////////
-
-		// haal uit de keuzehulp op of gefilterd moet worden op utp of coax
-		$kabel_optie_waarde = array_key_exists('bekabeling', $keuzehulp) ? ($keuzehulp['bekabeling'] === '1' ? 'coax' : 'utp') : '';
-
-		// maar we hoeven alleen te filteren als de TV optie 'digitaal' is gekozen. 
-		// als dat niet zo is dan is kabel_gecontroleerd gelijk aan regio_ok.
-		if ($keuzehulp['televisie'] !== '2') {
-			$kabel_gecontroleerd = $regio_ok;
 		} else {
 
-			// gelijk aan filtering op regio
-			foreach ($regio_ok as $pakket) :
+			$postfix = 'internet en '. ($keuzehulp['televisie'] === '2' ? "DTV" : "ITV");
 
-				$bekabeling_terms = wp_get_post_terms($pakket->ID, 'bekabeling');
+	        $tax_query[] = array(
+	            'taxonomy' 	=> 'type',
+	            'field' 	=> 'slug',
+	            'terms' 	=> array("internet-en-tv" ),
+	        );				
+		}	        
 
-				foreach ($bekabeling_terms as $kabel_optie) {
+	} else {
 
-					if ($kabel_optie->slug === $kabel_optie_waarde) {
-						$kabel_gecontroleerd[] = $pakket;
-						break 1; // niet meer dan één keer in zetten.
-					}
+		if ($keuzehulp['bellen'] !== '1') {
 
-				}
+			$postfix = 'internet en bellen';
 
-			endforeach;
+	        $tax_query[] = array(
+	            'taxonomy' 	=> 'type',
+	            'field' 	=> 'slug',
+	            'terms' 	=> array("internet-en-bellen" ),
+	        );
 
-		}
+		} else {
 
-	else :
+			$postfix = 'internet';
 
-		// gaat naar evt. foutmelding
-		$hulp[] = "gevonden leeg voor $keuzecode";
+	        $tax_query[] = array(
+	            'taxonomy' 	=> 'type',
+	            'field' 	=> 'slug',
+	            'terms' 	=> array( "alleen-internet",),
+	        );				
+		}		
+	}
 
-	endif;
-
-	$fout = json_encode(array(
-		'gevonden'		=> false,
-		'pakketten'		=> NULL,
-		'hulp'			=> $hulp,
-		'ajax_data'		=> $ajax_data,
-		'regio_ok'		=> $regio_ok,
-		'regio_niet_ok'	=> $regio_niet_ok,
+	$pakketten = get_posts(array(
+		'posts_per_page'	=> -1,
+		'post_type'			=> 'nieuw-pakket',
+		'tax_query'			=> $tax_query
 	));
 
-	// @TODO controleren op count..!
-	if ($kabel_gecontroleerd) :
+	// alle provider namen in deze regio.
 
-		foreach ($kabel_gecontroleerd as $p) {
+	$toegestane_providers = toegestane_providers(strtolower($ajax_data['gebiedscode']));
+	
 
-			// haalt pakket en provider opties op
-			$p->eigenschappen = efiber_pakket_eigenschappen($p);
-			$pakketten_met[] = $p;
+	if ($pakketten and count($pakketten)) : 
 
-		}
+		$providers = filter_op_regio_en_verrijk_pakket($pakketten, $toegestane_providers, $postfix);
 
 		echo json_encode(array(
-			'pakketten'		=> $pakketten_met,
-//			'console'		=> $pakketten_met, // console wordt in de console geprint
+			'providers'		=> $providers
 		));
+		die();
 
-	else :
+	else : 
 
-		echo $fout;
+		echo json_encode(array('error' => true));
+		die();
 
-	endif;
-
-	wp_die();
+	endif;	
 
 }
+
+
+
 
 
 
@@ -382,6 +360,8 @@ function efiber_ik_weet_wat_ik_wil_pakketten() {
 		'4'		=> 'Alles in 1',		
 	);
 
+
+
 	$type_slug = $slug_ar[($keuzehulp['ik-weet-wat-ik-wil'])];
 
 	$pakketten = get_posts(
@@ -400,53 +380,19 @@ function efiber_ik_weet_wat_ik_wil_pakketten() {
 
 	// alle provider namen in deze regio.
 
-	$toegestane_providers = array_map(
-		function($provider_post){
-			return $provider_post->post_title;
-		}, 
-		get_posts( array(
-        	'posts_per_page' => -1,
-        	'post_type' => 'provider',
-        	'tax_query' => array( array( 'taxonomy' => 'regio', 'field' => 'slug', 'terms' => strtolower($ajax_data['gebiedscode']) ), )
-        ) )
-	);
+	$toegestane_providers = toegestane_providers(strtolower($ajax_data['gebiedscode']));
 
 	//@TODO komt deze provider in deze regio voor?
 
-	$providers = array();
-
 	if ($pakketten and count($pakketten)) : 
 
-		// stript overbodige properties van post obj af.
-
-		$pakketten = array_map(function($verz){
-			return (object) array( 'ID'  => $verz->ID, );
-		}, $pakketten);
-
-		foreach ($pakketten as $p) :
-
-			// eigenschappen als provider, minimale contractsduur en pakketopties
-			$p->eigenschappen = efiber_pakket_eigenschappen($p, $ajax_data['gebiedscode']);
-			$p->provider = $p->eigenschappen['provider_meta']['naam'];
-
-			// nu pakketten filteren op provider cq filteren op regio.
-			if (!in_array($p->provider, $toegestane_providers)) continue;
-
-			$p->naam_composiet = $p->provider . " " . $naam_ar[($keuzehulp['ik-weet-wat-ik-wil'])] . (
-				($keuzehulp['ik-weet-wat-ik-wil'] == 3 || $keuzehulp['ik-weet-wat-ik-wil'] == 4) ? 
-					" " . $p->eigenschappen['tv_type']
-				:
-					''
-			);
-
-			if (!array_key_exists($p->provider, $providers)) {
-				// er zijn nog geen pakketten van deze provider. initialiseer de array.
-				$providers[$p->provider] = array();
-			}
-
-			$providers[$p->provider][] = $p;
-
-		endforeach;
+		$postfix = $naam_ar[($keuzehulp['ik-weet-wat-ik-wil'])] . (
+			($keuzehulp['ik-weet-wat-ik-wil'] == 3 || $keuzehulp['ik-weet-wat-ik-wil'] == 4) ? 
+				" " . $p->eigenschappen['tv_type']
+			:
+				''
+		);
+		$providers = filter_op_regio_en_verrijk_pakket($pakketten, $toegestane_providers, $postfix);
 
 		echo json_encode(array(
 			'providers' => $providers,

@@ -306,8 +306,8 @@ function efiber_keuzehulp_pak_afb ($str = '') {
 		$kies_televisie_knoppen .= $knop->maak();
 
 		$knop->tekst = $televisie_teksten['geen_poespas'];
-		$knop->attr  = 'data-efiber-televisie-keuze="2"';
 		$knop->link = '#9';
+		$knop->attr  = 'data-efiber-televisie-keuze="2"';
 		$knop->ikoon = efiber_keuzehulp_pak_afb("televisie 2");
 		$kies_televisie_knoppen .= $knop->maak();
 
@@ -390,7 +390,7 @@ function efiber_keuzehulp_pak_afb ($str = '') {
 
 		/////////////////////////////////////////////////
 
-		$kies_coax_knoppen = '';
+/*		$kies_coax_knoppen = '';
 
 		$coax_teksten = get_field('coax_teksten', 'option');
 
@@ -416,7 +416,7 @@ function efiber_keuzehulp_pak_afb ($str = '') {
 			'torso_direct'	=> 	"<div class='knoppendoos'>$kies_coax_knoppen</div>",
 		));
 
-		$kies_coax->print();
+		$kies_coax->print();*/
 
 		/////////////////////////////////////////////////
 
@@ -595,7 +595,7 @@ function efiber_keuzehulp_pak_afb ($str = '') {
 		$knop->class = '';
 		$knop->tekst = 'verder';
 		$knop->attr = "data-keuzehulp-stap='9'";
-		$knop->link = '#10';
+		$knop->link = '#11';
 		$knop->func = 'toon-stap';
 		$knop->ikoon = '';
 		$knop->geen_ikoon = true;

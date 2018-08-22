@@ -197,3 +197,14 @@ header #sticky.stick {
 .gv-table-view td {
 	border: 1px solid grey;
 }
+
+.kz-tooltip {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	background-color: white;
+	color: black;
+}
+	.kz-tooltop:before {
+		content: "I";		
+	}

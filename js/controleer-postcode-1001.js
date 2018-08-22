@@ -1,117 +1,7 @@
-function controleerPostcode() {
 
-
-	/*------------------------------------------------------
-	|
-	| 	Gaat om met de input van de postcodeformulier
-	| 	Valideert de invoer
-	| 	Stuurt info naar de achterkantfunctie efiber_controleer_postcode
-	| 	Laat de afhandeling van die ajax call verder doen door postcodeAjaxCB
-	|
-	| 	Bevat een stukje routing; als iemand op een url komt waarop de keuzehulp niet draait
-	| 	herkent adhv of formulier bestaat of niet, dan wordt die persoon doorgestuurd naar /keuzehulp
-	| 	Dus bijvoorbeeld verversen in keuzehulp/nep-URI -> 404 -> /keuzehulp
-	|
-	|-----------------------------------------------------*/
-
-
-	var postcodeForm = doc.getElementById('keuze-postcodeform');
-
-	if (!postcodeForm) {
-		location.href = "http://rekam.local/keuzehulp";
-	}
-
-	var getVars = {};
-
-	//binnenkomend via formulier op iedereenglasvel.nl?
-	if (location.search) {
-
-		location.search.substr(1, location.search.length).split('&').forEach(function(a){
-			var t = a.split('=');
-			getVars[(t[0])] = t[1];
-		});
-
-		// minimaal vereist: postcode en huisnummer
-		if (getVars.huisnummer && getVars.postcode) {
-			var ajf = new efiberAjax({
-				ajaxData :{
-					'action': 'efiber_controleer_postcode',
-					data: {
-						postcode: getVars.postcode,
-						huisnummer: getVars.huisnummer,
-						toevoeging: getVars.toevoeging || '',
-						kamer: getVars.kamer || '',
-					},
-				},
-				cb: postcodeAjaxCB,
-			});
-
-			ajf.doeAjax();
-		}
-
-	}
-
-
-	// houdt toetsaanslagen tegen die geen nummer zijn.
-	// @TODO afsplitsen naar app-generieke functie.
-    $('#huisnummer').keydown(function (e) {
-        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-            (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
-            (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
-            (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
-            (e.keyCode >= 35 && e.keyCode <= 39)) {
-                 // let it happen, don't do anything
-                 return;
-        }
-        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-            e.preventDefault();
-        }
-    });
-
-	postcodeForm.addEventListener('submit', function(e){
-
-		// we valideren alleen postcode en huisnummer
-		// want andere twee zouden leeg moeten kunnen zijn.
-
-		e.preventDefault();
-
-		var postcodeTekst = doc.getElementById('postcode').value.replace(' ', '').toUpperCase();
-		var correctePostcode = /^[1-9][0-9]{3} ?(?!SA|SD|SS)[A-Z]{2}$/i.test(postcodeTekst);
-		var huisnummer = doc.getElementById('huisnummer').value.replace(' ', '').toLowerCase();
-
-		if (!huisnummer.length) {
-			efiberModal(teksten['vulHuisnummerIn'], 2500);
-			return;
-		}
-
-		if (correctePostcode) {
-
-			var ajf = new efiberAjax({
-				ajaxData :{
-					'action': 'efiber_controleer_postcode',
-					data: {
-						postcode: postcodeTekst,
-						huisnummer: huisnummer,
-						toevoeging: doc.getElementById('toevoeging').value.replace(' ', '').toLowerCase(),
-						kamer: doc.getElementById('kamer').value.replace(' ', '').toLowerCase(),
-					},
-				},
-				cb: postcodeAjaxCB,
-			});
-
-			ajf.doeAjax();
-
-		// verkeerd geformatteerde postcode
-		} else {
-			efiberModal(teksten['postcodeVerkeerdGeformatteerd'], 2500);
-		}
-
-	});
-}
+/* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren  */
 
 function postcodeAjaxCB(r) {
-
-
 	/*------------------------------------------------------
 	|
 	| 	callback voor postcode ajax
@@ -126,12 +16,11 @@ function postcodeAjaxCB(r) {
 
 
 	if (r && r.gevonden) {
-
 		if (r.aanvraag_al_gedaan) {
+			// "Er is al een aanvraag gedaan vanaf uw adres bij %provider%.
+			// Bezoekt u de website op %providerURL% of mailt u naar %providerMail%"
 
-			// "Er is al een aanvraag gedaan vanaf uw adres bij %provider%. Bezoekt u de website op %providerURL% of mailt u naar %providerMail%"
-
-			efiberModal(efiberTekst ('aanvraagAlGedaan', [r.aanvraag_info.naam,	r.aanvraag_info.URL, r.aanvraag_info.naam, r.aanvraag_info.email ]), 60000);
+			efiberModal(efiberTekst('aanvraagAlGedaan', [r.aanvraag_info.naam,	r.aanvraag_info.URL, r.aanvraag_info.naam, r.aanvraag_info.email]), 60000);
 			efiberRouting.ga(1); // terug naar de voorpagina.
 			return;
 		}
@@ -144,35 +33,123 @@ function postcodeAjaxCB(r) {
 		sessionStorage.setItem('efiber-code', r.gebiedscode);
 		sessionStorage.setItem('efiber-gebiedscode', r.gebiedscode);
 
-		var ankers = doc.querySelectorAll("a[href^='https://iedereenglasvezel']");
+		const ankers = doc.querySelectorAll("a[href^='https://iedereenglasvezel']");
 
-		var thuisUrl = '';
+		let thuisUrl = '';
 
 		if (r.gebiedscode === 'EFIKOGG01') {
-			thuisUrl = "koggenlandopglasvezel";
+			thuisUrl = 'koggenlandopglasvezel';
 		} else {
-			thuisUrl = "heerhugowaardopglasvezel";
+			thuisUrl = 'heerhugowaardopglasvezel';
 		}
 
-		for (var i = ankers.length - 1; i >= 0; i--) {
+		for (let i = ankers.length - 1; i >= 0; i--) {
 			ankers[i].href = ankers[i].href.replace('iedereenglasvezel', thuisUrl);
-			ankers[i].style.visibility = "visible";
+			ankers[i].style.visibility = 'visible';
 		}
 
 		efiberModal(
-			efiberTekst('welInUwGebiedTorso', r.regio)
-		, 2000);
+			efiberTekst('welInUwGebiedTorso', r.regio),
+			2000,
+		);
 		efiberRouting.ga(2);
 
 		// wacht op rendering van eea zodat pixelberekeningen kloppen
-		setTimeout(function(){
+		setTimeout(() => {
 			efiberStickyKeuzes();
 		}, 150);
-
 	} else {
-		efiberModal(teksten['nietInUwGebied'], 5000);
+		efiberModal(teksten.nietInUwGebied, 5000);
 		efiberRouting.ga(51);
-		efiberAjaxKleineFormulieren('efiber_haal_lead_formulier', 'print-lead-formulier', {});
-		//efiberHaalLeadFormulier();
+		EfiberAjaxKleineFormulieren('efiber_haal_lead_formulier', 'print-lead-formulier', {});
+		// efiberHaalLeadFormulier();
 	}
+}
+
+function controleerPostcode() {
+	/*------------------------------------------------------
+	|
+	| 	Gaat om met de input van de postcodeformulier
+	| 	Valideert de invoer
+	| 	Stuurt info naar de achterkantfunctie efiber_controleer_postcode
+	| 	Laat de afhandeling van die ajax call verder doen door postcodeAjaxCB
+	|
+	| 	Bevat een stukje routing; als iemand op een url komt waarop de keuzehulp niet draait
+	| 	herkent adhv of formulier bestaat of niet, dan wordt die persoon doorgestuurd naar /keuzehulp
+	| 	Dus bijvoorbeeld verversen in keuzehulp/nep-URI -> 404 -> /keuzehulp
+	|
+	|-----------------------------------------------------*/
+
+
+	const postcodeForm = doc.getElementById('keuze-postcodeform');
+
+	if (!postcodeForm) {
+		location.href = 'http://rekam.local/keuzehulp';
+	}
+
+	const getVars = {};
+
+	// binnenkomend via formulier op iedereenglasvel.nl?
+	if (location.search) {
+		location.search.substr(1, location.search.length).split('&').forEach((a) => {
+			const t = a.split('=');
+			getVars[(t[0])] = t[1];
+		});
+
+		// minimaal vereist: postcode en huisnummer
+		if (getVars.huisnummer && getVars.postcode) {
+			const ajf = new EfiberAjax({
+				ajaxData: {
+					action: 'efiber_controleer_postcode',
+					data: {
+						postcode: getVars.postcode,
+						huisnummer: getVars.huisnummer,
+						toevoeging: getVars.toevoeging || '',
+						kamer: getVars.kamer || '',
+					},
+				},
+				cb: postcodeAjaxCB,
+			});
+
+			ajf.doeAjax();
+		}
+	}
+
+
+	postcodeForm.addEventListener('submit', (e) => {
+		// we valideren alleen postcode en huisnummer
+		// want andere twee zouden leeg moeten kunnen zijn.
+
+		e.preventDefault();
+
+		const postcodeTekst = doc.getElementById('postcode').value.replace(' ', '').toUpperCase(),
+			correctePostcode = /^[1-9][0-9]{3} ?(?!SA|SD|SS)[A-Z]{2}$/i.test(postcodeTekst),
+			huisnummer = doc.getElementById('huisnummer').value.replace(' ', '').toLowerCase();
+
+		if (!huisnummer.length) {
+			efiberModal(teksten.vulHuisnummerIn, 2500);
+			return;
+		}
+
+		if (correctePostcode) {
+			const ajf = new EfiberAjax({
+				ajaxData: {
+					action: 'efiber_controleer_postcode',
+					data: {
+						postcode: postcodeTekst,
+						huisnummer,
+						toevoeging: doc.getElementById('toevoeging').value.replace(' ', '').toLowerCase(),
+						kamer: doc.getElementById('kamer').value.replace(' ', '').toLowerCase(),
+					},
+				},
+				cb: postcodeAjaxCB,
+			});
+
+			ajf.doeAjax();
+
+		// verkeerd geformatteerde postcode
+		} else {
+			efiberModal(teksten.postcodeVerkeerdGeformatteerd, 2500);
+		}
+	});
 }

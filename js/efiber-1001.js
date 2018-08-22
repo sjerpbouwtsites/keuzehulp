@@ -1,10 +1,9 @@
-var doc = document,
-body 	= doc.body;
-
-$;
+/* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren, knoppenDispatcher, controleerPostcode, opSubmitDisable, ankerRedirect, generiekeValidatie  */
+const doc = document,
+	body 	= doc.body;
+let $ = null;
 
 function efiberInit() {
-
 	/*------------------------------------------------------
 	|
 	| 	Deze functie start alles op!
@@ -17,9 +16,9 @@ function efiberInit() {
 		return false;
 	}
 
-	$ = jQuery; 
+	$ = jQuery;
 
-	// afhandeling van navigatie 
+	// afhandeling van navigatie
 	efiberRouting.init();
 
 	// dispatcher zit op de body te luisteren en stuurt functies aan.
@@ -34,44 +33,37 @@ function efiberInit() {
 	// terugsturen naar actiepagina of efiber op anker
 	ankerRedirect();
 
+	// generieke validatie zoals input alleen getallen
+	generiekeValidatie();
 }
 
-function ankerRedirect() {
-
-
+function generiekeValidatie() {
 	/*------------------------------------------------------
 	|
-	| 	Indien iemand afkomstig is van een campagnepagina, dan worden links aangepast.
+	| 	Geen letters in nummervelden.
 	|
 	|-----------------------------------------------------*/
 
 
-	var ankers = doc.querySelectorAll("a[href^='https://iedereenglasvezel']");
-	var ankers2 = doc.querySelectorAll("a[href^='https://e-fiber']");
-
-	if (location.search && location.search.indexOf('ref') !== -1) {
-
-		var gaNaar = location.search.replace('?ref=', '');
-
-		for (var i = ankers.length - 1; i >= 0; i--) {
-			ankers[i].href = ankers[i].href.replace('iedereenglasvezel', gaNaar);
-		}
-		for (var i = ankers2.length - 1; i >= 0; i--) {
-			ankers2[i].href = ankers2[i].href.replace('e-fiber', gaNaar);
-		}
-
-	} else {
-
-		for (var i = ankers.length - 1; i >= 0; i--) {
-			ankers[i].style.visibility = "hidden";
-		}
-
-	}	
+	document.body.addEventListener('keydown', (e) => {
+		const t = e.target,
+		idAr = ['huidige-nummer', 'huidige-extra-nummer', 'input_1_21', 'huisnummer'],
+		ekc = Number(e.keyCode);
+		if ($.inArray(ekc, [46, 8, 9, 27, 13, 110, 190]) !== -1
+            || (ekc === 65 && (e.ctrlKey === true || e.metaKey === true))
+            || (ekc === 67 && (e.ctrlKey === true || e.metaKey === true))
+            || (ekc === 88 && (e.ctrlKey === true || e.metaKey === true))
+            || (ekc >= 35 && e.keyCode <= 39)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+		if ((e.shiftKey || (ekc < 48 || ekc > 57)) && (ekc < 96 || ekc > 105)) {
+            e.preventDefault();
+        }
+	});
 }
 
-function opSubmitDisable(){
-
-
+function opSubmitDisable() {
 	/*------------------------------------------------------
 	|
 	|	voorkomt dubbele verzending van Gravity Forms
@@ -80,16 +72,13 @@ function opSubmitDisable(){
 	|-----------------------------------------------------*/
 
 
-	doc.body.addEventListener('submit', function(e){
-		e.target.id.indexOf('gform') !== -1 && e.target.querySelector("[type='submit']").setAttribute('disabled', 'disabled');		
+	doc.body.addEventListener('submit', (e) => {
+		if (e.target.id.indexOf('gform') !== -1)e.target.querySelector("[type='submit']").setAttribute('disabled', 'disabled');
 	});
-
 }
 
 
-function efiberSorteerIWWIW(pakketten){
-
-
+function efiberSorteerIWWIW(pakketten) {
 	/*------------------------------------------------------
 	|
 	|	neemt een hoeveelheid pakketten en sorteert die op prijs
@@ -99,21 +88,21 @@ function efiberSorteerIWWIW(pakketten){
 
 
 	// maak verzameling met bedragen aan
-	var bedragen = pakketten.map(function(w){
-		return Number(w.eigenschappen.financieel.maandelijks);
-	});
+	const bedragen = pakketten.map(w => Number(w.eigenschappen.financieel.maandelijks)),
 
 	// kopieer de verzameling tbv sortering en sorteer
-	var bedragenSort = (bedragen.map(function(w){return w})).sort();
+	bedragenSort = (bedragen.map(w => w)).sort();
 
 
 	// zoek de posities op in de bedragenverzameling; dit is de printvolgorde.
-	// als er een dubbele prijs is, dan zit deze index al in indicesvolgorde. 
+	// als er een dubbele prijs is, dan zit deze index al in indicesvolgorde.
 	// indexof werkt niet aangezien die alleen tot eerste index zoekt
 	// een gewone map functie werkt hier niet omdat je het product moet kunnen uitlezen
 
-	var ii, w, j;
-	var indicesVolgorde = [];
+	let ii,
+	w,
+	j;
+	const indicesVolgorde = [];
 
 	for (j = 0; j < bedragenSort.length; j++) {
 		w = bedragenSort[j];
@@ -126,22 +115,16 @@ function efiberSorteerIWWIW(pakketten){
 					break;
 				}
 			}
-		}		
+		}
 	}
 
-	var pakkettenKopie = pakketten.map(function(w){return w});
-	var pakketten = [];
+	const pakkettenKopie = pakketten.map(ww => ww);
+	pakketten = [];
 
 	// per rij, volgorde aanpassen adhv indicesvolgorde.
-	for(var i = 0; i < pakkettenKopie.length; i++) {
-		pakketten.push( pakkettenKopie[ (indicesVolgorde[i]) ] );		
+	for (let i = 0; i < pakkettenKopie.length; i++) {
+		pakketten.push(pakkettenKopie[ (indicesVolgorde[i]) ]);
 	}
 
 	return pakketten;
-	
 }
-
-
-
-
-

@@ -1,6 +1,5 @@
-function naarCamelCase (str) {
-
-
+/* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren  */
+function naarCamelCase(str) {
 	/*---------------------------------
 	|
 	|	Wat binnen komt als streep-case
@@ -9,10 +8,10 @@ function naarCamelCase (str) {
 	|---------------------------------*/
 
 
-	var split = str.split('-');
+	const split = str.split('-');
 
 	if (split.length > 1) {
-		for (var i = 1; i < split.length; i++) {
+		for (let i = 1; i < split.length; i++) {
 			split[i] = split[i][0].toUpperCase() + split[i].substring(1);
 		}
 	}
@@ -20,12 +19,10 @@ function naarCamelCase (str) {
 }
 
 function naarStreepCase(snede) {
-
-
 	/*----------------------------------
 	|
 	|	Wat binnen komt als combinatie van
-	|	woorden, spaties en &@#^&* en ;'etc 
+	|	woorden, spaties en &@#^&* en ;'etc
 	| 	komt-er-uit-als-streep-case
 	|
 	|---------------------------------*/
@@ -33,12 +30,10 @@ function naarStreepCase(snede) {
 
 	return snede
 	.replace(/([A-Z])/g, '-$1')
-	.replace(/^./, function(str){ return str.toUpperCase(); }).toLowerCase();
+	.replace(/^./, str => str.toUpperCase()).toLowerCase();
 }
 
 function efiberVindKnop(t, klasse) {
-
-
 	/*----------------------------------
 	|
 	|	Gebruikt in het aanmeldformulier
@@ -48,7 +43,7 @@ function efiberVindKnop(t, klasse) {
 	|---------------------------------*/
 
 
-	var knop = false;
+	let knop = false;
 
 	// zitten we in een SVG?
 	// svg nodes hebben andere dom properties
@@ -56,9 +51,9 @@ function efiberVindKnop(t, klasse) {
 		t = t.parentNode;
 	}
 
-	var klassen = t.className.split(' ');
+	const klassen = t.className.split(' ');
 
-	if (klassen.indexOf(klasse) !== -1 ) {
+	if (klassen.indexOf(klasse) !== -1) {
 		knop = t;
 	} else if (t.parentNode.className.indexOf(klasse) !== -1) {
 		knop = t.parentNode;
@@ -66,9 +61,7 @@ function efiberVindKnop(t, klasse) {
 	return knop;
 }
 
-function efiberEuro(bedrag){
-
-
+function efiberEuro(bedrag) {
 	/*----------------------------------
 	|
 	| 	Formateert bedragen:
@@ -82,21 +75,16 @@ function efiberEuro(bedrag){
 	if (bedrag && typeof bedrag !== 'boolean') {
 		if (bedrag == 0) {
 			return 'inclusief';
-		} else {
-			return "&euro; " + Number(bedrag).toFixed(2).toString().replace('.', ',');
 		}
-
-	} else {
-		return '-'; //als false oid
+			return `&euro; ${Number(bedrag).toFixed(2).toString().replace('.', ',')}`;
 	}
+		return '-'; // als false oid
 }
 
 function efiberNietMin1ReturnZelfOfFalse(a) {
-
-
 	/*----------------------------------
 	|
-	|	Onderdeel van het normaliseren van 
+	|	Onderdeel van het normaliseren van
 	| 	data in de tabelmiddelware
 	|
 	|---------------------------------*/
@@ -106,12 +94,7 @@ function efiberNietMin1ReturnZelfOfFalse(a) {
 }
 
 
-
-
-
 function efiberMaakBestelKnop(pakket, eigenschappen, tekst) {
-
-
 	/*----------------------------------
 	|
 	|	Deze functie zou niet mogen bestaan.
@@ -119,16 +102,14 @@ function efiberMaakBestelKnop(pakket, eigenschappen, tekst) {
 	|---------------------------------*/
 
 
-
 	if (typeof tekst === 'undefined') {
 		tekst = 'Bestel';
 	}
 
-	//we slaan de pakket + opties info op in sessionStorage
+	// we slaan de pakket + opties info op in sessionStorage
 	// zodat die weldra via referentie naar een andere functie gestuurd kan worden
 
 	// @TODO combineren van deze twee acties is WAANZIN... html genereren en geheugen schrijven :(
-	sessionStorage.setItem('pakket-'+pakket.ID, JSON.stringify(arguments));
-	this.HTML = "<a class='knop geen-ikoon efiber-bestelknop' data-efiber-func='toon-stap animeer aanmeldformulier' href='#100' efiber-data-pakket-id='"+pakket.ID+"'>"+tekst+"</a>";
-
+	sessionStorage.setItem(`pakket-${pakket.ID}`, JSON.stringify(arguments));
+	this.HTML = `<a class='knop geen-ikoon efiber-bestelknop' data-efiber-func='toon-stap animeer aanmeldformulier' href='#100' efiber-data-pakket-id='${pakket.ID}'>${tekst}</a>`;
 }

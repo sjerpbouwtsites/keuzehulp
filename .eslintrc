@@ -1,0 +1,21 @@
+{
+  "env" : {
+    "es6": true,
+    "jquery": true,
+    "browser": true
+  },
+  "extends": "airbnb",
+  "rules": {
+    "func-names": ["error", "never"],
+    "linebreak-style": 0,
+    "no-tabs": 0,
+    "indent": 0,
+    "no-restricted-globals": 0,
+    "no-param-reassign":0,
+    "one-var": ["warn", "consecutive"],
+    "one-const": ["warn", "consecutive"],
+    "one-let": ["warn", "consecutive"],
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "no-unused-vars": 0
+  }
+}

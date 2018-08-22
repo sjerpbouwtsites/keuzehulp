@@ -1,51 +1,8 @@
-
-function uitsessionStorageZetKnoppenActief() {
-
-	// gaat door het geheugen heen en zet de relevante knoppen op actief.
-
-	var kh = JSON.parse(sessionStorage.getItem('efiber-keuzehulp'));
-	var gs;
-
-	if (!!kh) {
-		for (var s in kh) {
-			gs = kh[s];
-			if (Array.isArray(gs)) {
-				for (var i = gs.length - 1; i >= 0; i--) {
-					uitsessionStorageZetKnoppenActiefHelper(s, gs[i]);
-				}
-			} else {
-				uitsessionStorageZetKnoppenActiefHelper(s, gs);
-			}
-		}
-	}
-}
-
-function uitsessionStorageZetKnoppenActiefHelper(s, keuze) {
-
-	var el = doc.querySelector('[data-efiber-'+s+'-keuze="'+keuze+'"]');
-
-	if (!el) {
-		//opnieuw zoeken met streepcase
-		var selector = '[data-efiber-'+naarStreepCase(s)+'-keuze="'+naarStreepCase(keuze)+'"]';
-		el = doc.querySelector(selector);
-	}
-
-	if (el) {
-
-		el.className = el.className + " actief";
-		// en zet ze ook in de zijbalk
-		efiberAppendNiveauKnop(el);
-
-	} else {
-		console.warn('el null', s, keuze);
-	}
-
-}
-
+/* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren, naarCamelCase  */
 
 function eFiberNormaliseerGeheugen(str) {
-	var isJSON = sessionStorage.getItem(str);
-	var geheugenObj;
+	const isJSON = sessionStorage.getItem(str);
+	let geheugenObj;
 	if (isJSON) {
 		geheugenObj = JSON.parse(isJSON);
 	} else {
@@ -54,9 +11,8 @@ function eFiberNormaliseerGeheugen(str) {
 	return geheugenObj;
 }
 
-function keuzehulpGeneriek (knop, dataAttrNaam, keuzeSleutel, callback){
-
-	var dezeKeuze = naarCamelCase(knop.getAttribute(dataAttrNaam));
+function keuzehulpGeneriek(knop, dataAttrNaam, keuzeSleutel, callback) {
+	const dezeKeuze = naarCamelCase(knop.getAttribute(dataAttrNaam)),
 	keuzehulpGeheugen = eFiberNormaliseerGeheugen('efiber-keuzehulp');
 
 	if (knop.className.indexOf('multiselect') !== -1) {
@@ -64,8 +20,8 @@ function keuzehulpGeneriek (knop, dataAttrNaam, keuzeSleutel, callback){
 
 
 		if (keuzeSleutel in keuzehulpGeheugen) {
-			//als deze waarde al in array, dan verwijderen, anders toevoegen
-			var dki = keuzehulpGeheugen[keuzeSleutel].indexOf(dezeKeuze);
+			// als deze waarde al in array, dan verwijderen, anders toevoegen
+			const dki = keuzehulpGeheugen[keuzeSleutel].indexOf(dezeKeuze);
 			if (dki !== -1) {
 				keuzehulpGeheugen[keuzeSleutel].splice(dki, 1);
 			} else {
@@ -74,8 +30,6 @@ function keuzehulpGeneriek (knop, dataAttrNaam, keuzeSleutel, callback){
 		} else {
 			keuzehulpGeheugen[keuzeSleutel] = [dezeKeuze];
 		}
-
-
 	} else {
 		// normaal opslaan is direct opslaan / overschrijven
 		keuzehulpGeheugen[keuzeSleutel] = dezeKeuze;

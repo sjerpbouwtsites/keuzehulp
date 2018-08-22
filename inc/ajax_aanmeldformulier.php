@@ -45,12 +45,15 @@ function kz_tv_pakketten($tv_pakket, $e, $s) {
 
 		$expl = explode('-', $naam);
 
-		//als length niet 3 dan geen tv pakket
-		if (count($expl) !== 3) continue;
-
 		//naam en snelheid komt overeen?
-		if (in_array($tv_pakket, $expl) && in_array($s, $expl)) {
-			$v['naam'] = $expl[1];
+		if (strpos($naam, $tv_pakket) !== false && in_array($s, $expl)) {
+
+			$sss = '';
+			for ($i=1; $i < count($expl) -1; $i++) {
+				$sss .= $expl[($i)] . " ";
+			}
+
+			$v['naam'] = trim($sss);
 			$v['naam_volledig'] = $naam;
 			$r[] = $v;
 		}
@@ -89,7 +92,7 @@ function efiber_haal_aanmeldformulier() {
 	// hierin wordt de HTML opgeslagen. Pas aan het eind printen want ajaxfunctie.
 	$print = '';
 
-	// console kan gebruikt worden om mee te geven aan de console key in de JSON. 
+	// console kan gebruikt worden om mee te geven aan de console key in de JSON.
 	// De console key veroorzaakt een console.log
 	$console = array();
 
@@ -102,7 +105,7 @@ function efiber_haal_aanmeldformulier() {
 	$adres = $_POST['adres'];
 
 	// zie onder bij keuzecode voor voorbeeld. Sommige sleutels kunnen ontbreken omdat ze pas gecreeert worden als
-	// een bijbehorende optie aangevinkt wordt. 
+	// een bijbehorende optie aangevinkt wordt.
 	$keuzehulp = $_POST['keuzehulp'];
 
 	$op_iwwiw = !!array_key_exists('ik-weet-wat-ik-wil', $keuzehulp);
@@ -161,12 +164,12 @@ function efiber_haal_aanmeldformulier() {
 
 		efiber_form_rij(
 			'Pakket prijs per maand',
-			"<span class='maandelijks-totaal'>WEGHALEN UIT PHP</span>" 
+			"<span class='maandelijks-totaal'></span>"
 		) .
 
 		efiber_form_rij(
 			'Eenmalige prijs',
-			"<span class='eenmalig-totaal'>WEGHALEN UIT PHP</span>" 
+			"<span class='eenmalig-totaal'></span>"
 		) .
 
 		(
@@ -182,20 +185,6 @@ function efiber_haal_aanmeldformulier() {
 
 	);
 
-	$print .= efiber_form_sectie(
-		'Hidden inputs',
-		efiber_form_rij (
-			'',
-			efiber_input (array(
-				'naam'		=>	'publieke_naam',
-				'type'		=> "hidden",
-				'value'		=> $pakket['naam_composiet'] . " " . $gekozen_snelheid,
-				'func'		=> '',
-				'waarde'	=> 'waarde' // @TODO raar?
-			))
-		)
-	);
-
 	$print .=  "<p><strong>Jouw gekozen opties</strong></p>";
 
 
@@ -208,18 +197,18 @@ function efiber_haal_aanmeldformulier() {
 			$eigenschappen['tv_type'] === "ITV" ? "Ja" : "Nee"
 		);
 
-		if ( kz_heeft_optie('extra_tv_ontvanger', $eigenschappen) ) :
+		if ( kz_heeft_optie('extra-tv-ontvangers', $eigenschappen) ) :
 
-			$koos_extra_tv = !!kz_optie_aantal('extra_tv_ontvanger', $eigenschappen);
+			$koos_extra_tv = !!kz_optie_aantal('extra-tv-ontvangers', $eigenschappen);
 
 			$tv_inhoud .= efiber_form_rij (
 				'Extra TV ontvangers',
 				efiber_input (array(
-					'naam'		=>	'extra_tv_ontvangers',
+					'naam'		=>	'extra-tv-ontvangers',
 					'type'		=> "number",
 					'value'		=> $koos_extra_tv ? "1" : "0", // als gekozen voor extra TV, initialiseer dan met waarde 1
 					'func'		=> 'aanmelding-schakel',
-					'waarde'	=> kz_optie_prijs('extra_tv_ontvanger', $eigenschappen)
+					'waarde'	=> kz_optie_prijs('extra-tv-ontvangers', $eigenschappen)
 				))
 			);
 
@@ -230,7 +219,7 @@ function efiber_haal_aanmeldformulier() {
 		////////////////////////////////////////////////
 
 
-		if ($eigenschappen['tv_type'] === "ITV") : 
+		if ($eigenschappen['tv_type'] === "ITV") :
 
 			if ( kz_heeft_optie('opnemen_replay_begin_gemist_samen', $eigenschappen) ) :
 
@@ -348,25 +337,26 @@ function efiber_haal_aanmeldformulier() {
 		endif; // tv app beschikbaar
 
 
-		$tv_pakket_namen = array('Film1', 'Plus', 'Fox Sports Eredivisie', 'Fox Sports Internationaal', 'Fox Sports Compleet', 'Ziggo Sport Totaal', 'Erotiek');
+		$tv_pakket_namen = array('film1', 'plus', 'fox-sports-eredivisie', 'fox-sports-internationaal', 'fox-sports-compleet', 'ziggo-sport-totaal', 'erotiek');
 
 		foreach ($tv_pakket_namen as $tv_pakket_naam) {
 
 			$deze_pakketten = kz_tv_pakketten($tv_pakket_naam, $eigenschappen, $gekozen_snelheid);
-			
+
 			if (count($deze_pakketten) > 0) :
 				foreach ($deze_pakketten as $dit_pakket) :
 
 					if (kz_optie_kost_geld($dit_pakket['naam_volledig'], $eigenschappen)) {
 
 						$tv_inhoud .= efiber_form_rij (
-							$dit_pakket['naam'],
+							ucfirst($dit_pakket['naam']),
 							efiber_input (array(
-								'naam'		=> 'film1',
-								'type'		=> "checkbox",
+								'naam'		=> $dit_pakket['naam_volledig'],
+								'type'		=> "radio",
 								'value'		=> $dit_pakket['aantal'],
 								'waarde'	=> $dit_pakket['prijs'],
-								'label'		=> $svgs
+								'label'		=> $svgs,
+								'eclass'	=> 'tv-pakket'
 							))
 						);
 
@@ -401,16 +391,20 @@ function efiber_haal_aanmeldformulier() {
 
 		$belknoppen = '';
 
-			foreach ($eigenschappen['telefonie_bundels'] as $tb) {
+			foreach ($eigenschappen['telefonie_bundels'] as $tb_a) {
 
-				$n = $tb['naam'];
-				$belknoppen .= efiber_input (array(
-					'naam'		=> 'belpakket_keuze',
-					'type'		=> "radio",
-					'value'		=> 0,
-					'waarde'	=> kz_optie_prijs($n, $eigenschappen),
-					'label'		=> "<span class='radio-naam'>".$n."</span>" .  $svgs
-				));
+				foreach ($tb_a as $tb) {
+					$n = slugify($tb['naam']);
+					$belknoppen .= efiber_input (array(
+						'naam'		=> 'belpakket-keuze-'.$tb['naam'],
+						'type'		=> "radio",
+						'value'		=> kz_optie_aantal($n, $eigenschappen),
+						'waarde'	=> kz_optie_prijs($n, $eigenschappen),
+						'eclass'	=> 'belpakket',
+						'label'		=> "<span class='radio-naam'>".$tb['naam']."</span>" .  $svgs
+					));
+				}
+
 			}
 
 		// belknoppen naar bel inhoud HTML
@@ -443,7 +437,7 @@ function efiber_haal_aanmeldformulier() {
 			'onzichtbaar' // wordt zichtbaar als geklikt op nummerbehoud
 		);
 
-		if (kz_heeft_optie('extra_telefoon', $eigenschappen)) :
+		if (kz_heeft_optie('extra-vast-nummer', $eigenschappen)) :
 
 
 			$bel_inhoud .= efiber_form_rij (
@@ -452,8 +446,8 @@ function efiber_haal_aanmeldformulier() {
 					'naam'		=> 'extra_vast_nummer',
 					'type'		=> "checkbox",
 					'func'		=> 'form-toon-rij',
-					'value'		=> kz_optie_aantal('extra_telefoon', $eigenschappen),
-					'waarde'	=> kz_optie_prijs('extra_telefoon', $eigenschappen),
+					'value'		=> kz_optie_aantal('extra-vast-nummer', $eigenschappen),
+					'waarde'	=> kz_optie_prijs('extra-vast-nummer', $eigenschappen),
 					'label'		=> $svgs
 				))
 			);
@@ -509,20 +503,21 @@ function efiber_haal_aanmeldformulier() {
 
 
 	$installatie_namen = array("Doe het zelf", 'Basis installatie', 'Volledige installatie');
-	$installatie_sleutels = array("DHZ", 'basis', 'volledig');
+	$installatie_sleutels = array("dhz", 'basis', 'volledig');
 
-	
+
 	for ($i = 0; $i < count($installatie_namen); $i++) {
 
 		if (kz_heeft_optie('installatie-'.$installatie_sleutels[($i)], $eigenschappen)) {
 
 			$installatie_knoppen .=
 			efiber_input (array(
-				'naam'		=> 'installatie_keuze',
+				'naam'		=> 'installatie-keuze-'.$installatie_sleutels[($i)],
 				'type'		=> "radio",
 				'label'		=> "<span class='radio-naam'>".$installatie_namen[$i]."</span>" .  $svgs,
 				'waarde'	=> kz_optie_prijs('installatie-'.$installatie_sleutels[($i)], $eigenschappen),
 				'value'		=> kz_optie_aantal('installatie-'.$installatie_sleutels[($i)], $eigenschappen),
+				'eclass'	=> 'installatie'
 			));
 
 		}
@@ -561,7 +556,7 @@ function efiber_haal_aanmeldformulier() {
 		efiber_form_rij (
 			'Incl. wifi router',
 			(($eigenschappen['provider_meta']['incl_wifi_router']) === "true" ? "Ja" : "Nee")
-		) . 
+		) .
 		"<br>" .
 		efiber_form_rij (
 			'Eenmalige kosten',
@@ -570,11 +565,11 @@ function efiber_haal_aanmeldformulier() {
 		efiber_form_rij (
 			'Waarvan borg',
 			efiber_maak_geld_op($eigenschappen['eenmalig']['borg']['prijs'])
-		) . 
+		) .
 		efiber_form_rij (
 			'Totaal maandelijks',
 			"<span class='maandelijks-totaal'></span>"
-		) . 
+		) .
 		"<br>" . (
 		efiber_form_rij (
 			'Minimale contractsduur',
@@ -617,7 +612,7 @@ function efiber_haal_aanmeldformulier() {
 
 	// datumveld mag niet automatisch vullen ivm iphone bug
 	// iphone vult het op een andere wijze dan formulier verwacht
-	// vervolgens verdwijnt vanwege de validatie de submitknop 
+	// vervolgens verdwijnt vanwege de validatie de submitknop
 	// maar de gebruiker krijgt geen notificatie
 	$gf = str_replace("id='input_1_32'", "id='input_1_32' autocomplete='off'", $gf);
 
@@ -627,7 +622,6 @@ function efiber_haal_aanmeldformulier() {
 	$r = array(
 		'id'			=> $pakket['ID'],
 		'print'			=> $print,
-		'console'		=> $pakket // dit komt in de console terecht van de 
 	);
 
 	// @TODO hier is geen foutafhandeling?

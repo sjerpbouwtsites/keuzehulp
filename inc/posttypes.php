@@ -139,7 +139,6 @@ function Ef_registreer_posttypes() {
     $nieuw_pakket = new Ef_posttype_voorb('nieuw-pakket', 'nieuwe-pakketten');
     $nieuw_pakket->pas_args_aan(array( 'menu_icon'   => 'dashicons-cart', 'supports' => array( 'title' ) ));    
     $nieuw_pakket->maak_taxonomie('tv-type', 'tv-typen');
-    $nieuw_pakket->maak_taxonomie('bekabeling', 'bekabelingen');    
     $nieuw_pakket->maak_taxonomie('type', 'typen');
     $nieuw_pakket->registreer();
 

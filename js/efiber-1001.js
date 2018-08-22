@@ -3,6 +3,39 @@ const doc = document,
 	body 	= doc.body;
 let $ = null;
 
+function ankerRedirect() {
+
+
+	/*------------------------------------------------------
+	|
+	| 	Indien iemand afkomstig is van een campagnepagina, dan worden links aangepast.
+	|
+	|-----------------------------------------------------*/
+
+
+	var ankers = doc.querySelectorAll("a[href^='https://iedereenglasvezel']");
+	var ankers2 = doc.querySelectorAll("a[href^='https://e-fiber']");
+
+	if (location.search && location.search.indexOf('ref') !== -1) {
+
+		var gaNaar = location.search.replace('?ref=', '');
+
+		for (var i = ankers.length - 1; i >= 0; i--) {
+			ankers[i].href = ankers[i].href.replace('iedereenglasvezel', gaNaar);
+		}
+		for (var i = ankers2.length - 1; i >= 0; i--) {
+			ankers2[i].href = ankers2[i].href.replace('e-fiber', gaNaar);
+		}
+
+	} else {
+
+		for (var i = ankers.length - 1; i >= 0; i--) {
+			ankers[i].style.visibility = "hidden";
+		}
+
+	}	
+}
+
 function efiberInit() {
 	/*------------------------------------------------------
 	|

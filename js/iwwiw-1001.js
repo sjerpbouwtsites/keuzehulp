@@ -36,6 +36,7 @@ function ikWeetWatIkWilPakkettenAjax() {
 				.map(pakket => iwwiwProcedure(pakket)),
 
 				// maak array met maandTotalen en zoek laagste op.
+
 				providersLaagste = pakketten
 				.map(pakket => pakket.maandelijksTotaal())
 				.reduce((nieuweWaarde, huidigeWaarde) => (

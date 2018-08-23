@@ -2,7 +2,6 @@
 
 /* template name: keuzehulp */
 
-get_header();
 
 // !! Omwille van geheugengebruik maak ik maar één keer een instance aan van de Ef_knop klasse.
 // Denk er aan dat als je een waarde aanpast bij knop n, knop n + 1 wellicht die eigenschap erft.
@@ -16,8 +15,6 @@ function efiber_keuzehulp_pak_afb ($str = '') {
 }
 
  ?>
-
-
 
 <div class='keuzehulp'><div class='verpakking'>
 

@@ -308,7 +308,7 @@ function efiber_vergelijking() {
 		$providers = filter_op_regio_en_verrijk_pakket($pakketten, $toegestane_providers, $postfix);
 
 		echo json_encode(array(
-			'providers'		=> $providers
+			'providers'		=> $providers,
 		));
 		die();
 
@@ -395,7 +395,8 @@ function efiber_ik_weet_wat_ik_wil_pakketten() {
 		$providers = filter_op_regio_en_verrijk_pakket($pakketten, $toegestane_providers, $postfix);
 
 		echo json_encode(array(
-			'providers' => $providers,
+			'providers' 	=> $providers,
+			'console'		=> $providers
 		));
 	    wp_die();
 

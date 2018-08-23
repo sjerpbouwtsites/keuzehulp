@@ -30,14 +30,24 @@ define('EF_JS_URI', EF_THEME_URI . "/js");
 
 function Ef_scripts_in_rij() {
 
+
+
     $pak_scripts = array(
-        'nuts', 'ajax', 'iwwiw', 'controleer-postcode', 'routing', 'dispatcher', 'geheugen', 'route-keuze-consequenties', 'pakket',
-        'vergelijking', 'aanmeldformulier', 'modal', 'keuze-niveaus'
+        'nuts', 
+        'ajax', 
+        'iwwiw', 
+        'controleer-postcode', 
+        'routing', 
+        'dispatcher',
+        'geheugen', 
+        'route-keuze-consequenties', 
+        'pakket',
+        'vergelijking', 
+        'aanmeldformulier', 
+        'keuze-niveaus', 
+        'modal'
     );
 
-/*    $pak_stijlen = array(
-        'thema-stijl', '', 'form', 'modal', 'niveau-knoppen', 'stappen', 'postcode', 'print', 'knoppen'
-    );*/
 
     $pak_stijlen = array(
         '', 'form', 'modal', 'niveau-knoppen', 'stappen', 'postcode', 'print', 'knoppen', 'hp'

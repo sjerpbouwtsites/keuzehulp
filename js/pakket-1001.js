@@ -7,9 +7,9 @@ function VerrijktPakket(p) {
 	|
 	|-----------------------------------------------------*/
 
-
-	for (const k in p) this[k] = p[k];
-
+	Object.entries(p).forEach(([k, w]) => {
+		this[k] = w;
+	});
 
 	this.generiekTotaal = (soortTotaal, formatteren = false) => {
 		/*------------------------------------------------------
@@ -19,9 +19,9 @@ function VerrijktPakket(p) {
 		|
 		|-----------------------------------------------------*/
 
-		const tl = this.eigenschappen[soortTotaal]; let t = 0;
-
-		for (const optieNaam in tl) t += tl[optieNaam].aantal * tl[optieNaam].prijs;
+		const t = Object.entries(this.eigenschappen[soortTotaal])
+			.map(([optieNaam, optieWaarde]) => optieWaarde)
+			.reduce((totaal, optie) => totaal + (optie.aantal * optie.prijs), 0);
 
 		return formatteren ? this.formatteerPrijs(t) : t;
 	};
@@ -50,7 +50,9 @@ function VerrijktPakket(p) {
 
 		['maandelijks', 'eenmalig'].forEach((prijsCat) => {
 			const printHier = document.getElementsByClassName(`${prijsCat}-totaal`);
-			Array.from(printHier).forEach(printPlek => printPlek.innerHTML = `${this.generiekTotaal(prijsCat, true)}`);
+			Array.from(printHier).forEach((printPlek) => {
+				printPlek.innerHTML = this.generiekTotaal(prijsCat, true);
+			});
 		});
 	};
 
@@ -68,7 +70,7 @@ function VerrijktPakket(p) {
 		|-----------------------------------------------------*/
 
 		const vorigeSnelheid = this.pakHuidigeSnelheid();
-		if (vorigeSnelheid == nweSnelheid) return;
+		if (vorigeSnelheid === nweSnelheid) return;
 
 		// kan zijn dat uberhaupt nog geen snelheid is ingesteld.
 		this.mutatie(`snelheid-${nweSnelheid}`, 1);
@@ -76,10 +78,12 @@ function VerrijktPakket(p) {
 
 		['maandelijks', 'eenmalig'].forEach((prijsCat) => {
 			// voor iedere optie in eigenschappen.eenmalig en eigenschappen.maandelijks
-			for (const optieNaam in this.eigenschappen[prijsCat]) {
+
+			Object.entries(this.eigenschappen[prijsCat]).forEach(([optieNaam, optieWaarden]) => {
 				// selectie op 1) snelheidsafhankelijk 2) vorige snelheid
-				if (optieNaam.indexOf(vorigeSnelheid) !== -1) {
-					const oudeHoeveelheid = this.optieAantal(optieNaam);
+				if (optieWaarden.snelheid && optieWaarden.snelheid === vorigeSnelheid) {
+					
+					const oudeHoeveelheid = optieWaarden.aantal;
 
 					// nu zet je de oude snelheid op aantal 0
 					this.mutatie(optieNaam, 0);
@@ -90,7 +94,7 @@ function VerrijktPakket(p) {
 					// bestaat de optie? oude hoeveelheid schrijven.
 					if (this.optieBestaat(nweOptie)) this.mutatie(nweOptie, oudeHoeveelheid);
 				}
-			}
+			});
 		});
 
 		this.huidige_snelheid = nweSnelheid;
@@ -156,8 +160,8 @@ function VerrijktPakket(p) {
 	this.optiePrijs = (optie = '', formatteer = false) => {
 		const e = this.eigenschappen,
 
-		 ep = e.eenmalig[optie] ? e.eenmalig[optie].prijs : false,
-		 mp = e.maandelijks[optie] ? e.maandelijks[optie].prijs : false;
+		ep = e.eenmalig[optie] ? e.eenmalig[optie].prijs : false,
+		mp = e.maandelijks[optie] ? e.maandelijks[optie].prijs : false;
 
 		// let wel, 0 is dus falsy maar OK.
 
@@ -175,7 +179,9 @@ function VerrijktPakket(p) {
 			(ep || ep === 0)
 			&& (mp || mp === 0)
 		) {
-			return formatteer ? { ep: this.formatteerPrijs(ep), mp: this.formatteerPrijs(mp) } : { ep, mp };
+			return formatteer
+				? { ep: this.formatteerPrijs(ep), mp: this.formatteerPrijs(mp) }
+				: { ep, mp };
 		}
 			console.warn(`rare fok op in pakket optieprijs van ${optie}`);
 			console.trace();
@@ -194,25 +200,27 @@ function VerrijktPakket(p) {
 	this.tabelletje = eigenschap => console.table(this.eigenschappen[eigenschap]);
 
 	this.huidigeTelefonieBundel = () => {
-		const tb = this.eigenschappen.telefonie_bundels;
-		for (const bundelNaam in tb) {
-			const bundels = tb[bundelNaam];
-			let gevonden = false;
-			bundels.forEach((bundel) => {
-				if (this.eigenschappen.maandelijks[bundel.slug].aantal > 0) {
-					gevonden = bundel;
-				}
+		let gevonden = false;
+		Object.entries(this.eigenschappen.telefonie_bundels)
+			.forEach(([bundelNaam, bundels]) => {
+				bundels.forEach((bundel) => {
+					if (this.eigenschappen.maandelijks[bundel.slug].aantal > 0) {
+						gevonden = bundel;
+					}
+				});
 			});
-			if (gevonden) return gevonden;
-		}
+		return gevonden;
 	};
 
 	this.heeftTelefonieBereik = bereik => !!this.eigenschappen.telefonie_bundels[bereik];
 
 	this.alleTelefonieBundelsUit = () => {
-		for (const bereik in this.eigenschappen.telefonie_bundels) {
-			this.eigenschappen.telefonie_bundels[bereik].forEach(bundelInBereik => this.mutatie(bundelInBereik.slug, 0));
-		}
+		Object.entries(this.eigenschappen.maandelijks)
+			.forEach(([optieNaam, optieWaarden]) => {
+				if (optieWaarden.optietype === 'telefonie-bundel') {
+					this.mutatie(optieNaam, 0);
+				}
+			});
 	};
 
 	this.zetTelefonieBereikAan = (bereik) => {
@@ -226,8 +234,7 @@ function VerrijktPakket(p) {
 			console.error('type telefonie bundel bestaat niet ', b, arguments);
 			return false;
 		}
-		const slug = this.eigenschappen.telefonie_bundels[bereik][0].slug;
-		this.mutatie(slug, 1);
+		this.mutatie(this.eigenschappen.telefonie_bundels[bereik][0].slug, 1);
 	};
 
 	this.pakZenders = () => this.eigenschappen[`zenders-${this.huidige_snelheid}`];

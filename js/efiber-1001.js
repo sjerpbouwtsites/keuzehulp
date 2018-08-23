@@ -70,6 +70,8 @@ function efiberInit() {
 	generiekeValidatie();
 }
 
+window.onload = function () { efiberInit(); };
+
 function generiekeValidatie() {
 	/*------------------------------------------------------
 	|
@@ -82,17 +84,20 @@ function generiekeValidatie() {
 		const t = e.target,
 		idAr = ['huidige-nummer', 'huidige-extra-nummer', 'input_1_21', 'huisnummer'],
 		ekc = Number(e.keyCode);
-		if ($.inArray(ekc, [46, 8, 9, 27, 13, 110, 190]) !== -1
-            || (ekc === 65 && (e.ctrlKey === true || e.metaKey === true))
-            || (ekc === 67 && (e.ctrlKey === true || e.metaKey === true))
-            || (ekc === 88 && (e.ctrlKey === true || e.metaKey === true))
-            || (ekc >= 35 && e.keyCode <= 39)) {
-                 // let it happen, don't do anything
-                 return;
-        }
-		if ((e.shiftKey || (ekc < 48 || ekc > 57)) && (ekc < 96 || ekc > 105)) {
-            e.preventDefault();
-        }
+
+		if (idAr.indexOf(e.target.id) !== -1) {
+			if ($.inArray(ekc, [46, 8, 9, 27, 13, 110, 190]) !== -1
+				|| (ekc === 65 && (e.ctrlKey === true || e.metaKey === true))
+				|| (ekc === 67 && (e.ctrlKey === true || e.metaKey === true))
+				|| (ekc === 88 && (e.ctrlKey === true || e.metaKey === true))
+				|| (ekc >= 35 && e.keyCode <= 39)) {
+					// let it happen, don't do anything
+					return;
+			}
+			if ((e.shiftKey || (ekc < 48 || ekc > 57)) && (ekc < 96 || ekc > 105)) {
+				e.preventDefault();
+			}
+		}
 	});
 }
 

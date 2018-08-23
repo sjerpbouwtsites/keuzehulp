@@ -140,6 +140,7 @@ function Ef_registreer_posttypes() {
     $nieuw_pakket->pas_args_aan(array( 'menu_icon'   => 'dashicons-cart', 'supports' => array( 'title' ) ));    
     $nieuw_pakket->maak_taxonomie('tv-type', 'tv-typen');
     $nieuw_pakket->maak_taxonomie('type', 'typen');
+    $nieuw_pakket->maak_taxonomie('status', 'statussen');
     $nieuw_pakket->registreer();
 
     $tv_bundel = new Ef_posttype_voorb('tv-bundel', 'tv-bundels');

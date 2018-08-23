@@ -10,7 +10,8 @@ function ikWeetWatIkWilPakkettenAjax() {
 
 
 	// keuzehulp vullen met data installatie
-	const keuzehulp = JSON.parse(sessionStorage.getItem('efiber-keuzehulp'));
+	const keuzehulp = JSON.parse(sessionStorage.getItem('efiber-keuzehulp')),
+	adres = JSON.parse(sessionStorage.getItem('efiber-adres'));
 	keuzehulp.installatie = '1';
 	sessionStorage.setItem('efiber-keuzehulp', JSON.stringify(keuzehulp));
 
@@ -21,13 +22,33 @@ function ikWeetWatIkWilPakkettenAjax() {
 			action: 'efiber_ik_weet_wat_ik_wil_pakketten',
 			data: {
 				keuzehulp,
-				gebiedscode: sessionStorage.getItem('efiber-gebiedscode'),
+				adres
 			},
 		},
 		cb(r) {
 			const printProviderPakketten = document.getElementById('print-provider-pakketten');
 
 			let printPakketten = '';
+
+			if (!r.providers || !Object.entries(r.providers).length) {
+				efiberModal(efiberTekst('geenPakkettenGevonden'), 2000);
+				efiberRouting.ga(1); // terug naar de voorpagina.
+
+				const ajf2 = new EfiberAjax({
+					ajaxData: {
+						action: 'kz_schrijf_fout',
+						data: {
+							aType: 'geen pakketten gevonden',
+							keuzehulp,
+							adres
+						},
+					},
+					cb: function(){ console.warn('geen pakketten gevonden. Gerapporteerd.'); },
+				});
+
+				ajf2.doeAjax();				
+				return;				
+			}
 
 			Object.entries(r.providers).forEach(([provider, providerBundel]) => {
 				// maak de rekenklassen

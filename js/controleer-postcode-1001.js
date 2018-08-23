@@ -29,30 +29,62 @@ function postcodeAjaxCB(r) {
 		// @TODO dit is drie keer hetzelfde. Doe het allemaal via het adres.
 		// hoe wordt door de achterkant teruggegeven?!
 		r.data.gebiedscode = r.gebiedscode;
+		r.data.status = r.status;
 		sessionStorage.setItem('efiber-adres', JSON.stringify(r.data));
 		sessionStorage.setItem('efiber-code', r.gebiedscode);
-		sessionStorage.setItem('efiber-gebiedscode', r.gebiedscode);
 
-		const ankers = doc.querySelectorAll("a[href^='https://iedereenglasvezel']");
+		if (r.status === '100') { //geannuleerd
 
-		let thuisUrl = '';
+			if (r.provider_beschikbaar) {
+				efiberModal(
+					efiberTekst('succesAnnulering'),
+					2000,
+				);
+				efiberRouting.ga(2);
+			} else {
+				efiberModal(
+					efiberTekst('leadAnnulering'), 
+					5000
+				);
+				efiberRouting.ga(51);
+				EfiberAjaxKleineFormulieren('efiber_haal_lead_formulier', 'print-lead-formulier', {});				
+			}
 
-		if (r.gebiedscode === 'EFIKOGG01') {
-			thuisUrl = 'koggenlandopglasvezel';
+		} else if (r.status === '0') {
+
+			if (r.provider_beschikbaar) {
+				efiberModal(
+					efiberTekst('succesCoax'),
+					2000,
+				);
+				efiberRouting.ga(2);
+			} else {
+				logFouteSituatiePostcodeCheck(r);
+			}
+
 		} else {
-			thuisUrl = 'heerhugowaardopglasvezel';
-		}
 
-		for (let i = ankers.length - 1; i >= 0; i--) {
-			ankers[i].href = ankers[i].href.replace('iedereenglasvezel', thuisUrl);
-			ankers[i].style.visibility = 'visible';
-		}
+			if (r.provider_beschikbaar) {
 
-		efiberModal(
-			efiberTekst('welInUwGebiedTorso', r.regio),
-			2000,
-		);
-		efiberRouting.ga(2);
+				const tekstSleutel = {
+					status1: 'succesVraagbundeling',
+					status2: 'succesSchouwen',
+					status3: 'succesGraafwerkzaamheden',
+					status4: 'succesHuisaansluitingen',
+					status5: 'succesOpgeleverd',
+				};
+
+				efiberModal(
+					efiberTekst(tekstSleutel[`status${r.status}`], r.regio),
+					2000,
+				);
+				efiberRouting.ga(2);			
+
+			} else {
+				logFouteSituatiePostcodeCheck(r);
+			}
+
+		}
 
 		// wacht op rendering van eea zodat pixelberekeningen kloppen
 		setTimeout(() => {
@@ -64,6 +96,33 @@ function postcodeAjaxCB(r) {
 		EfiberAjaxKleineFormulieren('efiber_haal_lead_formulier', 'print-lead-formulier', {});
 		// efiberHaalLeadFormulier();
 	}
+}
+
+
+function logFouteSituatiePostcodeCheck(r){
+	
+	efiberModal(
+		efiberTekst('postcodecheckFout'), 
+		5000
+	);
+
+	const ajf = new EfiberAjax({
+		ajaxData: {
+			action: 'kz_schrijf_fout',
+			data: {
+				aType: 'geen pakketten gevonden',
+				postcodecheckData: r
+			},
+		},
+		cb: function(){
+			setTimeout(()=>{
+				location.href = "https://iedereenglasvezel.nl";
+			}, 1500);
+		},
+	});
+
+	ajf.doeAjax();
+
 }
 
 function controleerPostcode() {

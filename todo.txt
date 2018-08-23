@@ -1,3 +1,6 @@
 1	overzetten provider-website & provider-email
 
 2	eredvisie & fox complete
+
+3	ergens pak je de providers bij de pakketten oid. Dat gaat op post title match met de taxonomie name. Slecht!
+	geef de provider taxonomy ook mee aan de provider... en geef dezelfde waarde mee.

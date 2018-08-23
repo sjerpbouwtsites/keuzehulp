@@ -1,6 +1,7 @@
 /* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren  */
  function vergelijkingAjax() {
-  	const keuzehulp = JSON.parse(sessionStorage.getItem('efiber-keuzehulp'));
+  	const keuzehulp = JSON.parse(sessionStorage.getItem('efiber-keuzehulp')),
+  	adres = JSON.parse(sessionStorage.getItem('efiber-adres'));
 
   	doc.getElementById('print-vergelijking').innerHTML = '<p>Uw pakketten worden opgehaald en vergeleken.</p>';
 
@@ -8,7 +9,7 @@
 		ajaxData: {
 			action: 'efiber_vergelijking',
 			data: {
-				gebiedscode: sessionStorage.getItem('efiber-gebiedscode'),
+				adres,
 				keuzehulp,
 			},
 		},
@@ -63,7 +64,25 @@
 
 				printVergelijking.innerHTML = printPakketten;
 			} else {
-				efiberModal('geen pakketten gevonden', 1500);
+			
+				efiberModal(efiberTekst('geenPakkettenGevonden'), 2000);
+				efiberRouting.ga(1); // terug naar de voorpagina.
+
+				const ajf2 = new EfiberAjax({
+					ajaxData: {
+						action: 'kz_schrijf_fout',
+						data: {
+							aType: 'geen pakketten gevonden',
+							keuzehulp,
+							adres
+						},
+					},
+					cb: function(){ console.warn('geen pakketten gevonden. Gerapporteerd.'); },
+				});
+
+				ajf2.doeAjax();				
+				return;				
+			
 			} // als r cq response
 		},
 		telefonieSectie(pakket) {

@@ -140,7 +140,6 @@ function Ef_registreer_posttypes() {
     $nieuw_pakket->pas_args_aan(array( 'menu_icon'   => 'dashicons-cart', 'supports' => array( 'title' ) ));    
     $nieuw_pakket->maak_taxonomie('tv-type', 'tv-typen');
     $nieuw_pakket->maak_taxonomie('type', 'typen');
-    $nieuw_pakket->maak_taxonomie('status', 'statussen');
     $nieuw_pakket->registreer();
 
     $tv_bundel = new Ef_posttype_voorb('tv-bundel', 'tv-bundels');
@@ -152,6 +151,16 @@ function Ef_registreer_posttypes() {
     $telefonie_bundel->maak_taxonomie('bereik', 'bereiken');
     $telefonie_bundel->registreer();
 
+
+    $status = new Ef_posttype_voorb('status', 'statussen');
+    $status->pas_args_aan(array( 'menu_icon'  => 'dashicons-forms', 'supports'  => array( 'title' ) ));    
+    $status->registreer();
+
+
+    // ONDERSTAANDE TAXONOMIEEN WORDEN DOOR MEERDERE POSTTYPES GEDEELD 
+    // DAAROM APART INGESTELD
+
+    //////////////////////
 
     $labels = array(
             'name'              => _x( 'Providers', 'taxonomy general name' ),
@@ -178,6 +187,8 @@ function Ef_registreer_posttypes() {
 
     register_taxonomy( 'provider', array( 'telefonie-bundel', 'tv-bundel', 'nieuw-pakket' ), $args );
 
+    //////////////////////
+
     $labels = array(
             'name'              => _x( 'Regios', 'taxonomy general name' ),
             'singular_name'     => _x( 'Regio', 'taxonomy singular name' ),
@@ -203,7 +214,32 @@ function Ef_registreer_posttypes() {
 
     register_taxonomy( 'regio', array('provider', 'zakelijke-provider' ), $args );
 
+    ////////////////////
 
+    $labels = array(
+            'name'              => _x( 'Statussen', 'taxonomy general name' ),
+            'singular_name'     => _x( 'Status', 'taxonomy singular name' ),
+            'search_items'      => __( 'Doorzoek statussen' ),
+            'all_items'         => __( 'Alle statussen' ),
+            'parent_item'       => __( 'Ouder status' ),
+            'parent_item_colon' => __( 'Ouder status:' ),
+            'edit_item'         => __( 'Bewerk status' ),
+            'update_item'       => __( 'Vernieuw status' ),
+            'add_new_item'      => __( 'Voeg nieuwe status toe' ),
+            'new_item_name'     => __( 'Naam nieuwe status' ),
+            'menu_name'         => __( 'Status' ),
+        );
+
+    $args = array(
+        'hierarchical'      => true,
+        'labels'            => $labels,
+        'show_ui'           => true,
+        'show_admin_column' => true,
+        'query_var'         => true,
+        'rewrite'           => array( 'slug' => 'status' ),
+    );
+
+    register_taxonomy( 'status', array('nieuw-pakket', 'status' ), $args );
 
 }
 

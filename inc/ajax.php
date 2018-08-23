@@ -1,5 +1,22 @@
 <?php
 
+$func_n = "kz_schrijf_fout";
+
+add_action( 'wp_ajax_'.$func_n, $func_n );
+add_action( 'wp_ajax_nopriv_'.$func_n, $func_n );
+
+
+
+function kz_schrijf_fout() {
+
+	error_log(print_r($_POST['data'], true));
+	echo json_encode(array('succes' => true));
+	die();
+
+}
+
+
+
 $func_n = "efiber_controleer_postcode";
 
 add_action( 'wp_ajax_'.$func_n, $func_n );
@@ -39,6 +56,8 @@ function efiber_controleer_aanvraag_al_gedaan ($ad, $con) {
 		echo json_encode(array(
 			'gevonden'			=> true,
 			'aanvraag_al_gedaan'=> true,
+			'status'			=> (mysqli_fetch_assoc($result))['provider'],
+			'provider_beschikbaar'	=> kz_provider_beschikbaar($rij['gebiedscode']),
 			'aanvraag_info'		=> array(
 				'naam'		=> $provider_naam,
 				'URL'		=> get_field('website', $provider->ID),
@@ -55,8 +74,25 @@ function efiber_controleer_aanvraag_al_gedaan ($ad, $con) {
     }
 }
 
+function kz_provider_beschikbaar ($gebiedscode = '') {
+	$providers = get_posts(array(
+		'posts_per_page'	=> 1,
+		'post_type'			=> 'provider',
+		'tax_query'	=> array(
+			array(
+				'taxonomy' => 'regio',
+				'field' => 'slug',
+				'terms' => strtolower($gebiedscode),
+			),
+		)
+	));
+	return count($providers) > 0;
+}
+
+
 function efiber_controleer_postcode() {
 
+	
 
 	/*---------------------------------------------------------
 	|
@@ -103,6 +139,8 @@ function efiber_controleer_postcode() {
 				'data'					=> $ajax_data,
 				'aanvraag_al_gedaan'	=> false,
 				'aanvraag_info'			=> false,
+				'status'				=> $rij['status'],
+				'provider_beschikbaar'	=> kz_provider_beschikbaar($rij['gebiedscode'])
 			));
 	    } else {
 
@@ -132,6 +170,8 @@ function efiber_controleer_postcode() {
 						'data'					=> $ajax_data,
 						'aanvraag_al_gedaan'	=> false,
 						'aanvraag_info'			=> false,
+						'status'				=> $rij['status'],
+						'provider_beschikbaar'	=> kz_provider_beschikbaar($rij['gebiedscode'])
 					));
 			    } else {
 
@@ -159,7 +199,7 @@ function filter_op_regio_en_verrijk_pakket ($pakketten, $toegestane_providers, $
 
 	// stript overbodige properties van post obj af.
 	$pakketten = array_map(function($verz){
-		return (object) array( 'ID'  => $verz->ID, );
+		return (object) array( 'ID'  => $verz->ID, 'titel' => $verz->post_title);
 	}, $pakketten);
 
 	foreach ($pakketten as $p) :
@@ -233,8 +273,9 @@ function efiber_vergelijking() {
 
 	// gebiedscode bind postcodetabel aan de regios en zo aan welke pakketten kunnen... 
 	// pakketten hebben regio taxonomy waarvan slug = gebiedscode in onderkast
-	$gebiedscode = strtolower($ajax_data['gebiedscode']);
+	$gebiedscode = strtolower($ajax_data['adres']['gebiedscode']);
 
+	$status = strtolower($ajax_data['adres']['status']);
 
 	$tax_query = array();
 
@@ -292,6 +333,13 @@ function efiber_vergelijking() {
 		}		
 	}
 
+	$tax_query[] = array(
+	    'taxonomy' => 'status',
+	    'field' => 'slug',
+	    'terms' => 'status-'.$status,
+	);
+
+
 	$pakketten = get_posts(array(
 		'posts_per_page'	=> -1,
 		'post_type'			=> 'nieuw-pakket',
@@ -300,7 +348,7 @@ function efiber_vergelijking() {
 
 	// alle provider namen in deze regio.
 
-	$toegestane_providers = toegestane_providers(strtolower($ajax_data['gebiedscode']));
+	$toegestane_providers = toegestane_providers($gebiedscode);
 	
 
 	if ($pakketten and count($pakketten)) : 
@@ -314,7 +362,7 @@ function efiber_vergelijking() {
 
 	else : 
 
-		echo json_encode(array('error' => true));
+		echo json_encode(array('error' => true, 'console'		=> $tax_query));
 		die();
 
 	endif;	
@@ -344,6 +392,8 @@ function efiber_ik_weet_wat_ik_wil_pakketten() {
 
 
 	$ajax_data = $_POST['data'];
+	$gebiedscode = $ajax_data['adres']['gebiedscode'];
+	$status = $ajax_data['adres']['status'];
 	$keuzehulp = $ajax_data['keuzehulp'];
 
 	$slug_ar = array(
@@ -361,26 +411,32 @@ function efiber_ik_weet_wat_ik_wil_pakketten() {
 	);
 
 
-
 	$type_slug = $slug_ar[($keuzehulp['ik-weet-wat-ik-wil'])];
 
-	$pakketten = get_posts(
-	    array(
-	        'posts_per_page' => -1,
-	        'post_type' => 'nieuw-pakket',
-	        'tax_query' => array(
-	            array(
-	                'taxonomy' => 'type',
-	                'field' => 'slug',
-	                'terms' => $type_slug,
-	            ),
-	        )
-	    )
-	);
+	$pakken_query_args = array(
+        'posts_per_page' => -1,
+        'post_type' => 'nieuw-pakket',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'type',
+                'field' => 'slug',
+                'terms' => $type_slug,
+            ),
+            array(
+                'taxonomy' => 'status',
+                'field' => 'slug',
+                'terms' => 'status-'.$status,
+            ),	            
+        )
+    );
+
+	$pakketten = get_posts($pakken_query_args);
+
+
 
 	// alle provider namen in deze regio.
 
-	$toegestane_providers = toegestane_providers(strtolower($ajax_data['gebiedscode']));
+	$toegestane_providers = toegestane_providers($gebiedscode);
 
 	//@TODO komt deze provider in deze regio voor?
 

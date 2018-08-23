@@ -185,7 +185,7 @@ var knoppenFuncs = {
 		keuzehulpGeneriek(knop, 'data-efiber-televisie-keuze', 'televisie');
 
 
-		//als interactieve TV, sla dan kabelstap over en sla op dat keuze kabels is UTP.
+/*		//als interactieve TV, sla dan kabelstap over en sla op dat keuze kabels is UTP.
 		var tvOptiesVerderKnop = doc.querySelector('.efiber-navigatie-binnen a[data-keuzehulp-stap="9"]');
 
 		if (knop.getAttribute('data-efiber-televisie-keuze') == 3) {
@@ -197,7 +197,7 @@ var knoppenFuncs = {
 
 		} else if (knop.getAttribute('data-efiber-televisie-keuze') == 2)  {
 			tvOptiesVerderKnop.setAttribute('href', '#10');
-		}
+		}*/
 
 	},
 	zetKeuzeTelevisieOpties: function (knop) {

@@ -193,7 +193,7 @@ function efiber_controleer_postcode() {
 	
 }
 
-function filter_op_regio_en_verrijk_pakket ($pakketten, $toegestane_providers, $naam_postfix = '') {
+function filter_op_regio_en_verrijk_pakket ($pakketten, $toegestane_providers, $naam_postfix = '', $status = '100') {
 
 	$providers = array();
 
@@ -205,7 +205,7 @@ function filter_op_regio_en_verrijk_pakket ($pakketten, $toegestane_providers, $
 	foreach ($pakketten as $p) :
 
 		// eigenschappen als provider, minimale contractsduur en pakketopties
-		$p->eigenschappen = efiber_pakket_eigenschappen($p, $ajax_data['gebiedscode']);
+		$p->eigenschappen = efiber_pakket_eigenschappen($p, $ajax_data['gebiedscode'], $status);
 		$p->provider = $p->eigenschappen['provider_meta']['naam'];
 
 		// nu pakketten filteren op provider cq filteren op regio.
@@ -353,7 +353,7 @@ function efiber_vergelijking() {
 
 	if ($pakketten and count($pakketten)) : 
 
-		$providers = filter_op_regio_en_verrijk_pakket($pakketten, $toegestane_providers, $postfix);
+		$providers = filter_op_regio_en_verrijk_pakket($pakketten, $toegestane_providers, $postfix, $status);
 
 		echo json_encode(array(
 			'providers'		=> $providers,
@@ -443,12 +443,11 @@ function efiber_ik_weet_wat_ik_wil_pakketten() {
 	if ($pakketten and count($pakketten)) : 
 
 		$postfix = $naam_ar[($keuzehulp['ik-weet-wat-ik-wil'])] . (
-			($keuzehulp['ik-weet-wat-ik-wil'] == 3 || $keuzehulp['ik-weet-wat-ik-wil'] == 4) ? 
-				" " . $p->eigenschappen['tv_type']
-			:
-				''
+			($keuzehulp['ik-weet-wat-ik-wil'] == 3 || $keuzehulp['ik-weet-wat-ik-wil'] == 4) 
+				? " " . $p->eigenschappen['tv_type']
+				: ''
 		);
-		$providers = filter_op_regio_en_verrijk_pakket($pakketten, $toegestane_providers, $postfix);
+		$providers = filter_op_regio_en_verrijk_pakket($pakketten, $toegestane_providers, $postfix, $status);
 
 		echo json_encode(array(
 			'providers' 	=> $providers,

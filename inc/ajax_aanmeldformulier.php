@@ -565,6 +565,13 @@ function efiber_haal_aanmeldformulier() {
 		efiber_form_rij (
 			'Waarvan borg',
 			efiber_maak_geld_op($eigenschappen['eenmalig']['borg']['prijs'])
+		) . ((float)$eigenschappen['eenmalig']['glasvezel_naar_huis']['prijs'] > 0.01
+			?
+				efiber_form_rij (
+					'Waarvan kosten glasvezel naar huis doortrekken',
+					efiber_maak_geld_op($eigenschappen['eenmalig']['glasvezel_naar_huis']['prijs'])
+				)		
+			: ''
 		) .
 		efiber_form_rij (
 			'Totaal maandelijks',

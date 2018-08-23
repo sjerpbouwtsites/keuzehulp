@@ -4,3 +4,7 @@
 
 3	ergens pak je de providers bij de pakketten oid. Dat gaat op post title match met de taxonomie name. Slecht!
 	geef de provider taxonomy ook mee aan de provider... en geef dezelfde waarde mee.
+
+4	klopt de status data wel?
+
+5	uploadsnelheid printen

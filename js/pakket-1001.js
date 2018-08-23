@@ -37,7 +37,7 @@ function VerrijktPakket(p) {
 
 	// Maakt van Amerikaans getal europese prijs.
 	// @TODO als 0 dan 'gratis' of 'inclusief'
-	this.formatteerPrijs = prijs => `&euro; ${Number(prijs).toFixed(2).replace('.', ',')}`;
+	this.formatteerPrijs = prijs => `&euro;${Number(prijs).toFixed(2).replace('.', ',')}`;
 
 
 	this.printPrijzen = () => {

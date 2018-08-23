@@ -117,7 +117,7 @@ class Kz_optie {
 	}
 }
 
-function efiber_pakket_eigenschappen($p, $gc = '')  {
+function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 
 
 	/*---------------------------------------------------------
@@ -146,11 +146,57 @@ function efiber_pakket_eigenschappen($p, $gc = '')  {
 		$pakket_type = array_map(function($verz){ return $verz->name; }, wp_get_post_terms($p->ID, 'type'));
 
 		$return = array(
-			'pakket_type' => $pakket_type,
-			'eenmalig' => array(),
-			'maandelijks' => array(),
+			'pakket_type' 	=> $pakket_type,
+			'eenmalig' 		=> array(),
+			'maandelijks' 	=> array(),
 		);
 	}
+
+	/////////////////////////////////////////////////////
+	// - - - - - - - - - - - - - - - - - - - - - - - - //
+	/////////////////////////////////////////////////////
+
+
+	// STATUS
+
+	$status = get_posts(array(
+        'posts_per_page' => 1,
+        'post_type' => 'status',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'status',
+                'field' => 'slug',
+                'terms' => 'status-'.$status,
+            ),	            
+        )
+    ));
+
+
+
+    if (count($status)) {
+
+    	$return['status'] = array();
+    	$status_post_id = $status[0]->ID;
+    	$bc = get_field('bindend_contract', $status_post_id);
+    	$return['status']['bindend_contract'] = (!!$bc ? $bc : false);
+
+    	$meerprijs = get_field('installatie_meerprijs', $status_post_id);
+
+    	$return['eenmalig']['glasvezel_naar_huis'] = new Kz_optie(array(
+			'naam'		=> 'glasvezel naar huis',
+			'aantal'	=> 1,
+			'prijs'		=> (!!$meerprijs ? (float) $meerprijs : 0)
+		));
+
+
+
+    } else {
+    	$return['status'] = false;
+    }
+
+	
+
+
 
 
 	/////////////////////////////////////////////////////

@@ -109,43 +109,54 @@
 							</th>
 						</thead>
 						<tbody>
-							${this.telefonieTarieven(telBundel, pakket)}
+							<tr>
+								<td>Start vast</td>
+								<td>
+									${	isNaN(Number(telBundel.data.starttarief_vast_nl_binnen_bundel.tarief))
+										? telBundel.data.starttarief_vast_nl_binnen_bundel.tarief 
+										: pakket.formatteerPrijs(telBundel.data.starttarief_vast_nl_binnen_bundel.tarief)
+									}
+								</td>
+							</tr>
+							<tr>
+								<td>Vast p/m</td>
+								<td>
+									${	isNaN(Number(telBundel.data.minuuttarief_vast_nl_binnen_bundel.tarief))
+										? telBundel.data.minuuttarief_vast_nl_binnen_bundel.tarief 
+										: pakket.formatteerPrijs(telBundel.data.minuuttarief_vast_nl_binnen_bundel.tarief)
+									}
+								</td>
+							</tr>
+							<tr>
+								<td>Mobiel start</td>
+								<td>
+									${	isNaN(Number(telBundel.data.starttarief_mobiel_nl_binnen_bundel.tarief)) 
+										? telBundel.data.starttarief_mobiel_nl_binnen_bundel.tarief 
+										: pakket.formatteerPrijs(telBundel.data.starttarief_mobiel_nl_binnen_bundel.tarief)
+									}
+								</td>
+							</tr>																					
+							<tr>
+								<td>Mobiel p/m</td>
+								<td>
+									${	isNaN(Number(telBundel.data.minuuttarief_mobiel_nl_binnen_bundel.tarief)) 
+										? telBundel.data.minuuttarief_mobiel_nl_binnen_bundel.tarief 
+										: pakket.formatteerPrijs(telBundel.data.minuuttarief_mobiel_nl_binnen_bundel.tarief)
+									}
+								</td>
+							</tr>																												
 						<tbody>
 
 					</table>
+
+					<a href='#' class='knop' data-efiber-func='telefonie-modal' data-pakket-id='${pakket.id}'>Meer over deze telefoniebundel</a>
 
 					<p>${pakket.optieAantal('extra-vast-nummer') ? `Extra vast nummer: ${pakket.optiePrijs('extra-vast-nummer', true)}` : ''}</p>
 
 				</div>			
 			`;
 		},
-		telefonieTarieven(telBundel, pakket) {
-			const r = [];
-			for (const tariefNaam in telBundel.tarieven) {
-				if (tariefNaam === 'maandbedrag') continue;
 
-				const t = telBundel.tarieven[tariefNaam];
-
-				r.push(`
-					<tr>
-						<td>
-							${tariefNaam.replace('_', ' ')}
-						</td>
-						<td>
-							${pakket.formatteerPrijs(t.prijs)}
-						</td>
-						<td>
-							${t.tekst
-								? `<a class='kz-tooltip' href='#' title='${t.tekst}'></a>`
-							:								''
-							}
-						</td>
-					</tr>
-				`);
-			}
-
-			return r.join('');
-		},
 		televisieSectie(pakket) {
 			const z = pakket.pakZenders();
 
@@ -162,7 +173,7 @@
 						<h3>Televisie</h3>
 					</header>
 
-					<p>Aantal zenders ${z.totaal}</p>
+					<p>Aantal zenders ${z.totaal}<a href='#' class='i-tje' data-efiber-func='aantal-zenders-modal' data-pakket-id='${pakket.id}'>i</a></p>
 					<p>Aantal HD zenders ${z.hd}</p>
 					<p>Type TV ${pakket.pakTypeTV()}</p>
 

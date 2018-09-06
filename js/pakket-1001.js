@@ -237,6 +237,18 @@ function VerrijktPakket(p) {
 		this.mutatie(this.eigenschappen.telefonie_bundels[bereik][0].slug, 1);
 	};
 
+	this.maakTelefonieTarievenLijst = () => {
+
+		// JE BENT HIER!!!!
+
+		/*const huiData = (this.huidigeTelefonieBundel()).data;
+		const maandBedrag = ``;
+		const maxMinuten = ``;
+		const tarieven = Object.entries(huiData).filter([]).map( ARG => {
+
+		}).join('') ;*/
+	}
+
 	this.pakZenders = () => this.eigenschappen[`zenders-${this.huidige_snelheid}`];
 
 

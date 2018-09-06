@@ -321,8 +321,6 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 
 		foreach ($telefonie_bundel_posts as $tpb) {
 
-			$tarieven_teksten = get_field('tarieven', $tpb->ID);
-
 			$bundel_tax_data = wp_get_post_terms($tpb->ID, 'bereik');
 
 			$slug = slugify($tpb->post_title);
@@ -335,7 +333,7 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 			$telefonie_bundels[$bereik][] = array(
 				'naam'			=> $tpb->post_title,
 				'slug'			=> $slug,
-				'tarieven'		=> $tarieven_teksten,
+				'data'			=> get_field('tarieven', $tpb->ID),
 				'bereik'		=> $bereik
 			);
 
@@ -347,12 +345,7 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 				'prijs'			=> (float) $tarieven_teksten['maandbedrag']['prijs'],
 			));
 
-			$return['teksten'][$tpb->post_title] = get_field('tekst', $tpb->ID);
-			$return['teksten'][$tpb->post_title.'-maandbedrag'] = $tarieven_teksten['maandbedrag']['tekst'];
-			$return['teksten'][$tpb->post_title.'-starttarief'] = $tarieven_teksten['starttarief']['tekst'];
-			$return['teksten'][$tpb->post_title.'-vast_nl'] = $tarieven_teksten['vast_nl']['tekst'];
-			$return['teksten'][$tpb->post_title.'-mobiel_nl'] = $tarieven_teksten['mobiel_nl']['tekst'];
-
+			$return['teksten'][$tpb->post_title] = apply_filters('the_content', get_field('tekst', $tpb->ID));
 		}
 
 		$return['telefonie_bundels'] = $telefonie_bundels;

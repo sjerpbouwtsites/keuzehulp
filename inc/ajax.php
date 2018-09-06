@@ -357,6 +357,7 @@ function efiber_vergelijking() {
 
 		echo json_encode(array(
 			'providers'		=> $providers,
+			'console'		=> $providers
 		));
 		die();
 

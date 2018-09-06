@@ -1,3 +1,10 @@
+
+telefonie en televisie als modal
+
+televisie als wysiwig
+
+--- 
+
 1	overzetten provider-website & provider-email
 
 2	eredvisie & fox complete
@@ -8,3 +15,5 @@
 4	klopt de status data wel?
 
 5	uploadsnelheid printen
+
+6	status & contact bindend?

@@ -57,6 +57,7 @@ function knoppenDispatcher() {
 			for (var i = 0; i < funcs.length; i++){
 				var funcNaam = naarCamelCase(funcs[i]);
 				if (knoppenFuncs[funcNaam]) {
+					console.log('dispatch '+funcNaam);
 					knoppenFuncs[funcNaam](knop);
 				} else {
 					console.log('geen knop func gedefinieerd', funcNaam);
@@ -296,6 +297,7 @@ var knoppenFuncs = {
 	},
 	verwijderModal: function() {
 		efiberVerwijderModal();
+
 	},
 	verstopKeuzeNiveaus: function(){
 		doc.getElementById('sticky-keuzes').style.display = "none";
@@ -318,6 +320,13 @@ var knoppenFuncs = {
 		$(".Aanvullende-informatie").css({'display' : 'flex'});
 
 	},
+	telefonieModal: function (knop) {
+		kzTelefonieModal(knop);
+	},
+	aantalZendersModal: function (knop){
+		kzZendersModal(knop);
+	}
+
 };
 
 /* eslint-enable */

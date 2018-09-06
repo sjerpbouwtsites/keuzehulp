@@ -149,7 +149,7 @@
 
 					</table>
 
-					<a href='#' class='knop' data-efiber-func='telefonie-modal' data-pakket-id='${pakket.id}'>Meer over deze telefoniebundel</a>
+					<a href='#' class='knop' data-efiber-func='telefonie-modal' data-pakket-id='${pakket.ID}'>Meer over deze telefoniebundel</a>
 
 					<p>${pakket.optieAantal('extra-vast-nummer') ? `Extra vast nummer: ${pakket.optiePrijs('extra-vast-nummer', true)}` : ''}</p>
 
@@ -173,7 +173,7 @@
 						<h3>Televisie</h3>
 					</header>
 
-					<p>Aantal zenders ${z.totaal}<a href='#' class='i-tje' data-efiber-func='aantal-zenders-modal' data-pakket-id='${pakket.id}'>i</a></p>
+					<p>Aantal zenders ${z.totaal}<a href='#' class='i-tje knop' data-efiber-func='aantal-zenders-modal' data-pakket-id='${pakket.ID}'>i</a></p>
 					<p>Aantal HD zenders ${z.hd}</p>
 					<p>Type TV ${pakket.pakTypeTV()}</p>
 
@@ -226,7 +226,7 @@
 			`;
 		},
 		printPakkettenLijst(pakket) {
-			console.log(pakket);
+			
 
 			return `
 			<li class='provider-pakketten-pakket'>
@@ -275,15 +275,57 @@
 	ajf.doeAjax();
 } // vergelijking ajax
 
+function kzTelefonieModal(knop) {
+
+	const pakket = window['efiber-pakket-'+ knop.getAttribute('data-pakket-id')];
+	
+	const belPakket = pakket.huidigeTelefonieBundel();
+
+	let html = `<br><table>`;
+	html += Object.entries(belPakket.data).map(([sleutel, waarde]) => {
+
+		if (sleutel === 'maandbedrag') {
+			return `<thead><td><strong>${belPakket.naam}</td><td>${isNaN(Number(waarde.prijs))
+				? waarde.prijs 
+				: pakket.formatteerPrijs(waarde.prijs)
+			}</strong></td></thead>`;
+		} else if (sleutel === 'maximum_minuten_binnen_bundel'){
+			return `<tr><td>${waarde.naam}</td><td>${waarde.minuten}</td></tr>`;
+		} else {
+			return `<tr><td>${waarde.naam}</td><td>${isNaN(Number(waarde.tarief))
+				? waarde.tarief 
+				: pakket.formatteerPrijs(waarde.tarief)
+			}</td></tr>`;
+		}
+
+	}).join(``);
+	html += `</table>`;
+	efiberModal(html);
+}
+
+function kzZendersModal(knop){
+	const pakket = window['efiber-pakket-'+ knop.getAttribute('data-pakket-id')];
+
+	const zenderInfo = pakket.pakZenders();
+
+	const html = `
+		<h2>${pakket.naam_composiet}</h2>
+		<p>Zenders totaal: ${zenderInfo.totaal}<br>
+		Zenders HD: ${zenderInfo.hd}</p>
+		${zenderInfo.zenderlijst}
+	`;
+	efiberModal(html);	
+}
+
 function efiberVergelijkingstabelOpVolgorde(tabel) {
 	// maak verzameling met bedragen als getallen
 	const bedragen = tabel.maandelijksTotaal.map((waarde, index) => Number(waarde.replace('&euro; ', '').replace(',', '.'))),
 
 	// kopieer de verzameling tbv sortering en sorteer
-	 bedragenSort = (bedragen.map(w => w)).sort(),
+	bedragenSort = (bedragen.map(w => w)).sort(),
 
 	// zoek de posities op in de bedragenverzameling; dit is de printvolgorde.
-	 indicesVolgorde = bedragenSort.map(w => bedragen.indexOf(w));
+	indicesVolgorde = bedragenSort.map(w => bedragen.indexOf(w));
 
 	let rijNaam,
 rijKopie,

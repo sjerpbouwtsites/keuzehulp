@@ -380,16 +380,18 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 			if (array_key_exists($ss, $zo_verz)) {
 
 				$return['zenders-'.$ss] = array(
-					'totaal'	=> $zo_verz[$ss]['totaal'],
-					'hd'		=> $zo_verz[$ss]['hd']
+					'totaal'		=> $zo_verz[$ss]['totaal'],
+					'hd'			=> $zo_verz[$ss]['hd'],
+					'zenderlijst'	=> apply_filters('the_content', $zo_verz[$ss]['zenderlijst'])
 				);
 				$return['teksten']['zenders-'.$ss.'-totaal'] = $zo_verz[$ss]['totaal_tekst'];
 				$return['teksten']['hd-'.$ss.'-totaal'] = $zo_verz[$ss]['hd_tekst'];
 
 			} else {
 				$return['zenders-'.$ss] = array(
-					'totaal'	=> $zenders['totaal'],
-					'hd'		=> $zenders['hd']
+					'totaal'		=> $zenders['totaal'],
+					'hd'			=> $zenders['hd'],
+					'zenderlijst'	=> apply_filters('the_content', $zenders['zenderlijst'])
 				);
 				$return['teksten']['zenders-'.$ss.'-totaal'] = $zenders['totaal_tekst'];
 				$return['teksten']['hd-'.$ss.'-totaal'] = $zenders['hd_tekst'];

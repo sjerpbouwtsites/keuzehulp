@@ -3,6 +3,8 @@ telefonie en televisie als modal
 
 televisie als wysiwig
 
+'tekst' veld bij telefonie modal
+
 --- 
 
 1	overzetten provider-website & provider-email

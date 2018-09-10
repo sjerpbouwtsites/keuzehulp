@@ -22,7 +22,7 @@
 		</div>
 
 		<div class='header-rechts'>
-			<a href='<?=get_field('contactpagina', 'option')?>'>
+			<a href='<?=get_field('contactpagina', 'option')?>' target="_blank">
 				<img src='/wp-content/plugins/efiber/iconen-nieuw/svg/bellen.svg' alt='neem contact op' width='25' height='25' />
 			</a>
 		</div>

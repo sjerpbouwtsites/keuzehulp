@@ -55,6 +55,8 @@ const efiberRouting = {
 				this.stapTerug();
 			}
 		}, false);
+
+		this.schrijfStapNaarBody(0);
 	},
 
 	gs: [1], // initiele waarde.
@@ -148,7 +150,7 @@ const efiberRouting = {
 		}
 
 		// zet op body el
-		body.setAttribute('data-efiber-stap', nummerDezeStap);
+		this.schrijfStapNaarBody(nummerDezeStap);
 
 		// en trigger history
 		this.zetHistory(dezeStap, nummerDezeStap);
@@ -159,6 +161,23 @@ const efiberRouting = {
 			scrollTop: $(dezeStap).offset().top - 50,
 		}, 100);
 		return true;
+	},
+	schrijfStapNaarBody(stap = 0) {
+
+		const s = Number(stap),
+		r = [
+			{
+				'stappen': [0],
+				'schrijf': 'postcode-check'
+			},
+			{
+				'stappen': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 21, 30, 31, 50, 51, 100],
+				'schrijf': 'hoofd'
+			},			
+		].find(conf => conf.stappen.indexOf(s) !== -1);
+
+		body.setAttribute('data-kz-stap', r.schrijf);
+
 	},
 	zetHistory(dezeStap, nummerDezeStap) {
 		// dit is een afgeleide... het zou opgehaald kunnen worden via laatsteInGs?

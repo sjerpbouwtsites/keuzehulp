@@ -38,8 +38,6 @@ function knoppenDispatcher() {
 
 			var funcAttr = knop.getAttribute('data-efiber-func').trim();
 
-			//efiberModal(funcAttr, 2500);
-
 			if (!funcAttr || typeof funcAttr === 'undefined') {
 				console.error('funcAttr undefined');
 				console.log(knop);
@@ -77,7 +75,10 @@ var knoppenFuncs = {
 
 	toonStap: function(knop) {
 
-		efiberRouting.ga(knop.href.split('#')[1]);
+		const n = knop.href.split('#')[1];
+
+		efiberRouting.ga(n);
+
 
 	},
 	animeer: function (knop) {
@@ -129,7 +130,7 @@ var knoppenFuncs = {
 
 		var s = knop.getAttribute('data-efiber-situatie-keuze');
 
-		keuzehulpGeneriek(knop, 'data-efiber-situatie-keuze', 'situatie', function(){
+		keuzehulpGeneriek(knop, 'data-efiber-situatie-keuze', 'situatie', function (){
 			body.setAttribute('data-efiber-situatie-keuze', s);
 		});
 

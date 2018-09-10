@@ -167,12 +167,20 @@ const efiberRouting = {
 		const s = Number(stap),
 		r = [
 			{
-				'stappen': [0],
-				'schrijf': 'postcode-check'
+				'stappen': [0, 1],
+				'schrijf': 'begin postcode-check'
 			},
 			{
-				'stappen': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 21, 30, 31, 50, 51, 100],
-				'schrijf': 'hoofd'
+				'stappen': [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 21],
+				'schrijf': 'hoofd samenstellen'
+			},			
+			{
+				'stappen': [30, 31, 50, 51],
+				'schrijf': 'hoofd vergelijken'
+			},
+			{
+				'stappen': [100],
+				'schrijf': 'hoofd bestellen'
 			},			
 		].find(conf => conf.stappen.indexOf(s) !== -1);
 

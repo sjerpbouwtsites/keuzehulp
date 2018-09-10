@@ -17,6 +17,7 @@ function efiber_keuzehulp_pak_afb ($str = '') {
 }
 
 require 'header.php';
+require 'keuze-menu-lijst.php';
 
 ?>
 
@@ -112,7 +113,7 @@ require 'header.php';
 
 		$keuzehulp_of_niet = new EfiberSectie(array(
 			'stap'			=> 2,
-			'titel_afb'		=> efiber_keuzehulp_pak_afb("gefeliciteerd titel"),
+			//'titel_afb'		=> efiber_keuzehulp_pak_afb("gefeliciteerd titel"),
 			'titel'			=> $kofnt['titel'],
 			'torso_intro'	=> $kofnt['intro'],
 			'torso_direct'	=> 	"<div class='knoppendoos'>$keuzehulp_knoppen</div>",
@@ -155,7 +156,7 @@ require 'header.php';
 		$kies_situatie = new EfiberSectie(array(
 			'stap'			=> 3,
 			'titel'			=> $situatie_teksten['titel'],
-			'titel_afb'		=> efiber_keuzehulp_pak_afb("huishouden titel"),
+			//'titel_afb'		=> efiber_keuzehulp_pak_afb("huishouden titel"),
 			'torso_intro'	=> $situatie_teksten['intro'],
 			'torso_direct'	=> 	"<div class='knoppendoos'>$kies_situatie_knoppen</div>",
 		));
@@ -184,7 +185,7 @@ require 'header.php';
 
 		$kies_klein_zakelijk = new EfiberSectie(array(
 			'stap'			=> 4,
-			'titel_afb'		=> efiber_keuzehulp_pak_afb("huishouden titel"),
+			//'titel_afb'		=> efiber_keuzehulp_pak_afb("huishouden titel"),
 			'titel'			=> $bedrijf_of_zakelijk_teksten['titel'],
 			'torso_intro'	=> $bedrijf_of_zakelijk_teksten['intro'],
 			'torso_direct'	=> 	"<div class='knoppendoos'>$kies_klein_zakelijk_knoppen</div>",
@@ -223,7 +224,7 @@ require 'header.php';
 		$kies_internet = new EfiberSectie(array(
 			'stap'			=> 5,
 			'titel'			=> $kies_internet_teksten['titel'],
-			'titel_afb'		=> efiber_keuzehulp_pak_afb("internet titel"),
+			//'titel_afb'		=> efiber_keuzehulp_pak_afb("internet titel"),
 			'torso_intro'	=> $kies_internet_teksten['intro'],
 			'torso_direct'	=> 	"<div class='knoppendoos'>$kies_internet_knoppen</div>",
 		));
@@ -255,7 +256,7 @@ require 'header.php';
 
 		$kies_bellen = new EfiberSectie(array(
 			'stap'			=> 6,
-			'titel_afb'		=> efiber_keuzehulp_pak_afb("bellen titel"),
+			//'titel_afb'		=> efiber_keuzehulp_pak_afb("bellen titel"),
 			'titel'			=> $kies_bellen_teksten['titel'],
 			'torso_intro'	=> $kies_bellen_teksten['intro'],
 			'torso_direct'	=> 	"<div class='knoppendoos'>$kies_bellen_knoppen</div>",
@@ -284,7 +285,7 @@ require 'header.php';
 		$kies_nummers = new EfiberSectie(array(
 			'stap'			=> 7,
 			'titel'			=> $kies_nummers_teksten['titel'],
-			'titel_afb'		=> efiber_keuzehulp_pak_afb("nummer titel"),
+			//'titel_afb'		=> efiber_keuzehulp_pak_afb("nummer titel"),
 			'torso_intro'	=> $kies_nummers_teksten['intro'],
 			'torso_direct'	=> 	"<div class='knoppendoos'>$kies_nummers_knoppen</div>",
 			//'footer_inh'	=> 	"<div class='knoppendoos'>$kies_nummers_footer_knoppen</div>",
@@ -334,7 +335,7 @@ require 'header.php';
 		$kies_televisie = new EfiberSectie(array(
 			'stap'			=> 8,
 			'titel'			=> $televisie_teksten['titel'],
-			'titel_afb'		=> efiber_keuzehulp_pak_afb("televisie titel"),
+			//'titel_afb'		=> efiber_keuzehulp_pak_afb("televisie titel"),
 			'torso_intro'	=> $televisie_teksten['intro'],
 			'torso_direct'	=> 	"<div class='knoppendoos'>$kies_televisie_knoppen</div>",
 		));
@@ -383,7 +384,7 @@ require 'header.php';
 
 		$kies_televisie_opties = new EfiberSectie(array(
 			'stap'			=> 9,
-			'titel_afb'		=> efiber_keuzehulp_pak_afb("televisie opties titel"),
+			//'titel_afb'		=> efiber_keuzehulp_pak_afb("televisie opties titel"),
 			'titel'			=> $televisie_opties_teksten['titel'],
 			'torso_intro'	=> $televisie_opties_teksten['intro'],
 			'torso_direct'	=> 	"<div class='knoppendoos'>$kies_televisie_opties_knoppen</div>",
@@ -415,7 +416,7 @@ require 'header.php';
 			'stap'			=> 10,
 			'titel'			=> $coax_teksten['titel'],
 			'torso_intro'	=> $coax_teksten['intro'],
-			'titel_afb'		=> efiber_keuzehulp_pak_afb("coax titel"),
+			//'titel_afb'		=> efiber_keuzehulp_pak_afb("coax titel"),
 			'torso_direct'	=> 	"<div class='knoppendoos'>$kies_coax_knoppen</div>",
 		));
 
@@ -450,7 +451,7 @@ require 'header.php';
 			'stap'			=> 11,
 			'titel'			=> $installatie_teksten['titel'],
 			'torso_intro'	=> $installatie_teksten['intro'],
-			'titel_afb'		=> efiber_keuzehulp_pak_afb("installatie titel"),
+			//'titel_afb'		=> efiber_keuzehulp_pak_afb("installatie titel"),
 			'torso_direct'	=> 	"<div class='knoppendoos'>$kies_installatie_knoppen</div>",
 		));
 
@@ -494,7 +495,7 @@ require 'header.php';
 
 		$kies_pakket = new EfiberSectie(array(
 			'stap'			=> 20,
-			'titel_afb'		=> efiber_keuzehulp_pak_afb("pakketten vinkje titel"),
+			//'titel_afb'		=> efiber_keuzehulp_pak_afb("pakketten vinkje titel"),
 			'titel'			=> $iwwiw_teksten['titel'],
 			'torso_intro'	=> $iwwiw_teksten['intro'],
 			'torso_direct'	=> 	"<div class='knoppendoos'>$kies_pakket_knoppen</div>",
@@ -509,7 +510,7 @@ require 'header.php';
 
 		$print_provider_pakketten = new EfiberSectie(array(
 			'stap'			=> 21,
-			'titel_afb'		=> efiber_keuzehulp_pak_afb("pakketten vinkje titel"),
+			//'titel_afb'		=> efiber_keuzehulp_pak_afb("pakketten vinkje titel"),
 			'titel'			=> $provider_pakketten_teksten['titel'],
 			'torso_intro'	=> $provider_pakketten_teksten['intro'],
 			'torso_direct'	=> 	"<div class='print-provider-pakketten' id='print-provider-pakketten'></div>",
@@ -526,7 +527,7 @@ require 'header.php';
 		$print_vergelijking = new EfiberSectie(array(
 			'stap'			=> 30,
 			'titel'			=> $vergelijking_teksten['titel'],
-			'titel_afb'		=> efiber_keuzehulp_pak_afb("pakketten vinkje titel"),
+			//'titel_afb'		=> efiber_keuzehulp_pak_afb("pakketten vinkje titel"),
 			'torso_intro'	=> $vergelijking_teksten['intro'],
 			'torso_direct'	=> 	"<div class='print-vergelijking' id='print-vergelijking'></div>$disclaimer",
 		));

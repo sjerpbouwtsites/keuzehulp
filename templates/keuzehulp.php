@@ -6,6 +6,8 @@
 // !! Omwille van geheugengebruik maak ik maar één keer een instance aan van de Ef_knop klasse.
 // Denk er aan dat als je een waarde aanpast bij knop n, knop n + 1 wellicht die eigenschap erft.
 
+///<link href="https://fonts.googleapis.com/css?family=Maven+Pro" rel="stylesheet"> 
+
 $afb_pad = plugins_url( '../png/', __FILE__ );
 
 function efiber_keuzehulp_pak_afb ($str = '') {
@@ -14,7 +16,11 @@ function efiber_keuzehulp_pak_afb ($str = '') {
 	return "<img class='{$class[0]}' src='".$afb_pad.$str.".png' alt='$str' width='300' height='224' />";
 }
 
- ?>
+require 'header.php';
+
+?>
+
+
 
 <div class='keuzehulp'><div class='verpakking'>
 

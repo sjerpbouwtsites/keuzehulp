@@ -1,0 +1,7 @@
+.app-header {
+	display: flex;
+	flex-direction: row;
+}
+	.app-header .header-links img{
+		width: 100px;
+	}

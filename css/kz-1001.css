@@ -37,12 +37,10 @@ header #sticky.stick {
 	width: 1200px;
 	max-width: calc(100% - 40px);
 	margin: 0 auto;
-	padding: 50px 0;
-	min-height: 85vh;
 }
 
 	@media (max-width: 800px) {
-		.keuzehulp .verpakking {
+/*		.keuzehulp .verpakking {
 			display: flex;
 			flex-direction: column;
 			padding: 30px 0;
@@ -50,7 +48,7 @@ header #sticky.stick {
 		.keuzehulp .verpakking .efiber-niveau-knoppen{
 			order: 2;
 			margin-top: 50px;
-		}
+		}*/
 	}
 
 	[data-efiber-stap="3"] .keuzehulp .verpakking,

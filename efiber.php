@@ -66,8 +66,8 @@ function Ef_scripts_in_rij() {
 
     foreach ($pak_stijlen as $s) {
         $v = ($s !== '' ? "-$s" : $s);
-        wp_register_style( "efiber$v", plugins_url("efiber/css/efiber{$v}-".$script_postfix.".css"), array(), null);
-        wp_enqueue_style( "efiber$v" );
+        wp_register_style( "kz$v", plugins_url("efiber/css/kz{$v}-".$script_postfix.".css"), array(), null);
+        wp_enqueue_style( "kz$v" );
     }
 
     // NU DIE VAN GRAVITY FORMS

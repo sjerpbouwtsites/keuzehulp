@@ -1,7 +1,56 @@
-.app-header {
+.app-header .verpakking{
 	display: flex;
 	flex-direction: row;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	justify-content: space-between;
 }
-	.app-header .header-links img{
-		width: 100px;
+	.app-header .header-links {
+
+	}
+
+		.app-header .header-links img{
+			width: 100px;
+		}
+
+	.app-header .header-midden {
+		
+	}
+		ol.stappen-visualisatie {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			flex-direction: row;
+		}
+			.stappen-visualisatie_stap {
+				margin: 0;
+				padding: 0;
+			}
+				.stappen-visualisatie_tekst{
+					display: none;
+				}
+
+				.stappen-visualisatie_afb{
+					width: 30px;
+					height: 30px;
+					margin-left: 3px;
+				}
+
+	.app-header .header-rechts {
+		position: relative;
+	}
+		.app-header .header-rechts::before {
+			position: absolute;
+			top: -7.5px;
+			left: -10px;
+			content: '';
+			display: block;
+			height: 46px;
+			border-left: 1px solid #dcdcd9;
+		}
+
+	.app-header .header-rechts img {
+		width: 30px;
+		height: 30px;
 	}

@@ -50,7 +50,7 @@ function Ef_scripts_in_rij() {
 
 
     $pak_stijlen = array(
-        '', 'form', 'modal', 'niveau-knoppen', 'stappen', 'postcode', 'print', 'knoppen', 'hp'
+        '', 'form', 'modal', 'niveau-knoppen', 'stappen', 'postcode', 'print', 'knoppen', 'hp', 'header'
     );
 
 
@@ -114,8 +114,8 @@ function Ef_pakket_opties() {
 
     if ( function_exists( 'acf_add_options_sub_page' ) ){
         acf_add_options_sub_page(array(
-            'title'      => 'Pakket toewijzingen',
-            'parent'     => 'edit.php?post_type=pakket',
+            'title'      => 'opties',
+            'parent'     => 'admin.php?page=efiber',
             'capability' => 'manage_options'
         ));
     }
@@ -133,10 +133,19 @@ function Ef_teksten() {
         ));
     }
 
+    if ( function_exists( 'acf_add_options_sub_page' ) ){
+        $page = acf_add_options_page(array(
+            'menu_title' => 'Keuzehulp opties',
+            'menu_slug' => 'keuzehulp-opties',
+            'capability' => 'edit_posts',
+            'redirect' => false
+        ));
+    }
+
 }
 
 function Ef_menu(){
-    add_menu_page( 'Efiber keuzehulp', 'Keuzehulp', 'manage_options', 'efiber', 'print_efiber_postcode_pagina' );
+    add_menu_page( 'keuzehulp', 'Keuzehulp CSV', 'manage_options', 'efiber', 'print_efiber_postcode_pagina' );
 }
 
 add_action('init', 'Ef_init');

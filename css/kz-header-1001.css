@@ -14,8 +14,12 @@
 		}
 
 	.app-header .header-midden {
-		
+		display: none;
 	}
+
+		[data-kz-stap~='hoofd'] .app-header .header-midden {
+			display: block;
+		}
 		ol.stappen-visualisatie {
 			list-style-type: none;
 			margin: 0;
@@ -31,11 +35,66 @@
 					display: none;
 				}
 
-				.stappen-visualisatie_afb{
+				.stappen-visualisatie_afb {
 					width: 30px;
 					height: 30px;
+					display: block;
 					margin-left: 3px;
+					background-size: cover;
+					background-repeat: no-repeat;
+					transition: 0.2s ease-in-out;
 				}
+
+
+				/* we doen dit imperatief want anders is het later niet te volgen */
+
+				.stappen-visualisatie_stap:nth-child(1) .stappen-visualisatie_afb {
+					background-image: url('/wp-content/plugins/efiber/iconen-nieuw/svg/stap 1.svg');
+				}
+				.stappen-visualisatie_stap:nth-child(2) .stappen-visualisatie_afb {
+					background-image: url('/wp-content/plugins/efiber/iconen-nieuw/svg/stap 2.svg');
+				}
+				.stappen-visualisatie_stap:nth-child(3) .stappen-visualisatie_afb {
+					background-image: url('/wp-content/plugins/efiber/iconen-nieuw/svg/stap 3.svg');
+				}
+
+
+				[data-kz-stap~='samenstellen'] .stappen-visualisatie_stap:nth-child(1) .stappen-visualisatie_afb {
+					opacity: 1;
+				}
+				[data-kz-stap~='samenstellen'] .stappen-visualisatie_stap:nth-child(2) .stappen-visualisatie_afb {
+					opacity: .6;
+				}
+				[data-kz-stap~='samenstellen'] .stappen-visualisatie_stap:nth-child(3) .stappen-visualisatie_afb {
+					opacity: .6;
+				}
+
+
+				[data-kz-stap~='vergelijken'] .stappen-visualisatie_stap:nth-child(1) .stappen-visualisatie_afb {
+					opacity: 1;
+					background-image: url('/wp-content/plugins/efiber/iconen-nieuw/svg/check.svg');
+				}
+				[data-kz-stap~='vergelijken'] .stappen-visualisatie_stap:nth-child(2) .stappen-visualisatie_afb {
+					opacity: 1;
+				}
+				[data-kz-stap~='vergelijken'] .stappen-visualisatie_stap:nth-child(3) .stappen-visualisatie_afb {
+					opacity: .6;
+				}
+
+
+				[data-kz-stap~='bestellen'] .stappen-visualisatie_stap:nth-child(1) .stappen-visualisatie_afb {
+					opacity: 1;
+					background-image: url('/wp-content/plugins/efiber/iconen-nieuw/svg/check.svg');
+				}
+				[data-kz-stap~='bestellen'] .stappen-visualisatie_stap:nth-child(2) .stappen-visualisatie_afb {
+					opacity: 1;
+					background-image: url('/wp-content/plugins/efiber/iconen-nieuw/svg/check.svg');
+				}
+				[data-kz-stap~='bestellen'] .stappen-visualisatie_stap:nth-child(3) .stappen-visualisatie_afb {
+					opacity: 1;
+				}
+
+
 
 	.app-header .header-rechts {
 		position: relative;
@@ -54,3 +113,6 @@
 		width: 30px;
 		height: 30px;
 	}
+
+
+

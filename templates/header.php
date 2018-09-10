@@ -1,7 +1,3 @@
-<?php
-	
-?>
-
 <header class='app-header'>
 	<div class='verpakking'>
 		<div class='header-links'>
@@ -11,15 +7,15 @@
 		<div class='header-midden'>
 			<ol class='stappen-visualisatie'>
 				<li class='stappen-visualisatie_stap'>
-					<img class='stappen-visualisatie_afb' src='/wp-content/plugins/efiber/iconen-nieuw/svg/stap 1.svg' data-alt-src='/wp-content/plugins/efiber/iconen-nieuw/png/klaar.png' alt='stap 1' width='25' height='25' />
+					<span class='stappen-visualisatie_afb'></span>
 					<span class='stappen-visualisatie_tekst'>Samenstellen</span>
 				</li>
 				<li class='stappen-visualisatie_stap'>
-					<img class='stappen-visualisatie_afb' src='/wp-content/plugins/efiber/iconen-nieuw/svg/stap 2.svg' data-alt-src='/wp-content/plugins/efiber/iconen-nieuw/png/klaar.png' alt='stap 2' width='25' height='25' />
+					<span class='stappen-visualisatie_afb'></span>
 					<span class='stappen-visualisatie_tekst'>Vergelijken</span>
 				</li>
 				<li class='stappen-visualisatie_stap'>
-					<img class='stappen-visualisatie_afb' src='/wp-content/plugins/efiber/iconen-nieuw/svg/stap 3.svg' data-alt-src='/wp-content/plugins/efiber/iconen-nieuw/png/klaar.png' alt='stap 3' width='25' height='25' />
+					<span class='stappen-visualisatie_afb'></span>
 					<span class='stappen-visualisatie_tekst'>Bestellen</span>
 				</li>
 			</ol>

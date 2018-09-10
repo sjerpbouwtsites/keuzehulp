@@ -143,7 +143,7 @@ function controleerPostcode() {
 	const postcodeForm = doc.getElementById('keuze-postcodeform');
 
 	if (!postcodeForm) {
-		location.href = 'http://rekam.local/keuzehulp';
+		location.href = location.origin + '/keuzehulp';
 	}
 
 	const getVars = {};

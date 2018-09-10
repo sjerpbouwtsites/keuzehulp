@@ -2288,3 +2288,750 @@ Stack trace:
 [06-Sep-2018 12:39:15 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
 [06-Sep-2018 12:39:15 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
 [06-Sep-2018 12:39:15 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:03:25 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 370
+[06-Sep-2018 13:03:25 UTC] PHP Stack trace:
+[06-Sep-2018 13:03:25 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:03:25 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:03:25 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:03:25 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:03:25 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:03:25 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:03:25 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:03:25 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 431
+[06-Sep-2018 13:03:25 UTC] PHP Stack trace:
+[06-Sep-2018 13:03:25 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:03:25 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:03:25 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:03:25 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:03:25 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:03:25 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:03:25 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:03:26 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 370
+[06-Sep-2018 13:03:26 UTC] PHP Stack trace:
+[06-Sep-2018 13:03:26 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:03:26 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:03:26 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:03:26 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:03:26 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:03:26 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:03:26 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:03:26 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 410
+[06-Sep-2018 13:03:26 UTC] PHP Stack trace:
+[06-Sep-2018 13:03:26 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:03:26 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:03:26 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:03:26 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:03:26 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:03:26 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:03:26 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:03:26 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 370
+[06-Sep-2018 13:03:26 UTC] PHP Stack trace:
+[06-Sep-2018 13:03:26 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:03:26 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:03:26 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:03:26 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:03:26 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:03:26 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:03:26 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:03:26 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 370
+[06-Sep-2018 13:03:26 UTC] PHP Stack trace:
+[06-Sep-2018 13:03:26 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:03:26 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:03:26 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:03:26 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:03:26 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:03:26 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:03:26 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:03:26 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 370
+[06-Sep-2018 13:03:26 UTC] PHP Stack trace:
+[06-Sep-2018 13:03:26 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:03:26 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:03:26 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:03:26 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:03:26 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:03:26 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:03:26 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:12:09 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:12:09 UTC] PHP Stack trace:
+[06-Sep-2018 13:12:09 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:12:09 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:12:09 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:12:09 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:12:09 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:12:09 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:12:09 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:12:09 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 435
+[06-Sep-2018 13:12:09 UTC] PHP Stack trace:
+[06-Sep-2018 13:12:09 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:12:09 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:12:09 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:12:09 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:12:09 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:12:09 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:12:09 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:12:09 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:12:09 UTC] PHP Stack trace:
+[06-Sep-2018 13:12:09 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:12:09 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:12:09 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:12:09 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:12:09 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:12:09 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:12:09 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:12:09 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 414
+[06-Sep-2018 13:12:09 UTC] PHP Stack trace:
+[06-Sep-2018 13:12:09 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:12:09 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:12:09 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:12:09 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:12:09 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:12:09 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:12:09 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:12:09 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:12:09 UTC] PHP Stack trace:
+[06-Sep-2018 13:12:09 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:12:09 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:12:09 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:12:09 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:12:09 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:12:09 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:12:09 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:12:09 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:12:09 UTC] PHP Stack trace:
+[06-Sep-2018 13:12:09 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:12:09 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:12:09 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:12:09 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:12:09 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:12:09 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:12:09 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:12:09 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:12:09 UTC] PHP Stack trace:
+[06-Sep-2018 13:12:09 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:12:09 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:12:09 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:12:09 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:12:09 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:12:09 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:12:09 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:16:07 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:16:07 UTC] PHP Stack trace:
+[06-Sep-2018 13:16:07 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:16:07 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:16:07 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:16:07 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:16:07 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:16:07 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:16:07 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:16:07 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 435
+[06-Sep-2018 13:16:07 UTC] PHP Stack trace:
+[06-Sep-2018 13:16:07 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:16:07 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:16:07 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:16:07 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:16:07 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:16:07 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:16:07 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:16:07 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:16:07 UTC] PHP Stack trace:
+[06-Sep-2018 13:16:07 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:16:07 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:16:07 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:16:07 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:16:07 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:16:07 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:16:07 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:16:07 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 414
+[06-Sep-2018 13:16:07 UTC] PHP Stack trace:
+[06-Sep-2018 13:16:07 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:16:07 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:16:07 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:16:07 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:16:07 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:16:07 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:16:07 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:16:07 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:16:07 UTC] PHP Stack trace:
+[06-Sep-2018 13:16:07 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:16:07 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:16:07 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:16:07 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:16:07 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:16:07 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:16:07 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:16:07 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:16:07 UTC] PHP Stack trace:
+[06-Sep-2018 13:16:07 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:16:07 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:16:07 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:16:07 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:16:07 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:16:07 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:16:07 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:16:07 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:16:07 UTC] PHP Stack trace:
+[06-Sep-2018 13:16:07 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:16:07 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:16:07 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:16:07 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:16:07 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:16:07 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:16:07 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:19:42 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:19:42 UTC] PHP Stack trace:
+[06-Sep-2018 13:19:42 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:19:42 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:19:42 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:19:42 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:19:42 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:19:42 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:19:42 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:19:42 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 435
+[06-Sep-2018 13:19:42 UTC] PHP Stack trace:
+[06-Sep-2018 13:19:42 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:19:42 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:19:42 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:19:42 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:19:42 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:19:42 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:19:42 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:19:42 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:19:42 UTC] PHP Stack trace:
+[06-Sep-2018 13:19:42 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:19:42 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:19:42 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:19:42 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:19:42 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:19:42 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:19:42 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:19:42 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 414
+[06-Sep-2018 13:19:42 UTC] PHP Stack trace:
+[06-Sep-2018 13:19:42 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:19:42 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:19:42 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:19:42 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:19:42 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:19:42 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:19:42 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:19:42 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:19:42 UTC] PHP Stack trace:
+[06-Sep-2018 13:19:42 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:19:42 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:19:42 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:19:42 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:19:42 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:19:42 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:19:42 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:19:43 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:19:43 UTC] PHP Stack trace:
+[06-Sep-2018 13:19:43 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:19:43 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:19:43 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:19:43 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:19:43 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:19:43 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:19:43 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:19:43 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:19:43 UTC] PHP Stack trace:
+[06-Sep-2018 13:19:43 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:19:43 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:19:43 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:19:43 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:19:43 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:19:43 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:19:43 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:22:13 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:22:13 UTC] PHP Stack trace:
+[06-Sep-2018 13:22:13 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:22:13 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:22:13 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:22:13 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:22:13 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:22:13 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:22:13 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:22:13 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 435
+[06-Sep-2018 13:22:13 UTC] PHP Stack trace:
+[06-Sep-2018 13:22:13 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:22:13 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:22:13 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:22:13 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:22:13 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:22:13 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:22:13 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:22:14 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:22:14 UTC] PHP Stack trace:
+[06-Sep-2018 13:22:14 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:22:14 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:22:14 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:22:14 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:22:14 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:22:14 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:22:14 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:22:14 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 414
+[06-Sep-2018 13:22:14 UTC] PHP Stack trace:
+[06-Sep-2018 13:22:14 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:22:14 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:22:14 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:22:14 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:22:14 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:22:14 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:22:14 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:22:14 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:22:14 UTC] PHP Stack trace:
+[06-Sep-2018 13:22:14 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:22:14 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:22:14 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:22:14 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:22:14 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:22:14 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:22:14 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:22:14 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:22:14 UTC] PHP Stack trace:
+[06-Sep-2018 13:22:14 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:22:14 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:22:14 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:22:14 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:22:14 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:22:14 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:22:14 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:22:14 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:22:14 UTC] PHP Stack trace:
+[06-Sep-2018 13:22:14 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:22:14 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:22:14 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:22:14 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:22:14 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:22:14 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:22:14 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:24:13 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:24:13 UTC] PHP Stack trace:
+[06-Sep-2018 13:24:13 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:24:13 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:24:13 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:24:13 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:24:13 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:24:13 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:24:13 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:24:13 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 435
+[06-Sep-2018 13:24:13 UTC] PHP Stack trace:
+[06-Sep-2018 13:24:13 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:24:13 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:24:13 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:24:13 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:24:13 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:24:13 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:24:13 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:24:13 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:24:13 UTC] PHP Stack trace:
+[06-Sep-2018 13:24:13 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:24:13 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:24:13 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:24:13 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:24:13 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:24:13 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:24:13 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:24:13 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 414
+[06-Sep-2018 13:24:13 UTC] PHP Stack trace:
+[06-Sep-2018 13:24:13 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:24:13 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:24:13 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:24:13 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:24:13 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:24:13 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:24:13 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:24:13 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:24:13 UTC] PHP Stack trace:
+[06-Sep-2018 13:24:13 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:24:13 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:24:13 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:24:13 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:24:13 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:24:13 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:24:13 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:24:13 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:24:13 UTC] PHP Stack trace:
+[06-Sep-2018 13:24:13 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:24:13 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:24:13 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:24:13 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:24:13 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:24:13 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:24:13 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:24:13 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 374
+[06-Sep-2018 13:24:13 UTC] PHP Stack trace:
+[06-Sep-2018 13:24:13 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:24:13 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:24:13 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:24:13 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:24:13 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:24:13 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:24:13 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:44:32 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:44:32 UTC] PHP Stack trace:
+[06-Sep-2018 13:44:32 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:44:32 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:44:32 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:44:32 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:44:32 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:44:32 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:44:32 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:44:32 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 436
+[06-Sep-2018 13:44:32 UTC] PHP Stack trace:
+[06-Sep-2018 13:44:32 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:44:32 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:44:32 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:44:32 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:44:32 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:44:32 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:44:32 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:44:32 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:44:32 UTC] PHP Stack trace:
+[06-Sep-2018 13:44:32 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:44:32 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:44:32 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:44:32 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:44:32 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:44:32 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:44:32 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:44:32 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 415
+[06-Sep-2018 13:44:32 UTC] PHP Stack trace:
+[06-Sep-2018 13:44:32 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:44:32 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:44:32 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:44:32 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:44:32 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:44:32 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:44:32 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:44:32 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:44:32 UTC] PHP Stack trace:
+[06-Sep-2018 13:44:32 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:44:32 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:44:32 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:44:32 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:44:32 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:44:32 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:44:32 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:44:32 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:44:32 UTC] PHP Stack trace:
+[06-Sep-2018 13:44:32 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:44:32 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:44:32 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:44:32 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:44:32 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:44:32 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:44:32 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:44:33 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:44:33 UTC] PHP Stack trace:
+[06-Sep-2018 13:44:33 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:44:33 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:44:33 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:44:33 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:44:33 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:44:33 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:44:33 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:49:07 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:49:07 UTC] PHP Stack trace:
+[06-Sep-2018 13:49:07 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:49:07 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:49:07 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:49:07 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:49:07 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:49:07 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:49:07 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:49:08 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 415
+[06-Sep-2018 13:49:08 UTC] PHP Stack trace:
+[06-Sep-2018 13:49:08 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:49:08 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:49:08 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:49:08 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:49:08 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:49:08 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:49:08 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:49:08 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:49:08 UTC] PHP Stack trace:
+[06-Sep-2018 13:49:08 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:49:08 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:49:08 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:49:08 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:49:08 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:49:08 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:49:08 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:49:08 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:49:08 UTC] PHP Stack trace:
+[06-Sep-2018 13:49:08 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:49:08 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:49:08 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:49:08 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:49:08 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:49:08 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:49:08 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:49:08 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:49:08 UTC] PHP Stack trace:
+[06-Sep-2018 13:49:08 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:49:08 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:49:08 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:49:08 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:49:08 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:49:08 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:49:08 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:49:08 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:49:08 UTC] PHP Stack trace:
+[06-Sep-2018 13:49:08 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:49:08 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:49:08 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:49:08 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:49:08 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:49:08 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:49:08 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:49:41 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:49:41 UTC] PHP Stack trace:
+[06-Sep-2018 13:49:41 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:49:41 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:49:41 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:49:41 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:49:41 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:49:41 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:49:41 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:49:41 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 436
+[06-Sep-2018 13:49:41 UTC] PHP Stack trace:
+[06-Sep-2018 13:49:41 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:49:41 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:49:41 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:49:41 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:49:41 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:49:41 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:49:41 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:49:41 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:49:41 UTC] PHP Stack trace:
+[06-Sep-2018 13:49:41 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:49:41 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:49:41 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:49:41 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:49:41 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:49:41 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:49:41 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:49:41 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 415
+[06-Sep-2018 13:49:41 UTC] PHP Stack trace:
+[06-Sep-2018 13:49:41 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:49:41 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:49:41 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:49:41 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:49:41 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:49:41 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:49:41 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:49:41 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:49:41 UTC] PHP Stack trace:
+[06-Sep-2018 13:49:41 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:49:41 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:49:41 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:49:41 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:49:41 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:49:41 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:49:41 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:49:41 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:49:41 UTC] PHP Stack trace:
+[06-Sep-2018 13:49:41 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:49:41 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:49:41 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:49:41 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:49:41 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:49:41 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:49:41 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:49:41 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:49:41 UTC] PHP Stack trace:
+[06-Sep-2018 13:49:41 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:49:41 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:49:41 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:49:41 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:49:41 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:49:41 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:49:41 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:50:42 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:50:42 UTC] PHP Stack trace:
+[06-Sep-2018 13:50:42 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:50:42 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:50:42 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:50:42 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:50:42 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:50:42 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:50:42 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:50:42 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 436
+[06-Sep-2018 13:50:42 UTC] PHP Stack trace:
+[06-Sep-2018 13:50:42 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:50:42 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:50:42 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:50:42 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:50:42 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:50:42 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:50:42 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:50:42 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:50:42 UTC] PHP Stack trace:
+[06-Sep-2018 13:50:42 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:50:42 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:50:42 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:50:42 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:50:42 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:50:42 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:50:42 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:50:42 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 415
+[06-Sep-2018 13:50:42 UTC] PHP Stack trace:
+[06-Sep-2018 13:50:42 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:50:42 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:50:42 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:50:42 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:50:42 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:50:42 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:50:42 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:50:43 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:50:43 UTC] PHP Stack trace:
+[06-Sep-2018 13:50:43 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:50:43 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:50:43 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:50:43 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:50:43 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:50:43 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:50:43 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:50:43 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:50:43 UTC] PHP Stack trace:
+[06-Sep-2018 13:50:43 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:50:43 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:50:43 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:50:43 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:50:43 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:50:43 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:50:43 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:50:43 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:50:43 UTC] PHP Stack trace:
+[06-Sep-2018 13:50:43 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:50:43 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:50:43 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:50:43 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:50:43 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:50:43 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:50:43 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:53:05 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:53:05 UTC] PHP Stack trace:
+[06-Sep-2018 13:53:05 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:53:05 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:53:05 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:53:05 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:53:05 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:53:05 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:53:05 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:53:05 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 436
+[06-Sep-2018 13:53:05 UTC] PHP Stack trace:
+[06-Sep-2018 13:53:05 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:53:05 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:53:05 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:53:05 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:53:05 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:53:05 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:53:05 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:53:05 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:53:05 UTC] PHP Stack trace:
+[06-Sep-2018 13:53:05 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:53:05 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:53:05 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:53:05 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:53:05 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:53:05 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:53:05 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:53:06 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 415
+[06-Sep-2018 13:53:06 UTC] PHP Stack trace:
+[06-Sep-2018 13:53:06 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:53:06 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:53:06 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:53:06 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:53:06 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:53:06 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:53:06 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:53:06 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:53:06 UTC] PHP Stack trace:
+[06-Sep-2018 13:53:06 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:53:06 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:53:06 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:53:06 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:53:06 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:53:06 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:53:06 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:53:06 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:53:06 UTC] PHP Stack trace:
+[06-Sep-2018 13:53:06 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:53:06 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:53:06 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:53:06 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:53:06 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:53:06 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:53:06 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:53:06 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:53:06 UTC] PHP Stack trace:
+[06-Sep-2018 13:53:06 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:53:06 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:53:06 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:53:06 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:53:06 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:53:06 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:53:06 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:53:49 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:53:49 UTC] PHP Stack trace:
+[06-Sep-2018 13:53:49 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:53:49 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:53:49 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:53:49 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:53:49 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:53:49 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:53:49 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:53:49 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 436
+[06-Sep-2018 13:53:49 UTC] PHP Stack trace:
+[06-Sep-2018 13:53:49 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:53:49 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:53:49 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:53:49 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:53:49 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:53:49 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:53:49 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:53:49 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:53:49 UTC] PHP Stack trace:
+[06-Sep-2018 13:53:49 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:53:49 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:53:49 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:53:49 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:53:49 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:53:49 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:53:49 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:53:49 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 415
+[06-Sep-2018 13:53:49 UTC] PHP Stack trace:
+[06-Sep-2018 13:53:49 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:53:49 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:53:49 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:53:49 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:53:49 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:53:49 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:53:49 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:53:49 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:53:49 UTC] PHP Stack trace:
+[06-Sep-2018 13:53:49 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:53:49 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:53:49 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:53:49 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:53:49 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:53:49 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:53:49 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:53:49 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:53:49 UTC] PHP Stack trace:
+[06-Sep-2018 13:53:49 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:53:49 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:53:49 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:53:49 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:53:49 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:53:49 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:53:49 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208
+[06-Sep-2018 13:53:49 UTC] PHP Warning:  Invalid argument supplied for foreach() in C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax_util.php on line 375
+[06-Sep-2018 13:53:49 UTC] PHP Stack trace:
+[06-Sep-2018 13:53:49 UTC] PHP   1. {main}() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:0
+[06-Sep-2018 13:53:49 UTC] PHP   2. do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-admin\admin-ajax.php:100
+[06-Sep-2018 13:53:49 UTC] PHP   3. WP_Hook->do_action() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\plugin.php:453
+[06-Sep-2018 13:53:49 UTC] PHP   4. WP_Hook->apply_filters() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:310
+[06-Sep-2018 13:53:49 UTC] PHP   5. efiber_vergelijking() C:\Program Files (x86)\Ampps\www\rekam.local\wp-includes\class-wp-hook.php:286
+[06-Sep-2018 13:53:49 UTC] PHP   6. filter_op_regio_en_verrijk_pakket() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:356
+[06-Sep-2018 13:53:49 UTC] PHP   7. efiber_pakket_eigenschappen() C:\Program Files (x86)\Ampps\www\rekam.local\wp-content\plugins\efiber\inc\ajax.php:208

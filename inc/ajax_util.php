@@ -333,7 +333,12 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 			$telefonie_bundels[$bereik][] = array(
 				'naam'			=> $tpb->post_title,
 				'slug'			=> $slug,
-				'data'			=> get_field('tarieven', $tpb->ID),
+				'data'			=> array(
+					'maandbedrag'				=> get_field('maandbedrag', $tpb->ID),
+					'vast'						=> get_field('vast', $tpb->ID),
+					'mobiel'					=> get_field('mobiel', $tpb->ID),
+					'maximum_minuten'			=> get_field('maximum_minuten', $tpb->ID)
+				),
 				'bereik'		=> $bereik
 			);
 
@@ -342,7 +347,7 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 				'optietype' 	=> 'telefonie-bundel',
 				'suboptietype'  => $bereik,
 				'aantal'		=> 0,
-				'prijs'			=> (float) $tarieven_teksten['maandbedrag']['prijs'],
+				'prijs'			=> (float) get_field('maandbedrag', $tpb->ID),
 			));
 
 			$return['teksten'][$tpb->post_title] = apply_filters('the_content', get_field('tekst', $tpb->ID));

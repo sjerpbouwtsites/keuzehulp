@@ -93,6 +93,12 @@
 				return '';
 			}
 
+			if (!telBundel.data.vast) {
+				console.warn(`telefoniebundel invullen ${pakket.naam_composiet}`);
+				console.log(telBundel);
+				return;
+			}
+
 			return `
 				<div class='provider-pakketten-vergelijking-sectie'>
 
@@ -112,36 +118,36 @@
 							<tr>
 								<td>Start vast</td>
 								<td>
-									${	isNaN(Number(telBundel.data.starttarief_vast_nl_binnen_bundel.tarief))
-										? telBundel.data.starttarief_vast_nl_binnen_bundel.tarief 
-										: pakket.formatteerPrijs(telBundel.data.starttarief_vast_nl_binnen_bundel.tarief)
+									${	isNaN(Number(telBundel.data.vast.nederland.start))
+										? telBundel.data.vast.nederland.start 
+										: pakket.formatteerPrijs(telBundel.data.vast.nederland.start)
 									}
 								</td>
 							</tr>
 							<tr>
 								<td>Vast p/m</td>
 								<td>
-									${	isNaN(Number(telBundel.data.minuuttarief_vast_nl_binnen_bundel.tarief))
-										? telBundel.data.minuuttarief_vast_nl_binnen_bundel.tarief 
-										: pakket.formatteerPrijs(telBundel.data.minuuttarief_vast_nl_binnen_bundel.tarief)
+									${	isNaN(Number(telBundel.data.vast.nederland.per_minuut))
+										? telBundel.data.vast.nederland.per_minuut 
+										: pakket.formatteerPrijs(telBundel.data.vast.nederland.per_minuut)
 									}
 								</td>
 							</tr>
 							<tr>
 								<td>Mobiel start</td>
 								<td>
-									${	isNaN(Number(telBundel.data.starttarief_mobiel_nl_binnen_bundel.tarief)) 
-										? telBundel.data.starttarief_mobiel_nl_binnen_bundel.tarief 
-										: pakket.formatteerPrijs(telBundel.data.starttarief_mobiel_nl_binnen_bundel.tarief)
+									${	isNaN(Number(telBundel.data.mobiel.nederland.start))
+										? telBundel.data.mobiel.nederland.start 
+										: pakket.formatteerPrijs(telBundel.data.mobiel.nederland.start)
 									}
 								</td>
 							</tr>																					
 							<tr>
 								<td>Mobiel p/m</td>
 								<td>
-									${	isNaN(Number(telBundel.data.minuuttarief_mobiel_nl_binnen_bundel.tarief)) 
-										? telBundel.data.minuuttarief_mobiel_nl_binnen_bundel.tarief 
-										: pakket.formatteerPrijs(telBundel.data.minuuttarief_mobiel_nl_binnen_bundel.tarief)
+									${	isNaN(Number(telBundel.data.mobiel.nederland.per_minuut))
+										? telBundel.data.mobiel.nederland.per_minuut 
+										: pakket.formatteerPrijs(telBundel.data.mobiel.nederland.per_minuut)
 									}
 								</td>
 							</tr>																												
@@ -281,25 +287,80 @@ function kzTelefonieModal(knop) {
 	
 	const belPakket = pakket.huidigeTelefonieBundel();
 
-	let html = `<br><table>`;
-	html += Object.entries(belPakket.data).map(([sleutel, waarde]) => {
+	const html = `
 
-		if (sleutel === 'maandbedrag') {
-			return `<thead><td><strong>${belPakket.naam}</td><td>${isNaN(Number(waarde.prijs))
-				? waarde.prijs 
-				: pakket.formatteerPrijs(waarde.prijs)
-			}</strong></td></thead>`;
-		} else if (sleutel === 'maximum_minuten_binnen_bundel'){
-			return `<tr><td>${waarde.naam}</td><td>${waarde.minuten}</td></tr>`;
-		} else {
-			return `<tr><td>${waarde.naam}</td><td>${isNaN(Number(waarde.tarief))
-				? waarde.tarief 
-				: pakket.formatteerPrijs(waarde.tarief)
-			}</td></tr>`;
-		}
+		<p><strong>${belPakket.naam}</strong> ${isNaN(Number(belPakket.data.maandbedrag))
+			? belPakket.data.maandbedrag 
+			: pakket.formatteerPrijs(belPakket.data.maandbedrag)
+		}</p>
 
-	}).join(``);
-	html += `</table>`;
+		<p><strong>Maximum minuten binnen bundel</strong> ${belPakket.data.maximum_minuten}</p>
+
+
+
+		<table>
+			<thead>
+				<tr>
+					<th></th>
+					<th>Verbinding</th>
+					<th>Start</th>
+					<th>Minuut</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>NL</td>
+					<td>Vast</td>
+					<td>${isNaN(Number(belPakket.data.vast.nederland.start))
+						? belPakket.data.vast.nederland.start 
+						: pakket.formatteerPrijs(belPakket.data.vast.nederland.start)
+					}</td>
+					<td>${isNaN(Number(belPakket.data.vast.nederland.per_minuut))
+						? belPakket.data.vast.nederland.per_minuut 
+						: pakket.formatteerPrijs(belPakket.data.vast.nederland.per_minuut)
+					}</td>
+				</tr>
+				<tr>
+					<td>NL</td>
+					<td>Mobiel</td>
+					<td>${isNaN(Number(belPakket.data.mobiel.nederland.start))
+						? belPakket.data.mobiel.nederland.start 
+						: pakket.formatteerPrijs(belPakket.data.mobiel.nederland.start)
+					}</td>
+					<td>${isNaN(Number(belPakket.data.mobiel.nederland.per_minuut))
+						? belPakket.data.mobiel.nederland.per_minuut 
+						: pakket.formatteerPrijs(belPakket.data.mobiel.nederland.per_minuut)
+					}</td>
+				</tr>
+				<tr>
+					<td>Buitenland</td>
+					<td>Vast</td>
+					<td>${isNaN(Number(belPakket.data.vast.buitenland.start))
+						? belPakket.data.vast.buitenland.start 
+						: pakket.formatteerPrijs(belPakket.data.vast.buitenland.start)
+					}</td>
+					<td>${isNaN(Number(belPakket.data.vast.buitenland.per_minuut))
+						? belPakket.data.vast.buitenland.per_minuut 
+						: pakket.formatteerPrijs(belPakket.data.vast.buitenland.per_minuut)
+					}</td>
+				</tr>
+				<tr>
+					<td>Buitenland</td>
+					<td>Mobiel</td>
+					<td>${isNaN(Number(belPakket.data.mobiel.buitenland.start))
+						? belPakket.data.mobiel.buitenland.start 
+						: pakket.formatteerPrijs(belPakket.data.mobiel.buitenland.start)
+					}</td>
+					<td>${isNaN(Number(belPakket.data.mobiel.buitenland.per_minuut))
+						? belPakket.data.mobiel.buitenland.per_minuut 
+						: pakket.formatteerPrijs(belPakket.data.mobiel.buitenland.per_minuut)
+					}</td>
+				</tr>			
+					
+			</tbody>
+		</table>
+	`;
+
 	efiberModal(html);
 }
 

@@ -1,0 +1,136 @@
+.print-aanmeldformulier,
+.print-zakelijk-formulier,
+.print-lead-formulier {
+	padding: 40px;
+	background-color: white;
+	width: 100%;
+	margin: 0 auto;
+}
+
+.print-aanmeldformulier form,
+.print-zakelijk-formulier form,
+.print-lead-formulier form{
+	padding: 0;
+	background-color: transparent;
+}
+
+.keuzehulp .gform_wrapper form { }
+
+	.keuzehulp .gform_wrapper .gform_heading {
+		display: none;
+	}
+
+		.keuzehulp .gform_wrapper li.gfield {
+			margin-top: 40px;
+			padding-right: 0 !important;
+		}
+			.keuzehulp .gform_wrapper li.gfield:first-child {
+				margin-top: 0;
+			}
+
+		.keuzehulp .gform_wrapper form label {
+			line-height: 1 !important;
+			font-size: .8em;
+			margin-bottom: 0;
+		}
+			.keuzehulp .gform_wrapper form .heeft-focus .gfield_label {
+				color: black;
+			}
+
+		.keuzehulp .gform_wrapper .top_label div.ginput_container {
+			margin-top: 4px;
+		}
+
+		.keuzehulp .gform_wrapper input,
+		.keuzehulp .gform_wrapper textarea,
+		.keuzehulp .gform_wrapper select {
+			width: 100% !important;
+			min-width: 100% !important;
+			box-sizing: border-box !important;
+			box-shadow: none;
+			border-left-width: 0 !important;
+			border-top-width: 0 !important;
+			border-right-width: 0 !important;
+			border-bottom: 1px solid #dedede;
+			padding-left: 0 !important;
+			padding-right: 0 !important;
+			border-radius: 0;
+
+		}
+		.keuzehulp .gform_wrapper input:focus,
+		.keuzehulp .gform_wrapper textarea:focus,
+		.keuzehulp .gform_wrapper select:focus {
+			border-bottom: 1px solid #8b399c;
+		}
+
+		.keuzehulp .gform_wrapper textarea {
+			height: 80px !important;
+		}
+			.keuzehulp .ginput_container_email {
+				width: 100% !important;
+			}
+
+			.keuzehulp .ginput_container_email span {
+				display: block !important;
+				min-width: 100% !important;
+				padding: 0 !important;
+			}
+				.keuzehulp .ginput_container_email span label{
+					margin-top: 3px !important;
+				}
+
+			.gform_footer.top_label {
+				text-align: center;
+			}
+
+			.keuzehulp .gform_wrapper form [type="submit"] {
+				background-color: #812993;
+				border-radius: 20px;
+				color: white;
+				width: auto !important;
+				min-width: auto !important;
+				font-weight: bold;
+				padding-left: 20px !important;
+				padding-right: 20px !important;
+			}
+				.keuzehulp .gform_wrapper form [type="submit"]:hover {
+					background-color: #46297e;
+				}
+
+
+#field_1_17,#field_1_18,
+#field_1_22,#field_1_23  {
+	width: calc(50% - 10px);
+	display: inline-block;
+}
+#field_1_17,
+#field_1_22 {
+	margin-right: 20px
+}
+
+
+#field_1_72 p {
+	color: black;
+	margin-top:0;
+	font-weight: 300;
+}
+	#field_1_72 p a {
+		text-decoration: underline;
+	}
+#input_1_71, #field_1_72 {
+	margin: 0;
+}
+
+#choice_1_71_1 {
+	min-width: 0 !important;
+	max-width: auto !important;
+	width: auto !important;
+}
+/* emailadres invullen*/
+/*
+[for='input_1_26'],
+[for='input_2_26'],
+[for='input_3_26'] {
+	display: none !important;
+}
+*/

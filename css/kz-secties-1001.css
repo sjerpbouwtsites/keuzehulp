@@ -1,0 +1,5 @@
+
+.keuzehulp-sectie ~ .keuzehulp-sectie {
+  display: none;
+}
+

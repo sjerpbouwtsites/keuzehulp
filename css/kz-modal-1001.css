@@ -2,12 +2,7 @@
 	position: relative;
 	overflow: hidden;
 }
-	.keuzehulp, #sticky-keuzes {
-		transition: .4s filter ease;
-	}
-
-		.efiber-modal-open .keuzehulp,
-		.efiber-modal-open #sticky-keuzes {
+		.efiber-modal-open .keuzehulp {
 			filter: blur(4px);
 		}
 

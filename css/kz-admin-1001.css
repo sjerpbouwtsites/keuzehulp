@@ -1,22 +1,24 @@
-form[class*="efiber"] {
+/* NIET IN GEBRUIK */
+
+form[class~="efiber-insert"] {
 	padding: 20px;
 	color: white;
 	display: inline-block;
 	vertical-align: top;
 	max-width: 400px;
 }
-	form[class*="efiber"] .button {
+	form[class~="efiber-insert"] .button {
 		box-shadow: none;
 		text-shadow: none;
 		font-weight: 900;		
 		border: none !important;
 	}
 			
-	form[class*="efiber"] legend {
+	form[class~="efiber-insert"] legend {
 		font-weight: 800;
 		font-size: 20px;
 	}
-	form[class*="efiber"] label { 
+	form[class~="efiber-insert"] label { 
 		color: white;
 	}
 

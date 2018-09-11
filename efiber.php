@@ -98,6 +98,10 @@ function Ef_scripts_in_rij() {
     wp_register_script( 'gf-masked-input', plugins_url('gravityforms/js/jquery.maskedinput.min.js'), array(), null, true );
     wp_enqueue_script( 'gf-masked-input' );
 
+    // POLYFILL.IO
+
+    wp_enqueue_script( 'polyfill-io', 'https://cdn.polyfill.io/v2/polyfill.min.js', array(), null, true );
+
 }
 
 function Ef_init () {

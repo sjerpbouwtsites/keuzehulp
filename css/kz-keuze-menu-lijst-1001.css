@@ -1,0 +1,156 @@
+.keuze-menu-lijst {
+	background: linear-gradient(0.28turn, #41a33b,  #93be43);
+	padding: 20px;
+	display: none;
+}
+	[data-kz-stap~='postcode-check'] .keuze-menu-lijst { 
+		display: none;
+	}
+	[data-kz-stap~='hoofd'] .keuze-menu-lijst { 
+		display: block;
+	}
+	.keuze-menu-lijst.actief {
+		padding: 20px 20px 60px 20px;
+	}
+
+	.keuze-menu-lijst, 
+	.keuze-menu-lijst h2,
+	.keuze-menu-lijst a,
+	.keuze-menu-lijst a:hover,
+	.keuze-menu-lijst a:active,
+	.keuze-menu-lijst a:focus {
+		color: white;
+	}
+
+	.keuze-menu-lijst header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+		.keuze-menu-lijst.actief header {
+			margin-bottom: 20px;
+		}
+		.keuze-menu-lijst h2 {
+			margin-bottom: 0;
+		}
+			.keuze-menu-lijst h2 span, 
+			.keuze-menu-lijst h2 svg {
+				display: inline-block;
+				vertical-align: middle;
+				font-size: 1.6rem;
+			}
+
+		.keuze-menu-lijst .svg-keuzes {
+			width: 25px;
+			height: 25px;
+		}
+
+		.keuze-menu-lijst .svg-keuzes path{
+			fill: white;
+		}
+
+		.keuze-menu-lijst .svg-wijzigen {
+			width: 30px;
+			height: 30px;
+		}
+			.actief .keuze-menu-lijst .svg-wijzigen {
+				transform: rotate(.5turn);
+			}
+			.keuze-menu-lijst .svg-wijzigen circle {
+				fill: white;
+			}
+			.keuze-menu-lijst .svg-wijzigen path {
+				fill: #41a33b;
+			}
+
+		.keuze-menu-lijst-knop {
+			font-size: .9rem;
+			font-weight: 300;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			position: relative;
+			top: 4px;			
+		}
+			.keuze-menu-lijst-knop_alt-tekst,
+			.keuze-menu-lijst-knop_tekst {
+				line-height: 30px;
+				position: relative;
+				top: -3px;
+				margin-right: 4px;
+			}
+
+			.keuze-menu-lijst-knop_alt-tekst {
+				display: none;
+			}
+				.actief .keuze-menu-lijst-knop_alt-tekst {
+					display: inline-block;
+				}
+				.actief .keuze-menu-lijst-knop_tekst {
+					display: none;
+				}
+
+	.stappen-links {
+		display: none;
+	}
+		.actief .stappen-links {
+			display: block;
+		}
+		.stappen-links ul, 
+		.stappen-links li {
+			list-style-type: none;
+		}
+			.stappen-links ul {
+				padding: 0;
+				margin: 0 -20px;
+			}
+			.stappen-links_stap {
+				margin: 0;			
+				padding: 10px 20px;
+				border-top: 1px solid rgba(255, 255, 255, 0.4);
+			}
+				.stappen-links_stap:last-child {
+					border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+				}
+
+				.stappen-links span {
+					display: inline-block;
+					vertical-align: middle;
+				}
+				.stappen-links_stap svg {
+					display: block;
+				}
+					.stappen-links_tekst {
+						font-weight: 400;
+						margin-left: 7px;
+					}
+						.stappen-links_originele-tekst {
+							opacity: .5;
+						}
+
+				.stappen-links_niet-klaar {
+
+				}
+					.stappen-links_niet-klaar svg {
+						width: 30px;
+						height: 30px;
+					}
+						.stappen-links_niet-klaar svg circle,
+						.stappen-links_niet-klaar svg path {
+							fill: white;
+							opacity: .5;
+						}
+						.stappen-links_niet-klaar circle + path { /* buitenste cirkel */
+							display: none;
+						}
+
+				.stappen-links .stappen-links_klaar {
+					display: none;
+				}
+					.stappen-links_klaar svg {
+						width: 30px;
+						height: 30px;
+					}
+						.stappen-links_klaar svg circle {
+							display: none;
+						}

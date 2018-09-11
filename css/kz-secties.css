@@ -1,3 +1,6 @@
+.keuzehulp-sectie {
+	padding: 40px 0 20px 0;
+}
 
 .keuzehulp-sectie ~ .keuzehulp-sectie {
   display: none;
@@ -5,4 +8,9 @@
 
 .keuzehulp-sectie_kop {
 	font-size: 15px;
+	color: #159a3c;
 }
+	.keuzehulp-sectie_kop h2 {
+		color: inherit;
+	}
+

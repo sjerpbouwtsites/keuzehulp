@@ -57,6 +57,7 @@ function Ef_scripts_in_rij() {
         'hp',
         'keuze-menu-lijst',
         'knoppen',
+        'lettertypen',
         'modal',
         'navigatie-beneden',
         'postcode',

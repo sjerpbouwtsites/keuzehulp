@@ -51,6 +51,10 @@ function efiberAppendNiveauKnop(knop) {
 
 
 function efiberZetNiveauKnop(knop) {
+
+
+	console.error('KEUZE NIVEAU AFGEBROKEN'); return;
+
 	const afbNav = doc.getElementsByClassName('efiber-niveau-knoppen')[0],
 
 

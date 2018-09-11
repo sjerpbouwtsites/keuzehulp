@@ -33,26 +33,12 @@ function eFiberSluitRoutesUit(keuze) {
 
 	const consequentie = keuzeConsequenties[keuze];
 
-
-let config,
-
-
- i,
-
-
- knopIndex,
-
-
- sectie,
-
-
- sectieTitel,
-
-
- selector,
-
-
- titelNormaleSpelling;
+	let config,
+		i,
+		sectie,
+		sectieTitel,
+		selector,
+		titelNormaleSpelling;
 
 
 	for (sectieTitel in consequentie) { // internet, bellen, televisie etc
@@ -69,22 +55,43 @@ let config,
 			// alles op display none
 
 			for (i = 0; i < sectieKnoppen.length; i++) {
-				sectieKnoppen[i].style.display = 'none';
+				kzVindCombiKnop(sectieKnoppen[i]).style.display = 'none';
 			}
 
 			config = consequentie[titelNormaleSpelling];
 
 			for (i = 0; i < config.length; i++) {
-				knopIndex = config[i] - 1;
 
-				if (typeof sectieKnoppen[knopIndex] !== 'undefined') {
-					sectieKnoppen[knopIndex].style.display = 'inline-block';
+				let sel = `[data-efiber-${titelNormaleSpelling}-keuze='${config[i]}']`;
+				let knop = doc.querySelector(sel);
+				if (knop) {
+					kzVindCombiKnop(knop).style.display = 'flex';
 				} else {
-					console.error(`knopIndex onbekend${knopIndex}`);
+					console.log(new Error('niet gevonden op index ', config[i]));
 				}
+
 			}
 		} else {
 			console.error(`sectie niet gevonden ${sectieTitel}`);
 		}
 	}
+}
+
+function kzVindCombiKnop(knop){
+
+	let k = knop;
+
+	if (k.classList.contains('kz-knop-combi')) return k;
+
+	do {
+		k = k.parentNode;
+	} while (!k.classList.contains('kz-knop-combi') && !k.classList.contains('keuzehulp')); // niet doorgaan na body
+
+	if (k.classList.contains('keuzehulp')) {
+		console.error(new Error('doorgezocht naar body maar geen combiknop gevonden'));
+		return;
+	} else {
+		return k;
+	}
+
 }

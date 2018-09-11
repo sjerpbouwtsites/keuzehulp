@@ -1,0 +1,61 @@
+.knoppendoos {
+	margin-bottom: -20px;
+	margin-left: -10px;
+	margin-right: -10px;
+	margin-top: 40px;
+}
+
+.kz-knop-combi {
+	display: flex;
+	flex-direction: row;
+	border-radius: 5px;
+	overflow:hidden;
+	margin-bottom: 20px;
+	background-color:white;
+	box-shadow: 0.5px 0.5px 4px rgba(0,0,0,0.1);
+}
+
+	.kz-knop-combi_links {
+		flex-basis: 115px;
+		flex-shrink: 0;
+	}
+		.kz-knop-combi_links img {
+			display: block;
+			height: 100%;
+			object-fit: cover;			
+		}
+
+	.kz-knop-combi_rechts {
+		padding: 10px;
+		font-size: 14px;
+		flex-basis: calc(100% - 115px);
+	}
+
+		.kz-knop-combi_rechts-boven {
+			font-weight: 700;
+			display: flex;
+			margin-bottom: 10px;
+			flex-direction: row;
+			justify-content: space-between;
+		}
+			.kz-knop-combi_rechts-boven circle, 
+			.kz-knop-combi_rechts-boven path {
+				fill: #227dc6;
+			}
+
+		.kz-knop-combi_rechts .blauwe-knop {
+			width: auto;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			padding: 15px 25px ;
+		}
+			.kz-knop-combi_rechts .blauwe-knop svg {
+				transform: rotate(.25turn);
+				width: 30px;
+				height: 30px;
+				margin: -5px;
+			}
+				.kz-knop-combi_rechts .blauwe-knop path {
+					fill: white;
+				}

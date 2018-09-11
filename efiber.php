@@ -56,6 +56,7 @@ function Ef_scripts_in_rij() {
         'header',
         'hp',
         'keuze-menu-lijst',
+        'knop-combi',
         'knoppen',
         'lettertypen',
         'modal',

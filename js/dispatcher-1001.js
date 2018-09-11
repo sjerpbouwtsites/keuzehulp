@@ -55,7 +55,7 @@ function knoppenDispatcher() {
 			for (var i = 0; i < funcs.length; i++){
 				var funcNaam = naarCamelCase(funcs[i]);
 				if (knoppenFuncs[funcNaam]) {
-					// console.log('dispatch '+funcNaam);
+					 console.log('dispatch '+funcNaam);
 					knoppenFuncs[funcNaam](knop);
 				} else {
 					console.log('geen knop func gedefinieerd', funcNaam);
@@ -75,7 +75,10 @@ var knoppenFuncs = {
 
 	toonStap: function(knop) {
 
-		const n = knop.href.split('#')[1];
+
+		const n = knop.hasAttribute('href')
+			? knop.href.split('#')[1]
+			: knop.getAttribute('data-href').split('#')[1]
 
 		efiberRouting.ga(n);
 
@@ -336,7 +339,16 @@ var knoppenFuncs = {
 			console.error(new Error(`doel van ${knop.id} (${knop.className}) niet gevonden.`));
 		}
 		doel.classList.toggle('actief');
+	},
+	tooltip: function (knop){
+		
+		efiberModal({
+			kop: knop.getAttribute('data-tooltip-titel'),
+			torso: knop.getAttribute('data-tooltip-tekst')
+		});
 	}
+
+
 
 };
 

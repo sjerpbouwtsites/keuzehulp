@@ -77,7 +77,7 @@ require 'keuze-menu-lijst.php';
 			 						placeholder='Kamernummer'
 			 					>
 			 				</label>
-			  				<input type='submit' value='doe de check!'>
+			  				<input class='blauwe-knop' type='submit' value='doe de check!'>
 						</form>",
 		));
 
@@ -90,10 +90,11 @@ require 'keuze-menu-lijst.php';
 
 
 		$keuzehulp_knoppen = '';
-		$knop = new Ef_knop(array(
+		$knop = new Kz_knop_combi(array(
 			'func'		=> "zet-niveau-knop toon-stap animeer",
 			'link'		=> '#3',
 			'tekst'		=> $kofnt['wel_keuze_hulp'],
+			'tooltip'	=> $kofnt['wel_keuze_hulp_tooltip'],
 			'geen_ikoon'=> false,
 			'ikoon'		=> efiber_keuzehulp_pak_afb("meta 2"),
 		));
@@ -103,6 +104,7 @@ require 'keuze-menu-lijst.php';
 		$knop->tekst = $kofnt['geen_keuzehulp'];
 		$knop->ikoon = efiber_keuzehulp_pak_afb("meta 3");
 		$knop->func = 'toon-stap animeer leeg-keuzehulp verstop-keuze-niveaus';
+		$knop->tooltip = $kofnt['geen_keuze_hulp_tooltip'];
 		$keuzehulp_knoppen .= $knop->maak();
 
 		$keuzehulp_of_niet = new EfiberSectie(array(

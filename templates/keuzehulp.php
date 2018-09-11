@@ -91,7 +91,7 @@ require 'keuze-menu-lijst.php';
 
 		$keuzehulp_knoppen = '';
 		$knop = new Kz_knop_combi(array(
-			'func'		=> "zet-niveau-knop toon-stap animeer",
+			'func'		=> "animeer zet-niveau-knop toon-stap",
 			'link'		=> '#3',
 			'tekst'		=> $kofnt['wel_keuze_hulp'],
 			'tooltip'	=> $kofnt['wel_keuze_hulp_tooltip'],
@@ -122,7 +122,7 @@ require 'keuze-menu-lijst.php';
 		$situatie_teksten = get_field('situatie_teksten', 'option');
 
 		$kies_situatie_knoppen = '';
-		$knop->func = 'zet-niveau-knop zet-situatie toon-stap animeer zet-nummers-consequentie';
+		$knop->func = 'animeer zet-niveau-knop zet-situatie toon-stap zet-nummers-consequentie';
 		$knop->attr = 'data-efiber-situatie-keuze="klein-huishouden"';
 		$knop->tekst = $situatie_teksten['1-2_persoons_huishouden'];
 		$knop->tooltip = $situatie_teksten['1-2_persoons_huishouden_tooltip'];
@@ -169,7 +169,7 @@ require 'keuze-menu-lijst.php';
 
 		$kies_klein_zakelijk_knoppen = '';
 		$knop->attr = 'data-efiber-situatie-keuze="klein-zakelijk"';
-		$knop->func = 'zet-niveau-knop zet-situatie toon-stap animeer zet-nummers-consequentie';
+		$knop->func = 'animeer zet-niveau-knop zet-situatie toon-stap zet-nummers-consequentie';
 		$knop->link = '#5';
 		$knop->tekst = $bedrijf_of_zakelijk_teksten['nee'];
 		$knop->tooltip = $bedrijf_of_zakelijk_teksten['nee_tooltip'];
@@ -202,7 +202,7 @@ require 'keuze-menu-lijst.php';
 		$kies_internet_knoppen = '';
 		$knop->tekst = $kies_internet_teksten['beetje_browsen_en_emailen'];
 		$knop->tooltip = $kies_internet_teksten['beetje_browsen_en_emailen_tooltip'];
-		$knop->func = 'zet-niveau-knop toon-stap zet-keuze-internet animeer';
+		$knop->func = 'animeer zet-niveau-knop toon-stap zet-keuze-internet';
 		$knop->link = '#6';
 		$knop->attr = 'data-efiber-internet-keuze="1"';
 		$knop->geen_ikoon = false;
@@ -244,7 +244,7 @@ require 'keuze-menu-lijst.php';
 		$kies_bellen_knoppen = '';
 		$knop->tekst = $kies_bellen_teksten['ik_bel_alleen_mobiel'];
 		$knop->tooltip = $kies_bellen_teksten['ik_bel_alleen_mobiel_tooltip'];
-		$knop->func = 'zet-niveau-knop zet-keuze-bellen animeer toon-stap';
+		$knop->func = 'animeer zet-niveau-knop zet-keuze-bellen toon-stap';
 		$knop->link = '#8';
 		$knop->attr = 'data-efiber-bellen-keuze="1"';
 		$knop->ikoon = efiber_keuzehulp_pak_afb("bellen 1");
@@ -281,7 +281,7 @@ require 'keuze-menu-lijst.php';
 		$knop->class= 'multiselect';
 		$knop->tekst = $kies_nummers_teksten['ik_heb_meerdere_telefoonnummers_nodig'];
 		$knop->tooltip = $kies_nummers_teksten['ik_heb_meerdere_telefoonnummers_nodig_tooltip'];
-		$knop->func = 'zet-niveau-knop zet-keuze-nummers animeer';
+		$knop->func = 'animeer zet-niveau-knop zet-keuze-nummers';
 		$knop->link = '';
 		$knop->attr = 'data-efiber-nummers-keuze="1"';
 		$knop->ikoon = efiber_keuzehulp_pak_afb("nummer 1");
@@ -310,7 +310,7 @@ require 'keuze-menu-lijst.php';
 
 		$kies_televisie_knoppen = '';
 		$knop->geen_ikoon = false;
-		$knop->func = 'zet-niveau-knop toon-stap zet-keuze-televisie animeer';
+		$knop->func = 'animeer zet-niveau-knop toon-stap zet-keuze-televisie';
 		$knop->class = '';
 
 
@@ -366,7 +366,7 @@ require 'keuze-menu-lijst.php';
 
 		$knop->class = 'multiselect';
 		$knop->link = '#';
-		$knop->func = 'zet-niveau-knop zet-keuze-televisie-opties animeer';
+		$knop->func = 'animeer zet-niveau-knop zet-keuze-televisie-opties';
 
 		$knop->tekst = $televisie_opties_teksten['nederlands_voetbal'];
 		$knop->tooltip = $televisie_opties_teksten['nederlands_voetbal_tooltip'];
@@ -453,7 +453,7 @@ require 'keuze-menu-lijst.php';
 		$knop->class = '';
 		$knop->tekst = $installatie_teksten['ik_ben_handig'];
 		$knop->tooltip = $installatie_teksten['ik_ben_handig_tooltip'];
-		$knop->func = 'zet-niveau-knop toon-stap zet-keuze-installatie vergelijking animeer';
+		$knop->func = 'animeer zet-niveau-knop toon-stap zet-keuze-installatie vergelijking';
 		$knop->link = '#30';
 		$knop->attr = 'data-efiber-installatie-keuze="1"';
 		$knop->geen_ikoon = false;
@@ -491,7 +491,7 @@ require 'keuze-menu-lijst.php';
 		$knop->tekst = $iwwiw_teksten['alleen_internet'];
 		$knop->tooltip = $iwwiw_teksten['alleen_internet_tooltip'];
 		$knop->attr  = 'data-efiber-ik-weet-wat-ik-wil-keuze="1"';
-		$knop->func = 'zet-keuze-ik-weet-wat-ik-wil toon-stap laad-ik-weet-wat-ik-wil-pakketten animeer';
+		$knop->func = 'animeer zet-keuze-ik-weet-wat-ik-wil toon-stap laad-ik-weet-wat-ik-wil-pakketten';
 		$knop->link = '#21';
 		$knop->geen_ikoon = false;
 		$knop->ikoon = efiber_keuzehulp_pak_afb("internet 1");

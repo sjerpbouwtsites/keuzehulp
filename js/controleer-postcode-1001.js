@@ -86,10 +86,6 @@ function postcodeAjaxCB(r) {
 
 		}
 
-		// wacht op rendering van eea zodat pixelberekeningen kloppen
-		setTimeout(() => {
-			efiberStickyKeuzes();
-		}, 150);
 	} else {
 		efiberModal(teksten.nietInUwGebied, 5000);
 		efiberRouting.ga(51);

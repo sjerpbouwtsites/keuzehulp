@@ -1,141 +1,36 @@
 /* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren  */
-function efiberAppendNiveauKnop(knop) {
-	const kc = knop.cloneNode(true),
-
-	// alle functies behalve in toelaten worden uit data-efiber-func gehaald.
-	 funcLijst = kc.getAttribute('data-efiber-func').split(' '),
-	 funcLijstKopie = funcLijst.slice(0),
-	 toelaten = ['toon-stap', 'vergelijking'];
-
-	for (let i = 0; i < funcLijstKopie.length; i++) {
-		if (toelaten.indexOf(funcLijstKopie[i]) === -1) {
-			funcLijst.splice(funcLijst.indexOf(funcLijstKopie[i]), 1);
-		}
-	}
-
-	// als dit een multiselect is dient het juist toon-stap te krijgen.
-	if (knop.className.indexOf('multiselect') !== -1) {
-		funcLijst.push('toon-stap');
-	}
-
-	kc.setAttribute('data-efiber-func', funcLijst.join(' '));
-
-	// nu nog de link aanpassen naar de eigen sectie.
-	// zoek degene met de keuzehulp stap
-
-	let ouder = knop.parentNode;
-	do {
-	  ouder = ouder.parentNode;
-	} while (!ouder.hasAttribute('data-keuzehulp-stap'));
-
-	const link = `#${ouder.getAttribute('data-keuzehulp-stap')}`;
-
-	kc.setAttribute('href', link);
-
-	// hoe dan ook allemaal actief.
-	if (kc.className.indexOf('actief') === -1) kc.className += ' actief';
-
-	// en klasse van img toevoegen.
-	const imgKlasse = kc.getElementsByTagName('img')[0].className;
-	kc.className = `${kc.className} img-${imgKlasse}`;
-
-	// nu nog ff de span verwijderen
-	kc.removeChild(kc.getElementsByTagName('span')[0]);
-
-	doc.getElementsByClassName('efiber-niveau-knoppen')[0].getElementsByClassName('efiber-niveau-knoppen-torso')[0].appendChild(kc);
-
-	const afbNav = doc.getElementsByClassName('efiber-niveau-knoppen')[0];
-	afbNav.className = afbNav.className.replace('inactief', '').trim();
-	$('#sticky-keuzes').show();
-}
-
 
 function efiberZetNiveauKnop(knop) {
 
+	let kzSectie = knop.parentNode;
+	do {
+	  kzSectie = kzSectie.parentNode;
+	} while (!kzSectie.hasAttribute('data-keuzehulp-stap') && !kzSectie.classList.contains('keuzehulp')); // niet voorbij body
 
-	console.error('KEUZE NIVEAU AFGEBROKEN'); return;
-
-	const afbNav = doc.getElementsByClassName('efiber-niveau-knoppen')[0],
-
-
- dezeImg = knop.getElementsByTagName('img')[0],
-
-
- dezeAlt = dezeImg.getAttribute('alt'),
-
-
- afbInNav = afbNav.getElementsByClassName(dezeImg.className);
-
-	if (knop.className.indexOf('multiselect') !== -1) {
-		// andere niet verwijderen. Als deze op actief staat,
-		// verwijderen, knop wordt later op inactief gezet. En vice versa.
-
-		if (knop.className.indexOf('actief') !== -1) {
-			// multiselect op actief ->
-			// vergelijken op alt en alleen deze verwijderen
-			for (var i = 0; i < afbInNav.length; i++) {
-				if (afbInNav[i].getAttribute('alt') === dezeAlt) {
-					afbInNav[i].parentNode.parentNode.removeChild(afbInNav[i].parentNode);
-				}
-			}
-		} else {
-			// niet actief, toevoegen.
-			efiberAppendNiveauKnop(knop);
-		}
-	} else if (knop.className.indexOf('actief') !== -1) {
-			// knop is actief. Kan zijn omdat uit geheugen heracti
-			if (!afbInNav.length) {
-				efiberAppendNiveauKnop(knop);
-			}
-		} else {
-			for (var i = 0; i < afbInNav.length; i++) {
-				afbInNav[i].parentNode.parentNode.removeChild(afbInNav[i].parentNode);
-			}
-
-			efiberAppendNiveauKnop(knop);
-			// alle broertjes uit nav verwijderen
-		}
-}
-
-function efiberStickyKeuzes() {
-	const sw = 200,
-
-	 kanStickyDoen = body.scrollWidth > 1200;
-
-	if (!kanStickyDoen) {
-		return;
+	if (kzSectie.classList.contains('keuzehulp')) {
+		console.error(new Error('sectie niet gevonden'));
 	}
 
-	setTimeout(() => {
-		$sticky = $('#sticky-keuzes');
-		$sticky.css({ opacity: 0 });
+	const stap = kzSectie.dataset.keuzehulpStap;
+	
+	//uitsluiten bepaalde
+	if (['2'].includes(stap)) return;	
 
-/*		var offset = $('.keuzehulp-sectie_kop h2').first().offset().top;
+	const stappenLinksStap = doc.getElementById(`stappen-links-${stap}`);
+	stappenLinksStap.getElementsByClassName('stappen-links_klaar')[0].style.display = "inline-block";
+	stappenLinksStap.getElementsByClassName('stappen-links_niet-klaar')[0].style.display = "none";
+	stappenLinksStap.getElementsByClassName('stappen-links_originele-tekst')[0].style.opacity = "1";
 
-		if (!offset && offset !== 0) {
-			$sticky.hide();
-			return;
-		} */
+	const print = stappenLinksStap.getElementsByClassName('stappen-links_vervangende-tekst')[0];
+	print.style.display = "block";
 
-		const offset = 225,
+	console.log(kzSectie);
+	print.innerHTML = Array.from(kzSectie.querySelectorAll('.actief.knop'), knop => {
+		console.log(knop);
+		let combiKnop = kzVindCombiKnop(knop);
+		let html = combiKnop.querySelector('.kz-knop-combi_rechts-boven span').innerHTML;
+		return `<span>${html}</span>`;	
+	}).join('<br>');
 
-
-		 left = ($('.keuzehulp .verpakking').offset().left + $('.keuzehulp .verpakking').width()) - 225;
-
-		$('.keuzehulp .verpakking').css({
-			position: 'relative',
-			right: '120px',
-		});
-
-		$sticky.css({ top: `${offset}px` });
-		$sticky.css({ left: `${left}px` });
-
-		$sticky.height($('.keuzehulp .verpakking').height());
-
-		$('body').addClass('heeft-sticky').append($sticky);
-
-		$('.efiber-niveau-knoppen').addClass('sticky').appendTo('.sticky-binnen');
-
-		$sticky.css({ opacity: 1 });
-	}, 500);
 }
+

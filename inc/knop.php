@@ -106,12 +106,7 @@ class Kz_knop_combi extends Ef_knop {
 		$this->html = 
 		"
 		<div class='kz-knop-combi'>
-			<div 
-				class='kz-knop-combi_links knop'
-				{$f}
-				{$this->attr}
-				data-href='{$this->link}'
-			>
+			<div class='kz-knop-combi_links'>
 				$ikoon
 			</div>
 			<div class='kz-knop-combi_rechts'>

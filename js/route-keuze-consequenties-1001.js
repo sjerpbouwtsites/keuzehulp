@@ -20,7 +20,6 @@ keuzeConsequenties = {
 	nummersZakelijk: {
 		nummers: [1, 2],
 	},
-
 };
 
 
@@ -77,21 +76,3 @@ function eFiberSluitRoutesUit(keuze) {
 	}
 }
 
-function kzVindCombiKnop(knop){
-
-	let k = knop;
-
-	if (k.classList.contains('kz-knop-combi')) return k;
-
-	do {
-		k = k.parentNode;
-	} while (!k.classList.contains('kz-knop-combi') && !k.classList.contains('keuzehulp')); // niet doorgaan na body
-
-	if (k.classList.contains('keuzehulp')) {
-		console.error(new Error('doorgezocht naar body maar geen combiknop gevonden'));
-		return;
-	} else {
-		return k;
-	}
-
-}

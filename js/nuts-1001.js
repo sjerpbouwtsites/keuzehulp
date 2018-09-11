@@ -113,3 +113,22 @@ function efiberMaakBestelKnop(pakket, eigenschappen, tekst) {
 	sessionStorage.setItem(`pakket-${pakket.ID}`, JSON.stringify(arguments));
 	this.HTML = `<a class='knop geen-ikoon efiber-bestelknop' data-efiber-func='toon-stap animeer aanmeldformulier' href='#100' efiber-data-pakket-id='${pakket.ID}'>${tekst}</a>`;
 }
+
+function kzVindCombiKnop(knop){
+
+	let k = knop;
+
+	if (k.classList.contains('kz-knop-combi')) return k;
+
+	do {
+		k = k.parentNode;
+	} while (!k.classList.contains('kz-knop-combi') && !k.classList.contains('keuzehulp')); // niet doorgaan na body
+
+	if (k.classList.contains('keuzehulp')) {
+		console.error(new Error('doorgezocht naar body maar geen combiknop gevonden'));
+		return;
+	} else {
+		return k;
+	}
+
+}

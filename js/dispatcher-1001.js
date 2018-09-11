@@ -101,7 +101,7 @@ var knoppenFuncs = {
 			// dan dienen andere knoppen nu geen actief meer te hebben
 			if (knop.className.indexOf('multiselect') === -1) {
 
-				var knoppen = knop.parentNode.getElementsByClassName('knop');
+				var knoppen = kzVindCombiKnop(knop).getElementsByClassName('knop');
 
 				for (var i = knoppen.length - 1; i >= 0; i--) {
 					knoppen[i].className = knoppen[i].className.replace('actief', '').trim();

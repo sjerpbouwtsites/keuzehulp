@@ -49,14 +49,8 @@
 
 
 		.knop {
-			background: transparent;
-			border-radius: 40px;
-			font-weight: 600;
-			border: 0;
 			transition: all .4s ease .1s;
-			display: inline-flex;
-			flex-direction: column;
-
+			text-decoration: none;
 		}
 
 

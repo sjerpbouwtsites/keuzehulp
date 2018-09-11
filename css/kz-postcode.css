@@ -1,89 +1,70 @@
-
-
-.keuzehulp [data-keuzehulp-stap="1"] .binnen {
-	display: flex;
+.kz-sectie-1 {
+	margin: 0 -20px;
+	padding: 40px 20px 20px 20px;
+	background-color: #41a33b;
 }
-
-	.keuzehulp [data-keuzehulp-stap="1"] .binnen > p {
-		margin-left: 40px;
-		order: 2;
-	}
-
-	@media(max-width: 800px) {
-		.keuzehulp [data-keuzehulp-stap="1"] .binnen {
-			flex-direction: column;
-		}
-		.keuzehulp [data-keuzehulp-stap="1"] .binnen > p {
-			margin-left: 0;
-			margin-top: 0;
-			order: 1;
-		}
-		.keuzehulp [data-keuzehulp-stap="1"] .binnen > form {
-			order: 2;
-			margin-bottom: 0;
-			margin-top: 20px;
-		}
-
-	}
-
-.keuzehulp [data-keuzehulp-stap="1"] form {
-	margin-top: 0;
-	margin-left: auto;
-	margin-right: auto;
-	background-color: #9d378e;
-}
-
-
-
-.keuzehulp [data-keuzehulp-stap="1"] form input {
-	border: none;
-	background: #fff;
-	color: #5c4959;
-	padding: 10px 15px;
-	border-radius: 0;
-	height: inherit;
-	font-size: 16px;
-  	box-shadow: inset 1px 2px 3px rgba(0, 0, 0, 0.2);
-	-webkit-transition: .18s ease-out;
-	-moz-transition: .18s ease-out;
-	-o-transition: .18s ease-out;
-	transition: .18s ease-out;
-	max-width:100%;
-}
-	.keuzehulp [data-keuzehulp-stap="1"] form select,
-	.keuzehulp [data-keuzehulp-stap="1"] form textarea {
-		color: #5c4959;
-	}
-	.keuzehulp [data-keuzehulp-stap="1"] form input:hover {
-		box-shadow: inset 1px 2px 3px rgba(0, 0, 0, 0.3);
-	}
-	.keuzehulp [data-keuzehulp-stap="1"] form input:focus {
-		box-shadow: inset 1px 2px 3px rgba(0, 0, 0, 0.5);
-	}
-
-.keuzehulp [data-keuzehulp-stap="1"] form [type='submit'] {
-	margin-top: 20px;
-	font-weight: bold;
-	display: block;
-	box-shadow: none;
-	transition: .18s ease-out;
-}
-	.keuzehulp [data-keuzehulp-stap="1"] form [type='submit']:hover {
-		background-color: #46297e;
-		color: #f9f9f9;
+	
+	.kz-sectie-1 h2, 
+	.kz-sectie-1 p {
+		color: white;
 	}
 
 
+	.kz-sectie-1 form {
+		margin: 20px -10px;
+		padding: 20px 10px;
+		border-radius: 4px;
+		background-color: white;
+	}
+	.kz-sectie-1 form h3 {
+		color: #41a33b;
+		font-weight: 700;
+	}
+	.kz-sectie-1 form p {
+		color: #1d1d1b;
+	}
 
-#keuze-postcodeform {
-	width: 320px;
-	max-width: 100%;
-}
-	#keuze-postcodeform label {
-		margin-right: 0;
+
+	.kz-sectie-1 label input { /* alle behalve submit */
+		border: 1px solid #81d899;  
+		margin-bottom: .8em;
+		padding: .75em;
+		display: block;
+		width: 100%;
+		box-sizing: border-box;
+		box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.15);
+	}
+	.kz-sectie-1 label span {
+		font-size: .7em;
+		opacity: .8;
+		display: block;
+		margin-bottom: .33em;
+	}
+
+	.kz-sectie-1 label[for='postcode'],
+	.kz-sectie-1 label[for='kamer'] {
+		width: calc(100%);
 		display: block;
 	}
-	#keuze-postcodeform input {
+
+	.kz-sectie-1 label[for='huisnummer'],
+	.kz-sectie-1 label[for='toevoeging'] {
+		width: calc(50% - 10px);
+		display: inline-block;
+	}
+	.kz-sectie-1 label[for='toevoeging'] {
+		margin-left: 20px;
+	}
+
+	.kz-sectie-1 [type='submit'] {
+		color: white;
+		font-weight: 700;
+		text-transform: uppercase;
+		border: none;
+		background: linear-gradient(.45turn, #2381cc, #1d6ba9);
 		display: block;
-		width:100%;
+		font-size: 16px;
+		padding: 15px;
+		width: 100%;
+		margin-top: 20px;
 	}

@@ -38,6 +38,7 @@ require 'keuze-menu-lijst.php';
 			 				<h3>Postcodecheck</h3>
 			 				<p>Vul postcode en huisnummer in en bekijk de mogelijkheden op jouw adres</p>
 			 				<label for='postcode'>
+			 					<span>postcode</span>
 			 					<input
 			 						class='keuzehulp-input'
 			 						id='postcode'
@@ -49,6 +50,7 @@ require 'keuze-menu-lijst.php';
 			 					>
 			 				</label>
 			 				<label for='huisnummer'>
+			 					<span>huisnummer</span>
 			 					<input
 			 						class='keuzehulp-input'
 			 						id='huisnummer'
@@ -57,8 +59,8 @@ require 'keuze-menu-lijst.php';
 			 						placeholder='huisnummer'
 			 						minlength='1'
 			 					>
-			 				</label>
-			 				<label for='toevoeging'>
+			 				</label><label for='toevoeging'>
+			 					<span>toevoeging</span>
 			 					<input
 			 						class='keuzehulp-input'
 			 						id='toevoeging'
@@ -68,6 +70,7 @@ require 'keuze-menu-lijst.php';
 			 					>
 			 				</label>
 			 				<label for='kamer'>
+			 					<span>kamer</span>
 			 					<input
 			 						class='keuzehulp-input'
 			 						id='kamer'
@@ -76,7 +79,7 @@ require 'keuze-menu-lijst.php';
 			 						placeholder='Kamernummer'
 			 					>
 			 				</label>
-			  				<input type='submit' value='versturen'>
+			  				<input type='submit' value='doe de check!'>
 						</form>",
 		));
 
@@ -607,8 +610,3 @@ require 'keuze-menu-lijst.php';
 
 <div id='sticky-keuzes'><div class='sticky-binnen'></div></div>
 
-
-<?php
-get_footer();
-
-get_footer();

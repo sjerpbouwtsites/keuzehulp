@@ -27,7 +27,7 @@ class EfiberSectie extends Ef_basis_class {
 	public function sectie_open () { ?>
 
 		<section
-			class='keuzehulp-sectie'
+			class='keuzehulp-sectie kz-sectie-<?=$this->stap?>'
 			data-keuzehulp-stap='<?=$this->stap?>'>
 
 	<?php }

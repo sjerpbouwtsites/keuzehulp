@@ -9,6 +9,11 @@ img {
 	background-color: #f3f3f0;
 }
 
+body.keuzehulp {
+	font-family: "Maven Pro", sans-serif;
+	margin: 0;
+}
+
 .keuzehulp .verpakking {
 	width: 1200px;
 	max-width: calc(100% - 40px);
@@ -20,15 +25,25 @@ img {
 	display: none !important;
 }
 
+.keuzehulp h2, .keuzehulp h3 {
+	color: #1d1d1b;
+	font-weight: 700;
+	margin-top: .33em;
+	margin-bottom: .5em;
+}
+
 .keuzehulp h1:first-child, .keuzehulp h2:first-child, .keuzehulp h3:first-child, .keuzehulp h4:first-child, .keuzehulp h5:first-child, .keuzehulp h6:first-child {
 	margin-top: 0;
 }
 
 .keuzehulp p {
-	color: #2a2a28;
-	font-weight: 500;
+	color: #1d1d1b;
+	font-weight: 400;
 	max-width: 600px;
+	font-size: 14px;
+	line-height: 19px;
 }
+
 
 
 .kz-tooltip {
@@ -41,3 +56,4 @@ img {
 	.kz-tooltip:before {
 		content: "I";		
 	}
+

@@ -50,7 +50,7 @@ function Ef_scripts_in_rij() {
 
 
     $pak_stijlen = array(
-        '', 'form', 'header', 'hp', 'keuze-menu-lijst', 'knoppen', 'modal', 'postcode', 'print', 'secties'
+        '', 'footer',  'form', 'header', 'hp', 'keuze-menu-lijst', 'knoppen', 'modal', 'postcode', 'print', 'secties'
     );
 
 

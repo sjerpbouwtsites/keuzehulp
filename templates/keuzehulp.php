@@ -607,6 +607,5 @@ require 'keuze-menu-lijst.php';
 
 </div></div><!-- verpakkign en keuzehulp -->
 
-
-<div id='sticky-keuzes'><div class='sticky-binnen'></div></div>
+<?php require 'footer.php'; ?>
 

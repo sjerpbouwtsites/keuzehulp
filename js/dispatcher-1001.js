@@ -326,6 +326,16 @@ var knoppenFuncs = {
 	},
 	aantalZendersModal: function (knop){
 		kzZendersModal(knop);
+	},
+	schakel: function (knop) {
+		if (!knop.hasAttribute('data-doel')) {
+			console.error(new Error(`schakel ${knop.id} (${knop.className}) heeft geen doel`));
+		}
+		const doel = document.querySelector(knop.getAttribute(`data-doel`));
+		if (!doel) {
+			console.error(new Error(`doel van ${knop.id} (${knop.className}) niet gevonden.`));
+		}
+		doel.classList.toggle('actief');
 	}
 
 };

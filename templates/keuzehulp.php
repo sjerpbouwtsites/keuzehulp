@@ -25,13 +25,6 @@ require 'keuze-menu-lijst.php';
 
 <div class='keuzehulp'><div class='verpakking'>
 
-
-	<nav class='efiber-niveau-knoppen inactief'>
-		<h2>Uw keuzes</h2>
-		<div class='efiber-niveau-knoppen-torso knoppendoos'></div>
-	</nav>
-
-
 	<?php
 
 		$pc_teksten = get_field('postcode_teksten', 'option');

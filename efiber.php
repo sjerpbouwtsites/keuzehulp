@@ -33,40 +33,41 @@ function Ef_scripts_in_rij() {
 
 
     $pak_scripts = array(
-        'nuts', 
+        'aanmeldformulier', 
         'ajax', 
-        'iwwiw', 
         'controleer-postcode', 
-        'routing', 
         'dispatcher',
         'geheugen', 
-        'route-keuze-consequenties', 
-        'pakket',
-        'vergelijking', 
-        'aanmeldformulier', 
+        'iwwiw', 
         'keuze-niveaus', 
-        'modal'
+        'modal',
+        'nuts', 
+        'pakket',
+        'route-keuze-consequenties', 
+        'routing', 
+        'vergelijking', 
     );
 
 
     $pak_stijlen = array(
-        '', 'form', 'modal', 'stappen', 'postcode', 'print', 'knoppen', 'hp', 'header', 'keuze-menu-lijst'
+        '', 'form', 'header', 'hp', 'keuze-menu-lijst', 'knoppen', 'modal', 'postcode', 'print', 'secties'
     );
 
 
-    $script_postfix = "1001";
+    $script_postfix = "-1001";
+    $stijl_postfix = '';
 
     foreach ($pak_scripts as $s) {
-        wp_register_script( "efiber-$s", plugins_url("efiber/js/{$s}-".$script_postfix.".js"), array(), null, true );
+        wp_register_script( "efiber-$s", plugins_url("efiber/js/{$s}".$script_postfix.".js"), array(), null, true );
         wp_enqueue_script( "efiber-$s" );
     }
 
-    wp_register_script( 'efiber-script', plugins_url('efiber/js/{efiber}-'.$script_postfix.'.js'), array(), null, true );
+    wp_register_script( 'efiber-script', plugins_url('efiber/js/{efiber}'.$script_postfix.'.js'), array(), null, true );
     wp_enqueue_script( 'efiber-script' );
 
     foreach ($pak_stijlen as $s) {
         $v = ($s !== '' ? "-$s" : $s);
-        wp_register_style( "kz$v", plugins_url("efiber/css/kz{$v}-".$script_postfix.".css"), array(), null);
+        wp_register_style( "kz$v", plugins_url("efiber/css/kz{$v}".$stijl_postfix.".css"), array(), null);
         wp_enqueue_style( "kz$v" );
     }
 

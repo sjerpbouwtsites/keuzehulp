@@ -40,6 +40,7 @@ function Ef_scripts_in_rij() {
         'geheugen', 
         'iwwiw', 
         'keuze-niveaus', 
+        'knoppen', 
         'modal',
         'nuts', 
         'pakket',

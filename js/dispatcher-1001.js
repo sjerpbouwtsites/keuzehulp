@@ -86,32 +86,7 @@ var knoppenFuncs = {
 	},
 	animeer: function (knop) {
 
-		if (knop.className.indexOf('actief') !== -1) {
-
-			// als multiselect, verwijder dan klasse.
-			if (knop.className.indexOf('multiselect') !== -1) {
-				knop.className = knop.className.replace('actief', '').trim();
-			} else {
-				// als geen multiselect, dan is dit een bevestiging van de keuze, dus geen actie
-			}
-
-		} else {
-
-			// als geen multiselect
-			// dan dienen andere knoppen nu geen actief meer te hebben
-			if (knop.className.indexOf('multiselect') === -1) {
-
-				var knoppen = kzVindCombiKnop(knop).getElementsByClassName('knop');
-
-				for (var i = knoppen.length - 1; i >= 0; i--) {
-					knoppen[i].className = knoppen[i].className.replace('actief', '').trim();
-				}
-			}
-
-			//tenslotte actief op knop zelf toevoegen.
-			knop.className = knop.className + " actief";
-
-		}
+		kzAnimeerKnoppen(knop);
 
 	},
 	stapTerug: function(knop){

@@ -2,14 +2,7 @@
 
 function efiberZetNiveauKnop(knop) {
 
-	let kzSectie = knop.parentNode;
-	do {
-	  kzSectie = kzSectie.parentNode;
-	} while (!kzSectie.hasAttribute('data-keuzehulp-stap') && !kzSectie.classList.contains('keuzehulp')); // niet voorbij body
-
-	if (kzSectie.classList.contains('keuzehulp')) {
-		console.error(new Error('sectie niet gevonden'));
-	}
+	const kzSectie = kzVindSectie(knop);
 
 	const stap = kzSectie.dataset.keuzehulpStap;
 	

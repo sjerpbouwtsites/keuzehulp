@@ -1,5 +1,11 @@
 <?php
 
+$ef_knop_teller = 0;
+function knop_enumerator(){
+	global $ef_knop_teller;
+	return ++$ef_knop_teller;
+}
+
 class Ef_knop extends Ef_basis_class {
 
 
@@ -57,9 +63,11 @@ class Ef_knop extends Ef_basis_class {
 
 		$e = $this->extern ? " target='_blank' " : "";
 		$f = $this->func !== '' ? " data-efiber-func='$this->func' " : "";
+		$i = knop_enumerator();
 		$this->html = "<a {$e}
 				{$f}
 				{$this->attr}
+				data-knop-id='$i'
 				class='knop {$this->class}'
 				href='{$this->link}'
 				{$this->schakel}
@@ -83,6 +91,7 @@ class Kz_knop_combi extends Ef_knop {
 	public function maak() {
 
 		$this->nalopen();
+		$i = knop_enumerator();
 
 		if (!$this->cp_truthy('tooltip', $this)) {
 			$this->tooltipHTML = "";	
@@ -119,6 +128,7 @@ class Kz_knop_combi extends Ef_knop {
 					{$this->attr}
 					class='knop blauwe-knop {$this->class}'
 					href='{$this->link}'
+					data-knop-id='$i'
 				>
 					<span>
 						DIT PAST BIJ MIJ

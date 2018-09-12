@@ -132,3 +132,17 @@ function kzVindCombiKnop(knop){
 	}
 
 }
+
+function kzVindSectie(knop) {
+	let w = knop.parentNode;
+	do {
+	  w = w.parentNode;
+	} while (!w.hasAttribute('data-keuzehulp-stap') && !w.classList.contains('keuzehulp')); // niet voorbij body
+
+	if (w.classList.contains('keuzehulp')) {
+		return new Error('sectie niet gevonden');
+	} else {
+		return w;
+	}
+	
+}

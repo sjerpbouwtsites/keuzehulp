@@ -97,6 +97,7 @@ require 'keuze-menu-lijst.php';
 			'tooltip'	=> $kofnt['wel_keuze_hulp_tooltip'],
 			'geen_ikoon'=> false,
 			'ikoon'		=> efiber_keuzehulp_pak_afb("meta 2"),
+			'class'		=> 'blauwe-knop'
 		));
 		$keuzehulp_knoppen .= $knop->maak();
 
@@ -311,7 +312,7 @@ require 'keuze-menu-lijst.php';
 		$kies_televisie_knoppen = '';
 		$knop->geen_ikoon = false;
 		$knop->func = 'animeer zet-niveau-knop toon-stap zet-keuze-televisie';
-		$knop->class = '';
+		$knop->class = 'blauwe-knop';
 
 
 		$knop->tekst = $televisie_teksten['geen_tv'];
@@ -450,7 +451,7 @@ require 'keuze-menu-lijst.php';
 
 		$installatie_teksten = get_field('installatie_teksten', 'option');
 
-		$knop->class = '';
+		$knop->class = 'blauwe-knop';
 		$knop->tekst = $installatie_teksten['ik_ben_handig'];
 		$knop->tooltip = $installatie_teksten['ik_ben_handig_tooltip'];
 		$knop->func = 'animeer zet-niveau-knop toon-stap zet-keuze-installatie vergelijking';

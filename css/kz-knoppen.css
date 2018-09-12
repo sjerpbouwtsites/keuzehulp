@@ -8,46 +8,6 @@
 			}
 
 
-			.knop.actief {
-				position: relative;
-			}
-				.knop.actief::after {
-					content: '';
-					display: block;
-					position: absolute;
-					top: 105px;
-					right: 10px;
-					padding-top: 22%;
-					background-size: 40px 40px;
-					background-repeat: no-repeat;
-					background-image: url(/wp-content/plugins/efiber/png/vinkje.png);
-					width: 40px;
-					height: 40px;
-				}
-				.knop.efiber-bestelknop.actief::after {
-					display: none;
-				}
-
-			.knop.geen-ikoon {
-				background-color: #46297e;
-				padding: 8px 30px;
-				align-self: center;
-				text-align: center;
-			}
-				.knop.geen-ikoon.actief,
-				.knop.geen-ikoon:hover {
-					background: #921c80;
-					filter: none;
-					color: white;
-				}
-
-					.knop.geen-ikoon span{
-						color: white;
-						text-decoration: none;
-						margin-top: 0;
-						font-weight: bold;
-					}
-
 			.knop.invalide {
 				opacity: 0.2;
 			}
@@ -67,3 +27,19 @@
 		padding: 15px;
 		width: calc(100% - 30px);
 	}
+		.knop.blauwe-knop.actief {
+			filter: hue-rotate(90deg);
+		}
+
+	.knop.multiselect {
+		display: inline-block;
+		width: 65px;
+		height: 27px;
+		background-image: url('/wp-content/plugins/efiber/iconen-nieuw/png/nee schuif.png');
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+		.knop.multiselect.actief {
+			background-image: url('/wp-content/plugins/efiber/iconen-nieuw/png/ja schuif.png');
+		}

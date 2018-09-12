@@ -52,7 +52,3 @@ body.keuzehulp {
 	width: 20px;
 	height: 20px;
 }
-
-.actief {
-	filter: hue-rotate(90deg);
-}

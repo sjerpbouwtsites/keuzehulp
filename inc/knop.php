@@ -88,16 +88,10 @@ class Kz_knop_combi extends Ef_knop {
 		parent::__construct($a);
 	}
 
-	public function maak() {
-
-		$this->nalopen();
-		$i = knop_enumerator();
-
+	public function maak_tooltip(){
 		if (!$this->cp_truthy('tooltip', $this)) {
 			$this->tooltipHTML = "";	
 		} else {
-
-
 			$this->tooltipHTML = "<a 
 				href='#' 
 				class='knop kz-tooltip' 
@@ -109,8 +103,38 @@ class Kz_knop_combi extends Ef_knop {
 			. file_get_contents (plugin_dir_path(__FILE__)."../iconen-nieuw/svg/info.svg") . 
 			"</a>";	
 		}
+	}
 
+
+	public function als_single_select_blauwe_knop (){
+		return in_array('multiselect', (explode(' ', $this->class)))
+		? ''
+		: "<span>DIT PAST BIJ MIJ</span>".file_get_contents (plugin_dir_path(__FILE__)."../iconen-nieuw/svg/dichtklappen.svg");
+	}
+
+	public function maak_knop() {
+
+		$i = knop_enumerator();		
 		$f = $this->func !== '' ? " data-efiber-func='$this->func' " : "";
+		$this->knop_html = "
+			<a 
+				{$f}
+				{$this->attr}
+				class='knop  {$this->class}'
+				href='{$this->link}'
+				data-knop-id='$i'
+			>
+			{$this->als_single_select_blauwe_knop()}
+			</a>		
+		";		
+		return $this->knop_html;
+	}
+
+	public function maak() {
+
+		$this->nalopen();
+		$this->maak_tooltip();
+		$knop_html = $this->maak_knop();
 		$ikoon = $this->print_ikoon();
 		$this->html = 
 		"
@@ -123,18 +147,7 @@ class Kz_knop_combi extends Ef_knop {
 					<span>{$this->tekst}</span>
 					{$this->tooltipHTML}
 				</span>
-				<a 
-					{$f}
-					{$this->attr}
-					class='knop blauwe-knop {$this->class}'
-					href='{$this->link}'
-					data-knop-id='$i'
-				>
-					<span>
-						DIT PAST BIJ MIJ
-					</span>
-					". file_get_contents (plugin_dir_path(__FILE__)."../iconen-nieuw/svg/dichtklappen.svg") . "												
-				</a>
+				$knop_html
 			</div>
 		</div>";
 		return $this->html;

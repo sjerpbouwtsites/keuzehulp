@@ -158,6 +158,8 @@ const kzRenderVergelijking = {
 			return;
 		}
 
+		this.telefonieSectiePrijsTD = a => (isNaN(Number(a)) ? a : pakket.formatteerPrijs(a));
+
 		return `
 			<div class='provider-pakketten-vergelijking-sectie'>
 
@@ -169,56 +171,30 @@ const kzRenderVergelijking = {
 				<table>
 					<thead>
 						<tr>
-							<th>
-								${telBundel.naam} 
-							</th>
-							<th>
-								${pakket.optiePrijs(telBundel.slug, true)}
-							</th
+							<th>${telBundel.naam}</th>
+							<th>${pakket.optiePrijs(telBundel.slug, true)}</th
 						</tr>
 						<tr>
-							<th>
-								Bundeltype: ${telBundel.bereik}
-							</th>
+							<th>Bundeltype: ${telBundel.bereik}</th>
 							<th></th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
 							<td>Start vast</td>
-							<td>
-								${	isNaN(Number(telBundel.data.vast.nederland.start))
-									? telBundel.data.vast.nederland.start 
-									: pakket.formatteerPrijs(telBundel.data.vast.nederland.start)
-								}
-							</td>
-						</tr>
+							<td>${this.telefonieSectiePrijsTD(telBundel.data.vast.nederland.start)}</td>
+						</tr>					
 						<tr>
 							<td>Vast p/m</td>
-							<td>
-								${	isNaN(Number(telBundel.data.vast.nederland.per_minuut))
-									? telBundel.data.vast.nederland.per_minuut 
-									: pakket.formatteerPrijs(telBundel.data.vast.nederland.per_minuut)
-								}
-							</td>
+							<td>${this.telefonieSectiePrijsTD(telBundel.data.vast.nederland.per_minuut)}</td>
 						</tr>
 						<tr>
 							<td>Mobiel start</td>
-							<td>
-								${	isNaN(Number(telBundel.data.mobiel.nederland.start))
-									? telBundel.data.mobiel.nederland.start 
-									: pakket.formatteerPrijs(telBundel.data.mobiel.nederland.start)
-								}
-							</td>
+							<td>${this.telefonieSectiePrijsTD(telBundel.data.mobiel.nederland.start)}</td>
 						</tr>																					
 						<tr>
 							<td>Mobiel p/m</td>
-							<td>
-								${	isNaN(Number(telBundel.data.mobiel.nederland.per_minuut))
-									? telBundel.data.mobiel.nederland.per_minuut 
-									: pakket.formatteerPrijs(telBundel.data.mobiel.nederland.per_minuut)
-								}
-							</td>
+							<td>${this.telefonieSectiePrijsTD(telBundel.data.mobiel.nederland.per_minuut)}</td>
 						</tr>
 						${
 							pakket.optieAantal('extra-vast-nummer') 
@@ -268,28 +244,16 @@ const kzRenderVergelijking = {
 				<table>
 					<thead>
 						<tr>
-							<th>
-								Type TV
-							</th>
-							<th>
-								${pakket.pakTypeTV()}
-							</th
+							<th>Type TV</th>
+							<th>${pakket.pakTypeTV()}</th
 						</tr>						
 						<tr>
-							<th>
-								Aantal zenders
-							</th>
-							<th>
-								${z.totaal}
-							</th
+							<th>Aantal zenders</th>
+							<th>${z.totaal}</th
 						</tr>
 						<tr>
-							<th>
-								Aantal HD zenders
-							</th>
-							<th>
-								${z.hd}
-							</th
+							<th>Aantal HD zenders</th>
+							<th>${z.hd}</th
 						</tr>							
 					</thead>
 					<tbody>
@@ -335,6 +299,7 @@ const kzRenderVergelijking = {
 		return ret.join('');
 	},
 	installatieSectie(pakket) {
+
 		return `
 			<div class='provider-pakketten-vergelijking-sectie'>
 

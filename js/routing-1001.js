@@ -184,7 +184,7 @@ const efiberRouting = {
 			},			
 		].find(conf => conf.stappen.indexOf(s) !== -1);
 
-		body.setAttribute('data-kz-stap', r.schrijf);
+		body.setAttribute('data-kz-stap', `${r.schrijf} stap-${stap}`);
 
 	},
 	zetHistory(dezeStap, nummerDezeStap) {

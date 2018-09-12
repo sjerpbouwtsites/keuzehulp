@@ -52,3 +52,7 @@ body.keuzehulp {
 	width: 20px;
 	height: 20px;
 }
+
+.draai-180 svg{
+	transform: rotate(.5turn);
+}

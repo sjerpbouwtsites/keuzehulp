@@ -4,10 +4,12 @@
 			<?php require plugin_dir_path(__FILE__)."../iconen-nieuw/svg/terug.svg"; ?>
 			<span>stap terug</span>
 		</a>
-		<a data-efiber-func="toon-stap" data-keuzehulp-stap="7" class="knop kz-navigatie-beneden_knop" href="#8">
+		<a data-efiber-func="toon-stap" data-keuzehulp-stap="7" class="knop kz-navigatie-beneden_knop draai-180" href="#8">
+			<?php require plugin_dir_path(__FILE__)."../iconen-nieuw/svg/terug.svg"; ?>
 			<span>verder</span>
 		</a>
-		<a data-efiber-func="toon-stap" data-keuzehulp-stap="9" class="knop kz-navigatie-beneden_knop" href="#11">
+		<a data-efiber-func="toon-stap" data-keuzehulp-stap="9" class="knop kz-navigatie-beneden_knop draai-180" href="#11">
+			<?php require plugin_dir_path(__FILE__)."../iconen-nieuw/svg/terug.svg"; ?>
 			<span>verder</span>
 		</a>
 	</div>

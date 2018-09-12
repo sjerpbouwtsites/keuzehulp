@@ -7,6 +7,14 @@
 	display: block;
 }
 
+[data-kz-stap~='stap-7'] .kz-navigatie-beneden_binnen [data-keuzehulp-stap='7'] {
+	display: block !important;
+}
+
+[data-kz-stap~='stap-9'] .kz-navigatie-beneden_binnen [data-keuzehulp-stap='9'] {
+	display: block !important;
+}
+
 .kz-navigatie-beneden {
 	padding: 20px 0;
 }
@@ -35,3 +43,4 @@
 		.kz-navigatie-beneden_knop svg rect {
 			fill: #b9b9b9;
 		}
+

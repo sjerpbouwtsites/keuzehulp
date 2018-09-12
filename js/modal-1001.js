@@ -62,10 +62,12 @@ function efiberModal(tekst, tijd = false) {
 			$modalBinnen.append(jQuery(`<header><h3>${tekst.kop}</h3></header>`));
 		}
 		if ('torso' in tekst) {
-			$modalBinnen.append(jQuery(`<p>${tekst.torso}</p>`));
+			const t = (tekst.torso.indexOf('<') === -1) ? `<p>${tekst.torso}</p>` : tekst.torso;
+			$modalBinnen.append(jQuery(t));
 		}
 	} else {
-		$modalBinnen.append(jQuery(`<p>${tekst}</p>`));
+		const t = (tekst.indexOf('<') === -1) ? `<p>${tekst}</p>` : tekst;
+		$modalBinnen.append(jQuery(t));
 	}
 
 	const $sluiten = jQuery("<a class='knop efiber-modal-sluiten' data-efiber-func='verwijder-modal'>X</a>");

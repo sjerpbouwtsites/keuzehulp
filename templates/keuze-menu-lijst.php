@@ -88,7 +88,7 @@
 				<span class='stappen-links_tekst stappen-links_originele-tekst'>Extra televisie opties</span>
 				<span class='stappen-links_tekst stappen-links_vervangende-tekst'></span>
 			</li>			
-			<li class='stappen-links_stap' id='stappen-links-10'>
+			<li class='stappen-links_stap' id='stappen-links-11'>
 				<span class='stappen-links_niet-klaar'>
 					<?php require $info; ?>
 				</span>

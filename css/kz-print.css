@@ -1,734 +1,147 @@
-
-.efiber-form-sectie {
-	margin-bottom: 10px;
-	padding: 20px;
+.print-vergelijking {
+	margin: 0 -10px;
 }
-/*	[class^='print'] > .efiber-form-sectie {
-		padding-left: 40px;
-		padding-right: 40px;
-		margin-left: -40px;
-		margin-right: -40px;
-		padding-top: 40px;
-		padding-bottom: 40px
+.print-vergelijking .blauwe-knop{
+	text-align: center;
+}
+
+
+.provider-pakketten.vergelijking {
+	background-color: #f8fff1;
+	border: 1px solid #85b942;
+	border-radius: 5px;
+	padding: 20px;
+	margin-bottom: 40px;
+}
+	.provider-pakketten-header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
 	}
-		#print-vergelijking .efiber-form-sectie {
-			border-radius: 40px;
-			margin-bottom: 30px;
-		}*/
-
-		#print-vergelijking {
-			overflow-x: scroll;
+		.provider-pakketten-header .wp-post-image {
+			flex-basis: 200px;
+			align-self: center;
 		}
+		.provider-pakketten-header-prijs {
 
-			#print-vergelijking .efiber-form-sectie + .efiber-form-sectie:nth-child(2) {
-				background: transparent;
+		}
+			.provider-pakketten-header-prijs {
+				background: linear-gradient(0.28turn, #41a33b, #93be43);
+				color: white;
+				border-radius: 150px;
+				width: 80px;
+				height: 80px;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				text-align: center;
+				position: relative;
+				top: -30px;
+			}
+				.provider-pakketten-header-prijs span:first-child {
+					display: block;					
+					font-weight: bold;	
+					font-size: 16px;
+				}
+					.provider-pakketten-header-prijs span:first-child small {
+						font-size: 12px;
+					}
+				.provider-pakketten-header-prijs span:last-child {
+					font-size: 12px;
+					display: block;
+				}
+
+.provider-pakketten-lijst {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+	.provider-pakketten-pakket > header {
+		padding-bottom: 20px;
+		border-bottom: 1px solid #85b942;
+	}
+		.provider-pakketten-pakket header .flex {
+			display: flex;
+			color: #797979;
+			margin: 20px 0;
+		}
+			.provider-pakketten-pakket header .flex > div {
+				flex-basis: 50%;
+			}
+			.provider-pakketten-pakket header h4 {
+				font-size: 12px;
+				font-weight: 400;
 				margin-bottom: 0;
 			}
+			.provider-pakketten-pakket header strong {
+				font-size: 16px;
+				font-weight: 600;
+			}
 
-
-				#print-vergelijking .efiber-form-sectie + .efiber-form-sectie header h3{
-					margin-bottom: 0;
-					border-bottom: 0;
-					padding-bottom: 0;
+			.provider-pakketten-pakket header .blauwe-knop {
+				text-align: center;
+			}
+				.provider-pakketten-pakket header .blauwe-knop > * {
+					vertical-align: middle;
 				}
-
-				/* toon niet tabel`behalve bestel */
-				#print-vergelijking .efiber-form-sectie + .efiber-form-sectie ~ .efiber-form-sectie {
-					display: none;
+				.provider-pakketten-pakket header .blauwe-knop svg{
+					transform: rotate(.5turn);
+					width: 30px;
+					height: 30px;
+					margin: -5px -5px -5px 5px;				
 				}
-
-					#print-vergelijking .efiber-form-sectie + .efiber-form-sectie ~ .efiber-form-sectie:last-child {
-						display: block;
+					.provider-pakketten-pakket header .blauwe-knop path{
+						fill: white;
 					}
 
-					#print-vergelijking .rij.Installatie span span {
-						display: block;
-					}
-
-
-	[data-keuzehulp-stap='30'] .keuzehulp-sectie_torso .binnen {
-		width: auto;
+.provider-pakketten-vergelijking-hoofd {
+	display: none;
+}
+	.provider-pakketten-vergelijking-hoofd.actief {
+		display: block;
 	}
 
-	[data-keuzehulp-stap='30'] .keuzehulp-sectie_torso .binnen p {
-		margin-left: 20px;
-		color: black;
-		font-weight: 300;
+	.provider-pakketten-vergelijking-sectie {
+		margin: 20px 0;
 	}
-
-	#print-vergelijking .rij {
-		font-size: .9em;
-		flex-shrink: 0;
-	}
-
-	#print-vergelijking .rij .veld:nth-child(odd) {
-		background-color: #fbe7ef;
-	}
-
-	#print-vergelijking .rij .veld:nth-child(even) {
-		background-color: #f1f0f3;
-	}
-
-	#print-vergelijking .veld {
-		padding:  0 30px;
-		line-height:1.2;
-		width: 170px;
-		min-width: 170px;
-	}
-		#print-vergelijking .veld p {
-			margin: 0;
+		.provider-pakketten-vergelijking-sectie + .provider-pakketten-vergelijking-sectie {
+			margin-top: 40px;
 		}
-
-		#print-vergelijking .rij:first-child .veld {
-			padding-top: 20px;
+		.provider-pakketten-vergelijking-sectie header {
+			
 		}
-		#print-vergelijking .rij:last-child .veld {
-			padding-bottom: 20px;
-		}
-		#print-vergelijking .rij ~ .rij .veld {
-			padding-top: 20px;
-		}
-
-		#print-vergelijking .efiber-form-sectie:first-child .rij:first-child .veld {
-			padding-bottom: 20px;
-		}
-		#print-vergelijking .efiber-form-sectie:first-child .rij:last-child .veld {
-			padding-top: 20px;
-		}
-
-		@media (max-width: 800px) {
-
-			#print-vergelijking .veld {
-				padding: 0 15px;
-			}
-
-			#print-vergelijking .rij:first-child .veld {
-				padding-top: 10px;
-			}
-			#print-vergelijking .rij:last-child .veld {
-				padding-bottom: 10px;
-			}
-			#print-vergelijking .rij ~ .rij .veld {
-				padding-top: 10px;
-			}
-
-			#print-vergelijking .efiber-form-sectie:first-child .rij:first-child .veld {
-				padding-bottom: 10px;
-			}
-			#print-vergelijking .efiber-form-sectie:first-child .rij:last-child .veld {
-				padding-top: 10px;
-			}
-		}
-
-		#print-vergelijking .veld:first-child {
-			font-weight: 600;
-		}
-			#print-vergelijking .veld:first-child small{
-				font-weight: 400;
-			}
-
-		#print-vergelijking .veld ~ .veld {
-			font-weight: 300;
-		}
-
-
-		.rij.Pakket-prijs-per-maand .veld ~ .veld span{
-			color: #911d80;
-			font-weight: 600;
-			font-size: 1.2em;
-		}
-
-		#print-vergelijking .efiber-form-sectie header {
-			margin-bottom: 5px;
-		}
-
-		#print-vergelijking .geen-ikoon.knop {
-			background-color: #5e2580;
-		}
-
-/*
-	#print-vergelijking .efiber-form-sectie:first-child {
-		background-color: transparent;
-		padding-top: 0;
-		padding-bottom: 0;
-	}*/
-
-
-		[class^='print'] header h3 {
-			display: inline-block;
-/*			padding-bottom: 5px;
-			border-bottom: 2px solid rgb(171, 52, 112);*/
-			margin-bottom: .5em;
-		}
-
-
-/*		[class^='print'] .rij ~ .rij {
-			padding-top: 5px;
-			padding-bottom: 5px;
-			position: relative;
-		}*/
-			[class^='print'] .rij ~ .rij.heeft-knop {
-					padding-top: 0;
-					padding-bottom: 0;
-			}
-
-
-/*			[class^='print'] .rij ~ .rij .veld {
-				position: relative;
-			}
-			[class^='print'] .rij ~ .rij .veld::after {
-				position: absolute;
-				content: '';
-				display: block;
-				top: -2.5px;
-				width: 100%;
-				border-bottom: 1px solid rgba(0, 0, 0, .2);
-			}*/
-
-
-
-				[class^='print'] .veld small {
-					display: block;
-					font-size: 70%;
-				}
-
-
-			#print-vergelijking .efiber-form-sectie:last-child .rij:first-child{
-				min-height: 75px;
-			}
-
-			#print-vergelijking .Aanvullende-informatie{
-				display: none;
-			}
-
-		[class^='print'] div.knop {
-			background-color: #46297e;
-			padding: 8px 30px;
-			align-self: center;
-			text-align: center;
-			cursor: pointer;
-		}
-			[class^='print'] div.knop + .knop{
-				margin-top:10px;
-			}
-			[class^='print'] div.knop:hover {
-				cursor: pointer;
-			}
-			[class^='print'] div.knop::after {
-				top: -10px;
-				right: -12px;
-				background-size: 30px 30px;
+			.provider-pakketten-vergelijking-sectie header svg,
+			.provider-pakketten-vergelijking-sectie header h3{
+				vertical-align: middle;
+				display: inline-block;
+			}	
+			.provider-pakketten-vergelijking-sectie header svg {
 				width: 30px;
 				height: 30px;
 			}
-
-			[class^='print'] div.knop .label {
-				display: block;
-				white-space: normal;
-			}
-
-			#print-aanmeldformulier {
-				background-color: transparent;
-				padding: 0;
-			}
-
-			@media (max-width: 600px) {
-				#print-aanmeldformulier {
-					font-size: .8rem;
+				.provider-pakketten-vergelijking-sectie header path, 
+				.provider-pakketten-vergelijking-sectie header circle {
+					fill: #1d1d1b;
 				}
 
+			.provider-pakketten-vergelijking-sectie table {
+				margin: 20px 0;
+				width: 100%;
 			}
 
-			#print-aanmeldformulier .rij {
-				margin-left: -10px;
-				margin-right: -10px;
-			}
-
-			#print-aanmeldformulier .efiber-form-sectie{
-				margin-bottom: 20px;
-				margin-right: 0;
-				margin-left: 0;
-			}
-
-			#print-aanmeldformulier .efiber-form-sectie.samenvatting {
-				padding: 20px;
-				background-color: white;
-			}
-
-			#print-aanmeldformulier .efiber-form-sectie.samenvatting h3 {
-				display: none;
-			}
-
-			/* uw gekozen opties*/
-			#print-aanmeldformulier .efiber-form-sectie ~ p {
-
-				color: black;
-				margin-bottom: 20px;
-				margin-left: auto;
-				margin-right: auto;
-			}
-			#print-aanmeldformulier .efiber-form-sectie.televisie {
-				padding: 20px;
-				background-color: #feddeb;
-				margin-bottom: 20px;
-			}
-
-			#print-aanmeldformulier .efiber-form-sectie.bellen {
-				padding: 20px;
-				background-color: white;
-				margin-bottom: 20px;
-			}
-			#print-aanmeldformulier .efiber-form-sectie.meta {
-				padding: 20px;
-				background-color: #feddeb;
-				margin-bottom: 20px;
-			}
-
-			#print-aanmeldformulier .efiber-form-sectie.meta h3 {
-				display: none;
-			}
-
-
-			#print-aanmeldformulier .attachment-post-thumbnail {
-				margin-bottom: 2em;
-			}
-
-			#print-aanmeldformulier .veld {
-				padding-top: 0;
-				padding-bottom: 0;
-			}
-
-
-			#print-aanmeldformulier div.knop {
-				flex-direction: row;
-				justify-content: space-between;
-				display: flex;
-				color: black;
-				background-color: transparent;
-				padding: 0;
-			}
-
-			#print-aanmeldformulier .tekst {
-				line-height: 35px;
-			}
-			#print-aanmeldformulier .label {
-				padding: 0;
-			}
-			#print-aanmeldformulier label {
-				margin-bottom: 0
-			}
-
-				.radio-naam {
-					color: black;
-					width: 120px;
-					display: inline-block;
-					vertical-align: middle;
-					padding: 0 5px;
+				.provider-pakketten-vergelijking-sectie td, 
+				.provider-pakketten-vergelijking-sectie th {
+					max-width: calc(60% - 5px);
+					padding-right: 5px;
+				}
+				.provider-pakketten-vergelijking-sectie td + td, 
+				.provider-pakketten-vergelijking-sectie th + th{
+					max-width: calc(40% - 5px);
+					padding-right: 0;
+					padding-left: 5px
 				}
 
 
-			@media (min-width: 1000px) {
-				#print-aanmeldformulier div.knop svg{
-					height: 33.4px;
-				}
-			}
-
-			#print-aanmeldformulier div.knop svg{
-				width: 80px;
-				vertical-align: middle
-			}
-
-				#print-aanmeldformulier div.knop svg[data-name="svg-ja"] {
-					display: none;
-				}
-					#print-aanmeldformulier div.knop.actief svg[data-name="svg-ja"] {
-						display: inline-block;
-					}
-					#print-aanmeldformulier div.knop.actief svg[data-name="svg-nee"] {
-						display: none;
-					}
-					#print-aanmeldformulier div.knop.actief::after {
-						display: none;
-					}
-
-			@media (max-width: 700px) {
-				#print-aanmeldformulier .efiber-radio .label,
-				#print-aanmeldformulier div.efiber-checkbox {
-				    display: flex;
-				    flex-direction: column;
-				    text-align: center;
-				}
-
-				.radio-naam {
-					width: 80px;
-				}
-				#print-aanmeldformulier div.knop svg{
-					text-align: center;
-					margin: 10px auto 0;
-				}
-				#print-aanmeldformulier div.efiber-checkbox svg {
-					margin-left: 0;
-				}
-				#print-aanmeldformulier .tekst, .heeft-knop {
-					padding: 10px 0;
-				}
-				#print-aanmeldformulier .tekst, .heeft-knop .veld-1{
-					text-align: left;
-					line-height: 1;
-				}
-
-
-				#print-aanmeldformulier div.knop svg[data-name="svg-nee"] {
-					display: block;
-				}
-				#print-aanmeldformulier div.knop svg[data-name="svg-ja"] {
-					display: none;
-				}
-
-					#print-aanmeldformulier div.knop.actief svg[data-name="svg-ja"] {
-						display: block;
-					}
-					#print-aanmeldformulier div.knop.actief svg[data-name="svg-nee"] {
-						display: none;
-					}
-
-			}
-
-			@media (max-width: 460px) {
-
-				.radio-naam {
-					text-align: left;
-					padding: 0;
-				}
-
-				#print-aanmeldformulier div.knop.efiber-radio {
-					flex-direction: column;
-				}
-				#print-aanmeldformulier div.knop.efiber-radio svg {
-					margin-left: 0;
-				}
-			}
-
-
-			#print-aanmeldformulier .gform_wrapper {
-				margin-left: -20px;
-				margin-right: -20px;
-				padding: 40px 20px;
-				background-color: white;
-				width: calc(100% + 40px);
-				max-width: calc(100% + 40px);
-			}
-
-			@media (min-width: 900px) {
-				#print-aanmeldformulier .gform_wrapper {
-					margin-left: 0;
-					margin-right: 0;
-					padding: 40px 20px;
-					background-color: white;
-					width: calc(100%);
-					max-width: calc(100%);
-				}
-			}
-
-			#field_1_35 > .gfield_label {
-				vertical-align: middle
-			}
-			#field_1_35 > .ginput_container {
-				display: inline-block;
-				vertical-align: middle;
-			}
-			#input_1_35 {
-				margin: 0;
-			}
-				#input_1_35 .gchoice_1_35_1 {
-					margin: 0;
-				}
-				#label_1_35_1 {
-					text-align: center;
-					display: inline-block;
-					width: 100%;
-					max-width: 100%;
-				}
-
-			#field_1_35 .gfield_description {
-				padding: 20px;
-				background-color: #812993;
-				font-weight: 600;
-				color: white;
-				margin-top: 20px;
-			}
-
-			@media (max-width: 450px) {
-				#print-aanmeldformulier .veld-1 {
-					max-width: 100px;
-					min-width: 100px;
-				}
-			}
-
-/*.print-aanmeldformulier {
-	margin-left: -10px;
-	margin-right: -10px;
-}*/
-
-
-.print-aanmeldformulier .veld {
-	min-width: 50%;
-}
-
-
-.print-vergelijking,
-.print-aanmeldformulier {
-	margin-top: 40px;
-}
-.print-vergelijking .rij,
-.print-aanmeldformulier .rij{
-	display: flex;
-	flex-direction: row;
-}
-
-	.print-vergelijking .veld,
-	.print-aanmeldformulier .veld {
-	    flex-basis: 25%;
-	    padding-right: 10px;
-	    padding-left: 10px;
-	    padding-top: 5px;
-	    padding-bottom: 5px;
-	}
-	.print-vergelijking .veld ~ .veld {
-		max-width: 20%;
-	}
-	.print-vergelijking .veld h3 {
-		margin-bottom: 10px; /* titel rij */
-	}
-	.print-vergelijking .efiber-form-sectie:first-child {
-		margin-bottom: 0;
-	}
-
-		/* provider logo's */
-		.print-vergelijking .efiber-form-sectie:first-child .rij:first-child .veld h3,
-		.print-vergelijking .efiber-form-sectie:first-child .rij:first-child .veld {
-			display: flex;
-			flex-direction: column;
-			justify-content: flex-end;
-		}
-
-	.print-vergelijking .efiber-form-sectie header h3 {
-		font-size: 1.2em;
-	}
-
-.print-aanmeldformulier .rij {
-	justify-content: space-between;
-	font-weight: 400;
-}
-	.print-aanmeldformulier .rij.bijzonderheden {
-		margin-top: 1.43em;
-	}
-
-	.print-aanmeldformulier .rij .veld-1 {
-		font-weight: 600;
-		color: #212121;
-	}
-
-	.heeft-knop .veld-1 {
-		line-height: 35px;
-	}
-
-	.efiber-radio .label {
-		font-weight: 400;
-	}
-
-	.print-aanmeldformulier .rij.heeft-knop .veld,
-	.print-aanmeldformulier .rij.heeft-knop .veld .knop {
-		font-weight: 400;
-	}
-		.print-aanmeldformulier .rij.heeft-knop.actief .veld,
-		.print-aanmeldformulier .rij.heeft-knop.actief .veld .knop,
-		.print-aanmeldformulier .rij.heeft-knop.actief .veld .label,
-		.print-aanmeldformulier .rij.heeft-knop.actief .veld .knop .label {
-			font-weight: 600;
-		}
-			.print-aanmeldformulier .rij.heeft-knop.actief .veld .knop.efiber-radio,
-			.print-aanmeldformulier .rij.heeft-knop.actief .veld .knop.efiber-radio .label {
-				font-weight: 400;
-			}
-				.print-aanmeldformulier .rij.heeft-knop.actief .veld .knop.efiber-radio.actief,
-				.print-aanmeldformulier .rij.heeft-knop.actief .veld .knop.efiber-radio.actief .label {
-					font-weight: 600;
-				}
-
-
-
-.print-provider-pakketten .rij {
-	display: flex;
-	flex-direction: row;
-	padding: 0 !important;
-}
-	.print-provider-pakketten .rij {
-		background-color: #fde3ed;
-		overflow-x: scroll;
-	}
-	.print-provider-pakketten .rij:nth-child(2n + 2) {
-		background-color: #edeff2;
-	}
-
-	.print-provider-pakketten .rij > * {
-	    flex-basis: 25%;
-	    padding: 20px;
-	}
-		@media (min-width: 1000px) {
-			.print-provider-pakketten .rij > * {
-				max-width: 15%;
-				min-width: 165px;
-			}
-
-		}
-
-		.print-provider-pakketten .pakket > * {
-			max-width: 100%;
-		}
-
-		.print-provider-pakketten .rij > *:first-child {
-			align-self: flex-start;
-		}
-
-		.print-provider-pakketten .rij > *:nth-child(2n + 2) {
-			background-color: rgba(255, 255, 255, 0.6);
-		}
-
-	.print-provider-pakketten .pakket {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-	}
-		.print-provider-pakketten .pakket > span:first-child {
-			font-weight: 600;
-		}
-		.print-provider-pakketten .pakket > span ~ span  {
-			font-weight: 300;
-		}
-
-
-		.print-provider-pakketten .geen-ikoon.efiber-bestelknop {
+		.provider-pakketten-vergelijking-sectie .blauwe-knop {
 			font-size: 12px;
-			align-self: flex-end;
 		}
-
-		.print-provider-pakketten .pakket .prijs  {
-			color: #911d80;
-			font-weight: 600;
-			font-size: 1.2em;
-
-		}
-		.print-provider-pakketten .pakket .knop {
-			margin-top: 30px;
-		}
-
-@media (max-width: 1000px) {
-
-	.print-provider-pakketten .rij {
-		flex-direction: column;
-	}
-
-	/* reset */
-	.print-provider-pakketten .rij > *:nth-child(2n + 2) {
-		background-color: transparent;
-	}
-	.print-provider-pakketten .rij,
-	 .print-provider-pakketten .rij:nth-child(2n + 2) {
-		background-color: #fde3ed;
-	}
-
-	.print-provider-pakketten .rij + .rij {
-		margin-top: 20px;
-	}
-
-	.print-provider-pakketten .pakket,
-	.print-provider-pakketten .pakket:nth-child(2n + 2) {
-		background-color:#d6dbe3;
-	}
-	.print-provider-pakketten .pakket + .pakket{
-		margin-top: 5px;
-	}
-
-	.print-provider-pakketten .pakket > span:first-child {
-		background-image: url('/wp-content/plugins/efiber/svg/plus.svg');
-		background-size: 20px 20px;
-		background-position: right top;
-		background-repeat: no-repeat;
-		padding-right: 40px;
-	}
-	.print-provider-pakketten .pakket.open > span:first-child {
-		background-image: url('/wp-content/plugins/efiber/svg/min.svg');
-	}
-
-	.print-provider-pakketten .pakket > span ~ *  {
-		display: none;
-	}
-	.print-provider-pakketten .pakket.open > span ~ * {
-		display: block;
-	}
-	.print-provider-pakketten .pakket .knop {
-		margin-left: 0;
-		align-self: flex-start;
-	}
-
-
-}
-
-
-
-
-.print-aanmeldformulier .efiber-checkbox input{
-	/*display: none;*/
-}
-
-.print-aanmeldformulier #extra_tv_ontvangers,
-.print-aanmeldformulier #huidige_nummer,
-.print-aanmeldformulier #huidige_extra_nummer {
-	color: black;
-	border-radius: 0;
-	border-bottom: 1px solid black;
-}
-.print-aanmeldformulier #extra_tv_ontvangers + label {
-	display: block;
-	margin-top: 10px;
-}
-
-
-
-[data-keuzehulp-stap="21"] .binnen {
-	width: auto
-}
-
-#vergelijking-disclaimer {
-	background-color: #ab3470;
-	color: white;
-	margin-left: 20px;
-	margin-right: 20px;
-	padding-top: 10px;
-	padding-bottom: 10px;
-}
-	#vergelijking-disclaimer p {
-		font-size: 14px;
-		color: white;
-	}
-		#vergelijking-disclaimer p {
-			color: white;
-			line-height: 16px;
-			font-size: 14px;
-			margin-right: 20px;
-		}
-
-
-.print-aanmeldformulier .efiber-form-sectie-torso > small {
-	position: relative;
-	bottom: -20px;
-	display: block;
-	text-align: left;
-}
-
-
-.paars_blok {
-	padding: 20px !important;
-	font-size: 14px !important;
-}

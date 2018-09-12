@@ -27,6 +27,45 @@ function efiber_pakket_eigenschappen_snelheid_prijs_concreet($snelheid_prijs, $g
 
 }
 
+function efiber_pakket_eigenschappen_up_snelheid_concreet($snelheid_prijs, $gc_id){
+
+
+	/*---------------------------------------------------------
+	|
+	|	maakt uploadsnelheden combinaties 'concreet', toegepast op deze regio.
+	| 	als geen up bekend, dan is up down.
+	| 	key: down; val: up
+	|
+	-----------------------------------------------------------*/
+
+	//maak array met waarden zonder gebiedscode.
+	$werk = array();
+
+	foreach ($snelheid_prijs as $s) {
+		if (!$s['regio_specifiek']) {
+			if (array_key_exists('uploadsnelheid', $s)) {
+				$werk[($s['snelheid'])] = $s['uploadsnelheid'] 
+					? (float) $s['uploadsnelheid'] 
+					: (float) $s['snelheid'];
+			}
+		}
+	}
+
+	// nu waarden uit werk overschrijven met waarden die regiospecifiek zijn, als dit de huidige gc_id heeft.
+	foreach ($snelheid_prijs as $s) {
+		if ($s['regio_specifiek'] and in_array($gc_id, $s['regio_specifiek'])) {
+			if (array_key_exists('uploadsnelheid', $s)) {
+				$werk[($s['snelheid'])] = $s['uploadsnelheid'] 
+					? (float) $s['uploadsnelheid'] 
+					: (float) $s['snelheid'];
+			}
+		}
+	}
+
+	return $werk;
+
+}
+
 function efiber_pakket_eigenschappen_basis_eenmalig_concreet($eenmalig, $gc_id){
 
 
@@ -234,11 +273,19 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 		// sorteer oplopend
 		sort($snelheden);
 
+		//upload ophalen
+		$down_up_ar = efiber_pakket_eigenschappen_up_snelheid_concreet(			
+			$financieel['snelheid-prijs'],
+			$gebiedscode_id);
+
 		// origineel weggooien.
 		unset($financieel['snelheid-prijs']);
 
+
 		//$return['snelheid_prijs']		= $snelheid_prijs_concreet;
 		$return['snelheden']			= $snelheden;
+		$return['down_up']				= $down_up_ar;
+
 	}
 
 

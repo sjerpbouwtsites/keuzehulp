@@ -1,4 +1,8 @@
 /* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren  */
+function kzPluginRelURL(){
+	return "/wp-content/plugins/efiber";
+}
+
 function naarCamelCase(str) {
 	/*---------------------------------
 	|

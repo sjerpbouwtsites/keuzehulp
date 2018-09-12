@@ -60,6 +60,8 @@ function VerrijktPakket(p) {
 	// Ongerefereerde huidige snelheid.
 	this.pakHuidigeSnelheid = () => Number(String(this.huidige_snelheid));
 
+	// Ongerefereerde huidige snelheid.
+	this.pakHuidigeUploadSnelheid = () => this.eigenschappen.down_up[String(this.huidige_snelheid)];
 
 	this.veranderSnelheid = (nweSnelheid) => {
 		/*------------------------------------------------------

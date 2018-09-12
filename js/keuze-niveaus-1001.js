@@ -1,5 +1,6 @@
 /* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren  */
 
+/* LEGACY NAAM! */
 function efiberZetNiveauKnop(knop) {
 
 	const kzSectie = kzVindSectie(knop);
@@ -17,11 +18,17 @@ function efiberZetNiveauKnop(knop) {
 	const print = stappenLinksStap.getElementsByClassName('stappen-links_vervangende-tekst')[0];
 	print.style.display = "block";
 
-	console.log(kzSectie);
 	print.innerHTML = Array.from(kzSectie.querySelectorAll('.actief.knop'), knop => {
-		console.log(knop);
-		let combiKnop = kzVindCombiKnop(knop);
-		let html = combiKnop.querySelector('.kz-knop-combi_rechts-boven span').innerHTML;
+		const combiKnop = kzVindCombiKnop(knop);
+		const s = combiKnop.querySelector('.kz-knop-combi_rechts-boven span');
+		const ss = s.getElementsByTagName('strong');
+		let html;
+		if (ss.length) { // strong aanwezig? dan html uit strong halen. 
+			html = ss[0].innerHTML;
+		} else {
+			html = s.innerHTML;
+		}
+
 		return `<span>${html}</span>`;	
 	}).join('<br>');
 

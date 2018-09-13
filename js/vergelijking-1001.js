@@ -5,7 +5,7 @@
 
   	doc.getElementById('print-vergelijking').innerHTML = '<p>Uw pakketten worden opgehaald en vergeleken.</p>';
 
-	const ajf = new EfiberAjax({
+	(new EfiberAjax({
 		ajaxData: {
 			action: 'efiber_vergelijking',
 			data: {
@@ -14,9 +14,8 @@
 			},
 		},
 		cb: r => kzRenderVergelijking.hoofd(r, keuzehulp),
-	});
+	})).doeAjax();
 
-	ajf.doeAjax();
 } // vergelijking ajax
 
 const kzRenderVergelijking = {
@@ -90,6 +89,8 @@ const kzRenderVergelijking = {
 		} // als r cq response
 	},
 	printPakkettenLijst(pakket) {
+
+		this.pakket = pakket;
 		
 
 		return `
@@ -121,15 +122,15 @@ const kzRenderVergelijking = {
 
 			<div class='provider-pakketten-vergelijking-hoofd' id='provider-pakketten-vergelijking-hoofd-${pakket.ID}'>
 
-				${this.telefonieSectie(pakket)}
+				${this.telefonieSectie()}
 
-				${this.televisieSectie(pakket)}
+				${this.televisieSectie()}
 
-				${this.installatieSectie(pakket)}
+				${this.installatieSectie()}
 
-				${this.kostenSectie(pakket)}
+				${this.kostenSectie()}
 
-				${this.aanvullendeSectie(pakket)}
+				${this.aanvullendeSectie()}
 
 			</div>
 			
@@ -144,8 +145,9 @@ const kzRenderVergelijking = {
 			</footer>
 		</li>`;
 	},
-	telefonieSectie(pakket) {
-		const telBundel = pakket.huidigeTelefonieBundel();
+	telefonieSectiePrijsTD(a) {return (isNaN(Number(a)) ? a : this.pakket.formatteerPrijs(a))},
+	telefonieSectie() {
+		const telBundel = this.pakket.huidigeTelefonieBundel();
 
 		if (!telBundel) {
 			console.warn('print telefonie sectie maar geen bundel gevonden.');
@@ -153,12 +155,13 @@ const kzRenderVergelijking = {
 		}
 
 		if (!telBundel.data.vast) {
-			console.warn(`telefoniebundel invullen ${pakket.naam_composiet}`);
+			console.warn(`telefoniebundel invullen ${this.pakket.naam_composiet}`);
 			console.log(telBundel);
 			return;
 		}
 
-		this.telefonieSectiePrijsTD = a => (isNaN(Number(a)) ? a : pakket.formatteerPrijs(a));
+		console.log(this);
+		
 
 		return `
 			<div class='provider-pakketten-vergelijking-sectie'>
@@ -172,7 +175,7 @@ const kzRenderVergelijking = {
 					<thead>
 						<tr>
 							<th>${telBundel.naam}</th>
-							<th>${pakket.optiePrijs(telBundel.slug, true)}</th
+							<th>${this.pakket.optiePrijs(telBundel.slug, true)}</th
 						</tr>
 						<tr>
 							<th>Bundeltype: ${telBundel.bereik}</th>
@@ -197,11 +200,11 @@ const kzRenderVergelijking = {
 							<td>${this.telefonieSectiePrijsTD(telBundel.data.mobiel.nederland.per_minuut)}</td>
 						</tr>
 						${
-							pakket.optieAantal('extra-vast-nummer') 
+							this.pakket.optieAantal('extra-vast-nummer') 
 								? 
 									`<tr>
 										<td>Extra vast nummer</td>
-										<td>${pakket.optiePrijs('extra-vast-nummer', true)}</td>
+										<td>${this.pakket.optiePrijs('extra-vast-nummer', true)}</td>
 									</td>`
 								: `` 
 						}																												
@@ -210,14 +213,14 @@ const kzRenderVergelijking = {
 				</table>
 
 				<footer class='provider-pakketten-vergelijking-sectie_footer'>
-					<a href='#' class='knop blauwe-knop' data-efiber-func='telefonie-modal' data-pakket-id='${pakket.ID}'>Meer over deze telefoniebundel</a>
+					<a href='#' class='knop blauwe-knop' data-efiber-func='telefonie-modal' data-pakket-id='${this.pakket.ID}'>Meer over deze telefoniebundel</a>
 				</footer>
 
 			</div>			
 		`;
 	},
-	televisieSectie(pakket) {
-		const z = pakket.pakZenders();
+	televisieSectie() {
+		const z = this.pakket.pakZenders();
 
 		if (!z) {
 			console.warn('geen zenders gevonden, wel televisiesectie?');
@@ -245,7 +248,7 @@ const kzRenderVergelijking = {
 					<thead>
 						<tr>
 							<th>Type TV</th>
-							<th>${pakket.pakTypeTV()}</th
+							<th>${this.pakket.pakTypeTV()}</th
 						</tr>						
 						<tr>
 							<th>Aantal zenders</th>
@@ -257,29 +260,29 @@ const kzRenderVergelijking = {
 						</tr>							
 					</thead>
 					<tbody>
-						${pakket.optieAantal('app') ? `<tr><td>App</td><td>${pakket.optiePrijs('app', true)}</td>` : ``}
-						${pakket.optieAantal('opnemen') ? `<tr><td>Opnemen</td><td>${pakket.optiePrijs('opnemen', true)}</td>` : ``}
-						${pakket.optieAantal('replay') ? `<tr><td>Terugkijken</td><td>${pakket.optiePrijs('replay', true)}</td>` : ``}
-						${pakket.optieAantal('begin-gemist') ? `<tr><td>Begin gemist</td><td>${pakket.optiePrijs('begin-gemist', true)}</td>` : ``}
-						${pakket.optieAantal('opnemen-replay-begin-gemist-samen') ? `<tr><td>Opnemen, terugkijken, begin gemist</td><td>${pakket.optiePrijs('opnemen-replay-begin-gemist-samen', true)}</td>` : ``}
-						${this.televisieBundels(pakket)}
+						${this.pakket.optieAantal('app') ? `<tr><td>App</td><td>${this.pakket.optiePrijs('app', true)}</td>` : ``}
+						${this.pakket.optieAantal('opnemen') ? `<tr><td>Opnemen</td><td>${this.pakket.optiePrijs('opnemen', true)}</td>` : ``}
+						${this.pakket.optieAantal('replay') ? `<tr><td>Terugkijken</td><td>${this.pakket.optiePrijs('replay', true)}</td>` : ``}
+						${this.pakket.optieAantal('begin-gemist') ? `<tr><td>Begin gemist</td><td>${this.pakket.optiePrijs('begin-gemist', true)}</td>` : ``}
+						${this.pakket.optieAantal('opnemen-replay-begin-gemist-samen') ? `<tr><td>Opnemen, terugkijken, begin gemist</td><td>${this.pakket.optiePrijs('opnemen-replay-begin-gemist-samen', true)}</td>` : ``}
+						${this.televisieBundels()}
 					<tbody>
 
 				</table>
 
 				<!--<footer class='provider-pakketten-vergelijking-sectie_footer'>
-					<a href='#' class='blauwe-knop knop' data-efiber-func='aantal-zenders-modal' data-pakket-id='${pakket.ID}'>meer over deze televisiebundel</a>
+					<a href='#' class='blauwe-knop knop' data-efiber-func='aantal-zenders-modal' data-pakket-id='${this.pakket.ID}'>meer over deze televisiebundel</a>
 				</footer>-->
 
 			</div>			
 		`;
 	},
-	televisieBundels(pakket) {
-		const s = String(pakket.pakHuidigeSnelheid()),
+	televisieBundels() {
+		const s = String(this.pakket.pakHuidigeSnelheid()),
 		 families = ['plus', 'erotiek', 'foxsportseredivisie', 'foxsportsinternationaal', 'foxsportscompleet', 'ziggosporttotaal', 'film1'],
 
 		 ret = [];
-		for (const optieNaam in pakket.eigenschappen.maandelijks) {
+		for (const optieNaam in this.pakket.eigenschappen.maandelijks) {
 			families.forEach((fam) => {
 				if (optieNaam.indexOf(fam) !== -1 && optieNaam.indexOf(s) !== -1) {
 					let n = optieNaam.split('-');
@@ -288,8 +291,8 @@ const kzRenderVergelijking = {
 					n = n.join(' ');
 					n = n.charAt(0).toUpperCase() + n.slice(1);
 
-					const s = pakket.optieAantal(optieNaam) 
-						? `<tr><td>${n}</td><td>${pakket.optiePrijs(optieNaam, true)}</td></tr>` 
+					const s = this.pakket.optieAantal(optieNaam) 
+						? `<tr><td>${n}</td><td>${this.pakket.optiePrijs(optieNaam, true)}</td></tr>` 
 						: ``;
 
 					ret.push(s);
@@ -298,7 +301,8 @@ const kzRenderVergelijking = {
 		}
 		return ret.join('');
 	},
-	installatieSectie(pakket) {
+	installatieSectieTD(sleutel, naam) {return this.pakket.optieAantal(sleutel) ? `<tr><td>${this.naam}</td><td>${this.pakket.optiePrijs(sleutel, true)}</td></tr>` : ''},
+	installatieSectie() {
 
 		return `
 			<div class='provider-pakketten-vergelijking-sectie'>
@@ -310,28 +314,16 @@ const kzRenderVergelijking = {
 
 				<table>
 					<tbody>
-						${
-							pakket.optieAantal('installatie-dhz') 
-								? `<tr><td>Doe het zelf</td><td>${pakket.optiePrijs('installatie-dhz', true)}</td></tr>` 
-								: ''
-						}
-						${
-							pakket.optieAantal('installatie-basis') 
-								? `<tr><td>Basisinstallatie</td><td>${pakket.optiePrijs('installatie-basis', true)}</td></tr>` 
-								: ''	
-						}
-						${
-							pakket.optieAantal('installatie-volledig') 
-								? `<tr><td>Volledige installatie</td><td>${pakket.optiePrijs('installatie-volledig', true)}</td></tr>` 
-								: ''
-						}
+						${this.installatieSectieTD('installatie-dhz', 'Doe het zelf')}
+						${this.installatieSectieTD('installatie-basis', 'Basisinstallatie')}
+						${this.installatieSectieTD('installatie-volledig', 'Volledige installatie')}
 					</tbody>
 				</table>
 
 			</div>			
 		`;
 	},
-	kostenSectie(pakket) {
+	kostenSectie() {
 		return `
 			<div class='provider-pakketten-vergelijking-sectie'>
 
@@ -348,15 +340,15 @@ const kzRenderVergelijking = {
 					<tbody>
 						<tr>
 							<td><strong>Borg apparatuur</strong></td>
-							<td>${pakket.optiePrijs('borg', true)}</td>
+							<td>${this.pakket.optiePrijs('borg', true)}</td>
 						</tr>
 						<tr>
 							<td><strong>Eenmalig totaal</strong></td>
-							<td>${pakket.eenmaligTotaal(true)}</td>
+							<td>${this.pakket.eenmaligTotaal(true)}</td>
 						</tr>
 						<tr>
 							<td><strong>Maandelijks totaal</strong></td>
-							<td>${pakket.maandelijksTotaal(true)}</td>
+							<td>${this.pakket.maandelijksTotaal(true)}</td>
 						</tr>												
 					<tbody>
 
@@ -365,9 +357,9 @@ const kzRenderVergelijking = {
 			</div>			
 		`;
 	},	
-	aanvullendeSectie(pakket) {
+	aanvullendeSectie() {
 
-		if (!pakket.eigenschappen.teksten.aanvullende_informatie) return ``;
+		if (!this.pakket.eigenschappen.teksten.aanvullende_informatie) return ``;
 
 		return `
 			<div class='provider-pakketten-vergelijking-sectie'>
@@ -377,7 +369,7 @@ const kzRenderVergelijking = {
 					<h3>Aanvullende informatie</h3>
 				</header>
 
-				<p>${pakket.eigenschappen.teksten.aanvullende_informatie}</p>
+				<p>${this.pakket.eigenschappen.teksten.aanvullende_informatie}</p>
 
 			</div>			
 		`;
@@ -391,6 +383,8 @@ function kzTelefonieModal(knop) {
 	const pakket = window['efiber-pakket-'+ knop.getAttribute('data-pakket-id')];
 	
 	const belPakket = pakket.huidigeTelefonieBundel();
+
+	this.cel = prijs => {isNaN(Number(prijs)) ? prijs : pakket.formatteerPrijs(prijs) };
 
 	const html = `
 
@@ -414,50 +408,26 @@ function kzTelefonieModal(knop) {
 				<tr>
 					<td>NL</td>
 					<td>Vast</td>
-					<td>${isNaN(Number(belPakket.data.vast.nederland.start))
-						? belPakket.data.vast.nederland.start 
-						: pakket.formatteerPrijs(belPakket.data.vast.nederland.start)
-					}</td>
-					<td>${isNaN(Number(belPakket.data.vast.nederland.per_minuut))
-						? belPakket.data.vast.nederland.per_minuut 
-						: pakket.formatteerPrijs(belPakket.data.vast.nederland.per_minuut)
-					}</td>
+					<td>${this.cel(belPakket.data.vast.nederland.start)}</td>
+					<td>${this.cel(belPakket.data.vast.nederland.per_minuut)}</td>
 				</tr>
 				<tr>
 					<td>NL</td>
 					<td>Mobiel</td>
-					<td>${isNaN(Number(belPakket.data.mobiel.nederland.start))
-						? belPakket.data.mobiel.nederland.start 
-						: pakket.formatteerPrijs(belPakket.data.mobiel.nederland.start)
-					}</td>
-					<td>${isNaN(Number(belPakket.data.mobiel.nederland.per_minuut))
-						? belPakket.data.mobiel.nederland.per_minuut 
-						: pakket.formatteerPrijs(belPakket.data.mobiel.nederland.per_minuut)
-					}</td>
+					<td>${this.cel(belPakket.data.mobiel.nederland.start)}</td>
+					<td>${this.cel(belPakket.data.mobiel.nederland.per_minuut)}</td>
 				</tr>
 				<tr>
 					<td>Buitenland</td>
 					<td>Vast</td>
-					<td>${isNaN(Number(belPakket.data.vast.buitenland.start))
-						? belPakket.data.vast.buitenland.start 
-						: pakket.formatteerPrijs(belPakket.data.vast.buitenland.start)
-					}</td>
-					<td>${isNaN(Number(belPakket.data.vast.buitenland.per_minuut))
-						? belPakket.data.vast.buitenland.per_minuut 
-						: pakket.formatteerPrijs(belPakket.data.vast.buitenland.per_minuut)
-					}</td>
+					<td>${this.cel(belPakket.data.vast.buitenland.start)}</td>
+					<td>${this.cel(belPakket.data.vast.buitenland.per_minuut)}</td>
 				</tr>
 				<tr>
 					<td>Buitenland</td>
 					<td>Mobiel</td>
-					<td>${isNaN(Number(belPakket.data.mobiel.buitenland.start))
-						? belPakket.data.mobiel.buitenland.start 
-						: pakket.formatteerPrijs(belPakket.data.mobiel.buitenland.start)
-					}</td>
-					<td>${isNaN(Number(belPakket.data.mobiel.buitenland.per_minuut))
-						? belPakket.data.mobiel.buitenland.per_minuut 
-						: pakket.formatteerPrijs(belPakket.data.mobiel.buitenland.per_minuut)
-					}</td>
+					<td>${this.cel(belPakket.data.mobiel.buitenland.start)}</td>
+					<td>${this.cel(belPakket.data.mobiel.buitenland.per_minuut)}</td>
 				</tr>
 					
 			</tbody>

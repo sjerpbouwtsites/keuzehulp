@@ -160,9 +160,6 @@ const kzRenderVergelijking = {
 			return;
 		}
 
-		console.log(this);
-		
-
 		return `
 			<div class='provider-pakketten-vergelijking-sectie'>
 
@@ -219,6 +216,11 @@ const kzRenderVergelijking = {
 			</div>			
 		`;
 	},
+	televisieSectieTD(sleutel, naam) {
+		return this.pakket.optieAantal(sleutel) 
+			? `<tr><td>${naam}</td><td>${this.pakket.optiePrijs(sleutel, true)}</td>`
+			: ``
+	},
 	televisieSectie() {
 		const z = this.pakket.pakZenders();
 
@@ -260,11 +262,11 @@ const kzRenderVergelijking = {
 						</tr>							
 					</thead>
 					<tbody>
-						${this.pakket.optieAantal('app') ? `<tr><td>App</td><td>${this.pakket.optiePrijs('app', true)}</td>` : ``}
-						${this.pakket.optieAantal('opnemen') ? `<tr><td>Opnemen</td><td>${this.pakket.optiePrijs('opnemen', true)}</td>` : ``}
-						${this.pakket.optieAantal('replay') ? `<tr><td>Terugkijken</td><td>${this.pakket.optiePrijs('replay', true)}</td>` : ``}
-						${this.pakket.optieAantal('begin-gemist') ? `<tr><td>Begin gemist</td><td>${this.pakket.optiePrijs('begin-gemist', true)}</td>` : ``}
-						${this.pakket.optieAantal('opnemen-replay-begin-gemist-samen') ? `<tr><td>Opnemen, terugkijken, begin gemist</td><td>${this.pakket.optiePrijs('opnemen-replay-begin-gemist-samen', true)}</td>` : ``}
+						${this.televisieSectieTD('app', 'App')}
+						${this.televisieSectieTD('opnemen', 'Opnemen')}
+						${this.televisieSectieTD('replay', 'Replay')}
+						${this.televisieSectieTD('begin-gemist', 'Begin gemist')}
+						${this.televisieSectieTD('opnemen-replay-begin-gemist-samen', 'Opnemen, terugkijken, begin gemist')}
 						${this.televisieBundels()}
 					<tbody>
 
@@ -301,7 +303,11 @@ const kzRenderVergelijking = {
 		}
 		return ret.join('');
 	},
-	installatieSectieTD(sleutel, naam) {return this.pakket.optieAantal(sleutel) ? `<tr><td>${this.naam}</td><td>${this.pakket.optiePrijs(sleutel, true)}</td></tr>` : ''},
+	installatieSectieTD(sleutel, naam) {
+		return this.pakket.optieAantal(sleutel) 
+			? `<tr><td>${naam}</td><td>${this.pakket.optiePrijs(sleutel, true)}</td></tr>` 
+			: ''
+	},
 	installatieSectie() {
 
 		return `

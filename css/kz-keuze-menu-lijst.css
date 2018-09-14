@@ -154,3 +154,9 @@
 						.stappen-links_klaar svg circle {
 							display: none;
 						}
+
+.stappen-links-4, 
+.stappen-links-7, 
+.stappen-links-9 {
+	display: none;
+} 

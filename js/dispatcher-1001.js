@@ -329,7 +329,12 @@ var knoppenFuncs = {
 	},
 	aantalTvsMin: function (){
 		KzAantalTvs(false);
-	}	
+	},
+	stappenNav(knop){
+		doc.getElementById('keuze-menu-lijst').classList.remove('actief');
+		efiberRouting.ga(knop.id.replace('stappen-links-', ''));
+	}
+
 
 
 

@@ -27,9 +27,9 @@
 		padding: 15px;
 		width: calc(100% - 30px);
 	}
-		.knop.blauwe-knop.actief {
+/*		.knop.blauwe-knop.actief {
 			filter: hue-rotate(90deg);
-		}
+		}*/
 
 	.knop.multiselect {
 		display: inline-block;

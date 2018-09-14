@@ -12,12 +12,14 @@ function efiberZetNiveauKnop(knop) {
 
 	const stappenLinksStap = doc.getElementById(`stappen-links-${stap}`);
 	stappenLinksStap.style.display = "block";
+	stappenLinksStap.classList.add('knop');
 	stappenLinksStap.getElementsByClassName('stappen-links_klaar')[0].style.display = "inline-block";
 	stappenLinksStap.getElementsByClassName('stappen-links_niet-klaar')[0].style.display = "none";
 	stappenLinksStap.getElementsByClassName('stappen-links_originele-tekst')[0].style.opacity = "1";
 
 	const print = stappenLinksStap.getElementsByClassName('stappen-links_vervangende-tekst')[0];
 	print.style.display = "block";
+
 
 	print.innerHTML = Array.from(kzSectie.querySelectorAll('.actief.knop'), knop => {
 		const combiKnop = kzVindCombiKnop(knop);

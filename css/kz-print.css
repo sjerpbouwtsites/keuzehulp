@@ -1,12 +1,15 @@
-.print-vergelijking {
+.print-vergelijking,
+.print-provider-pakketten {
 	margin: 0 -10px;
 }
-.print-vergelijking .blauwe-knop{
+.print-vergelijking .blauwe-knop, 
+.print-provider-pakketten .blauwe-knop{
 	text-align: center;
 }
 
 
-.provider-pakketten.vergelijking {
+
+.provider-pakketten {
 	background-color: #f8fff1;
 	border: 1px solid #85b942;
 	border-radius: 5px;
@@ -25,9 +28,15 @@
 		.provider-pakketten-header-prijs {
 
 		}
-			.provider-pakketten-header-prijs {
-
+			.provider-pakketten-header-prijs 
+{
 			}
+
+.provider-pakketten-header-pakkettental {
+	font-weight: bold;
+	font-size: 20px;
+	align-self: center;
+}
 
 
 .provider-pakketten-lijst {

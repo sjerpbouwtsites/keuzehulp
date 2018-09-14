@@ -171,9 +171,17 @@ const efiberRouting = {
 				'schrijf': 'begin postcode-check'
 			},
 			{
-				'stappen': [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 21],
+				'stappen': [2],
+				'schrijf': 'begin pad-keuze'
+			},								
+			{
+				'stappen': [3, 4, 5, 6, 7, 8, 9, 10, 11],
 				'schrijf': 'hoofd samenstellen'
 			},			
+			{
+				'stappen': [20, 21],
+				'schrijf': 'pakkettenkeuze'
+			},						
 			{
 				'stappen': [30, 31, 50, 51],
 				'schrijf': 'hoofd vergelijken'

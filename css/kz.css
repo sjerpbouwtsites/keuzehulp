@@ -70,7 +70,15 @@ body.keuzehulp {
 	position: relative;
 	top: -15px;
 	margin-top: -15px;
+	flex-shrink: 0;
 }
+	.iwwiw-bolletje .provider-pakketten-header-prijs-bedrag {
+		order: 2;
+	}
+	.iwwiw-bolletje .provider-pakketten-header-prijs-vanaf {
+		order: 1;
+		margin-top: -5px;
+	}
 
 	.prijs-bolletje > span:first-child {
 		display: block;					

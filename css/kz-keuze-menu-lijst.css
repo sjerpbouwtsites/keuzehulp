@@ -1,11 +1,16 @@
+
+
 .keuze-menu-lijst {
 	background: linear-gradient(0.28turn, #41a33b,  #93be43);
 	padding: 20px;
 	display: none;
 }
-	[data-kz-stap~='postcode-check'] .keuze-menu-lijst { 
+	[data-kz-stap~='begin'] .keuze-menu-lijst { 
 		display: none;
 	}
+	[data-kz-stap~='pakket-keuze'] .keuze-menu-lijst {
+		display: none;
+	}		
 	[data-kz-stap~='hoofd'] .keuze-menu-lijst { 
 		display: block;
 	}

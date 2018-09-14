@@ -78,18 +78,11 @@ function ikWeetWatIkWilPakkettenAjax() {
 							${pakketten.length} pakket${(pakketten.length !== 1 ? 'ten' : '')}
 						</span>
 
-						<a
-							href='#'
-							class='knop provider-pakketten-header-open'
-							data-efiber-func='open-provider-pakketten'
-							>bekijk verschillende pakketten
-						</a>
-
-						<span class='provider-pakketten-header-prijs'>
-							<span class='provider-pakketten-header-prijs-vanaf'>Vanaf</span>
-							<span class='provider-pakketten-header-prijs-bedrag'>
-								&euro;${providersLaagste.toFixed(2).replace('.', ',')}
+						<span class='provider-pakketten-header-prijs prijs-bolletje iwwiw-bolletje'>
+							<span class='provider-pakketten-header-prijs-bedrag '>
+								<span>&euro;</span>${providersLaagste.toFixed(2).replace('.', ',')}
 							</span>
+							<span class='provider-pakketten-header-prijs-vanaf'>Vanaf</span>
 						</span>
 
 					</header>
@@ -113,18 +106,18 @@ function ikWeetWatIkWilPakkettenAjax() {
 							${nweSnelheid} Mb/s
 						</span>
 						<span class='provider-pakketten-pakket-prijs'>
-							&euro; ${nieuwPakket.geefMaandtotaalVoorSnelheid(nweSnelheid)}
+							${nieuwPakket.geefMaandtotaalVoorSnelheid(nweSnelheid)}
 						</span>`, '')}
 
 					</span>
 				</div>
 				<div class='provider-pakketten-pakket-rechts'>
 					<a
-						class='knop geen-ikoon efiber-bestelknop'
+						class='knop blauwe-knop efiber-bestelknop'
 						data-efiber-func='toon-stap animeer aanmeldformulier'
 						href='#100'
 						efiber-data-pakket-id='${nieuwPakket.ID}'
-						>bekijken >
+						>Bestellen 
 					</a>
 				</div>
 			</li>`,

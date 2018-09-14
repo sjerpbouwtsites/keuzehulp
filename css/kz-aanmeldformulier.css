@@ -1,0 +1,301 @@
+.efiber-form-sectie {
+	padding: 20px 20px 10px;
+	border: 4px;
+	background-color: white;
+	border-radius: 5px;
+	box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.15);
+	margin-bottom: 20px;
+	margin-left: -10px;
+	margin-right: -10px;
+}
+
+
+	.print-aanmeldformulier select {
+		width: 100%;
+		padding-right: 32px;
+		box-shadow: none;
+		-webkit-appearance: none;
+		outline: none;
+		cursor: pointer;
+		-moz-appearance: none;
+		text-indent: 0.01px;
+		text-overflow: '';		
+		text-transform: none;
+		overflow: visible;
+		padding: 12px 32px 12px 8px;
+		color: #666;
+		border: 1px solid #81d899;
+		background-image: url('/wp-content/plugins/efiber/iconen-nieuw/png/select pijltjes.png');
+		background-position: center right;
+		background-repeat: no-repeat;
+		background-size: 27px 29px;
+	}
+
+	.print-aanmeldformulier .veld-span {
+		padding: 12px 0;
+		display: inline-block;
+	}
+
+
+/*********************************/
+
+.efiber-form-sectie .rij {
+	display: flex;
+	justify-content: space-between;	
+	padding: 20px 10px;
+	background-color: #f3f3f0;
+	margin: 0 -10px 3px -10px;
+}
+	.efiber-form-sectie .rij.heeft-actieve-knop {
+		background-color: #d4f1dc;
+	}
+
+
+
+.efiber-form-sectie .veld {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	flex-basis: 100%;
+}
+	.efiber-form-sectie .veld-1 {
+		flex-basis: 70px;
+		margin-right: 10px;
+		flex-shrink: 0;
+		font-size: 15px;
+	}
+
+.efiber-form-sectie-header {
+
+}
+	.efiber-form-sectie-header h3 {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+		.efiber-form-sectie-header svg {
+			width: 30px;
+			height: 30px;
+			margin-right: 5px;
+		}
+			.efiber-form-sectie-header path,
+			.efiber-form-sectie-header circle {
+				fill: #1d1d1b;
+			}
+
+	.efiber-form-sectie-header_groen {
+		font-size: 20px;
+		color: #159a3c;
+		font-weight: bold;
+		display: block;
+	}
+
+
+	.ja-schuif {
+		display: none;
+	}
+		.actief .ja-schuif {
+			display: block;
+		}
+
+	.nee-schuif {
+		display: block;
+	}
+		.actief .nee-schuif {
+			display: none;
+		}
+
+	.veld-flex {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		font-weight: bold;
+	}
+		.veld-flex span:first-child {
+			font-size: .8rem;
+			line-height: .75rem;
+			color: #212121;
+			max-width: calc(100% - 60px);
+		}
+		.veld-flex span + span:last-child {
+			font-size: 1rem;
+			line-height: .75rem;
+			color: black;
+		}
+
+		.veld-flex span + span:last-child, 
+		.radio-prijs {
+			 text-decoration: line-through;
+			 opacity: .7;
+		}
+
+			.heeft-actieve-knop .veld-flex span + span:last-child, 
+			.heeft-actieve-knop .radio-prijs {
+				 text-decoration: none;
+				 opacity: 1;
+			}
+/*********************************/
+
+	.efiber-form-sectie.samenvatting {
+		position: sticky;
+		top: 0;
+		z-index: 4;		
+	}
+
+
+
+	.efiber-form-sectie.samenvatting h3{
+		display: none;
+	}
+
+	.efiber-form-sectie.samenvatting .rij {
+		padding: 0;
+		background: none;
+		margin-bottom: 0;
+		margin-right: -10px;
+		margin-left: -10px;
+	}
+
+	.efiber-form-sectie.samenvatting .veld-1 {
+		font-weight: bold;
+		flex-basis: calc(100% - 130px);
+	}
+
+
+	/* afb en maandprijs*/
+		/* afb*/
+		.efiber-form-sectie.samenvatting .rij:first-child .veld-1 {
+			flex-basis: 150px;
+			align-items: flex-start;
+		}
+		.efiber-form-sectie.samenvatting .rij:first-child .veld-2 {
+			flex-basis: auto;
+		}
+
+	/* naam van pakket */
+	.efiber-form-sectie.samenvatting .rij:nth-child(2) {
+		font-size: 20px;
+		font-weight: bold;
+		color: #2a2a28;
+		margin-bottom: 0;
+	}
+
+	.efiber-form-sectie.samenvatting  {
+		margin-top: 30px;
+	}
+
+	.efiber-form-sectie.samenvatting .rij:last-child {
+		/*margin-top: 20px;*/
+	}
+
+
+[name="extra-tv-ontvangers"] {
+	-webkit-appearance: none; 
+	margin: 0; 	
+	-moz-appearance:textfield;
+	appearance: none;
+	border: 0;
+	width: 10px;  
+	margin-left: 5px;
+	font-weight: bold;
+	color: #159a3c;	
+}
+
+
+[for='extra-tv-ontvangers'] {
+	display: none;
+}
+
+.plus-en-min-svgs {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	min-width: 65px;
+}
+
+	.plus-en-min-svgs svg{
+		width: 25px;
+		height: 25px;
+	}
+
+		.plus-en-min-svgs path {
+			fill: white;
+		}
+
+	.efiber-form-sectie .rij.radios {
+		display: block;
+	}
+		.efiber-form-sectie .rij.radios .veld-1 {
+			margin-right: 0;
+			flex-basis: auto;
+			font-weight: bold;
+			display: block;
+		}
+		.efiber-form-sectie .rij.radios .veld-2 {
+			display: block;
+		}
+			.efiber-form-sectie .rij.radios .veld-2 .label{
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				margin: 5px 0;
+			}
+				.efiber-form-sectie .rij.radios .veld-2 img {
+					flex-basis: 70px;
+					min-width: 70px;
+					margin-right: 5px;
+
+				}
+				.efiber-form-sectie .rij.radios .veld-2 .radio-naam-en-prijs{
+					order: 1;
+					display: flex;
+					flex-direction: row;
+					justify-content: space-between;
+					width: 100%;
+				}
+
+
+
+section.efiber-form-sectie:last-of-type {
+	padding: 0;
+	background: transparent;
+	border: 0;
+	box-shadow: none;
+}
+	section.efiber-form-sectie:last-of-type .efiber-form-sectie-header {
+		padding-bottom: 10px;
+		margin-bottom: 10px;
+		border-bottom: 2px solid #666;		
+	}
+
+	section.efiber-form-sectie:last-of-type .rij {
+		margin-right: 0;
+		margin-left: 0;
+		background: transparent;
+		padding: 10px 0;
+		margin-bottom: 0;
+	}
+		section.efiber-form-sectie:last-of-type .veld-1 {
+			font-size: 18px;
+			flex-basis: 70%;
+		}
+		section.efiber-form-sectie:last-of-type .veld-2 {
+			font-size: 18px;
+			justify-content: flex-end;
+			font-weight: bold;
+		}		
+		section.efiber-form-sectie:last-of-type .rij:last-child {
+			color: #159a3c;
+			border-top: 2px solid #666;
+			padding-top: 5px;
+			margin-top: 10px;
+			font-weight: 900;			
+		}
+
+
+
+
+
+/*****************************************/

@@ -1,4 +1,9 @@
 /* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren  */
+
+function kzPakPakket(getal) {
+	return window[`efiber-pakket-${getal}`];
+}
+
 function VerrijktPakket(p) {
 	/*------------------------------------------------------
 	|
@@ -37,21 +42,20 @@ function VerrijktPakket(p) {
 
 	// Maakt van Amerikaans getal europese prijs.
 	// @TODO als 0 dan 'gratis' of 'inclusief'
-	this.formatteerPrijs = prijs => `&euro;${Number(prijs).toFixed(2).replace('.', ',')}`;
+	this.formatteerPrijs = prijs => `<span class='euro'>&euro;</span>${Number(prijs).toFixed(2).replace('.', ',')}`;
 
 
-	this.printPrijzen = () => {
+	this.printPrijzen = (formatteer = true) => {
 		/*------------------------------------------------------
 		|
 		| 	Geeft totalen terug van eenmalige of maandelijkse kosten
 		| 	Al dan niet geformatteerd of als getal.
 		|
 		|-----------------------------------------------------*/
-
 		['maandelijks', 'eenmalig'].forEach((prijsCat) => {
 			const printHier = document.getElementsByClassName(`${prijsCat}-totaal`);
 			Array.from(printHier).forEach((printPlek) => {
-				printPlek.innerHTML = this.generiekTotaal(prijsCat, true);
+				printPlek.innerHTML = this.generiekTotaal(prijsCat, formatteer);
 			});
 		});
 	};

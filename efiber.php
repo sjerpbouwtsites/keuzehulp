@@ -52,6 +52,7 @@ function Ef_scripts_in_rij() {
 
     $pak_stijlen = array(
         '',
+        'aanmeldformulier',
         'footer',
         'form',
         'header',

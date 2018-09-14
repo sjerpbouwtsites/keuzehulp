@@ -39,17 +39,14 @@ const kzRenderVergelijking = {
 
 				// per provider aantal pakketten, zoals DTV, ITV. Vaak maar één.
 
-				const bedrag = p1.maandelijksTotaal(true);
-				const bb = `<small>${bedrag.substr(0, 6)}</small>${bedrag.substr(6)}`;
-
 				printPakketten += `<section class='provider-pakketten vergelijking'>
 
 					<header class='provider-pakketten-header'>
 
 						${p1.eigenschappen.provider_meta.thumb}
 
-						<span class='provider-pakketten-header-prijs'>
-							<span>${bb}</span><span>p/m</span>
+						<span class='prijs-bolletje provider-pakketten-header-prijs'>
+							<span>${p1.maandelijksTotaal(true)}</span><span>p/m</span>
 						</span>
 
 					</header>

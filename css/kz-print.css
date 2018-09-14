@@ -26,30 +26,9 @@
 
 		}
 			.provider-pakketten-header-prijs {
-				background: linear-gradient(0.28turn, #41a33b, #93be43);
-				color: white;
-				border-radius: 150px;
-				width: 80px;
-				height: 80px;
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				text-align: center;
-				position: relative;
-				top: -30px;
+
 			}
-				.provider-pakketten-header-prijs span:first-child {
-					display: block;					
-					font-weight: bold;	
-					font-size: 16px;
-				}
-					.provider-pakketten-header-prijs span:first-child small {
-						font-size: 12px;
-					}
-				.provider-pakketten-header-prijs span:last-child {
-					font-size: 12px;
-					display: block;
-				}
+
 
 .provider-pakketten-lijst {
 	list-style-type: none;

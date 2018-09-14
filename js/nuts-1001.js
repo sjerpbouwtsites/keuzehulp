@@ -37,6 +37,10 @@ function naarStreepCase(snede) {
 	.replace(/^./, str => str.toUpperCase()).toLowerCase();
 }
 
+function uniek(waarde, index, lijst) { 
+    return lijst.indexOf(waarde) === index;
+}
+
 function efiberVindKnop(t, klasse) {
 	/*----------------------------------
 	|
@@ -47,22 +51,25 @@ function efiberVindKnop(t, klasse) {
 	|---------------------------------*/
 
 
-	let knop = false;
+	let k = t;
 
 	// zitten we in een SVG?
 	// svg nodes hebben andere dom properties
-	while (typeof t.className !== 'string') {
-		t = t.parentNode;
+	while (typeof k.className !== 'string') {
+		k = k.parentNode;
 	}
 
-	const klassen = t.className.split(' ');
+	if (k.classList.contains('knop')) return k;
 
-	if (klassen.indexOf(klasse) !== -1) {
-		knop = t;
-	} else if (t.parentNode.className.indexOf(klasse) !== -1) {
-		knop = t.parentNode;
+	do {
+		k = k.parentNode;
+	} while (!k.classList.contains('knop') && !k.classList.contains('keuzehulp')); // niet doorgaan na body
+
+	if (k.classList.contains('keuzehulp')) {
+		return false;
+	} else {
+		return k;
 	}
-	return knop;
 }
 
 function efiberEuro(bedrag) {
@@ -142,6 +149,20 @@ function kzVindSectie(knop) {
 	do {
 	  w = w.parentNode;
 	} while (!w.hasAttribute('data-keuzehulp-stap') && !w.classList.contains('keuzehulp')); // niet voorbij body
+
+	if (w.classList.contains('keuzehulp')) {
+		return new Error('sectie niet gevonden');
+	} else {
+		return w;
+	}
+	
+}
+
+function kzVindRij(knop) {
+	let w = knop.parentNode;
+	do {
+	  w = w.parentNode;
+	} while (!w.classList.contains('rij') && !w.classList.contains('keuzehulp')); // niet voorbij body
 
 	if (w.classList.contains('keuzehulp')) {
 		return new Error('sectie niet gevonden');

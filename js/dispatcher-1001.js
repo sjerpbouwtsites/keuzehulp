@@ -25,8 +25,8 @@ function knoppenDispatcher() {
 	body.addEventListener('click', function(e){
 
 		var t = e.target;
-
 		var knop = efiberVindKnop(t, 'knop');
+
 		if (knop) {
 			e.preventDefault();
 
@@ -55,7 +55,7 @@ function knoppenDispatcher() {
 			for (var i = 0; i < funcs.length; i++){
 				var funcNaam = naarCamelCase(funcs[i]);
 				if (knoppenFuncs[funcNaam]) {
-					 console.log('dispatch '+funcNaam);
+					//console.log('dispatch '+funcNaam);
 					knoppenFuncs[funcNaam](knop);
 				} else {
 					console.log('geen knop func gedefinieerd', funcNaam);
@@ -244,6 +244,8 @@ var knoppenFuncs = {
 			console.warn('formulier schakel func onbekend');
 		}
 
+		//kzUpdatePrijzen();
+
 	},
 	belpakketten: function (knop) {
 
@@ -321,7 +323,14 @@ var knoppenFuncs = {
 			kop: knop.getAttribute('data-tooltip-titel'),
 			torso: knop.getAttribute('data-tooltip-tekst')
 		});
-	}
+	},
+	aantalTvsPlus: function (){
+		KzAantalTvs(true);
+	},
+	aantalTvsMin: function (){
+		KzAantalTvs(false);
+	}	
+
 
 
 

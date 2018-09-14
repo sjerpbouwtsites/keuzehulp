@@ -689,7 +689,7 @@ function getdb(){
     return $conn;
 }
 
-function efiber_form_sectie ($titel = '', $inh = '') {
+function efiber_form_sectie ($titel = '', $inh = '', $svg = '', $extra_tekst = '') {
 
 
 	/*---------------------------------------------------------
@@ -706,7 +706,12 @@ function efiber_form_sectie ($titel = '', $inh = '') {
 
 	if ($titel !== '') {
 		$header = "<header class='efiber-form-sectie-header'>
-				<h3>$titel</h3>
+				".
+				($extra_tekst !== ''
+					? "<span class='efiber-form-sectie-header_groen'>$extra_tekst</span>"
+					: ''
+				)."
+				".(($svg||$titel) ? "<h3>$svg $titel</h3>" : "")."
 			</header>";
 	}
 
@@ -785,7 +790,7 @@ function efiber_input ($params = array()) {
 	$class = !!$value ? 'actief' : ''; // checked unchecked
 	$eclass = $params['eclass'];	// zoals hidden
 
-	$tekst = $waarde !== '' ? efiber_maak_geld_op($waarde) : '';
+	$tekst = $waarde !== '' ? kz_maak_geld_op($waarde) : '';
 
 	$v = ($value ? " value='$value' " : "");
 	$f = ($func ? "data-efiber-func='$func'" : "");
@@ -825,14 +830,13 @@ function efiber_input ($params = array()) {
 				data-efiber-vorige-value='$value'
 				data-efiber-value='$value'
 				>
-				<span class='tekst'>$tekst</span>
 				<span class='label'>$label</span>
 			</div>";
 	}
 
 }
 
-function efiber_maak_geld_op($euros = '') {
+function kz_maak_geld_op($euros = '') {
 
 
 	/*---------------------------------------------------------

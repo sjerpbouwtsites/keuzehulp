@@ -91,7 +91,6 @@ function efiberModal(tekst, tijd = false) {
 }
 
 function efiberVerwijderModal() {
-	console.log('verwijder modal');
 
 	jQuery('.efiber-modal-achtergrond').fadeOut(300, () => {
 		jQuery('.efiber-modal-achtergrond').remove();

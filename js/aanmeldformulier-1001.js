@@ -34,6 +34,8 @@ function aanmeldformulierHaalWaardeUitRij(rij) {
 			return '';
 }
 
+
+
 function efiberUpdateHidden() {
 	/*------------------------------------------------------
 	|
@@ -42,7 +44,12 @@ function efiberUpdateHidden() {
 	|
 	|-----------------------------------------------------*/
 
-	const rijen = Array.from(doc.getElementById('print-aanmeldformulier').getElementsByClassName('heeft-knop')),
+	const aanmeldformulier = doc.getElementById('print-aanmeldformulier');
+	const knoppen = aanmeldformulier.getElementsByClassName('knop');
+	const rijen = Array
+		.from(knoppen, knop => kzVindRij(knop))
+		.filter(uniek);
+		return;
 
 	printMappen = {
 		belpakketten: doc.getElementById('input_1_38'),
@@ -80,6 +87,7 @@ function efiberUpdateHidden() {
 	printInfo = {};
 
 	rijen.forEach((rij) => {
+
 		let GFPrintPlek = false;
 
 		// zoeken in printmapping naar passende printplek.
@@ -157,10 +165,10 @@ function haalPrintAanmeldformulier(knop) {
 	// bereid pakket voor voor verzending
 	let pakket = window[`efiber-pakket-${knop.getAttribute('efiber-data-pakket-id')}`];
 
-
 	pakket.bereidJSONverzendingVoor();
 
 	doc.getElementById('print-aanmeldformulier').innerHTML = '<p>Formulier wordt geladen...</p>';
+	doc.getElementById('print-aanmeldformulier').setAttribute('data-pakket-id', pakket.ID);
 
 	const ajf = new EfiberAjax({
 		ajaxData: {
@@ -215,17 +223,15 @@ function haalPrintAanmeldformulier(knop) {
 
 			// alle rijen met actieve knoppen op actief
 			Array.from(printPlek.getElementsByClassName('knop')).forEach((knopE) => {
-				let rij = knopE;
-
-				knopE.setAttribute('data-pakket-id', r.id);
-
-				do { rij = rij.parentNode; } while (!rij.classList.contains('rij'));
-
+				
+				const rij = kzVindRij(knopE);
+				if (knopE.classList.contains('actief')) {
+					rij.classList.add('heeft-actieve-knop');
+				}
 				rij.classList.add('heeft-knop');
 
-				if (knopE.classList.contains('actief')) {
-					rij.classList.add('actief');
-				}
+				//knopE.setAttribute('data-pakket-id', r.id);
+
 			});
 
 			// schrijf pakket naam en provider naar formulier
@@ -332,7 +338,13 @@ function efiberUpdatePrijs(knop) {
 	|
 	|-----------------------------------------------------*/
 
-	const pakket = window[`efiber-pakket-${knop.getAttribute('data-pakket-id')}`];
+	let pakket = null;
+
+	if (knop.hasAttribute('data-pakket-id')) {
+		pakket = window[`efiber-pakket-${knop.getAttribute('data-pakket-id')}`];
+	} else {
+		pakket = window[`efiber-pakket-${doc.getElementById('print-aanmeldformulier').getAttribute('data-pakket-id')}`];
+	}
 
 	let optie,
 		hoeveelheid;
@@ -342,13 +354,13 @@ function efiberUpdatePrijs(knop) {
 		hoeveelheid = knop.value;
 	} else if (knop.classList.contains('belpakket')) {
 		optie = knop.id.replace('belpakket-keuze-', '');
-		hoeveelheid = knop.classList.contains('actief') ? 1 : 0;
+		hoeveelheid = efiberPakKnopValue(knop);
 	} else if (knop.classList.contains('installatie')) {
 		optie = knop.id.replace('keuze-', '');
-		hoeveelheid = knop.classList.contains('actief') ? 1 : 0;
+		hoeveelheid = efiberPakKnopValue(knop);
 	} else {
 		optie = knop.id;
-		hoeveelheid = knop.classList.contains('actief') ? 1 : 0;
+		hoeveelheid = efiberPakKnopValue(knop);
 	}
 
 	pakket.mutatie(optie, hoeveelheid);
@@ -360,22 +372,23 @@ function efiberSchakelInputGeneriek(knop) {
 	/*------------------------------------------------------
 	|
 	|	Vindt de rij en schakelt op rij en knop de klasse actief.
+	| 	Tenzij een radio, dan wordt de knop actief geschakelt
 	|
 	|-----------------------------------------------------*/
 
-
-	let rij = knop;
-	do {
-		rij = rij.parentNode;
-	} while (rij.className.indexOf('rij') === -1);
-
-	if (knop.className.indexOf('actief') !== -1) {
-		knop.className = knop.className.replace('actief', '').trim();
-		rij.className = rij.className.replace('actief', '').trim();
+	if (knop.classList.contains('actief')) {
+		knop.classList.remove('actief');
 	} else {
-		knop.className += ' actief';
-		rij.className += ' actief';
+		knop.classList.add('actief');
 	}
+
+	const rij = kzVindRij(knop);
+	if (rij.getElementsByClassName('actief').length) {
+		rij.classList.add('heeft-actieve-knop');
+	} else {
+		rij.classList.remove('heeft-actieve-knop');
+	}
+
 }
 
 function efiberPakKnopValue(knop) {
@@ -468,7 +481,6 @@ function efiberToonRij(knop) {
 	}
 }
 
-
 function efiberSchakelRadio(knop) {
 	/*------------------------------------------------------
 	|
@@ -479,35 +491,63 @@ function efiberSchakelRadio(knop) {
 	|
 	|-----------------------------------------------------*/
 
+	let rij = knop;
+	do {rij = rij.parentNode} while (
+		!rij.classList.contains('rij') 
+		&& !rij.classList.contains('print-aanmeldformulier')
+	);
 
-	const dezeKnopEnBroers = knop.parentNode.parentNode.getElementsByClassName('knop');
+	if (rij.classList.contains('print-aanmeldformulier')) return new Error('rij niet gevonden');
 
-	// is dit maar 1 radio? dan gedraagd het zich als een checkbox.
-	if (dezeKnopEnBroers.length === 1) {
+	const echteRadio = knop.classList.contains('installatie');
+	const magErGeenTweeHebben = knop.classList.contains('efiber-radio');
+	const knoppenInVerzameling = rij.getElementsByClassName('knop');
+	const isActief = knop.classList.contains('actief');
+
+	if ( isActief && !echteRadio ) {
+		
 		efiberSchakelCheckbox(knop);
-	} else if (knop.className.indexOf('actief') !== -1) { // als deze actief is, dan deze laten gedragen als checkbox
-		// sommige mogen niet géén optie hebben.
-		// zoals installatie, stop die.
-		if (knop.id.indexOf('installatie-keuze') === -1) {
-			efiberSchakelCheckbox(knop);
-		}
-	} else {
-		// als ander actief is, dan die en deze als checkbox laten gedragen.
-		const dezeID = knop.id;
 
-		for (let i = 0; i < dezeKnopEnBroers.length; i++) {
-			if (dezeKnopEnBroers[i].className.indexOf('actief') !== -1) {
-				// als actief.. en als niet de reeds geselecteerde knop
-				if (dezeKnopEnBroers[i].id !== dezeID) {
-					// via checkbox
-					efiberSchakelCheckbox(dezeKnopEnBroers[i]);
-				}
+	} else if ( isActief && echteRadio ){
+		
+
+		if (knoppenInVerzameling.length === 1) {
+			
+			// niets doen. 
+		} else {
+
+			// eerst zelf uitzetten
+			// dan eerste best aanzetten.
+			efiberSchakelCheckbox(knop);
+
+			
+			Array.from(knoppenInVerzameling).forEach(knopUitVerz => {
+				if (knopUitVerz.id !== knop.id) efiberSchakelCheckbox(knopUitVerz);
+			});
+
+		}
+
+	} else if ( !isActief && !echteRadio ) {
+		
+
+		if (magErGeenTweeHebben) {
+			if (rij.getElementsByClassName('actief').length) { 
+				efiberSchakelCheckbox(rij.getElementsByClassName('actief')[0]);
 			}
 		}
 
-		// tenslotte de knop zelf
 		efiberSchakelCheckbox(knop);
+
+	} else {
+
+		
+		if (rij.getElementsByClassName('actief').length) { 
+			efiberSchakelCheckbox(rij.getElementsByClassName('actief')[0]);
+		}
+		efiberSchakelCheckbox(knop);
+
 	}
+
 }
 
 function efiberSchakelNumber(knop) {
@@ -518,4 +558,23 @@ function efiberSchakelNumber(knop) {
 	|-----------------------------------------------------*/
 
 	efiberUpdatePrijs(knop);
+
+	const rij = kzVindRij(knop);
+	if (efiberPakKnopValue(knop) > 0) {
+		rij.classList.add('heeft-actieve-knop');
+	} else {
+		rij.classList.remove('heeft-actieve-knop');
+	}
+
+}
+
+function KzAantalTvs(optellen) {
+	let extraTVontvangers = document.getElementById('extra-tv-ontvangers');
+
+	if (optellen) {
+		extraTVontvangers.value = Number(extraTVontvangers.value) + 1;
+	} else if (Number(extraTVontvangers.value)) { // is niet 0
+		extraTVontvangers.value = Number(extraTVontvangers.value) - 1; 
+	}
+	extraTVontvangers.click();
 }

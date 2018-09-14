@@ -7,7 +7,7 @@ img {
 }
 
 .page-template-keuzehulp {
-	background-color: #f3f3f0;
+	background-color: #e3eae3;
 }
 
 body.keuzehulp {
@@ -55,4 +55,46 @@ body.keuzehulp {
 
 .draai-180 svg{
 	transform: rotate(.5turn);
+}
+
+.prijs-bolletje {
+	background: linear-gradient(0.28turn, #41a33b, #93be43);
+	color: white;
+	border-radius: 150px;
+	width: 80px;
+	height: 80px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	text-align: center;
+	position: relative;
+	top: -15px;
+	margin-top: -15px;
+}
+
+	.prijs-bolletje > span:first-child {
+		display: block;					
+		font-weight: bold;	
+		font-size: 16px;
+	}
+
+	.prijs-bolletje > span:last-child {
+		font-size: 12px;
+		display: block;
+	}	
+	.prijs-bolletje .euro {
+		font-size: 12px;
+		font-weight: 400;
+	}
+
+.ovaal {
+	width: 70px;
+	background-color: white;
+	color: #888888;
+	font-weight: bold;
+	font-size: 15px;
+	border-radius: 100px;
+	text-align: center;
+	padding-top: 4px;
+	padding-bottom: 4px;
 }

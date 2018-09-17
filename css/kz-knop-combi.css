@@ -48,12 +48,13 @@
 			display: flex;
 			flex-direction: row;
 			justify-content: space-between;
-			padding: 15px 25px ;
+			padding: 15px 25px;
+			font-size: 13px;
 		}
 			.kz-knop-combi_rechts .blauwe-knop svg {
 				transform: rotate(.25turn);
-				width: 30px;
-				height: 30px;
+				width: 25px;
+				height: 25px;
 				margin: -5px;
 			}
 				.kz-knop-combi_rechts .blauwe-knop path {

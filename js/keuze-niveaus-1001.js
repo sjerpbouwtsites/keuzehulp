@@ -16,6 +16,7 @@ function efiberZetNiveauKnop(knop) {
 	stappenLinksStap.getElementsByClassName('stappen-links_klaar')[0].style.display = "inline-block";
 	stappenLinksStap.getElementsByClassName('stappen-links_niet-klaar')[0].style.display = "none";
 	stappenLinksStap.getElementsByClassName('stappen-links_originele-tekst')[0].style.opacity = "1";
+	stappenLinksStap.getElementsByClassName('stappen-links_originele-tekst')[0].style.fontWeight = "600";
 
 	const print = stappenLinksStap.getElementsByClassName('stappen-links_vervangende-tekst')[0];
 	print.style.display = "block";

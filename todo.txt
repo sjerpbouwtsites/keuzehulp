@@ -1,4 +1,21 @@
 
+    Nummerbehoud volledige breedte
+
+    Totaal maandelijks, niet groen en zonder lijn
+
+    Logo klikbaar maken
+
+
+
+    tekst 5 stappen, misschien aanpassen naar enkele stappen?
+    Hoofdletter gebruik eerste pagina
+    Labels/paceholders wel/niet tonen?
+    Kamernummer wellicht anders presenteren om verwarring te voorkomen
+    Wijzigen gemaakte keuzes werkt niet + wellicht een edit icoon gebruiken?
+    ipv ja, een vinkje indien incl, en een kruisje indien niet incl.
+    Gefeliciteerd melding overbodig?
+
+
 'tekst' veld bij telefonie modal
 
 --- 

@@ -1,16 +1,14 @@
 <div class="kz-navigatie-beneden kz-navigatie-beneden_buiten">
 	<div class="kz-navigatie-beneden_binnen">
+		<a data-efiber-func="toon-stap" data-keuzehulp-stap="7" class="knop kz-navigatie-beneden_knop blauwe-knop" href="#8">
+			<span>Verder naar televisie</span>
+		</a>
+		<a data-efiber-func="toon-stap" data-keuzehulp-stap="9" class="knop kz-navigatie-beneden_knop blauwe-knop" href="#11">
+			<span>Verder naar installatie</span>
+		</a>
 		<a data-efiber-func="stap-terug" class="knop efiber-stap-terug kz-navigatie-beneden_knop" href="#">
 			<?php require plugin_dir_path(__FILE__)."../iconen-nieuw/svg/terug.svg"; ?>
 			<span>stap terug</span>
-		</a>
-		<a data-efiber-func="toon-stap" data-keuzehulp-stap="7" class="knop kz-navigatie-beneden_knop draai-180" href="#8">
-			<?php require plugin_dir_path(__FILE__)."../iconen-nieuw/svg/terug.svg"; ?>
-			<span>verder</span>
-		</a>
-		<a data-efiber-func="toon-stap" data-keuzehulp-stap="9" class="knop kz-navigatie-beneden_knop draai-180" href="#11">
-			<?php require plugin_dir_path(__FILE__)."../iconen-nieuw/svg/terug.svg"; ?>
-			<span>verder</span>
 		</a>
 	</div>
 </div>

@@ -1,0 +1,25 @@
+/*.print-vergelijking {
+	margin: 0 -10px;
+}
+.provider-pakketten.vergelijking {
+	background-color: white;
+	box-shadow: 0.5px 0.5px 4px rgba(0,0,0,0.1);
+	border-radius: 5px;
+	padding: 10px;
+}
+	.provider-pakketten-header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+		.provider-pakketten-header .wp-post-image {
+			flex-basis: 100px;
+		}
+		.provider-pakketten-header-prijs {
+
+		}
+			.provider-pakketten-header-prijs span{
+				display: block;
+			}
+
+*/

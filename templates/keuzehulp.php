@@ -8,7 +8,7 @@
 
 ///<link href="https://fonts.googleapis.com/css?family=Maven+Pro" rel="stylesheet"> 
 
-$afb_pad = plugins_url( '../png/', __FILE__ );
+$afb_pad = plugins_url( '../iconen-nieuw/png-rekam/', __FILE__ );
 
 function efiber_keuzehulp_pak_afb ($str = '') {
 	global $afb_pad;
@@ -54,7 +54,6 @@ require 'keuze-menu-lijst.php';
 			 						id='huisnummer'
 			 						name='huisnummer'
 			 						type='text'
-			 						placeholder='huisnummer'
 			 						minlength='1'
 			 					>
 			 				</label><label for='toevoeging'>
@@ -64,7 +63,6 @@ require 'keuze-menu-lijst.php';
 			 						id='toevoeging'
 			 						name='toevoeging'
 			 						type='text'
-			 						placeholder='Toevoeging'
 			 					>
 			 				</label>
 			 				<label for='kamer'>
@@ -74,7 +72,6 @@ require 'keuze-menu-lijst.php';
 			 						id='kamer'
 			 						name='kamer'
 			 						type='text'
-			 						placeholder='Kamernummer'
 			 					>
 			 				</label>
 			  				<input class='blauwe-knop' type='submit' value='doe de check!'>

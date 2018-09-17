@@ -1,6 +1,7 @@
 
 .kz-navigatie-beneden {
 	display: none;
+	margin: 0 -10px;
 }
 
 [data-kz-stap~='hoofd'] .kz-navigatie-beneden {
@@ -19,10 +20,10 @@
 	padding: 20px 0;
 }
 	.knop.kz-navigatie-beneden_knop {
-		display: block;
+		display: none;
 	}
-		.knop.kz-navigatie-beneden_knop ~ .kz-navigatie-beneden_knop {
-			display: none; 
+		.knop.kz-navigatie-beneden_knop:last-child {
+			display: block; 
 		}
 
 		.knop.kz-navigatie-beneden_knop, .knop.kz-navigatie-beneden_knop span {
@@ -32,6 +33,14 @@
 			.knop.kz-navigatie-beneden_knop, .knop.kz-navigatie-beneden_knop span:hover {
 				color: #1d1d1b;
 			}
+			.knop.kz-navigatie-beneden_knop.blauwe-knop {
+				text-align: center;
+				margin-bottom: 10px;
+			}
+			.knop.kz-navigatie-beneden_knop.blauwe-knop span{
+				color: white;
+			}
+
 		.kz-navigatie-beneden_knop svg, .kz-navigatie-beneden_knop span {
 			display: inline-block;
 			vertical-align: middle;

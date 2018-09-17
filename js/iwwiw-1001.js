@@ -101,14 +101,20 @@ function ikWeetWatIkWilPakkettenAjax() {
 					<h3 class='provider-pakketten-pakket-titel'>${nieuwPakket.naam_composiet}</h3>
 					<span class='provider-pakketten-pakket-links-onder'>
 
+					<strong>Beschikbare snelheden:</strong>
 					${nieuwPakket.eigenschappen.snelheden.reduce((snelheidPrijsHTMLvoorraad, nweSnelheid) => `${snelheidPrijsHTMLvoorraad}
-						<span class='provider-pakketten-pakket-snelheid'>
-							${nweSnelheid} Mb/s
+						
+						<span class='provider-pakketten-pakket-links-onder_snelheid'>
+							<span class='provider-pakketten-pakket-snelheid'>
+								${nweSnelheid} Mb/s 
+							</span>
+							<span class='provider-pakketten-pakket-prijs'>
+								voor ${nieuwPakket.geefMaandtotaalVoorSnelheid(nweSnelheid)}
+							</span>
 						</span>
-						<span class='provider-pakketten-pakket-prijs'>
-							${nieuwPakket.geefMaandtotaalVoorSnelheid(nweSnelheid)}
-						</span>`, '')}
-
+						`
+					,'')}
+						
 					</span>
 				</div>
 				<div class='provider-pakketten-pakket-rechts'>

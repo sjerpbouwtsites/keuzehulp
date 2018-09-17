@@ -20,8 +20,6 @@ function knoppenDispatcher() {
 	|
 	|-----------------------------------------------------*/
 
-	
-
 	body.addEventListener('click', function(e){
 
 		var t = e.target;
@@ -55,7 +53,7 @@ function knoppenDispatcher() {
 			for (var i = 0; i < funcs.length; i++){
 				var funcNaam = naarCamelCase(funcs[i]);
 				if (knoppenFuncs[funcNaam]) {
-					//console.log('dispatch '+funcNaam);
+					// console.log('dispatch '+funcNaam);
 					knoppenFuncs[funcNaam](knop);
 				} else {
 					console.log('geen knop func gedefinieerd', funcNaam);
@@ -263,12 +261,6 @@ var knoppenFuncs = {
 
 		// aanmeldformulier.js
 		efiberFoxSports();
-
-	},
-	formToonRij: function(knop){
-
-		// aanmeldformulier.js
-		efiberToonRij(knop);
 
 	},
 	updateHidden: function(){

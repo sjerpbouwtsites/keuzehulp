@@ -726,7 +726,7 @@ function efiber_form_sectie ($titel = '', $inh = '', $svg = '', $extra_tekst = '
 }
 
 
-function efiber_form_rij ($veld1, $veld2, $extra_klasse = '') {
+function efiber_form_rij ($veld1, $veld2, $extra_klasse = '', $rij_onder = array()) {
 
 
 	/*---------------------------------------------------------
@@ -741,6 +741,8 @@ function efiber_form_rij ($veld1, $veld2, $extra_klasse = '') {
 	//tbv stijling
 	$klasse = strtolower(str_replace(' ', '-', preg_replace("/[^A-Za-z0-9 ]/", '', $e[0])));
 
+	$rij_onder_html = !empty($rij_onder) ? efiber_form_rij(...$rij_onder) : '';
+
 	return "<div class='rij $klasse $extra_klasse'>
 		<div class='veld veld-1'>
 			$veld1
@@ -748,6 +750,7 @@ function efiber_form_rij ($veld1, $veld2, $extra_klasse = '') {
 		<div class='veld veld-2'>
 			$veld2
 		</div>
+		$rij_onder_html
 	</div>";
 }
 

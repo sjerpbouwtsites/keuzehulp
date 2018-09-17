@@ -11,6 +11,9 @@
 	[data-kz-stap~='pakket-keuze'] .keuze-menu-lijst {
 		display: none;
 	}		
+	[data-kz-stap~='hoofd'][data-kz-stap~='nog-geen-niveau'] .keuze-menu-lijst { 
+		display: none;
+	}	
 	[data-kz-stap~='hoofd'] .keuze-menu-lijst { 
 		display: block;
 	}
@@ -159,6 +162,9 @@
 						.stappen-links_klaar svg circle {
 							display: none;
 						}
+			.stappen-links_vervangende-tekst span {
+				margin-left: 34px;
+			}
 
 .stappen-links-4, 
 .stappen-links-7, 

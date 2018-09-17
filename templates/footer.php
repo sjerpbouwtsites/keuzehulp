@@ -1,7 +1,7 @@
 </main>
 <footer class='app-footer' role='contentinfo'>
 	<div class='verpakking'>
-		<span>&copy;<?= date("Y"); ?> <?=get_field('bedrijfsnaam', 'option')?><br>Realisatie: <a target="_blank" href="https://indrukwekkend.nl">Indrukwekkend.nl</a></span>
+		<span>&copy;<?= date("Y"); ?> <?=get_field('bedrijfsnaam', 'option')?></span>
 	</div>
 </footer>
 <?php 

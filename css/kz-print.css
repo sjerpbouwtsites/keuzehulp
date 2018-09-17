@@ -24,6 +24,7 @@
 		.provider-pakketten-header .wp-post-image {
 			flex-basis: 200px;
 			align-self: center;
+			max-width: calc(100% - 100px);
 		}
 		.provider-pakketten-header-prijs {
 
@@ -32,11 +33,7 @@
 {
 			}
 
-.provider-pakketten-header-pakkettental {
-	font-weight: bold;
-	font-size: 20px;
-	align-self: center;
-}
+
 
 
 .provider-pakketten-lijst {
@@ -133,3 +130,30 @@
 		.provider-pakketten-vergelijking-sectie .blauwe-knop {
 			font-size: 12px;
 		}
+
+
+		/****************************/
+
+	
+
+	#print-provider-pakketten .provider-pakketten-header .wp-post-image {
+		max-width: 33%;
+	}
+
+	.provider-pakketten-header-pakkettental {
+		font-weight: 600;
+		font-size: 18px;
+		align-self: center;
+	}
+
+	.provider-pakketten-pakket-titel {
+		margin-top: 20px !important;
+	}
+
+	.provider-pakketten-pakket-links-onder_snelheid {
+		display: block;
+	}
+
+	#print-provider-pakketten .provider-pakketten-pakket-rechts {
+		margin-top: 20px;
+	}

@@ -1,7 +1,9 @@
 <header class='app-header'>
 	<div class='verpakking'>
 		<div class='header-links'>
-			<?=wp_get_attachment_image(get_field('logo', 'option'), 'full')?>
+			<a href='<?php echo site_url()?>/keuzehulp'>
+				<?=wp_get_attachment_image(get_field('logo', 'option'), 'full')?>
+			</a>
 		</div>
 
 		<div class='header-midden'>

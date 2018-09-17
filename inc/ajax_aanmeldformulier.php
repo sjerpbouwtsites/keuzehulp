@@ -457,17 +457,17 @@ function efiber_haal_aanmeldformulier() {
 				'value'		=> 0,
 				'label'		=> $svgs
 			)),
-			"<span class='veld-flex'><span>Nummerbehoud</span><span>".kz_maak_geld_op($p)."</span></span>"
-		);
-
-		$bel_inhoud .= efiber_form_rij (
-			efiber_input (array(
-				'naam'		=> 'huidige_nummer',
-				'type'		=> "text",
-				'func'		=> '',
-			)),
-			"<span class='veld-flex'><span>Huidige nummer</span></span>",
-			'onzichtbaar' // wordt zichtbaar als geklikt op nummerbehoud
+			"<span class='veld-flex'><span>Nummerbehoud</span><span>".kz_maak_geld_op($p)."</span></span>",
+			'heeft-sub-rij',
+			array(
+				efiber_input (array(
+					'naam'		=> 'huidige_nummer',
+					'type'		=> "text",
+					'func'		=> '',
+				)),
+				"<span class='veld-flex'><span>Huidige nummer</span></span>",
+				'sub-rij',				
+			)
 		);
 
 		if (kz_heeft_optie('extra-vast-nummer', $eigenschappen)) :
@@ -477,32 +477,30 @@ function efiber_haal_aanmeldformulier() {
 				efiber_input (array(
 					'naam'		=> 'extra_vast_nummer',
 					'type'		=> "checkbox",
-					'func'		=> 'form-toon-rij',
 					'value'		=> kz_optie_aantal('extra-vast-nummer', $eigenschappen),
 					'waarde'	=> $p,
 					'label'		=> $svgs
 				)),
-				"<span class='veld-flex'><span>Extra vast nummer</span><span>".kz_maak_geld_op($p)."</span></span>"
-			);
+				"<span class='veld-flex'><span>Extra vast nummer</span><span>".kz_maak_geld_op($p)."</span></span>",
+				'heeft-sub-rij',
+				array(
+					efiber_input (array(
+						'naam'		=> 'nummerbehoud_extra_vast_nummer',
+						'type'		=> "checkbox",
+						'label'		=> $svgs
+					)),
+					"<span class='veld-flex'><span>Nummerbehoud extra vast nummer</span></span>",
+					($koos_extra_nummer ? '' : 'heeft-sub-rij sub-rij'),
+					array(
+						efiber_input (array(
+							'naam'		=> 'huidige_extra_nummer',
+							'type'		=> "text",
+						)),
+						"<span class='veld-flex'><span>Huidige extra nummer</span></span>",
+						'sub-rij sub-sub-rij' // wordt zichtbaar als extra nummer gekozen en nummerbehoud					
+					)
+				)
 
-			$bel_inhoud .= efiber_form_rij (
-				efiber_input (array(
-					'naam'		=> 'nummerbehoud_extra_vast_nummer',
-					'type'		=> "checkbox",
-					'func'		=> 'form-toon-rij',
-					'label'		=> $svgs
-				)),
-				"<span class='veld-flex'><span>Nummerbehoud extra vast nummer</span></span>",
-				($koos_extra_nummer ? '' : 'onzichtbaar') // wordt zichtbaar als geklikt op nummerbehoud
-			);
-
-			$bel_inhoud .= efiber_form_rij (
-				efiber_input (array(
-					'naam'		=> 'huidige_extra_nummer',
-					'type'		=> "text",
-				)),
-				"<span class='veld-flex'><span>Huidige extra nummer</span></span>",
-				'onzichtbaar' // wordt zichtbaar als extra nummer gekozen en nummerbehoud
 			);
 
 		endif; // extra tel mogelijk

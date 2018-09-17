@@ -175,6 +175,10 @@ const efiberRouting = {
 				'schrijf': 'begin pad-keuze'
 			},								
 			{
+				'stappen': [3],
+				'schrijf': 'hoofd samenstellen nog-geen-niveau'
+			},						
+			{
 				'stappen': [3, 4, 5, 6, 7, 8, 9, 10, 11],
 				'schrijf': 'hoofd samenstellen'
 			},			

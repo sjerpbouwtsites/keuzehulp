@@ -464,23 +464,6 @@ function efiberFoxSports(knop) {
 	}
 }
 
-function efiberToonRij(knop) {
-	/*------------------------------------------------------
-	|
-	| 	Een knop kan de volgende rij tevoorschijn toveren met deze functie.
-	|
-	|-----------------------------------------------------*/
-
-
-	const rij = knop.parentNode.parentNode.nextSibling;
-
-	if (rij.className.indexOf('onzichtbaar') !== -1) {
-		rij.className = rij.className.replace('onzichtbaar', '').trim();
-	} else {
-		rij.className += ' onzichtbaar';
-	}
-}
-
 function efiberSchakelRadio(knop) {
 	/*------------------------------------------------------
 	|

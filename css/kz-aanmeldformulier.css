@@ -51,7 +51,6 @@
 	}
 
 
-
 .efiber-form-sectie .veld {
 	display: flex;
 	flex-direction: row;
@@ -140,6 +139,10 @@
 
 	.efiber-form-sectie.samenvatting {
 		position: sticky;
+		-moz-position: sticky;
+		-webkit-position: sticky;
+		-o-position: sticky;
+
 		top: 0;
 		z-index: 4;		
 	}
@@ -299,3 +302,19 @@ section.efiber-form-sectie:last-of-type {
 
 
 /*****************************************/
+
+.rij.heeft-sub-rij {
+	flex-wrap: wrap;
+}
+
+	.efiber-form-sectie .sub-rij {
+		display: none;
+		min-width: 100%;
+	}
+	.efiber-form-sectie .heeft-actieve-knop.heeft-sub-rij {
+		margin-bottom: 0
+	}
+		.efiber-form-sectie .heeft-actieve-knop > .sub-rij {
+			display: flex;
+			margin-top: 20px;
+		}

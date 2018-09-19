@@ -357,7 +357,14 @@ function efiber_vergelijking() {
 
 		echo json_encode(array(
 			'providers'		=> $providers,
-			//'console'		=> $providers
+			'console'		=> array(
+				'filter_params'		=> array(
+					'$pakketten' => $pakketten, 
+					'$toegestane_providers' => $toegestane_providers, 
+					'$postfix' => $postfix, 
+					'$status' => $status
+				)
+			)
 		));
 		die();
 

@@ -34,7 +34,47 @@ function aanmeldformulierHaalWaardeUitRij(rij) {
 			return '';
 }
 
+function kzMaakPrintMap(){
 
+	if (window['kzPrintMappen']) return window['kzPrintMappen'];
+
+	this.printMapInit = function (id){
+		return {
+			printEl: document.getElementById(id),
+			print: [],				
+		};
+	}
+
+	const printMappen = {
+		'begin-gemist': 					this.printMapInit('input_1_53'),
+		'dvb-c': 							this.printMapInit('input_1_76'),
+		'erotiek-pakket': 					this.printMapInit('input_1_60'),
+		'extra-optie': 						this.printMapInit('input_1_75'),
+		'extra-tv-ontvangers': 				this.printMapInit('input_1_62'),
+		'extra-vast-nummer': 				this.printMapInit('input_1_41'),
+		'foxsportscompleet': 				this.printMapInit('input_1_57'),
+		'foxsportseredivisie': 				this.printMapInit('input_1_55'),
+		'foxsportsinternationaal': 			this.printMapInit('input_1_56'),
+		'huidige-extra-nummer': 			this.printMapInit('input_1_43'),
+		'huidige-nummer': 					this.printMapInit('input_1_40'),
+		'inschrijving-telefoonboek': 		this.printMapInit('input_1_74'),
+		'nummerbehoud-extra-vast-nummer': 	this.printMapInit('input_1_42'),
+		'opnemen-replay-begin-gemist-samen': this.printMapInit('input_1_50'),
+		'plus': 							this.printMapInit('input_1_61'),
+		'ziggosporttotaal': 				this.printMapInit('input_1_58'),
+		app: 								this.printMapInit('input_1_54'),
+		belpakket: 							this.printMapInit('input_1_38'),
+		film1: 								this.printMapInit('input_1_59'),
+		installatie: 						this.printMapInit('input_1_44'),
+		nummerbehoud: 						this.printMapInit('input_1_39'),
+		opnemen: 							this.printMapInit('input_1_51'),
+		replay: 							this.printMapInit('input_1_52'),
+	};	
+
+	window['kzPrintMappen'] = printMappen;
+	return printMappen;
+
+}
 
 function efiberUpdateHidden() {
 	/*------------------------------------------------------
@@ -44,109 +84,89 @@ function efiberUpdateHidden() {
 	|
 	|-----------------------------------------------------*/
 
+	const printMappen = kzMaakPrintMap();
+
 	const aanmeldformulier = doc.getElementById('print-aanmeldformulier');
-	const knoppen = aanmeldformulier.getElementsByClassName('knop');
+	const inputs = aanmeldformulier.querySelectorAll('[data-efiber-waarde]');
 	const rijen = Array
-		.from(knoppen, knop => kzVindRij(knop))
-		.filter(uniek);
-		return;
+		.from(inputs, input => kzVindRij(input))
+		.filter(uniek)
+		.forEach(rij => {
 
-	printMappen = {
-		belpakketten: doc.getElementById('input_1_38'),
-		nummerbehoud: doc.getElementById('input_1_39'),
-		'huidige-nummer': doc.getElementById('input_1_40'),
-		'extra-vast-nummer': doc.getElementById('input_1_41'),
-		'nummerbehoud-extra-vast-nummer': doc.getElementById('input_1_42'),
-		'huidige-extra-nummer': doc.getElementById('input_1_43'),
-		installatie: doc.getElementById('input_1_44'), // let op 45 46 missen
-		'opnemen-replay-begin-gemist-samen': doc.getElementById('input_1_50'),
-		opnemen: doc.getElementById('input_1_51'),
-		replay: doc.getElementById('input_1_52'),
-		'begin-gemist': doc.getElementById('input_1_53'),
-		app: doc.getElementById('input_1_54'),
-		'fox-sports-eredivisie':	doc.getElementById('input_1_55'),
-		'fox-sports-internationaal': doc.getElementById('input_1_56'),
-		'fox-sports-compleet': doc.getElementById('input_1_57'),
-		'ziggo-sport-totaal': doc.getElementById('input_1_58'),
-		film1: doc.getElementById('input_1_59'),
-		'erotiek-pakket': doc.getElementById('input_1_60'),
-		'plus-pakket': doc.getElementById('input_1_61'),
-		'extra-tv-ontvangers': doc.getElementById('input_1_62'),
-		'inschrijving-telefoonboek': doc.getElementById('input_1_74'),
-		'extra-optie': doc.getElementById('input_1_75'),
-	},
+			const inputs = rij.querySelectorAll('[data-efiber-waarde]');
+			const isRadio = !!rij.getElementsByClassName('efiber-radio').length;
+			let printsleutel = null;
 
-	printArrayMap = {
-		foxsportseredivisie:	doc.getElementById('input_1_55'),
-		foxsportsinternationaal: doc.getElementById('input_1_56'),
-		foxsportscompleet: doc.getElementById('input_1_57'),
-		ziggosporttotaal: doc.getElementById('input_1_58'),
-		plus: doc.getElementById('input_1_61'),
-	},
+			if (isRadio) {
+				
+				let famIDPrefix = inputs[0].id.split('-')[0];
 
-	printInfo = {};
+				if (!printMappen[famIDPrefix]) {
+					console.warn(famIDPrefix + 'niet gevonden in printmap');
+				} else {
+					const dezeRadios = doc.querySelectorAll(`[id*="${famIDPrefix}"]`);
+					printMappen[famIDPrefix].print = Array.from(dezeRadios, input => {
 
-	rijen.forEach((rij) => {
+						if (input.classList.contains('tv-pakket')) {
 
-		let GFPrintPlek = false;
+							const w = (efiberPakKnopValue(input) ? "ja" : "nee");
+							let s = input.id.split('-');
+						
+							s.pop();
+							s.shift();
+							s = s.join(' ');
+							return `${s}: ${w}`;
 
-		// zoeken in printmapping naar passende printplek.
-		// Zoek uit de classname, maar haal 'rij' en 'heeft-knop' eruit.
-		// maak een diep kopie om wijziging via referentie te voorkomen
-		const klasseDiepKopieAr = (` ${rij.className}`).replace('rij', '').replace('heeft-knop', '').trim().split(' ');
+						} else {
+						
+							const w = efiberPakKnopValue(input);
 
-		// nu zoeken
-		klasseDiepKopieAr.forEach((kn) => {
-			if (printMappen[kn]) {
-				GFPrintPlek = printMappen[kn];
+							if (w) {
 
-				const waarde = aanmeldformulierHaalWaardeUitRij(rij);
-				if (waarde) {
-					if (!printInfo[kn]) {
-						printInfo[kn] = {
-							GFPrintPlek,
-							waarde,
-						};
-					} else {
-						printInfo[kn] = {
-							GFPrintPlek,
-							waarde: `${printInfo[kn].waarde}, ${waarde}`,
-						};
-					}
+								let s = input.id.split('-');
+
+								s.shift();
+								s.shift();
+								s = s.join(' ');
+								return s;
+
+							}
+
+						}
+						
+					});
 				}
+
+			} else {
+
+				printsleutel = inputs[0].id;
+
+				if (['huidige-nummer', 'huidige-extra-nummer'].includes(printsleutel)) {
+					printMappen[printsleutel].print = [inputs[0].value];
+				} else {
+					const w = efiberPakKnopValue(inputs[0]);
+
+					if(!printMappen[printsleutel]) {
+						console.warn(printsleutel + 'niet gevonden in printmap');
+					} else {
+						if (!w) {
+							printMappen[printsleutel].print = ['nee'];
+						} else if (w < 2) {
+							printMappen[printsleutel].print = ['ja'];
+						} else {
+							printMappen[printsleutel].print = [w];
+						}				
+					}
+
+				}
+
 			}
 		});
 
-		if (!GFPrintPlek) {
-			// dan dus als array.
-			const optieSoort = rij.getElementsByClassName('knop')[0].id.split('-')[0];
-			if (printArrayMap[optieSoort]) {
-				GFPrintPlek = printArrayMap[optieSoort];
-
-				const waarde = aanmeldformulierHaalWaardeUitRij(rij);
-				if (waarde) {
-					if (!printInfo[optieSoort]) {
-						printInfo[optieSoort] = {
-							GFPrintPlek,
-							waarde,
-						};
-					} else {
-						printInfo[optieSoort] = {
-							GFPrintPlek,
-							waarde: `${printInfo[optieSoort].waarde}, ${waarde}`,
-						};
-					}
-				}
-			} else {
-				console.log('nog steeds niet', rij.getElementsByClassName('knop')[0].id);
-			}
-		}
-	}); // iedere rij.
-
-	Object.entries(printInfo).forEach(([key, printRij]) => {
-		const pr = printRij;
-		pr.GFPrintPlek.value = printRij.waarde;
+	Object.entries(printMappen).forEach(([printMapID, printVerz]) => {
+		printVerz.printEl.value = printVerz.print.filter(w => w && w.length).join(' - ');
 	});
+
 }
 
 function haalPrintAanmeldformulier(knop) {
@@ -191,8 +211,6 @@ function haalPrintAanmeldformulier(knop) {
 			printPlek.getElementsByTagName('form')[0].setAttribute('action', `${location.origin}/keuzehulp`);
 
 			pakket = window[`efiber-pakket-${r.id}`];
-
-			console.table(pakket.eigenschappen.teksten);
 
 			// het zijn de click events die de verwerking van de data aanjagen..
 			printPlek.addEventListener('change', (e) => {

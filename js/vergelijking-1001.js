@@ -24,7 +24,10 @@ const kzRenderVergelijking = {
 		this.keuzehulp = keuzehulp;
 		doc.getElementById('print-vergelijking').innerHTML = '';
 
-		if (r.providers) {
+		console.log('proivs', r.providers, !!r.providers);
+
+		if (r.providers && r.providers.length) {
+			
 			const printVergelijking = doc.getElementById('print-vergelijking');
 			let printPakketten = '';
 
@@ -76,6 +79,7 @@ const kzRenderVergelijking = {
 			} // for provider DIT IS DE HELE LOOP OM DE PROVIDERS HEEN
 
 			printVergelijking.innerHTML = printPakketten;
+
 		} else {
 
 			// door naar pakketoverzicht voor alternatieven

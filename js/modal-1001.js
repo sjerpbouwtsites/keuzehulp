@@ -12,7 +12,7 @@ function efiberTekst(snede, invoeging) {
 		return kzModalTeksten[snede];
 	}
 
-	console.log('modal '+snede);
+	//console.log('modal '+snede);
 
 	if (typeof invoeging === 'string') {
 		return kzModalTeksten[snede].replace('%s', invoeging);

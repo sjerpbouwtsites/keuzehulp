@@ -217,6 +217,7 @@ class PageTemplater {
         );
         $this->templates = array(
             'templates/keuzehulp.php' => 'Efiber Keuzehulp',
+            'templates/bedankt.php' => 'bedankt',
         );
     }
 

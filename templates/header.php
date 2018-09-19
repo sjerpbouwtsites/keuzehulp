@@ -1,31 +1,37 @@
 <header class='app-header'>
 	<div class='verpakking'>
-		<div class='header-links'>
-			<a href='<?php echo site_url()?>/keuzehulp'>
-				<?=wp_get_attachment_image(get_field('logo', 'option'), 'full')?>
-			</a>
-		</div>
-
-		<div class='header-midden'>
-			<ol class='stappen-visualisatie'>
-				<li class='stappen-visualisatie_stap'>
-					<span class='stappen-visualisatie_afb'></span>
-					<span class='stappen-visualisatie_tekst'>Samenstellen</span>
-				</li>
-				<li class='stappen-visualisatie_stap'>
-					<span class='stappen-visualisatie_afb'></span>
-					<span class='stappen-visualisatie_tekst'>Vergelijken</span>
-				</li>
-				<li class='stappen-visualisatie_stap'>
-					<span class='stappen-visualisatie_afb'></span>
-					<span class='stappen-visualisatie_tekst'>Bestellen</span>
-				</li>
-			</ol>
+		<div class='header-links-midden'>
+			<div class='header-links'>
+				<a href='<?php echo site_url()?>/keuzehulp'>
+					<?=wp_get_attachment_image(get_field('logo', 'option'), 'full')?>
+				</a>
+			</div>
+			<div class='header-midden'>
+				<ol class='stappen-visualisatie'>
+					<li class='stappen-visualisatie_stap'>
+						<span class='stappen-visualisatie_afb'></span>
+						<span class='stappen-visualisatie_tekst vanaf-900-px'>Samenstellen</span>
+					</li>
+					<li class='stappen-visualisatie_stap'>
+						<span class='stappen-visualisatie_afb'></span>
+						<span class='stappen-visualisatie_tekst vanaf-900-px'>Vergelijken</span>
+					</li>
+					<li class='stappen-visualisatie_stap'>
+						<span class='stappen-visualisatie_afb'></span>
+						<span class='stappen-visualisatie_tekst vanaf-900-px'>Bestellen</span>
+					</li>
+				</ol>
+			</div>			
 		</div>
 
 		<div class='header-rechts'>
+			<span class='vanaf-600-px voor-telefoon'>Heb je een vraag? Neem contact op of bel</span>
 			<a href='<?=get_field('contactpagina', 'option')?>' target="_blank">
-				<img src='/wp-content/plugins/efiber/iconen-nieuw/svg/bellen.svg' alt='neem contact op' width='25' height='25' />
+				<span>
+					<?php require plugin_dir_path(__FILE__)."../iconen-nieuw/svg/bellen.svg"; ?>
+				</span>
+				<span class='vanaf-600-px telefoonnummer'><?=get_field('telefoonnummer', 'option')?>
+				</span>
 			</a>
 		</div>
 	</div>

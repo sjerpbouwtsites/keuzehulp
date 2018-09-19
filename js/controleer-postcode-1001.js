@@ -20,7 +20,7 @@ function postcodeAjaxCB(r) {
 			// "Er is al een aanvraag gedaan vanaf uw adres bij %provider%.
 			// Bezoekt u de website op %providerURL% of mailt u naar %providerMail%"
 
-			efiberModal(efiberTekst('aanvraagAlGedaan', [r.aanvraag_info.naam,	r.aanvraag_info.URL, r.aanvraag_info.naam, r.aanvraag_info.email]), 60000);
+			efiberModal(efiberTekst('aanvraag_gedaan', [r.aanvraag_info.naam,	r.aanvraag_info.URL, r.aanvraag_info.naam, r.aanvraag_info.email]), 60000);
 			efiberRouting.ga(1); // terug naar de voorpagina.
 			return;
 		}
@@ -37,13 +37,13 @@ function postcodeAjaxCB(r) {
 
 			if (r.provider_beschikbaar) {
 				efiberModal(
-					efiberTekst('succesAnnulering'),
+					efiberTekst('succes_annulering'),
 					2000,
 				);
 				efiberRouting.ga(2);
 			} else {
 				efiberModal(
-					efiberTekst('leadAnnulering'), 
+					efiberTekst('lead_annulering'), 
 					5000
 				);
 				efiberRouting.ga(51);
@@ -54,7 +54,7 @@ function postcodeAjaxCB(r) {
 
 			if (r.provider_beschikbaar) {
 				efiberModal(
-					efiberTekst('succesCoax'),
+					efiberTekst('succes_coax'),
 					2000,
 				);
 				efiberRouting.ga(2);
@@ -67,11 +67,11 @@ function postcodeAjaxCB(r) {
 			if (r.provider_beschikbaar) {
 
 				const tekstSleutel = {
-					status1: 'succesVraagbundeling',
-					status2: 'succesSchouwen',
-					status3: 'succesGraafwerkzaamheden',
-					status4: 'succesHuisaansluitingen',
-					status5: 'succesOpgeleverd',
+					status1: 'succes_vraag_bundeling',
+					status2: 'succes_schouwen',
+					status3: 'succes_graafwerkzaamheden',
+					status4: 'succes_huisaansluitingen',
+					status5: 'succes_opgeleverd',
 				};
 
 				efiberModal(
@@ -87,9 +87,9 @@ function postcodeAjaxCB(r) {
 		}
 
 	} else {
-		efiberModal(teksten.nietInUwGebied, 5000);
+		efiberModal(efiberTekst('niet_in_uw_gebied'), 5000);
 		efiberRouting.ga(51);
-		EfiberAjaxKleineFormulieren('efiber_haal_lead_formulier', 'print-lead-formulier', {});
+		efiberAjaxKleineFormulieren('efiber_haal_lead_formulier', 'print-lead-formulier', {});
 		// efiberHaalLeadFormulier();
 	}
 }
@@ -98,7 +98,7 @@ function postcodeAjaxCB(r) {
 function logFouteSituatiePostcodeCheck(r){
 	
 	efiberModal(
-		efiberTekst('postcodecheckFout'), 
+		efiberTekst('postcodecheck_fout'), 
 		5000
 	);
 
@@ -182,7 +182,7 @@ function controleerPostcode() {
 			huisnummer = doc.getElementById('huisnummer').value.replace(' ', '').toLowerCase();
 
 		if (!huisnummer.length) {
-			efiberModal(teksten.vulHuisnummerIn, 2500);
+			efiberModal(efiberTekst('vul_huis_nummer_in'), 2500);
 			return;
 		}
 
@@ -204,7 +204,7 @@ function controleerPostcode() {
 
 		// verkeerd geformatteerde postcode
 		} else {
-			efiberModal(teksten.postcodeVerkeerdGeformatteerd, 2500);
+			efiberModal(efiberTekst('postcode_verkeerd_geformatteerd'), 2500);
 		}
 	});
 }

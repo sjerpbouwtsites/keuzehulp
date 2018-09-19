@@ -15,17 +15,37 @@
 	border-radius: 5px;
 	padding: 20px;
 	margin-bottom: 40px;
+	box-sizing: border-box;
 }
+	.provider-pakketten.actief {
+		min-width: calc(100% - 40px);
+	}
 	.provider-pakketten-header {
 		display: flex;
 		flex-direction: row;
-		justify-content: space-between;
+		margin-left: -20px;
+		margin-right: 20px;
+		margin-top: -20px;
+		padding: 10px 20px 10px 20px;
+		border-bottom: 1px solid #85b942;
+		width: 100%;
+		position: relative;
+		height: 40px;
 	}
-		.provider-pakketten-header .wp-post-image {
-			flex-basis: 200px;
-			align-self: center;
-			max-width: calc(100% - 100px);
-		}
+		/* legacy */
+		/*.provider-pakketten-header .provider-logo-contain {
+			max-width: calc(100% - 190px);
+			height: 100%;
+		}*/
+			.provider-pakketten-header .provider-logo-contain img {
+				object-fit: contain;
+				width: 100%;
+				height: 100%;
+				object-position: center left;
+				max-width: calc(100% - 80px);
+			}
+
+
 		.provider-pakketten-header-prijs {
 
 		}
@@ -41,14 +61,24 @@
 	padding: 0;
 	margin: 0;
 }
+
+	.provider-pakketten-pakket ~ .provider-pakketten-pakket {
+		margin-top: 20px;
+		border-top: 1px solid rgba(0, 0, 0, 0.2);
+	}
+
+
 	.provider-pakketten-pakket > header {
 		padding-bottom: 20px;
-		border-bottom: 1px solid #85b942;
 	}
+		.provider-pakketten.actief .provider-pakketten-pakket > header {
+			border-bottom: 1px solid #85b942;
+		}
+
 		.provider-pakketten-pakket header .flex {
 			display: flex;
-			color: #797979;
 			margin: 20px 0;
+			opacity: .8;
 		}
 			.provider-pakketten-pakket header .flex > div {
 				flex-basis: 50%;
@@ -74,10 +104,23 @@
 					width: 30px;
 					height: 30px;
 					margin: -5px -5px -5px 5px;				
+					transition: 0.2s ease-in-out;
 				}
+					.actief .provider-pakketten-pakket header .blauwe-knop svg {
+						transform: rotate(1turn);
+					}
+
 					.provider-pakketten-pakket header .blauwe-knop path{
 						fill: white;
 					}
+
+	.provider-pakketten-pakket > footer {
+		display: none;
+	}
+
+		.actief .provider-pakketten-pakket > footer {
+			display: block;
+		}
 
 .provider-pakketten-vergelijking-hoofd {
 	display: none;
@@ -136,14 +179,12 @@
 
 	
 
-	#print-provider-pakketten .provider-pakketten-header .wp-post-image {
-		max-width: 33%;
-	}
-
 	.provider-pakketten-header-pakkettental {
 		font-weight: 600;
 		font-size: 18px;
 		align-self: center;
+		margin-left: 10px;
+		display: none;
 	}
 
 	.provider-pakketten-pakket-titel {
@@ -154,6 +195,145 @@
 		display: block;
 	}
 
-	#print-provider-pakketten .provider-pakketten-pakket-rechts {
-		margin-top: 20px;
+	#print-provider-pakketten .provider-pakketten-pakket-links {
+		display: inline-block;
+		width: calc(100% - 55px);
+		vertical-align: bottom;
 	}
+
+	#print-provider-pakketten .provider-pakketten-pakket-rechts {
+		display: inline-block;
+		vertical-align: bottom;
+	}
+
+		#print-provider-pakketten .provider-pakketten-pakket-rechts .blauwe-knop{
+			display: inline-block;
+			width: auto;
+			padding: 15px 20px;
+			margin-top: 20px;	
+		}
+			.bestel-svg {
+				width: 50px;
+				height: 50px;
+				transform: rotate(.5turn);
+				margin: -20px;			
+			}
+
+
+/*************************************************************/
+
+	/* na derde */
+
+	@media (min-width: 600px) {
+		.provider-pakketten-break h2{
+			color: rgb(21, 154, 60);
+			padding: 20px;
+			font-size: 14px;
+		}
+
+
+		.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten:not(.actief) {
+			display: flex;
+		}
+
+			.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten:not(.actief) .provider-pakketten-header {
+				width: 120px;
+				border-bottom: 0;
+				padding: 0;
+				padding-left: 20px;
+				padding-top: 20px;
+				flex-direction: column;			
+			}
+				.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten:not(.actief)  .provider-pakketten-header .provider-logo-contain {
+					max-width: initial;
+					height: calc(100% + 20px);
+				}		
+					.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten .provider-logo-contain img{
+						max-width: 100%;
+					}
+					.vergelijking-vanaf-4e-prijs {
+						display: block;
+						color: #159a3c;
+						font-weight: bold;
+						margin-top: 10px;
+					}
+
+			.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten:not(.actief) .provider-pakketten-lijst {
+				flex-basis: 100%;
+			}
+				.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten:not(.actief) .provider-pakketten-pakket {
+	/*				display: flex;
+					flex-direction: row;	*/			
+				}
+					.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten:not(.actief) .provider-pakketten-pakket header {
+						width: 100%;
+						padding-bottom: 0;
+						display: flex;					
+						justify-content: space-between;
+						align-items: flex-start;
+					}
+						.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten:not(.actief) .provider-pakketten-pakket header .provider-pakketten-pakket-titel {
+							margin-top: 0 !important;
+							margin-right: 20px;						
+						}
+
+							.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten:not(.actief) .provider-pakketten-pakket header .flex {
+								margin: 0;
+								margin-right: 20px;
+								display: flex;
+							}
+								.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten:not(.actief) .provider-pakketten-pakket header .flex .provider-pakketten-pakket-rechts {
+									margin-left: 5px;
+									margin-top: 0;
+								}
+
+					.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten:not(.actief) .provider-pakketten-pakket footer {
+						display: none;
+					}
+	}
+
+
+
+/*******************************************************/
+
+@media (min-width: 1200px) {
+
+	.print-vergelijking,
+	.print-provider-pakketten {
+		margin: 0 -10px;
+	}	
+
+	.print-provider-pakketten, .print-vergelijking {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		margin-top: 50px;
+		/*justify-content: space-between;*/
+	}
+
+		.print-provider-pakketten .provider-pakketten, 
+		.print-vergelijking .provider-pakketten{
+			flex-basis: 25%;
+			margin-right: 20px;
+			margin-left: 20px;
+			margin-bottom: 40px;
+			flex-grow: 1;
+			max-width: calc(33% - 38px);
+		}
+
+		.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten{
+			min-width: calc(100% - 40px);	
+		}
+
+		.provider-pakketten-pakket header .flex {
+			display: block;
+		}
+			.provider-pakketten-pakket header .provider-pakketten-pakket-rechts {
+				margin-top: 10px;
+			}
+
+	.provider-pakketten-break {
+		padding: 0 20px;
+	}
+
+}

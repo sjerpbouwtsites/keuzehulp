@@ -167,32 +167,40 @@ const efiberRouting = {
 		const s = Number(stap),
 		r = [
 			{
-				'stappen': [0, 1],
-				'schrijf': 'begin postcode-check'
+				stappen: [0, 1],
+				schrijf: 'begin postcode-check'
 			},
 			{
-				'stappen': [2],
-				'schrijf': 'begin pad-keuze'
+				stappen: [2],
+				schrijf: 'begin pad-keuze'
 			},								
 			{
-				'stappen': [3],
-				'schrijf': 'hoofd samenstellen nog-geen-niveau'
+				stappen: [3],
+				schrijf: 'hoofd samenstellen nog-geen-niveau'
 			},						
 			{
-				'stappen': [3, 4, 5, 6, 7, 8, 9, 10, 11],
-				'schrijf': 'hoofd samenstellen'
+				stappen: [3, 4, 5, 6, 7, 8, 9, 10, 11],
+				schrijf: 'hoofd samenstellen'
 			},			
 			{
-				'stappen': [20, 21],
-				'schrijf': 'pakkettenkeuze'
-			},						
+				stappen: [20],
+				schrijf: 'pakkettenkeuze pad-keuze'
+			},	
 			{
-				'stappen': [30, 31, 50, 51],
-				'schrijf': 'hoofd vergelijken'
+				stappen: [21],
+				schrijf: 'pakkettenkeuze vergelijken'
+			},			
+			{
+				stappen: [30, 31],
+				schrijf: 'hoofd vergelijken'
 			},
 			{
-				'stappen': [100],
-				'schrijf': 'hoofd bestellen'
+				stappen: [50, 51],
+				schrijf: 'hoofd formulier'
+			},
+			{
+				stappen: [100],
+				schrijf: 'hoofd bestellen'
 			},			
 		].find(conf => conf.stappen.indexOf(s) !== -1);
 

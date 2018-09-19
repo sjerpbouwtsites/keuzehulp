@@ -35,6 +35,38 @@ function kz_optie_aantal ($optie, $e) {
 	);
 }
 
+function kz_maak_tooltip ($arg = array()){
+
+	if (!array_key_exists('e', $arg)) return '';
+	if (!array_key_exists('sleutel', $arg)) return '';
+
+	$t = $arg['e']['teksten'];
+	if (array_key_exists($arg['sleutel'], $t)) {
+		if ($t[($arg['sleutel'])] !== '') {
+		
+			$ttt = array_key_exists('titel', $arg)
+				? $arg['titel'] !== ''
+					? $arg['titel']
+					: ''
+				: '';
+
+			$s = $arg['sleutel'];
+
+			$tekst = strip_tags($t[$s]);
+
+
+			return 
+			"<a href='#' class='knop kz-tooltip' data-tooltip-titel='$ttt' data-tooltip-tekst='$tekst' data-efiber-func='tooltip' title='Meer informatie'><svg class='svg-info' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><style>.f7f0e9f1-f859-4dfe-95fb-3d086fc32618{fill:#159a3c;}</style></defs><circle class='f7f0e9f1-f859-4dfe-95fb-3d086fc32618' cx='49.91' cy='71.51' r='4.36'></circle><path class='f7f0e9f1-f859-4dfe-95fb-3d086fc32618' d='M49.91,5.52A44.64,44.64,0,1,0,94.54,50.15,44.61,44.61,0,0,0,49.91,5.52Zm0,82.29A37.66,37.66,0,1,1,87.57,50.15,37.63,37.63,0,0,1,49.91,87.81Z'></path><path class='f7f0e9f1-f859-4dfe-95fb-3d086fc32618' d='M49.91,27.92A14,14,0,0,0,36,41.87a3.49,3.49,0,1,0,7,0,7,7,0,1,1,7,7,3.49,3.49,0,0,0-3.49,3.49v8.72a3.49,3.49,0,0,0,7,0V55.38a14,14,0,0,0-3.49-27.46Z'></path></svg></a>";			
+
+		} else {
+			return '';
+		}
+	} else {
+		return '';
+	}
+
+}
+
 function kz_tv_pakketten($tv_pakket, $e, $s) {
 
 	// geeft array terug van alle tv pakketten binnen die bundel, zoals alle plus pakket opties.
@@ -168,9 +200,8 @@ function efiber_haal_aanmeldformulier() {
 		(
 			(array_key_exists('usps', $teksten)	and $teksten['usps'] !== '') ?
 				efiber_form_rij (
-					'Bijzonderheden',
-					$teksten['usps']
-
+					'Bijzonderheden: '.$teksten['usps'],
+					null
 				)
 			:
 				""
@@ -220,7 +251,14 @@ function efiber_haal_aanmeldformulier() {
 					'waarde'	=> $p
 				)
 			);
-			$veld2 ='<span class="veld-flex"><span>Extra TV ontvangers</span><span>'.kz_maak_geld_op($p). "</span></span>"; 
+
+			$tt = kz_maak_tooltip(array(
+				'e'			=> $eigenschappen,
+				'titel'		=> "Extra TV Ontvangers",
+				'sleutel'	=> 'extra-tv-ontvangers'
+			));
+
+			$veld2 ='<span class="veld-flex"><span>Extra TV ontvangers</span><span>'.kz_maak_geld_op($p). "</span>$tt</span>"; 
 
 			$tv_inhoud .= efiber_form_rij ($veld1, $veld2, $koos_extra_tv ? "heeft-actieve-knop" : '');
 
@@ -234,24 +272,45 @@ function efiber_haal_aanmeldformulier() {
 
 		if ($eigenschappen['tv_type'] === "ITV") :
 
-			if ( kz_heeft_optie('opnemen_replay_begin_gemist_samen', $eigenschappen) ) :
+			if ( kz_heeft_optie('opnemen-replay-begin-gemist-samen', $eigenschappen) ) :
 
-				$p = kz_optie_prijs('opnemen_replay_begin_gemist_samen', $eigenschappen);
-				$tv_inhoud .= efiber_form_rij (
-					efiber_input (array(
-						'naam'		=> 'opnemen_replay_begin_gemist_samen',
-						'type'		=> "checkbox",
-						'value'		=> kz_optie_aantal('opnemen_replay_begin_gemist_samen', $eigenschappen),
-						'waarde'	=> $p,
-						'label'		=> $svgs
-					)),
-					'<span class="veld-flex"><span>Opnemen, terugkijken, begin gemist</span><span>'.kz_maak_geld_op(kz_optie_prijs('opnemen_replay_begin_gemist_samen', $eigenschappen)).'</span></span>'
-				);
+				$tt = kz_maak_tooltip(array(
+					'e'			=> $eigenschappen,
+					'sleutel'	=> "opnemen_replay_begin_gemist_samen_tekst",
+					'titel'		=> "Nonlineaire TV"
+				));
+
+				if (kz_optie_kost_geld('opnemen-replay-begin-gemist-samen', $eigenschappen)) {
+
+					$p = kz_optie_prijs('opnemen-replay-begin-gemist-samen', $eigenschappen);
+					$tv_inhoud .= efiber_form_rij (
+						efiber_input (array(
+							'naam'		=> 'opnemen-replay-begin-gemist-samen',
+							'type'		=> "checkbox",
+							'value'		=> kz_optie_aantal('opnemen-replay-begin-gemist-samen', $eigenschappen),
+							'waarde'	=> $p,
+							'label'		=> $svgs
+						)),
+						'<span class="veld-flex"><span>Opnemen, terugkijken, begin gemist</span><span>'.kz_maak_geld_op(kz_optie_prijs('opnemen-replay-begin-gemist-samen', $eigenschappen)).'</span>'.$tt.'</span>'
+					);
+				} else {
+						$tv_inhoud .= efiber_form_rij (
+							'<span class="ovaal">Ja</span>',
+							"<span class='veld-flex'><span>Opnemen, terugkijken, begin gemist</span>$tt</span>",
+							'heeft-actieve-knop'
+						);					
+				}
 
 			else : // dus on demand niet samen
 
 				if (kz_heeft_optie('opnemen', $eigenschappen)) :
-					
+
+					$tt = kz_maak_tooltip(array(
+						'e'			=> $eigenschappen,
+						'sleutel'	=> "opnemen_tekst",
+						'titel'		=> "Opnemen"
+					));
+
 					if (kz_optie_kost_geld('opnemen', $eigenschappen)) {
 						$tv_inhoud .= efiber_form_rij (
 							efiber_input (array(
@@ -261,13 +320,13 @@ function efiber_haal_aanmeldformulier() {
 								'value'		=> kz_optie_aantal('opnemen', $eigenschappen),
 								'label'		=> $svgs
 							)),
-							'<span class="veld-flex"><span>Opnemen</span><span>'.kz_maak_geld_op($p).'</span></span>'
+							'<span class="veld-flex"><span>Opnemen</span><span>'.kz_maak_geld_op($p).'</span>'.$tt.'</span>'
 
 						);
 					} else { // gratis optie, waarde is 0
 						$tv_inhoud .= efiber_form_rij (
 							'<span class="ovaal">Ja</span>',
-							'<span class="veld-flex"><span>Opnemen</span></span>',
+							'<span class="veld-flex"><span>Opnemen</span>'.$tt.'</span>',
 							'heeft-actieve-knop'
 						);
 					}
@@ -277,6 +336,12 @@ function efiber_haal_aanmeldformulier() {
 				if (kz_heeft_optie('replay', $eigenschappen)) :
 
 					$p = kz_optie_prijs('replay', $eigenschappen);
+
+					$tt = kz_maak_tooltip(array(
+						'e'			=> $eigenschappen,
+						'sleutel'	=> "replay_tekst",
+						'titel'		=> "Terugkijken"
+					));					
 
 					if (kz_optie_kost_geld('replay', $eigenschappen)) {
 						
@@ -288,37 +353,43 @@ function efiber_haal_aanmeldformulier() {
 								'value'		=> kz_optie_aantal('replay', $eigenschappen),
 								'label'		=> $svgs
 							)),
-							'<span class="veld-flex"><span>Terugkijken</span><span>'.kz_maak_geld_op($p).'</span></span>'
+							'<span class="veld-flex"><span>Terugkijken</span><span>'.kz_maak_geld_op($p).'</span>'.$tt.'</span>'
 						);
 					} else { // gratis optie, waarde is 0
 						$tv_inhoud .= efiber_form_rij (
 							'<span class="ovaal">Ja</span>',
-							'<span class="veld-flex"><span>Terugkijken</span></span>',
+							'<span class="veld-flex"><span>Terugkijken</span>'.$tt.'</span>',
 							'heeft-actieve-knop'
 						);
 					}
 
 				endif; // replay beschikbaar
 
-				if (kz_heeft_optie('begin_gemist', $eigenschappen)) :
+				if (kz_heeft_optie('begin-gemist', $eigenschappen)) :
 
-					if (kz_optie_kost_geld('begin_gemist', $eigenschappen)) {
-						$p = kz_optie_prijs('begin_gemist', $eigenschappen);
+					$tt = kz_maak_tooltip(array(
+						'e'			=> $eigenschappen,
+						'sleutel'	=> "replay_tekst",
+						'titel'		=> "Terugkijken"
+					));						
+
+					if (kz_optie_kost_geld('begin-gemist', $eigenschappen)) {
+						$p = kz_optie_prijs('begin-gemist', $eigenschappen);
 						$tv_inhoud .= efiber_form_rij (
 							efiber_input (array(
 								'naam'		=> 'begin gemist',
 								'type'		=> "checkbox",
 								'waarde'	=> $p,
-								'value'		=> kz_optie_aantal('begin_gemist', $eigenschappen),
+								'value'		=> kz_optie_aantal('begin-gemist', $eigenschappen),
 								'label'		=> $svgs
 							)),
-							'<span class="veld-flex"><span>Begin gemist</span><span>'.kz_maak_geld_op($p).'</span></span>'
+							'<span class="veld-flex"><span>Begin gemist</span><span>'.kz_maak_geld_op($p).'</span>'.$tt.'</span>'
 
 						);
 					} else { // gratis optie, waarde is 0
 						$tv_inhoud .= efiber_form_rij (
 							'<span class="ovaal">Ja</span>',
-							'<span class="veld-flex"><span>Begin gemist</span></span>',
+							'<span class="veld-flex"><span>Begin gemist</span>'.$tt.'</span>',
 							'heeft-actieve-knop'
 						);
 					}
@@ -368,25 +439,33 @@ function efiber_haal_aanmeldformulier() {
 			if (count($deze_pakketten) > 0) :
 				foreach ($deze_pakketten as $dit_pakket) :
 
-					if (kz_optie_kost_geld($dit_pakket['naam_volledig'], $eigenschappen)) {
+					$volledige_naam = $dit_pakket['naam_volledig'];
+
+					$tt = kz_maak_tooltip(array(
+						'e'			=> $eigenschappen,
+						'sleutel'	=> $volledige_naam,
+						'titel'		=> ucfirst($dit_pakket['naam'])
+					));
+
+					if (kz_optie_kost_geld($volledige_naam, $eigenschappen)) {
 						$p = $dit_pakket['prijs'];
 
 						$tv_inhoud .= efiber_form_rij (
 							efiber_input (array(
-								'naam'		=> $dit_pakket['naam_volledig'],
+								'naam'		=> $volledige_naam,
 								'type'		=> "radio",
 								'value'		=> $dit_pakket['aantal'],
 								'waarde'	=> $p,
 								'label'		=> $svgs,
 								'eclass'	=> 'tv-pakket'
 							)),
-							"<span class='veld-flex'><span>".ucfirst($dit_pakket['naam'])."</span><span>".kz_maak_geld_op($p)."</span></span>"
+							"<span class='veld-flex'><span>".ucfirst($dit_pakket['naam'])."</span><span>".kz_maak_geld_op($p)."</span>$tt</span>"
 						);
 
 					} else { // gratis optie
 						$tv_inhoud .= efiber_form_rij (
 							'<span class="ovaal">Ja</span>',
-							"<span class='veld-flex'><span>".$dit_pakket['naam']."</span></span>",
+							"<span class='veld-flex'><span>".$dit_pakket['naam']."</span>$tt</span>",
 							'heeft-actieve-knop'
 						);
 					}
@@ -420,6 +499,13 @@ function efiber_haal_aanmeldformulier() {
 			foreach ($eigenschappen['telefonie_bundels'] as $tb_a) {
 
 				foreach ($tb_a as $tb) {
+
+					$tt = kz_maak_tooltip(array(
+						'e'			=> $eigenschappen,
+						'sleutel'	=> $tb['naam'],
+						'titel'		=> $tb['naam']
+					));
+
 					$n = slugify($tb['naam']);
 					$p = kz_optie_prijs($n, $eigenschappen);
 					$label = 
@@ -433,7 +519,7 @@ function efiber_haal_aanmeldformulier() {
 						'value'		=> kz_optie_aantal($n, $eigenschappen),
 						'waarde'	=> $p,
 						'eclass'	=> 'belpakket',
-						'label'		=> $label
+						'label'		=> $label . $tt
 					), $p);
 				}
 
@@ -457,7 +543,7 @@ function efiber_haal_aanmeldformulier() {
 				'value'		=> 0,
 				'label'		=> $svgs
 			)),
-			"<span class='veld-flex'><span>Nummerbehoud</span><span>".kz_maak_geld_op($p)."</span></span>",
+			"<span class='veld-flex'><span>Nummerbehoud</span><span></span></span>",
 			'heeft-sub-rij',
 			array(
 				efiber_input (array(
@@ -582,21 +668,51 @@ function efiber_haal_aanmeldformulier() {
 
 
 	// is bijvoorbeeld Netrebels TV optie
-	if (kz_heeft_optie('extra_optie', $eigenschappen)) {
+	if (kz_heeft_optie('extra-optie', $eigenschappen)) {
 
-		$p = kz_optie_prijs('extra_optie', $eigenschappen);
+		$eon = $eigenschappen['teksten']['extra_optie_naam'];
+
+		$tt = kz_maak_tooltip(array(
+			'e'			=> $eigenschappen,
+			'sleutel'	=> 'extra_optie_tekst',
+			'titel'		=> $eon
+		));
+
+		$p = kz_optie_prijs('extra-optie', $eigenschappen);
 		$meta_inhoud .= efiber_form_rij (
 			efiber_input (array(
 				'naam'		=> 'extra-optie',
 				'type'		=> "checkbox",
 				'label'		=> $svgs,
 				'waarde'	=> $p,
-				'value'		=> kz_optie_aantal('extra_optie', $eigenschappen),
+				'value'		=> kz_optie_aantal('extra-optie', $eigenschappen),
 			)),
-			"<span class='veld-flex'><span>".$eigenschappen['teksten']['extra_optie_naam']."</span><span>".kz_maak_geld_op($p)."</span></span>"
+			"<span class='veld-flex'><span>$eon</span><span>".kz_maak_geld_op($p)."</span>$tt</span>"
 		);
 
 	}
+
+	if (kz_heeft_optie('dvb-c', $eigenschappen)) {
+
+		$tt = kz_maak_tooltip(array(
+			'e'			=> $eigenschappen,
+			'sleutel'	=> 'dvb-c',
+			'titel'		=> 'DVB-C'
+		));
+
+		$p = kz_optie_prijs('dvb-c', $eigenschappen);
+		$meta_inhoud .= efiber_form_rij (
+			efiber_input (array(
+				'naam'		=> 'dvb-c',
+				'type'		=> "checkbox",
+				'label'		=> $svgs,
+				'waarde'	=> $p,
+				'value'		=> kz_optie_aantal('dvb-c', $eigenschappen),
+			)),
+			"<span class='veld-flex'><span>DVB-C</span><span>".kz_maak_geld_op($p)."</span>$tt</span>"
+		);
+
+	}	
 
 
 	$wrt = $eigenschappen['provider_meta']['incl_wifi_router'] === "true" 

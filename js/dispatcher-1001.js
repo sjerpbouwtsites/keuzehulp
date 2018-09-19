@@ -25,6 +25,7 @@ function knoppenDispatcher() {
 		var t = e.target;
 		var knop = efiberVindKnop(t, 'knop');
 
+
 		if (knop) {
 			e.preventDefault();
 
@@ -218,7 +219,7 @@ var knoppenFuncs = {
 
 	},
 	zakelijkFormulier: function(){
-		efiberHaalZakelijkFormulier();
+		efiberHaalZakelijkFormulieren();
 	},
 
 	aanmeldingSchakel: function(knop){
@@ -272,9 +273,6 @@ var knoppenFuncs = {
 		efiberVerwijderModal();
 
 	},
-	verstopKeuzeNiveaus: function(){
-		doc.getElementById('sticky-keuzes').style.display = "none";
-	},
 	toonMeerPakket: function(){
 
 		var secties = doc.getElementById('print-vergelijking').getElementsByClassName('efiber-form-sectie');
@@ -300,14 +298,25 @@ var knoppenFuncs = {
 		kzZendersModal(knop);
 	},
 	schakel: function (knop) {
+
 		if (!knop.hasAttribute('data-doel')) {
 			console.error(new Error(`schakel ${knop.id} (${knop.className}) heeft geen doel`));
 		}
-		const doel = document.querySelector(knop.getAttribute(`data-doel`));
+		const doel = document.querySelectorAll(knop.getAttribute(`data-doel`));
 		if (!doel) {
 			console.error(new Error(`doel van ${knop.id} (${knop.className}) niet gevonden.`));
 		}
-		doel.classList.toggle('actief');
+		Array.from(doel).forEach(doelEl => doelEl.classList.toggle('actief'));
+
+		if (knop.hasAttribute('data-scroll')) {
+		    $([document.documentElement, document.body]).animate({
+		        scrollTop: $(knop.getAttribute(`data-scroll`)).offset().top - 20
+		    }, 400);
+		}
+
+
+
+
 	},
 	tooltip: function (knop){
 		

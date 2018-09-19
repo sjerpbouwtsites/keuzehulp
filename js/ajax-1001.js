@@ -18,7 +18,6 @@ function EfiberAjax(params) {
 		const r = JSON.parse(response);
 
 		// @TODO zoek naar 'error' in r zo ja, afbreken.
-		console.clear();
 
 		if ('console' in r) {
 			console.dir(r.console);
@@ -50,7 +49,7 @@ function efiberFormStijlKlassen() {
 	});
 }
 
-function EfiberAjaxKleineFormulieren(backendFunctie, printElID, data) {
+function efiberAjaxKleineFormulieren(backendFunctie, printElID, data) {
 	/*------------------------------------------------------
 	|
 	|	Generieke functie die ajaxcalls aanstuurt voor lead en zakelijk formulier.

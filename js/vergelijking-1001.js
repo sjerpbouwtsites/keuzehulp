@@ -28,9 +28,11 @@ const kzRenderVergelijking = {
 			const printVergelijking = doc.getElementById('print-vergelijking');
 			let printPakketten = '';
 
+			let providerTal = 0;
 			for (const provider in r.providers) {
+
 				// maak de rekenklassen
-				// stel laagste snelheid in als gekozen pakket
+				// stel laagste snelheid in als gekozen pakket				
 				const pakketten = r.providers[provider]
 					.map(pakket => new VerrijktPakket(pakket))
 					.map(pakket => vergelijkingsProcedure(pakket, this.keuzehulp)),
@@ -39,34 +41,76 @@ const kzRenderVergelijking = {
 
 				// per provider aantal pakketten, zoals DTV, ITV. Vaak maar één.
 
-				printPakketten += `<section class='provider-pakketten vergelijking'>
+				const pakketClasses = pakketten.map(pakket => `pakketten-section-${pakket.ID}`).join(' ');
+
+				if(providerTal++ === 3) {
+					printPakketten += `
+					<div class='provider-pakketten-break'>
+						<h2>Overige selectie pakketten die goed bij jouw voorkeuren passen</h2>
+					</div>
+					`;
+				}				
+
+				printPakketten += `<section class='provider-pakketten vergelijking ${pakketClasses}'>
 
 					<header class='provider-pakketten-header'>
 
-						${p1.eigenschappen.provider_meta.thumb}
+						<div class='provider-logo-contain'>${p1.eigenschappen.provider_meta.thumb}</div>
 
-						<span class='prijs-bolletje provider-pakketten-header-prijs'>
-							<span>${p1.maandelijksTotaal(true)}</span><span>p/m</span>
-						</span>
+						${(providerTal < 4 
+							? `<span class='prijs-bolletje provider-pakketten-header-prijs'><span>${p1.maandelijksTotaal(true)}</span><span>p/m</span></span>`
+							: `<span class='vergelijking-vanaf-4e-prijs'><span>${p1.maandelijksTotaal(true)}</span><span>p/m</span></span>`
+						)}
 
 					</header>
 
 
 					<ul class='provider-pakketten-lijst'>
-						${pakketten.map(pakket => this.printPakkettenLijst(pakket)).join('')}
+						${pakketten.map(pakket => this.printPakkettenLijst(pakket, providerTal)).join('')}
 					</ul>
 
 				</section>
 				
 
 				`;
-			} // for provider
+			} // for provider DIT IS DE HELE LOOP OM DE PROVIDERS HEEN
 
 			printVergelijking.innerHTML = printPakketten;
 		} else {
-		
-			efiberModal(efiberTekst('geenPakkettenGevonden'), 2000);
+
+			// door naar pakketoverzicht voor alternatieven
+
+			efiberRouting.ga(21); 
+			const keuzehulp = JSON.parse(sessionStorage.getItem('efiber-keuzehulp'));
+
+			if (keuzehulp.bellen === '2' || keuzehulp.bellen === '3') {
+
+				if (keuzehulp.televisie === '2' || keuzehulp.televisie === '3' ) {
+					keuzehulp['ik-weet-wat-ik-wil'] = "4";
+				} else {
+					keuzehulp['ik-weet-wat-ik-wil'] = "2";
+				}
+
+			} else {
+
+				if (keuzehulp.televisie === '2' || keuzehulp.televisie === '3' ) {
+					keuzehulp['ik-weet-wat-ik-wil'] = "3";
+				} else {
+					keuzehulp['ik-weet-wat-ik-wil'] = "1";
+				}
+
+			}
+
+
+		sessionStorage.setItem('efiber-keuzehulp', JSON.stringify(keuzehulp));
+
+		ikWeetWatIkWilPakkettenAjax();
+
+
+/*			efiberModal(efiberTekst('geen_pakketten_gevonden'), 2000);
 			efiberRouting.ga(1); // terug naar de voorpagina.
+
+			const adres = JSON.parse(sessionStorage.getItem('efiber-adres'));
 
 			const ajf2 = new EfiberAjax({
 				ajaxData: {
@@ -81,11 +125,11 @@ const kzRenderVergelijking = {
 			});
 
 			ajf2.doeAjax();				
-			return;				
+			return;				*/
 		
 		} // als r cq response
 	},
-	printPakkettenLijst(pakket) {
+	printPakkettenLijst(pakket, providerTal) {
 
 		this.pakket = pakket;
 		
@@ -111,9 +155,10 @@ const kzRenderVergelijking = {
 				<a
 					class='knop blauwe-knop'
 					href='#'
-					data-doel='#provider-pakketten-vergelijking-hoofd-${pakket.ID}'
+					data-doel='#provider-pakketten-vergelijking-hoofd-${pakket.ID}, .pakketten-section-${pakket.ID}'
 					data-efiber-func='schakel'
-					><span>bekijken</span><svg class='svg-dichtklappen' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><style>.cc94da39-046e-4f53-b263-e21794d5c601{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class="cc94da39-046e-4f53-b263-e21794d5c601" d="M35.47,59.76,50,45.38,64.53,59.76C65.68,61,66.82,61,68,59.83a2.23,2.23,0,0,0,0-3.51L51.72,40.07a2.29,2.29,0,0,0-3.44,0L32,56.32a2.23,2.23,0,0,0,0,3.51C33.18,61,34.32,61,35.47,59.76Z"/></svg>
+					data-scroll='.pakketten-section-${pakket.ID}'
+					><span class='als-niet-actief'>bekijken</span><span class='als-actief'>dichtvouwen</span><svg class='svg-dichtklappen' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><style>.cc94da39-046e-4f53-b263-e21794d5c601{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class="cc94da39-046e-4f53-b263-e21794d5c601" d="M35.47,59.76,50,45.38,64.53,59.76C65.68,61,66.82,61,68,59.83a2.23,2.23,0,0,0,0-3.51L51.72,40.07a2.29,2.29,0,0,0-3.44,0L32,56.32a2.23,2.23,0,0,0,0,3.51C33.18,61,34.32,61,35.47,59.76Z"/></svg>
 				</a>
 
 			</header>
@@ -148,7 +193,6 @@ const kzRenderVergelijking = {
 		const telBundel = this.pakket.huidigeTelefonieBundel();
 
 		if (!telBundel) {
-			console.warn('print telefonie sectie maar geen bundel gevonden.');
 			return '';
 		}
 
@@ -222,8 +266,7 @@ const kzRenderVergelijking = {
 	televisieSectie() {
 		const z = this.pakket.pakZenders();
 
-		if (!z) {
-			console.warn('geen zenders gevonden, wel televisiesectie?');
+		if (!z.totaal) {
 			return '';
 		}
 
@@ -388,7 +431,12 @@ function kzTelefonieModal(knop) {
 	
 	const belPakket = pakket.huidigeTelefonieBundel();
 
-	this.cel = prijs => {isNaN(Number(prijs)) ? prijs : pakket.formatteerPrijs(prijs) };
+	this.cel = prijs => {
+		return isNaN(Number(prijs)) 
+			? prijs 
+			: pakket.formatteerPrijs(prijs) 
+	};
+
 
 	const html = `
 

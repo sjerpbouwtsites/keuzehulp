@@ -136,9 +136,11 @@ class Kz_knop_combi extends Ef_knop {
 		$this->maak_tooltip();
 		$knop_html = $this->maak_knop();
 		$ikoon = $this->print_ikoon();
+
+		$ccc = (in_array('multiselect', (explode(' ', $this->class))) ? "heeft-multiselect" : "");
 		$this->html = 
 		"
-		<div class='kz-knop-combi'>
+		<div class='kz-knop-combi $ccc'>
 			<div class='kz-knop-combi_links'>
 				$ikoon
 			</div>

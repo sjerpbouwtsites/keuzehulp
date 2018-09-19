@@ -343,7 +343,7 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 	{
 		$return['provider_meta'] = get_field('eigenschappen', $provider_post->ID);
 		$return['provider_meta']['naam'] = $provider_post->post_title;
-		$return['provider_meta']['thumb'] = get_the_post_thumbnail($provider_post->ID);
+		$return['provider_meta']['thumb'] = get_the_post_thumbnail($provider_post->ID, 'medium');
 	}
 
 	/////////////////////////////////////////////////////
@@ -475,7 +475,7 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 							'prijs' 		=> $prijs
 						));
 
-						$return['teksten'][$str] = $optie['tekst'];
+						$return['teksten'][($slugje)] = $optie['tekst'];
 					}
 				}
 			}
@@ -485,8 +485,9 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 					foreach ($snelheden as $snelheid) {
 						$str = $pakketgroep['pakket_naam'] . '-' . $optie['publieke_naam'] . '-' . $snelheid;
 						$prijs = (float) $optie['prijs'];
+						$slugje = slugify($str);
 
-						$return['maandelijks'][slugify($str)] = new Kz_optie(array(
+						$return['maandelijks'][($slugje)] = new Kz_optie(array(
 							'naam'			=> $optie['publieke_naam'],
 							'optietype' 	=> 'televisie-bundel',
 							'suboptietype'	=> $pakketgroep['pakket_naam'],
@@ -495,7 +496,7 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 							'prijs' 		=> $prijs
 						));
 
-						$return['teksten'][$str] = $optie['tekst'];
+						$return['teksten'][($slugje)] = $optie['tekst'];
 					}
 				}
 			}
@@ -570,12 +571,12 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 			));
 		}
 
-		if ($dvb_c and $dvb_c['kan_dvb-c_doen']) {
+		if ($dvb_c and $dvb_c['kan_dvc-c_doen']) { // LET OP DE SPELFOUT!
 
-			$return['teksten']['dvb-c'] = $dvb_c['tekst'];
+			$return['teksten']['dvb-c'] = $dvb_c['dvb-c_tekst'];
 
 			if (   $dvb_c['dvb-c_eenmalig'] != 0 ) {
-				$return['eenmalig']['dvb-c-eenmalig'] = new Kz_optie(array(
+				$return['eenmalig']['dvb-c'] = new Kz_optie(array(
 					'naam'			=> 'dvb-c',
 					'optietype'		=> 'televisie-extra',
 					'aantal' 		=> 0,
@@ -584,7 +585,7 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 			}
 
 			if (  $dvb_c['dvb-c_maandelijks'] != 0 ) {
-				$return['maandelijks']['dvb-c-maandelijks'] = new Kz_optie(array(
+				$return['maandelijks']['dvb-c'] = new Kz_optie(array(
 					'naam'			=> 'dvb-c',
 					'optietype'		=> 'televisie-extra',					
 					'aantal' 		=> 0,
@@ -592,7 +593,7 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 				));
 			}
 
-		}
+		} 
 
 
 		$return['tv_type'] = wp_get_post_terms($p->ID, 'tv-type')[0]->name;
@@ -610,6 +611,7 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 	if ($extra_optie['heeft_extra_optie']) {
 
 		$return['teksten']['extra_optie_naam'] = $extra_optie['extra_optie_naam'];
+		$return['teksten']['extra_optie_tekst'] = $extra_optie['extra_optie_tekst'];
 
 		if (!!$extra_optie['extra_optie_eenmalig']) {
 			$return['eenmalig']['extra-optie'] = new Kz_optie(array(
@@ -628,6 +630,7 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 				'prijs'		=> (float) $extra_optie['extra_optie_maandelijks'],
 			));
 		}
+
 
 	}
 
@@ -664,6 +667,8 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 	/////////////////////////////////////////////////////
 
 	// RETURN
+
+	sort($return['telsten']);
 
 	return $return;
 
@@ -726,7 +731,7 @@ function efiber_form_sectie ($titel = '', $inh = '', $svg = '', $extra_tekst = '
 }
 
 
-function efiber_form_rij ($veld1, $veld2, $extra_klasse = '', $rij_onder = array()) {
+function efiber_form_rij ($veld1, $veld2 = null, $extra_klasse = '', $rij_onder = array()) {
 
 
 	/*---------------------------------------------------------

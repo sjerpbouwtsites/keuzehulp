@@ -357,7 +357,7 @@ function efiber_vergelijking() {
 
 		echo json_encode(array(
 			'providers'		=> $providers,
-			'console'		=> $providers
+			//'console'		=> $providers
 		));
 		die();
 
@@ -443,16 +443,12 @@ function efiber_ik_weet_wat_ik_wil_pakketten() {
 
 	if ($pakketten and count($pakketten)) : 
 
-		$postfix = $naam_ar[($keuzehulp['ik-weet-wat-ik-wil'])] . (
-			($keuzehulp['ik-weet-wat-ik-wil'] == 3 || $keuzehulp['ik-weet-wat-ik-wil'] == 4) 
-				? " " . $p->eigenschappen['tv_type']
-				: ''
-		);
+		$postfix = $naam_ar[($keuzehulp['ik-weet-wat-ik-wil'])]; // DTV of ITV in JS
 		$providers = filter_op_regio_en_verrijk_pakket($pakketten, $toegestane_providers, $postfix, $status);
 
 		echo json_encode(array(
 			'providers' 	=> $providers,
-			'console'		=> $providers
+			//'console'		=> $providers
 		));
 	    wp_die();
 
@@ -461,7 +457,7 @@ function efiber_ik_weet_wat_ik_wil_pakketten() {
 		echo json_encode(array(
 			'error'			=> true,
 			'providers' 	=> false,
-			'console' 		=> 'geen pakketten gevonden'
+			'console' 		=> $ajax_data
 		));
 	    wp_die();
 

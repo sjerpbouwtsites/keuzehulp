@@ -1,16 +1,26 @@
+[data-kz-stap~='postcode-check'] {
+	background: linear-gradient(.25turn, #269d38 0%, #269d38 40%, #bfd24d 100%);
+}
+	@media (min-width: 600px) {
+		[data-kz-stap~='postcode-check'] .app-header {
+			box-shadow: none;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+		}
+	}
+
 .keuzehulp-sectie.kz-sectie-1 {
 	margin: 0 -20px;
 	padding: 40px 20px 45vw 20px;
-	background-color: #41a33b;
 	background-image: url('/wp-content/plugins/efiber/afb/bg-voorpagina-cmpr.png');
 	background-repeat: no-repeat;
 	background-size: contain;
 	background-position: bottom left;
 }
+
 	
-	.kz-sectie-1 .keuzehulp-sectie_kop h2, 
+	.kz-sectie-1 .binnen h2, 
 	.kz-sectie-1 .keuzehulp-sectie_torso p {
-		color: white;
+		color: #f7f7f7;
 	}
 
 
@@ -19,6 +29,7 @@
 		padding: 20px 10px;
 		border-radius: 4px;
 		background-color: white;
+		max-width: 500px;
 	}
 	.kz-sectie-1 form h3 {
 		color: #41a33b;
@@ -51,6 +62,10 @@
 		display: block;
 	}
 
+	.kz-sectie-1 label[for='kamer'] {
+		display: none;
+	}
+
 	.kz-sectie-1 label[for='huisnummer'],
 	.kz-sectie-1 label[for='toevoeging'] {
 		width: calc(50% - 10px);
@@ -65,3 +80,41 @@
 		width: 100%;
 	}
 
+/*********************************************/
+
+@media (min-width: 600px) {
+	.kz-sectie-1 form {
+		margin: 20px 0 0;
+		padding: 20px;
+	}
+}
+
+@media (min-width: 1200px) {
+
+	.keuzehulp-sectie.kz-sectie-1 {
+		padding: 41px 20px 20px 20px;
+		background-size: initial;
+		background-position: bottom left;
+		min-height: calc(100vh - 135px);	
+	}
+
+		.keuzehulp-sectie.kz-sectie-1 .binnen {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			margin-top: 100px;
+		}
+			.keuzehulp-sectie.kz-sectie-1 .binnen .flex-links{
+				flex-basis: 500px;
+			}
+			.keuzehulp-sectie.kz-sectie-1 .binnen form{
+				flex-basis: 360px;
+			}			
+
+
+			.kz-sectie-1 form {
+				margin: 0;
+				padding: 20px;
+			}
+
+}

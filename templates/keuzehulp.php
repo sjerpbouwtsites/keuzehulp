@@ -30,13 +30,13 @@ require 'keuze-menu-lijst.php';
 		$postcode_sectie = new EfiberSectie(array(
 
 			'stap'			=> 1,
-			'titel'			=> $pc_teksten['titel'],
-			'torso_intro'	=> $pc_teksten['intro'],
+			'titel'			=> '',
+			'torso_intro'	=> "<div class='flex-links'><h2>".$pc_teksten['titel']."</h2>".$pc_teksten['intro']."</div>",
 			'torso_direct'	=> 	"<form class='keuzehulp-fieldset' action='#' id='keuze-postcodeform' method='POST'>
 			 				<h3>Postcodecheck</h3>
 			 				<p>Vul postcode en huisnummer in en bekijk de mogelijkheden op jouw adres</p>
 			 				<label for='postcode'>
-			 					<span>postcode</span>
+			 					<span>Postcode</span>
 			 					<input
 			 						class='keuzehulp-input'
 			 						id='postcode'
@@ -48,7 +48,7 @@ require 'keuze-menu-lijst.php';
 			 					>
 			 				</label>
 			 				<label for='huisnummer'>
-			 					<span>huisnummer</span>
+			 					<span>Huisnummer</span>
 			 					<input
 			 						class='keuzehulp-input'
 			 						id='huisnummer'
@@ -57,7 +57,7 @@ require 'keuze-menu-lijst.php';
 			 						minlength='1'
 			 					>
 			 				</label><label for='toevoeging'>
-			 					<span>toevoeging</span>
+			 					<span>Toevoeging</span>
 			 					<input
 			 						class='keuzehulp-input'
 			 						id='toevoeging'
@@ -66,7 +66,7 @@ require 'keuze-menu-lijst.php';
 			 					>
 			 				</label>
 			 				<label for='kamer'>
-			 					<span>kamer</span>
+			 					<span>Kamer</span>
 			 					<input
 			 						class='keuzehulp-input'
 			 						id='kamer'
@@ -101,7 +101,7 @@ require 'keuze-menu-lijst.php';
 		$knop->link = '#20';
 		$knop->tekst = $kofnt['geen_keuzehulp'];
 		$knop->ikoon = efiber_keuzehulp_pak_afb("meta 3");
-		$knop->func = 'toon-stap animeer leeg-keuzehulp verstop-keuze-niveaus';
+		$knop->func = 'toon-stap animeer leeg-keuzehulp';
 		$knop->tooltip = $kofnt['geen_keuze_hulp_tooltip'];
 		$keuzehulp_knoppen .= $knop->maak();
 
@@ -411,36 +411,6 @@ require 'keuze-menu-lijst.php';
 		));
 
 		$kies_televisie_opties->print();
-
-		/////////////////////////////////////////////////
-
-/*		$kies_coax_knoppen = '';
-
-		$coax_teksten = get_field('coax_teksten', 'option');
-
-		$knop->class = '';
-		$knop->tekst = $coax_teksten['houd_coax'];
-		$knop->func = 'zet-niveau-knop toon-stap zet-keuze-bekabeling animeer';
-		$knop->link = '#11';
-		$knop->attr = 'data-efiber-bekabeling-keuze="1"';
-		$knop->geen_ikoon = false;
-		$knop->ikoon = efiber_keuzehulp_pak_afb("coax coax");
-		$kies_coax_knoppen .= $knop->maak();
-
-		$knop->tekst = $coax_teksten['neem_utp'];
-		$knop->attr  = 'data-efiber-bekabeling-keuze="2"';
-		$knop->ikoon = efiber_keuzehulp_pak_afb("coax utp");
-		$kies_coax_knoppen .= $knop->maak();
-
-		$kies_coax = new EfiberSectie(array(
-			'stap'			=> 10,
-			'titel'			=> $coax_teksten['titel'],
-			'torso_intro'	=> $coax_teksten['intro'],
-			//'titel_afb'		=> efiber_keuzehulp_pak_afb("coax titel"),
-			'torso_direct'	=> 	"<div class='knoppendoos'>$kies_coax_knoppen</div>",
-		));
-
-		$kies_coax->print();*/
 
 		/////////////////////////////////////////////////
 

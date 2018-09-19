@@ -46,10 +46,16 @@
 	background-color: #f3f3f0;
 	margin: 0 -10px 3px -10px;
 }
+
 	.efiber-form-sectie .rij.heeft-actieve-knop {
 		background-color: #d4f1dc;
 	}
-
+		@media (min-width: 900px) {
+			.efiber-form-sectie .rij {
+				margin-right: 0;
+				margin-left: 0;
+			}
+		}
 
 .efiber-form-sectie .veld {
 	display: flex;
@@ -63,6 +69,9 @@
 		margin-right: 10px;
 		flex-shrink: 0;
 		font-size: 15px;
+	}
+	.efiber-form-sectie .veld-2 {
+		position: relative;
 	}
 
 .efiber-form-sectie-header {
@@ -135,17 +144,34 @@
 				 text-decoration: none;
 				 opacity: 1;
 			}
+
+	.veld-2 .kz-tooltip {
+		position: absolute;
+		top: -15px;
+		right: -5px;		
+	}
+
 /*********************************/
 
 	.efiber-form-sectie.samenvatting {
-		position: sticky;
-		-moz-position: sticky;
-		-webkit-position: sticky;
-		-o-position: sticky;
-
-		top: 0;
-		z-index: 4;		
+		position: relative;
 	}
+		.voorbij-350 .efiber-form-sectie.samenvatting{
+			position: fixed;
+			margin-top: 0 !important;
+			width: 820px;
+			left: calc(50% + 10px);
+			transform: translate(-50%, 0%);
+			border-left: 100vw solid white;
+			border-right: 100vw solid white;			
+			box-shadow: none;
+			top: 0;
+			z-index: 5;			
+			max-width: calc(100% - 60px);
+		}
+		.voorbij-350 .efiber-form-sectie.samenvatting .rij[class*='bijzonderheden']{ 
+			display: none;
+		}
 
 
 
@@ -160,6 +186,12 @@
 		margin-right: -10px;
 		margin-left: -10px;
 	}
+		@media (min-width: 900px) {
+			.efiber-form-sectie.samenvatting .rij {
+				margin-right: 0;
+				margin-left: 0;
+			}
+		}
 
 	.efiber-form-sectie.samenvatting .veld-1 {
 		font-weight: bold;
@@ -172,7 +204,17 @@
 		.efiber-form-sectie.samenvatting .rij:first-child .veld-1 {
 			flex-basis: 150px;
 			align-items: flex-start;
+			max-height: 80px;
 		}
+			.efiber-form-sectie.samenvatting .rij:first-child .veld-1 img{
+				object-fit: contain;
+				height: 100%;
+				object-position: center left;
+			}
+
+
+
+
 		.efiber-form-sectie.samenvatting .rij:first-child .veld-2 {
 			flex-basis: auto;
 		}
@@ -184,6 +226,12 @@
 		color: #2a2a28;
 		margin-bottom: 0;
 	}
+		.voorbij-350 .efiber-form-sectie.samenvatting .rij:nth-child(2) { /* rij met naam product */
+			display: none;
+		}	
+		.efiber-form-sectie.samenvatting .veld-2 {
+			position: static;
+		}
 
 	.efiber-form-sectie.samenvatting  {
 		margin-top: 30px;
@@ -206,6 +254,10 @@
 	color: #159a3c;	
 }
 
+.knop[name='huidige_nummer'],
+.knop[name='huidige_extra_nummer'] {
+	width: 200px;
+}
 
 [for='extra-tv-ontvangers'] {
 	display: none;
@@ -243,7 +295,8 @@
 				display: flex;
 				flex-direction: row;
 				align-items: center;
-				margin: 5px 0;
+				margin: 20px 0;
+				position: relative;
 			}
 				.efiber-form-sectie .rij.radios .veld-2 img {
 					flex-basis: 70px;

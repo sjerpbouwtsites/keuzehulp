@@ -19,7 +19,7 @@
 	<nav class='stappen-links'>
 		<ul>
 			<li class='stappen-links_stap stappen-links-3'>
-				<a href='#' class='knop' data-efiber-func='stappen-nav' id='stappen-links-3'>
+				<a href='#' class='knop invalide' data-efiber-func='stappen-nav' id='stappen-links-3'>
 					<span class='stappen-links_niet-klaar'>
 						<?php require $info; ?>
 					</span>
@@ -31,7 +31,7 @@
 				</a>
 			</li>
 			<li class='stappen-links_stap stappen-links-4'>
-				<a href='#' class='knop' data-efiber-func='stappen-nav' id='stappen-links-4'>
+				<a href='#' class='knop invalide' data-efiber-func='stappen-nav' id='stappen-links-4'>
 					<span class='stappen-links_niet-klaar'>
 						<?php require $info; ?>
 					</span>
@@ -43,7 +43,7 @@
 				</a>
 			</li>
 			<li class='stappen-links_stap stappen-links-5'>
-				<a href='#' class='knop' data-efiber-func='stappen-nav' id='stappen-links-5'>
+				<a href='#' class='knop invalide' data-efiber-func='stappen-nav' id='stappen-links-5'>
 					<span class='stappen-links_niet-klaar'>
 						<?php require $info; ?>
 					</span>
@@ -55,7 +55,7 @@
 				</a>
 			</li>
 			<li class='stappen-links_stap stappen-links-6'>
-				<a href='#' class='knop' data-efiber-func='stappen-nav' id='stappen-links-6'>
+				<a href='#' class='knop invalide' data-efiber-func='stappen-nav' id='stappen-links-6'>
 					<span class='stappen-links_niet-klaar'>
 						<?php require $info; ?>
 					</span>
@@ -67,7 +67,7 @@
 				</a>
 			</li>
 			<li class='stappen-links_stap stappen-links-7'>
-				<a href='#' class='knop' data-efiber-func='stappen-nav' id='stappen-links-7'>
+				<a href='#' class='knop invalide' data-efiber-func='stappen-nav' id='stappen-links-7'>
 					<span class='stappen-links_niet-klaar'>
 						<?php require $info; ?>
 					</span>
@@ -79,7 +79,7 @@
 				</a>
 			</li>
 			<li class='stappen-links_stap stappen-links-8'>
-				<a href='#' class='knop' data-efiber-func='stappen-nav' id='stappen-links-8'>
+				<a href='#' class='knop invalide' data-efiber-func='stappen-nav' id='stappen-links-8'>
 					<span class='stappen-links_niet-klaar'>
 						<?php require $info; ?>
 					</span>
@@ -91,7 +91,7 @@
 				</a>
 			</li>
 			<li class='stappen-links_stap stappen-links-9'>
-				<a href='#' class='knop' data-efiber-func='stappen-nav' id='stappen-links-9'>
+				<a href='#' class='knop invalide' data-efiber-func='stappen-nav' id='stappen-links-9'>
 					<span class='stappen-links_niet-klaar'>
 						<?php require $info; ?>
 					</span>
@@ -103,7 +103,7 @@
 				</a>
 			</li>			
 			<li class='stappen-links_stap stappen-links-11'>
-				<a href='#' class='knop' data-efiber-func='stappen-nav' id='stappen-links-11'>
+				<a href='#' class='knop invalide' data-efiber-func='stappen-nav' id='stappen-links-11'>
 					<span class='stappen-links_niet-klaar'>
 						<?php require $info; ?>
 					</span>

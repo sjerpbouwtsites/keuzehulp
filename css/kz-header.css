@@ -9,7 +9,8 @@
 	justify-content: space-between;
 }
 	.app-header .header-links {
-
+		display: inline-block;
+		vertical-align: middle
 	}
 
 		.app-header .header-links img{
@@ -21,7 +22,8 @@
 	}
 
 		[data-kz-stap~='hoofd'] .app-header .header-midden {
-			display: block;
+			display: inline-block;
+			vertical-align: middle
 		}
 		ol.stappen-visualisatie {
 			list-style-type: none;
@@ -34,18 +36,48 @@
 				margin: 0;
 				padding: 0;
 			}
-				.stappen-visualisatie_tekst{
-					display: none;
+				.stappen-visualisatie_stap span {
+					vertical-align: middle;
 				}
 
 				.stappen-visualisatie_afb {
 					width: 30px;
 					height: 30px;
-					display: block;
+					display: inline-block;
 					margin-left: 3px;
 					background-size: cover;
 					background-repeat: no-repeat;
 					transition: 0.2s ease-in-out;
+				}
+
+				@media (min-width: 900px){
+					ol.stappen-visualisatie {
+						margin: 0 20px;
+					}
+						
+						.stappen-visualisatie_stap {
+							position: relative;
+							padding-left: 17px;
+							padding-right: 20px;						
+						}
+							.stappen-visualisatie_stap::before {
+								position: absolute;
+								top: -7.5px;
+								left: 0;
+								content: '';
+								display: block;
+								height: 46px;
+								border-left: 1px solid #dcdcd9;							
+							}
+							.stappen-visualisatie_stap:last-child::before {
+								position: absolute;
+								top: -7.5px;
+								right: 0;
+								content: '';
+								display: block;
+								height: 46px;
+								border-left: 1px solid #dcdcd9;							
+							}						
 				}
 
 
@@ -61,26 +93,53 @@
 					background-image: url('/wp-content/plugins/efiber/iconen-nieuw/svg/stap 3.svg');
 				}
 
+				/* telt als */
+				/* aa1, aa2, ab1, ab2, ac1, ac2, ba1 etc */
+
 
 				[data-kz-stap~='samenstellen'] .stappen-visualisatie_stap:nth-child(1) .stappen-visualisatie_afb {
 					opacity: 1;
 				}
+				[data-kz-stap~='samenstellen'] .stappen-visualisatie_stap:nth-child(1) .stappen-visualisatie_tekst {
+					opacity: 1;
+					color: #159a3c;
+					font-weight: 500;
+				}
 				[data-kz-stap~='samenstellen'] .stappen-visualisatie_stap:nth-child(2) .stappen-visualisatie_afb {
 					opacity: .6;
 				}
+				[data-kz-stap~='samenstellen'] .stappen-visualisatie_stap:nth-child(2) .stappen-visualisatie_tekst {
+					opacity: .6;
+				}				
 				[data-kz-stap~='samenstellen'] .stappen-visualisatie_stap:nth-child(3) .stappen-visualisatie_afb {
 					opacity: .6;
 				}
+				[data-kz-stap~='samenstellen'] .stappen-visualisatie_stap:nth-child(3) .stappen-visualisatie_tekst {
+					opacity: .6;
+				}		
 
 
 				[data-kz-stap~='vergelijken'] .stappen-visualisatie_stap:nth-child(1) .stappen-visualisatie_afb {
 					opacity: 1;
 					background-image: url('/wp-content/plugins/efiber/iconen-nieuw/svg/check.svg');
 				}
+				[data-kz-stap~='vergelijken'] .stappen-visualisatie_stap:nth-child(1) .stappen-visualisatie_tekst {
+					opacity: .6;
+					color: #159a3c;
+					font-weight: 400;
+				}				
 				[data-kz-stap~='vergelijken'] .stappen-visualisatie_stap:nth-child(2) .stappen-visualisatie_afb {
 					opacity: 1;
 				}
+				[data-kz-stap~='vergelijken'] .stappen-visualisatie_stap:nth-child(2) .stappen-visualisatie_tekst {
+					opacity: 1;
+					color: #159a3c;
+					font-weight: 500;					
+				}				
 				[data-kz-stap~='vergelijken'] .stappen-visualisatie_stap:nth-child(3) .stappen-visualisatie_afb {
+					opacity: .6;
+				}
+				[data-kz-stap~='vergelijken'] .stappen-visualisatie_stap:nth-child(3) .stappen-visualisatie_tekst {
 					opacity: .6;
 				}
 
@@ -89,33 +148,94 @@
 					opacity: 1;
 					background-image: url('/wp-content/plugins/efiber/iconen-nieuw/svg/check.svg');
 				}
+				[data-kz-stap~='bestellen'] .stappen-visualisatie_stap:nth-child(1) .stappen-visualisatie_tekst {
+					opacity: .6;
+					color: #159a3c;
+					font-weight: 400;					
+				}
 				[data-kz-stap~='bestellen'] .stappen-visualisatie_stap:nth-child(2) .stappen-visualisatie_afb {
 					opacity: 1;
 					background-image: url('/wp-content/plugins/efiber/iconen-nieuw/svg/check.svg');
 				}
+				[data-kz-stap~='bestellen'] .stappen-visualisatie_stap:nth-child(2) .stappen-visualisatie_tekst {
+					opacity: .6;
+					color: #159a3c;
+					font-weight: 400;					
+				}
 				[data-kz-stap~='bestellen'] .stappen-visualisatie_stap:nth-child(3) .stappen-visualisatie_afb {
 					opacity: 1;
 				}
+				[data-kz-stap~='bestellen'] .stappen-visualisatie_stap:nth-child(3) .stappen-visualisatie_tekst {
+					opacity: 1;
+					color: #159a3c;
+					font-weight: 500;										
+				}
 
 
-
-	.app-header .header-rechts {
-		position: relative;
+	.app-header .header-rechts a {
+		color: #159a3c;
+		text-decoration: none;
 	}
-		.app-header .header-rechts::before {
-			position: absolute;
-			top: -7.5px;
-			left: -10px;
-			content: '';
-			display: block;
-			height: 46px;
-			border-left: 1px solid #dcdcd9;
+		[data-kz-stap~='postcode-check'] .app-header .header-rechts a {
+			color: white;
 		}
 
-	.app-header .header-rechts img {
-		width: 30px;
-		height: 30px;
+	.app-header .header-rechts span {
+		vertical-align: middle;
+		text-decoration: none;
+		display: inline-block;
 	}
 
+		.app-header .header-rechts span.telefoonnummer {
+			font-size: 18px;
+			font-weight: 500;		
+		}
+		.app-header .header-rechts span.voor-telefoon {
+			font-size: 12px;
+			margin-right: 10px;
+			display: none;
+			color: white;
+		}
+			[data-kz-stap~='postcode-check'] .app-header .header-rechts span.voor-telefoon{
+				display: inline-block;
+			}
+
+		.app-header .header-rechts svg {
+			width: 30px;
+			height: 30px;
+
+		}
+			.app-header .header-rechts svg path{
+				fill: #159a3c;
+			}
+				@media (min-width: 600px) {
+					[data-kz-stap~='postcode-check'] .app-header .header-rechts svg path {
+						fill: white;
+					}
+				}
 
 
+/****************************************************************/
+
+@media (max-width: 600px) {
+	.app-header {
+		background-color: white;
+	}
+
+		.app-header .header-rechts {
+			position: relative;
+		}
+			.app-header .header-rechts::before {
+				position: absolute;
+				top: -7.5px;
+				left: -10px;
+				content: '';
+				display: block;
+				height: 46px;
+				border-left: 1px solid #dcdcd9;
+			}
+
+			.app-header .header-rechts svg path{
+				fill: #159a3c;
+			}	
+}

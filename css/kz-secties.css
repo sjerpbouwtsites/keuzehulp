@@ -1,3 +1,17 @@
+
+@media (min-width: 1200px) {
+
+	[data-kz-stap~="hoofd"] main .keuzehulp .verpakking,
+	[data-kz-stap~="hoofd"][data-kz-stap~="nog-geen-niveau"] main .keuzehulp .verpakking  {
+		max-width: calc(100% - 630px);
+	}
+	[data-kz-stap~="hoofd"] main .keuzehulp .verpakking,
+	[data-kz-stap~="pad-keuze"] main .keuzehulp .verpakking {
+		width: 840px;
+	}
+			
+}
+
 .keuzehulp-sectie {
 	padding: 40px 0 20px 0;
 }

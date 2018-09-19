@@ -17,6 +17,10 @@
 	[data-kz-stap~='hoofd'] .keuze-menu-lijst { 
 		display: block;
 	}
+		[data-kz-stap~='hoofd'][data-kz-stap~='bestellen'] .keuze-menu-lijst,
+		[data-kz-stap~='hoofd'][data-kz-stap~='formulier'] .keuze-menu-lijst { 
+			display: none;
+		}
 	.keuze-menu-lijst.actief {
 		padding: 20px 20px 60px 20px;
 	}
@@ -171,3 +175,33 @@
 .stappen-links-9 {
 	display: none;
 } 
+
+
+
+
+/******************************************************/
+@media (min-width: 1200px) {
+	
+	[data-kz-stap~="hoofd"] .keuze-menu-lijst,
+	[data-kz-stap~="hoofd"][data-kz-stap~="nog-geen-niveau"] .keuze-menu-lijst {
+		display: block;
+		position: fixed;
+		top: 73px;
+		right: 0;
+		width: 250px;
+		min-height: calc(100vh - 73px);
+		z-index: 2;
+	}
+
+	.stappen-links {
+		display: block;
+	}
+
+		.keuze-menu-lijst header {
+			padding-bottom: 15px;
+		}
+
+		.keuze-menu-lijst-knop {
+			display: none;
+		}
+}

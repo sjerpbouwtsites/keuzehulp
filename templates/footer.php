@@ -1,10 +1,12 @@
 </main>
-<footer class='app-footer' role='contentinfo'>
-	<div class='verpakking'>
-		<span>&copy;<?= date("Y"); ?> <?=get_field('bedrijfsnaam', 'option')?></span>
-	</div>
-</footer>
 <?php 
+
+	$modal_teksten = get_field('modalteksten', 'option');
+
+	echo "<script>
+		const kzModalTeksten = ".json_encode($modal_teksten).";
+	</script>";
+
 	wp_footer();
 	echo "</body></html>";
 	die(); //voorkomt laden thema footer

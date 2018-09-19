@@ -3,7 +3,14 @@
 	margin-left: -10px;
 	margin-right: -10px;
 	margin-top: 40px;
+	max-width: 800px;
 }
+	@media (min-width: 830px){
+		.knoppendoos {
+			margin-left: 0;
+			margin-right: 0;
+		}
+	}
 
 .kz-knop-combi {
 	display: flex;
@@ -60,3 +67,35 @@
 				.kz-knop-combi_rechts .blauwe-knop path {
 					fill: white;
 				}
+
+
+/***********************************************/
+
+@media (min-width: 600px) {
+	.kz-knop-combi_rechts {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 20px;
+	}
+
+		.kz-knop-combi_rechts .blauwe-knop {
+		    min-width: 170px;
+			margin-left: 10px;
+		}
+
+		.kz-knop-combi_rechts-boven {
+			margin-bottom: 0;
+			flex-basis: calc(100% - 230px);
+		}
+			.heeft-multiselect .kz-knop-combi_rechts-boven {
+				flex-basis: calc(100% - 80px);
+			}
+
+			.kz-knop-combi_rechts-boven .kz-tooltip {
+				margin-left: 10px;
+				width: 25px;
+				height: 25px;
+				min-width: 25px;
+			}
+}

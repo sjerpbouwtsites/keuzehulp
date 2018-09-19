@@ -20,9 +20,9 @@ function aanmeldformulierHaalWaardeUitRij(rij) {
 			} if (rij.classList.contains('belpakketten')) {
 				return ID.replace('belpakket-keuze-', '').replace('-', ' ');
 			}
-				return ID;
+			return ID;
 		}
-			return '';
+		return '';
 	}
 
 		// checkbox stijl
@@ -192,6 +192,8 @@ function haalPrintAanmeldformulier(knop) {
 
 			pakket = window[`efiber-pakket-${r.id}`];
 
+			console.table(pakket.eigenschappen.teksten);
+
 			// het zijn de click events die de verwerking van de data aanjagen..
 			printPlek.addEventListener('change', (e) => {
 				const t = e.target,
@@ -275,7 +277,7 @@ function haalPrintAanmeldformulier(knop) {
 				if (v.length > 5) {
 					const is18 = (Number(v.split('/')[2]) - 2000) < 0;
 					if (!is18) {
-						efiberModal(efiberTekst('minimum18'), 2000);
+						efiberModal(efiberTekst('minimum_18'), 2000);
 						$('#gform_submit_button_1').hide();
 					} else {
 						$('#gform_submit_button_1').show();
@@ -288,7 +290,7 @@ function haalPrintAanmeldformulier(knop) {
 				mobielNummer = /^(((\\+31|0|0031)6){1}[1-9]{1}[0-9]{7})$/i;
 
 				if (!(vastNummer.test(this.value) || mobielNummer.test(this.value))) {
-					efiberModal(efiberTekst('correctTel'), 1500);
+					efiberModal(efiberTekst('correct_tel'), 1500);
 				}
 			});
 

@@ -68,6 +68,8 @@ function efiberInit() {
 
 	// generieke validatie zoals input alleen getallen
 	generiekeValidatie();
+
+	scrollCheck();
 }
 
 window.onload = function () { efiberInit(); };
@@ -168,3 +170,12 @@ function efiberSorteerIWWIW(pakketten) {
 }
 
 
+function scrollCheck (){
+	setInterval(function(){
+		if (document.documentElement.scrollTop > 350) {
+			if (!document.body.classList.contains('voorbij-350')) document.body.classList.add('voorbij-350')
+		} else {
+			if (document.body.classList.contains('voorbij-350')) document.body.classList.remove('voorbij-350')
+		}
+	}, 100);
+}

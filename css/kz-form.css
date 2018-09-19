@@ -1,12 +1,10 @@
 .paars_blok {
-	background-color: #ab3470;
+	background-color: #159a3c;;
 	color: white;
-	margin-left: 20px;
-	margin-right: 20px;
-	padding: 10px;
+	padding: 20px !important;
 }
 
-input[type='text'] {
+input[type='text'], textarea, select {
 	border: 1px solid #81d899;  
 	margin-bottom: .8em;
 	padding: .75em;
@@ -15,7 +13,8 @@ input[type='text'] {
 	box-sizing: border-box;
 	box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.15);	
 }
-	input[type='text']:focus {
+	input[type='text']:focus,
+	textarea:focus  {
 		border: 1px solid #81f899;  
 		outline: 2px solid #81f899;
 	}
@@ -23,3 +22,25 @@ input[type='text'] {
 [type='submit']:hover {
 	cursor: pointer;
 }
+
+
+.keuzehulp .gform_wrapper {
+	padding: 10px;
+	background-color: white;
+	margin: 0 -10px;	
+}
+
+	.keuzehulp .gform_heading {
+		display: none;
+	}
+
+	.keuzehulp .gform_wrapper label.gfield_label {
+		font-size: .8em;
+		font-weight: 400;
+	}	
+
+
+		.keuzehulp .gform_wrapper input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="button"]):not([type="image"]):not([type="file"]) {
+		    padding: 10px 4px;
+		    letter-spacing: normal;
+		}	

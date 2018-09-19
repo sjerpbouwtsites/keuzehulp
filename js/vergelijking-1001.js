@@ -24,8 +24,6 @@ const kzRenderVergelijking = {
 		this.keuzehulp = keuzehulp;
 		doc.getElementById('print-vergelijking').innerHTML = '';
 
-		console.log('proivs', r.providers, !!r.providers);
-
 		if (r.providers && r.providers.length) {
 			
 			const printVergelijking = doc.getElementById('print-vergelijking');

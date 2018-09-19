@@ -193,7 +193,7 @@ function efiber_controleer_postcode() {
 	
 }
 
-function filter_op_regio_en_verrijk_pakket ($pakketten, $toegestane_providers, $naam_postfix = '', $status = '100') {
+function filter_op_regio_en_verrijk_pakket ($pakketten, $toegestane_providers, $naam_postfix = '', $status = '100', $ajax_data) {
 
 	$providers = array();
 
@@ -205,7 +205,7 @@ function filter_op_regio_en_verrijk_pakket ($pakketten, $toegestane_providers, $
 	foreach ($pakketten as $p) :
 
 		// eigenschappen als provider, minimale contractsduur en pakketopties
-		$p->eigenschappen = efiber_pakket_eigenschappen($p, $ajax_data['gebiedscode'], $status);
+		$p->eigenschappen = efiber_pakket_eigenschappen($p, $ajax_data['adres']['gebiedscode'], $status, $ajax_data);
 		$p->provider = $p->eigenschappen['provider_meta']['naam'];
 
 		// nu pakketten filteren op provider cq filteren op regio.
@@ -353,7 +353,7 @@ function efiber_vergelijking() {
 
 	if ($pakketten and count($pakketten)) : 
 
-		$providers = filter_op_regio_en_verrijk_pakket($pakketten, $toegestane_providers, $postfix, $status);
+		$providers = filter_op_regio_en_verrijk_pakket($pakketten, $toegestane_providers, $postfix, $status, $ajax_data);
 
 		echo json_encode(array(
 			'providers'		=> $providers,
@@ -451,7 +451,7 @@ function efiber_ik_weet_wat_ik_wil_pakketten() {
 	if ($pakketten and count($pakketten)) : 
 
 		$postfix = $naam_ar[($keuzehulp['ik-weet-wat-ik-wil'])]; // DTV of ITV in JS
-		$providers = filter_op_regio_en_verrijk_pakket($pakketten, $toegestane_providers, $postfix, $status);
+		$providers = filter_op_regio_en_verrijk_pakket($pakketten, $toegestane_providers, $postfix, $status, $ajax_data);
 
 		echo json_encode(array(
 			'providers' 	=> $providers,

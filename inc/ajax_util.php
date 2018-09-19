@@ -234,10 +234,6 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
     }
 
 	
-
-
-
-
 	/////////////////////////////////////////////////////
 	// - - - - - - - - - - - - - - - - - - - - - - - - //
 	/////////////////////////////////////////////////////
@@ -262,6 +258,13 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 
 	// bewerkte, per regio geconcretiseerde verzameling.
 	{
+		$return['fin_rauw'] = $financieel;
+		$return['fin_rauw']['gc_id'] = array(
+			'gc'				=> $gc,
+			'$gebiedscode_id'	=> $gebiedscode_id
+		);
+
+
 		$snelheid_prijs_concreet = efiber_pakket_eigenschappen_snelheid_prijs_concreet(
 			$financieel['snelheid-prijs'],
 			$gebiedscode_id

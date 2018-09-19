@@ -103,18 +103,10 @@ require 'keuze-menu-lijst.php';
 				$statuscode = $e[1];
 			}
 
-			$keuzehulp_of_niet_titel[] = "
-				<div class='statusbepaald status-$statuscode'>".$verzameling['titel']."</div>
-			";
-			$keuzehulp_of_niet_intro[] = "
-				<div class='statusbepaald status-$statuscode'>".$verzameling['intro']."</div>
-			";
-			$keuzehulp_of_niet_ja_knoptekst[] = "
-				<div class='statusbepaald status-$statuscode'>".$verzameling['wel_keuze_hulp']."</div>
-			";
-			$keuzehulp_of_niet_nee_knoptekst[] = "
-				<div class='statusbepaald status-$statuscode'>".$verzameling['geen_keuzehulp']."</div>
-			";						
+			$keuzehulp_of_niet_titel[] = "<span class='statusbepaald status-$statuscode'>".$verzameling['titel']."</span>";
+			$keuzehulp_of_niet_intro[] = "<div class='statusbepaald status-$statuscode'>".$verzameling['intro']."</div>";
+			$keuzehulp_of_niet_ja_knoptekst[] = "<span class='statusbepaald status-$statuscode'>".$verzameling['wel_keuze_hulp']."</span>";
+			$keuzehulp_of_niet_nee_knoptekst[] = "<span class='statusbepaald status-$statuscode'>".$verzameling['geen_keuzehulp']."</span>";						
 
 		}
 

@@ -85,12 +85,44 @@ require 'keuze-menu-lijst.php';
 
 		$kofnt = get_field('keuzehulp_of_niet_teksten', 'option');
 
+		$keuzehulp_of_niet_titel = [];
+		$keuzehulp_of_niet_intro = [];
+		$keuzehulp_of_niet_ja_knoptekst = [];
+		$keuzehulp_of_niet_nee_knoptekst = [];
+
+		foreach ($kofnt as $groepnaam => $verzameling) {
+			
+			if (!is_array($verzameling)) {
+				continue;
+			}
+
+			if ($groepnaam === 'status_groep') {
+				$statuscode = '0';
+			} else {
+				$e = explode('_', $groepnaam);
+				$statuscode = $e[1];
+			}
+
+			$keuzehulp_of_niet_titel[] = "
+				<div class='statusbepaald status-$statuscode'>".$verzameling['titel']."</div>
+			";
+			$keuzehulp_of_niet_intro[] = "
+				<div class='statusbepaald status-$statuscode'>".$verzameling['intro']."</div>
+			";
+			$keuzehulp_of_niet_ja_knoptekst[] = "
+				<div class='statusbepaald status-$statuscode'>".$verzameling['wel_keuze_hulp']."</div>
+			";
+			$keuzehulp_of_niet_nee_knoptekst[] = "
+				<div class='statusbepaald status-$statuscode'>".$verzameling['geen_keuzehulp']."</div>
+			";						
+
+		}
 
 		$keuzehulp_knoppen = '';
 		$knop = new Kz_knop_combi(array(
 			'func'		=> "animeer zet-niveau-knop toon-stap",
 			'link'		=> '#3',
-			'tekst'		=> $kofnt['wel_keuze_hulp'],
+			'tekst'		=> implode('', $keuzehulp_of_niet_ja_knoptekst),
 			'tooltip'	=> $kofnt['wel_keuze_hulp_tooltip'],
 			'geen_ikoon'=> false,
 			'ikoon'		=> efiber_keuzehulp_pak_afb("meta 2"),
@@ -99,17 +131,19 @@ require 'keuze-menu-lijst.php';
 		$keuzehulp_knoppen .= $knop->maak();
 
 		$knop->link = '#20';
-		$knop->tekst = $kofnt['geen_keuzehulp'];
+		$knop->tekst = implode('', $keuzehulp_of_niet_nee_knoptekst);
 		$knop->ikoon = efiber_keuzehulp_pak_afb("meta 3");
 		$knop->func = 'toon-stap animeer leeg-keuzehulp';
 		$knop->tooltip = $kofnt['geen_keuze_hulp_tooltip'];
 		$keuzehulp_knoppen .= $knop->maak();
 
+
+
 		$keuzehulp_of_niet = new EfiberSectie(array(
 			'stap'			=> 2,
 			//'titel_afb'		=> efiber_keuzehulp_pak_afb("gefeliciteerd titel"),
-			'titel'			=> $kofnt['titel'],
-			'torso_intro'	=> $kofnt['intro'],
+			'titel'			=> implode('', $keuzehulp_of_niet_titel),
+			'torso_intro'	=> implode('', $keuzehulp_of_niet_intro),
 			'torso_direct'	=> 	"<div class='knoppendoos'>$keuzehulp_knoppen</div>",
 		));
 

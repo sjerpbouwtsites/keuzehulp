@@ -33,6 +33,8 @@ function postcodeAjaxCB(r) {
 		sessionStorage.setItem('efiber-adres', JSON.stringify(r.data));
 		sessionStorage.setItem('efiber-code', r.gebiedscode);
 
+		body.setAttribute('data-kz-status', r.data.status);
+
 		if (r.status === '100') { //geannuleerd
 
 			if (r.provider_beschikbaar) {

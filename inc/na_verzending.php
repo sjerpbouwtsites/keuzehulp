@@ -4,18 +4,18 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 /*
-function efiber_registreer_export_test(){
-    add_menu_page( 'Efiber keuzehulp', 'export', 'manage_options', 'efiber-export-test', 'print_efiber_export_test' );
+function keuzehulp_registreer_export_test(){
+    add_menu_page( 'Kz keuzehulp', 'export', 'manage_options', 'kz-export-test', 'print_keuzehulp_export_test' );
 }
 
-add_action('admin_menu', 'efiber_registreer_export_test');
+add_action('admin_menu', 'keuzehulp_registreer_export_test');
 
 
-function print_efiber_export_test() {?>
+function print_keuzehulp_export_test() {?>
 	
 <div class="wrap">
 
-	<h1>Efiber export test</h1>
+	<h1>Kz export test</h1>
 
 	<?php 
 
@@ -24,7 +24,7 @@ function print_efiber_export_test() {?>
 	19, 20, '5386GG', '1', '', '', 25, 26, 27, 28, 29
 	);
 
-	echo efiber_registreer_postcode_aanvraag ($aanmelding_naw)
+	echo keuzehulp_registreer_postcode_aanvraag ($aanmelding_naw)
 
 	?>
 
@@ -35,9 +35,9 @@ function print_efiber_export_test() {?>
 
 
 
-add_action( 'gform_after_submission_1', 'efiber_registreer_postcode_aanvraag', 10, 2 );
+add_action( 'gform_after_submission_1', 'keuzehulp_registreer_postcode_aanvraag', 10, 2 );
 
-function efiber_registreer_postcode_aanvraag ($entry){
+function keuzehulp_registreer_postcode_aanvraag ($entry){
 
 
 	$aanmelding_data = array(

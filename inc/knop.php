@@ -1,12 +1,12 @@
 <?php
 
-$ef_knop_teller = 0;
+$Kz_knop_teller = 0;
 function knop_enumerator(){
-	global $ef_knop_teller;
-	return ++$ef_knop_teller;
+	global $Kz_knop_teller;
+	return ++$Kz_knop_teller;
 }
 
-class Ef_knop extends Ef_basis_class {
+class Kz_knop extends Kz_basis_class {
 
 
     /*---------------------------------------------------------
@@ -19,7 +19,7 @@ class Ef_knop extends Ef_basis_class {
 
 //  VOORBEELD
 
-//	$knop = new Ef_knop(array(
+//	$knop = new Kz_knop(array(
 //		'func'		=> "zet-niveau-knop toon-stap animeer",
 //		'link'		=> '#3',
 //		'tekst'		=> 'mooie tekst',
@@ -62,7 +62,7 @@ class Ef_knop extends Ef_basis_class {
 		$this->nalopen();
 
 		$e = $this->extern ? " target='_blank' " : "";
-		$f = $this->func !== '' ? " data-efiber-func='$this->func' " : "";
+		$f = $this->func !== '' ? " data-kz-func='$this->func' " : "";
 		$i = knop_enumerator();
 		$this->html = "<a {$e}
 				{$f}
@@ -81,7 +81,7 @@ class Ef_knop extends Ef_basis_class {
 	}
 }
 
-class Kz_knop_combi extends Ef_knop {
+class Kz_knop_combi extends Kz_knop {
 
 
 	public function __construct ($a = array()) {
@@ -97,7 +97,7 @@ class Kz_knop_combi extends Ef_knop {
 				class='knop kz-tooltip' 
 				data-tooltip-titel='{$this->tekst}' 
 				data-tooltip-tekst='{$this->tooltip}'
-				data-efiber-func='tooltip'
+				data-kz-func='tooltip'
 				title='Meer informatie'
 			>"
 			. file_get_contents (plugin_dir_path(__FILE__)."../iconen-nieuw/svg/info.svg") . 
@@ -115,7 +115,7 @@ class Kz_knop_combi extends Ef_knop {
 	public function maak_knop() {
 
 		$i = knop_enumerator();		
-		$f = $this->func !== '' ? " data-efiber-func='$this->func' " : "";
+		$f = $this->func !== '' ? " data-kz-func='$this->func' " : "";
 		$this->knop_html = "
 			<a 
 				{$f}

@@ -1,4 +1,4 @@
-/* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren, knoppenDispatcher, controleerPostcode, opSubmitDisable, ankerRedirect, generiekeValidatie  */
+/* globals doc, location, KzAjax, kzModal, kzTekst, kzRouting, kzStickyKeuzes, teksten, KzAjaxKleineFormulieren, knoppenDispatcher, controleerPostcode, opSubmitDisable, ankerRedirect, generiekeValidatie  */
 const doc = document,
 	body 	= doc.body;
 let $ = null;
@@ -36,7 +36,7 @@ function ankerRedirect() {
 	}	
 }
 
-function efiberInit() {
+function kzInit() {
 	/*------------------------------------------------------
 	|
 	| 	Deze functie start alles op!
@@ -52,7 +52,7 @@ function efiberInit() {
 	$ = jQuery;
 
 	// afhandeling van navigatie
-	efiberRouting.init();
+	kzRouting.init();
 
 	// dispatcher zit op de body te luisteren en stuurt functies aan.
 	knoppenDispatcher();
@@ -63,7 +63,7 @@ function efiberInit() {
 	// zie onder
 	opSubmitDisable();
 
-	// terugsturen naar actiepagina of efiber op anker
+	// terugsturen naar actiepagina of kz op anker
 	ankerRedirect();
 
 	// generieke validatie zoals input alleen getallen
@@ -72,7 +72,7 @@ function efiberInit() {
 	scrollCheck();
 }
 
-window.onload = function () { efiberInit(); };
+window.onload = function () { kzInit(); };
 
 function generiekeValidatie() {
 	/*------------------------------------------------------
@@ -118,7 +118,7 @@ function opSubmitDisable() {
 }
 
 
-function efiberSorteerIWWIW(pakketten) {
+function kzSorteerIWWIW(pakketten) {
 	/*------------------------------------------------------
 	|
 	|	neemt een hoeveelheid pakketten en sorteert die op prijs

@@ -84,13 +84,13 @@
 				/* we doen dit imperatief want anders is het later niet te volgen */
 
 				.stappen-visualisatie_stap:nth-child(1) .stappen-visualisatie_afb {
-					background-image: url('/wp-content/plugins/efiber/iconen-nieuw/svg/stap 1.svg');
+					background-image: url('/wp-content/plugins/keuzehulp/iconen-nieuw/svg/stap 1.svg');
 				}
 				.stappen-visualisatie_stap:nth-child(2) .stappen-visualisatie_afb {
-					background-image: url('/wp-content/plugins/efiber/iconen-nieuw/svg/stap 2.svg');
+					background-image: url('/wp-content/plugins/keuzehulp/iconen-nieuw/svg/stap 2.svg');
 				}
 				.stappen-visualisatie_stap:nth-child(3) .stappen-visualisatie_afb {
-					background-image: url('/wp-content/plugins/efiber/iconen-nieuw/svg/stap 3.svg');
+					background-image: url('/wp-content/plugins/keuzehulp/iconen-nieuw/svg/stap 3.svg');
 				}
 
 				/* telt als */
@@ -121,7 +121,7 @@
 
 				[data-kz-stap~='vergelijken'] .stappen-visualisatie_stap:nth-child(1) .stappen-visualisatie_afb {
 					opacity: 1;
-					background-image: url('/wp-content/plugins/efiber/iconen-nieuw/svg/check.svg');
+					background-image: url('/wp-content/plugins/keuzehulp/iconen-nieuw/svg/check.svg');
 				}
 				[data-kz-stap~='vergelijken'] .stappen-visualisatie_stap:nth-child(1) .stappen-visualisatie_tekst {
 					opacity: .6;
@@ -146,7 +146,7 @@
 
 				[data-kz-stap~='bestellen'] .stappen-visualisatie_stap:nth-child(1) .stappen-visualisatie_afb {
 					opacity: 1;
-					background-image: url('/wp-content/plugins/efiber/iconen-nieuw/svg/check.svg');
+					background-image: url('/wp-content/plugins/keuzehulp/iconen-nieuw/svg/check.svg');
 				}
 				[data-kz-stap~='bestellen'] .stappen-visualisatie_stap:nth-child(1) .stappen-visualisatie_tekst {
 					opacity: .6;
@@ -155,7 +155,7 @@
 				}
 				[data-kz-stap~='bestellen'] .stappen-visualisatie_stap:nth-child(2) .stappen-visualisatie_afb {
 					opacity: 1;
-					background-image: url('/wp-content/plugins/efiber/iconen-nieuw/svg/check.svg');
+					background-image: url('/wp-content/plugins/keuzehulp/iconen-nieuw/svg/check.svg');
 				}
 				[data-kz-stap~='bestellen'] .stappen-visualisatie_stap:nth-child(2) .stappen-visualisatie_tekst {
 					opacity: .6;

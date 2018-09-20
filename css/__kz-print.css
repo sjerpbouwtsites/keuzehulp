@@ -1,9 +1,9 @@
 
-.efiber-form-sectie {
+.kz-form-sectie {
 	margin-bottom: 10px;
 	padding: 20px;
 }
-/*	[class^='print'] > .efiber-form-sectie {
+/*	[class^='print'] > .kz-form-sectie {
 		padding-left: 40px;
 		padding-right: 40px;
 		margin-left: -40px;
@@ -11,7 +11,7 @@
 		padding-top: 40px;
 		padding-bottom: 40px
 	}
-		#print-vergelijking .efiber-form-sectie {
+		#print-vergelijking .kz-form-sectie {
 			border-radius: 40px;
 			margin-bottom: 30px;
 		}*/
@@ -20,24 +20,24 @@
 			overflow-x: scroll;
 		}
 
-			#print-vergelijking .efiber-form-sectie + .efiber-form-sectie:nth-child(2) {
+			#print-vergelijking .kz-form-sectie + .kz-form-sectie:nth-child(2) {
 				background: transparent;
 				margin-bottom: 0;
 			}
 
 
-				#print-vergelijking .efiber-form-sectie + .efiber-form-sectie header h3{
+				#print-vergelijking .kz-form-sectie + .kz-form-sectie header h3{
 					margin-bottom: 0;
 					border-bottom: 0;
 					padding-bottom: 0;
 				}
 
 				/* toon niet tabel`behalve bestel */
-				#print-vergelijking .efiber-form-sectie + .efiber-form-sectie ~ .efiber-form-sectie {
+				#print-vergelijking .kz-form-sectie + .kz-form-sectie ~ .kz-form-sectie {
 					display: none;
 				}
 
-					#print-vergelijking .efiber-form-sectie + .efiber-form-sectie ~ .efiber-form-sectie:last-child {
+					#print-vergelijking .kz-form-sectie + .kz-form-sectie ~ .kz-form-sectie:last-child {
 						display: block;
 					}
 
@@ -89,10 +89,10 @@
 			padding-top: 20px;
 		}
 
-		#print-vergelijking .efiber-form-sectie:first-child .rij:first-child .veld {
+		#print-vergelijking .kz-form-sectie:first-child .rij:first-child .veld {
 			padding-bottom: 20px;
 		}
-		#print-vergelijking .efiber-form-sectie:first-child .rij:last-child .veld {
+		#print-vergelijking .kz-form-sectie:first-child .rij:last-child .veld {
 			padding-top: 20px;
 		}
 
@@ -112,10 +112,10 @@
 				padding-top: 10px;
 			}
 
-			#print-vergelijking .efiber-form-sectie:first-child .rij:first-child .veld {
+			#print-vergelijking .kz-form-sectie:first-child .rij:first-child .veld {
 				padding-bottom: 10px;
 			}
-			#print-vergelijking .efiber-form-sectie:first-child .rij:last-child .veld {
+			#print-vergelijking .kz-form-sectie:first-child .rij:last-child .veld {
 				padding-top: 10px;
 			}
 		}
@@ -138,7 +138,7 @@
 			font-size: 1.2em;
 		}
 
-		#print-vergelijking .efiber-form-sectie header {
+		#print-vergelijking .kz-form-sectie header {
 			margin-bottom: 5px;
 		}
 
@@ -147,7 +147,7 @@
 		}
 
 /*
-	#print-vergelijking .efiber-form-sectie:first-child {
+	#print-vergelijking .kz-form-sectie:first-child {
 		background-color: transparent;
 		padding-top: 0;
 		padding-bottom: 0;
@@ -193,7 +193,7 @@
 				}
 
 
-			#print-vergelijking .efiber-form-sectie:last-child .rij:first-child{
+			#print-vergelijking .kz-form-sectie:last-child .rij:first-child{
 				min-height: 75px;
 			}
 
@@ -244,47 +244,47 @@
 				margin-right: -10px;
 			}
 
-			#print-aanmeldformulier .efiber-form-sectie{
+			#print-aanmeldformulier .kz-form-sectie{
 				margin-bottom: 20px;
 				margin-right: 0;
 				margin-left: 0;
 			}
 
-			#print-aanmeldformulier .efiber-form-sectie.samenvatting {
+			#print-aanmeldformulier .kz-form-sectie.samenvatting {
 				padding: 20px;
 				background-color: white;
 			}
 
-			#print-aanmeldformulier .efiber-form-sectie.samenvatting h3 {
+			#print-aanmeldformulier .kz-form-sectie.samenvatting h3 {
 				display: none;
 			}
 
 			/* uw gekozen opties*/
-			#print-aanmeldformulier .efiber-form-sectie ~ p {
+			#print-aanmeldformulier .kz-form-sectie ~ p {
 
 				color: black;
 				margin-bottom: 20px;
 				margin-left: auto;
 				margin-right: auto;
 			}
-			#print-aanmeldformulier .efiber-form-sectie.televisie {
+			#print-aanmeldformulier .kz-form-sectie.televisie {
 				padding: 20px;
 				background-color: #feddeb;
 				margin-bottom: 20px;
 			}
 
-			#print-aanmeldformulier .efiber-form-sectie.bellen {
+			#print-aanmeldformulier .kz-form-sectie.bellen {
 				padding: 20px;
 				background-color: white;
 				margin-bottom: 20px;
 			}
-			#print-aanmeldformulier .efiber-form-sectie.meta {
+			#print-aanmeldformulier .kz-form-sectie.meta {
 				padding: 20px;
 				background-color: #feddeb;
 				margin-bottom: 20px;
 			}
 
-			#print-aanmeldformulier .efiber-form-sectie.meta h3 {
+			#print-aanmeldformulier .kz-form-sectie.meta h3 {
 				display: none;
 			}
 
@@ -352,8 +352,8 @@
 					}
 
 			@media (max-width: 700px) {
-				#print-aanmeldformulier .efiber-radio .label,
-				#print-aanmeldformulier div.efiber-checkbox {
+				#print-aanmeldformulier .kz-radio .label,
+				#print-aanmeldformulier div.kz-checkbox {
 				    display: flex;
 				    flex-direction: column;
 				    text-align: center;
@@ -366,7 +366,7 @@
 					text-align: center;
 					margin: 10px auto 0;
 				}
-				#print-aanmeldformulier div.efiber-checkbox svg {
+				#print-aanmeldformulier div.kz-checkbox svg {
 					margin-left: 0;
 				}
 				#print-aanmeldformulier .tekst, .heeft-knop {
@@ -401,10 +401,10 @@
 					padding: 0;
 				}
 
-				#print-aanmeldformulier div.knop.efiber-radio {
+				#print-aanmeldformulier div.knop.kz-radio {
 					flex-direction: column;
 				}
-				#print-aanmeldformulier div.knop.efiber-radio svg {
+				#print-aanmeldformulier div.knop.kz-radio svg {
 					margin-left: 0;
 				}
 			}
@@ -500,19 +500,19 @@
 	.print-vergelijking .veld h3 {
 		margin-bottom: 10px; /* titel rij */
 	}
-	.print-vergelijking .efiber-form-sectie:first-child {
+	.print-vergelijking .kz-form-sectie:first-child {
 		margin-bottom: 0;
 	}
 
 		/* provider logo's */
-		.print-vergelijking .efiber-form-sectie:first-child .rij:first-child .veld h3,
-		.print-vergelijking .efiber-form-sectie:first-child .rij:first-child .veld {
+		.print-vergelijking .kz-form-sectie:first-child .rij:first-child .veld h3,
+		.print-vergelijking .kz-form-sectie:first-child .rij:first-child .veld {
 			display: flex;
 			flex-direction: column;
 			justify-content: flex-end;
 		}
 
-	.print-vergelijking .efiber-form-sectie header h3 {
+	.print-vergelijking .kz-form-sectie header h3 {
 		font-size: 1.2em;
 	}
 
@@ -533,7 +533,7 @@
 		line-height: 35px;
 	}
 
-	.efiber-radio .label {
+	.kz-radio .label {
 		font-weight: 400;
 	}
 
@@ -547,12 +547,12 @@
 		.print-aanmeldformulier .rij.heeft-knop.actief .veld .knop .label {
 			font-weight: 600;
 		}
-			.print-aanmeldformulier .rij.heeft-knop.actief .veld .knop.efiber-radio,
-			.print-aanmeldformulier .rij.heeft-knop.actief .veld .knop.efiber-radio .label {
+			.print-aanmeldformulier .rij.heeft-knop.actief .veld .knop.kz-radio,
+			.print-aanmeldformulier .rij.heeft-knop.actief .veld .knop.kz-radio .label {
 				font-weight: 400;
 			}
-				.print-aanmeldformulier .rij.heeft-knop.actief .veld .knop.efiber-radio.actief,
-				.print-aanmeldformulier .rij.heeft-knop.actief .veld .knop.efiber-radio.actief .label {
+				.print-aanmeldformulier .rij.heeft-knop.actief .veld .knop.kz-radio.actief,
+				.print-aanmeldformulier .rij.heeft-knop.actief .veld .knop.kz-radio.actief .label {
 					font-weight: 600;
 				}
 
@@ -608,7 +608,7 @@
 		}
 
 
-		.print-provider-pakketten .geen-ikoon.efiber-bestelknop {
+		.print-provider-pakketten .geen-ikoon.kz-bestelknop {
 			font-size: 12px;
 			align-self: flex-end;
 		}
@@ -651,14 +651,14 @@
 	}
 
 	.print-provider-pakketten .pakket > span:first-child {
-		background-image: url('/wp-content/plugins/efiber/svg/plus.svg');
+		background-image: url('/wp-content/plugins/keuzehulp/svg/plus.svg');
 		background-size: 20px 20px;
 		background-position: right top;
 		background-repeat: no-repeat;
 		padding-right: 40px;
 	}
 	.print-provider-pakketten .pakket.open > span:first-child {
-		background-image: url('/wp-content/plugins/efiber/svg/min.svg');
+		background-image: url('/wp-content/plugins/keuzehulp/svg/min.svg');
 	}
 
 	.print-provider-pakketten .pakket > span ~ *  {
@@ -678,7 +678,7 @@
 
 
 
-.print-aanmeldformulier .efiber-checkbox input{
+.print-aanmeldformulier .kz-checkbox input{
 	/*display: none;*/
 }
 
@@ -720,7 +720,7 @@
 		}
 
 
-.print-aanmeldformulier .efiber-form-sectie-torso > small {
+.print-aanmeldformulier .kz-form-sectie-torso > small {
 	position: relative;
 	bottom: -20px;
 	display: block;

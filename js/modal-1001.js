@@ -1,8 +1,8 @@
-/* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren  */
+/* globals doc, location, KzAjax, kzModal, kzTekst, kzRouting, kzStickyKeuzes, teksten, KzAjaxKleineFormulieren  */
 
-window.onload = function () { efiberInit(); };
+window.onload = function () { kzInit(); };
 
-function efiberTekst(snede, invoeging) {
+function kzTekst(snede, invoeging) {
 	if (!(snede in kzModalTeksten)) {
 		console.error(`${snede} komt niet voor in kzModalTeksten`);
 		return '';
@@ -28,12 +28,12 @@ function efiberTekst(snede, invoeging) {
 }
 
 
-function efiberModal(tekst, tijd = false) {
+function kzModal(tekst, tijd = false) {
 	
-	doc.body.className = `${doc.body.className} efiber-modal-open`;
+	doc.body.className = `${doc.body.className} kz-modal-open`;
 
-	$modal = jQuery("<div class='efiber-modal'></div>");
-	$modalBinnen = jQuery("<div class='efiber-modal-binnen'></div>");
+	$modal = jQuery("<div class='kz-modal'></div>");
+	$modalBinnen = jQuery("<div class='kz-modal-binnen'></div>");
 
 	if (typeof tekst !== 'string') { // object met kop en torso
 		if ('kop' in tekst) {
@@ -48,12 +48,12 @@ function efiberModal(tekst, tijd = false) {
 		$modalBinnen.append(jQuery(t));
 	}
 
-	const $sluiten = jQuery("<a href='#' class='knop efiber-modal-sluiten' data-efiber-func='verwijder-modal'>X</a>");
+	const $sluiten = jQuery("<a href='#' class='knop kz-modal-sluiten' data-kz-func='verwijder-modal'>X</a>");
 	$modalBinnen.append($sluiten);
 
 	$modal.append($modalBinnen);
 
-	const $modalAchtergrond = $("<div class='efiber-modal-achtergrond' ><div class='efiber-modal-achtergrond-binnen knop' data-efiber-func='verwijder-modal'></div></div>");
+	const $modalAchtergrond = $("<div class='kz-modal-achtergrond' ><div class='kz-modal-achtergrond-binnen knop' data-kz-func='verwijder-modal'></div></div>");
 	$modalAchtergrond.append($modal);
 
 
@@ -63,26 +63,26 @@ function efiberModal(tekst, tijd = false) {
 
 	if (tijd) {
 		setTimeout(() => {
-			efiberVerwijderModal();
+			kzVerwijderModal();
 		}, tijd);
 	}
 }
 
-function efiberVerwijderModal() {
+function kzVerwijderModal() {
 
-	jQuery('.efiber-modal-achtergrond').fadeOut(300, () => {
-		jQuery('.efiber-modal-achtergrond').remove();
+	jQuery('.kz-modal-achtergrond').fadeOut(300, () => {
+		jQuery('.kz-modal-achtergrond').remove();
 	});
 
 	// in rare situaties kunnen er meerdere modals geopend zijn.
 	do {
-		doc.body.className = doc.body.className.replace('efiber-modal-open', '').trim();
-	} while (doc.body.className.indexOf('efiber-modal-open') !== -1);
+		doc.body.className = doc.body.className.replace('kz-modal-open', '').trim();
+	} while (doc.body.className.indexOf('kz-modal-open') !== -1);
 }
 
 document.onkeydown = function (evt) {
     evt = evt || window.event;
     if (evt.keyCode == 27 || evt.keyCode == 13) {
-        efiberVerwijderModal();
+        kzVerwijderModal();
     }
 };

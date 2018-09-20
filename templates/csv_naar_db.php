@@ -1,6 +1,6 @@
 <?php
 echo "<style>";
-include_once plugin_dir_path( __FILE__ ) . "../css/efiber-admin.css" ;
+include_once plugin_dir_path( __FILE__ ) . "../css/kz-admin.css" ;
 echo "</style>";
 // https://www.cloudways.com/blog/import-export-csv-using-php-and-mysql/
 
@@ -11,15 +11,15 @@ $notificatie = array(
 	'tekst' => '',
 );
  
-if( array_key_exists('efiber_insert', $_POST) ){
-	$notificatie = efiber_insert();
-} else if (array_key_exists('efiber_delete_gebiedscode', $_POST) ) {
-	$notificatie = efiber_delete($_POST['efiber_delete_gebiedscode']);
+if( array_key_exists('keuzehulp_insert', $_POST) ){
+	$notificatie = keuzehulp_insert();
+} else if (array_key_exists('keuzehulp_delete_gebiedscode', $_POST) ) {
+	$notificatie = keuzehulp_delete($_POST['keuzehulp_delete_gebiedscode']);
 }
 
 
 
-function efiber_insert() {
+function keuzehulp_insert() {
 
 	global $notificatie;
 
@@ -89,7 +89,7 @@ function efiber_insert() {
 	return $notificatie;
 }
 
-function efiber_delete($gebiedscode) {
+function keuzehulp_delete($gebiedscode) {
 
 	if (!$gebiedscode) {
 		return array(
@@ -166,11 +166,11 @@ function csv_fieldset_print($str) { ?>
 	<?php endif; 
 	?>
 
-	<h1>Efiber postcode naar database</h1>
+	<h1>Kz postcode naar database</h1>
 
-	<form class="form-table efiber-insert" action="#" method="post" name="upload_excel" enctype="multipart/form-data">
+	<form class="form-table kz-insert" action="#" method="post" name="upload_excel" enctype="multipart/form-data">
 
-		<input type='hidden' name='efiber_insert'>
+		<input type='hidden' name='keuzehulp_insert'>
 
 		<?php csv_fieldset_print('Importeer adressen'); ?>
 
@@ -181,11 +181,11 @@ function csv_fieldset_print($str) { ?>
 
 	<hr>
 
-	<form class="form-table efiber-delete" action="#" method="post"">
+	<form class="form-table kz-delete" action="#" method="post"">
 
 		<h2>Verwijder per gebiedscode zonder die met abo</h2>
 	    
-		<select name='efiber_delete_gebiedscode'>
+		<select name='keuzehulp_delete_gebiedscode'>
 			<option>Kies</option>
 			<?php $con = getdb();
 

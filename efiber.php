@@ -3,13 +3,13 @@
 
 **************************************************************************
 
-Plugin Name:  efiber
-Description:  keuzemenu voor efiber
+Plugin Name:  keuzehulp
+Description:  keuzemenu voor keuzehulp
 Plugin URI:   https://indrukwekkend.nl
 Version:      0.1
 Author:       Indrukwekkend
 Author URI:   https://indrukwekkend.nl
-Text Domain:  efiber
+Text Domain:  keuzehulp
 License:      GPL2
 License URI:  https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,17 +18,17 @@ License URI:  https://www.gnu.org/licenses/gpl-2.0.html
 */
 
 
-define('EF_SITE_URI', get_site_url());
-define('EF_THEME_DIR', get_template_directory());
-define('EF_THEME_URI', get_template_directory_uri());
+define('KZ_SITE_URI', get_site_url());
+define('KZ_THEME_DIR', get_template_directory());
+define('KZ_THEME_URI', get_template_directory_uri());
 
-define('EF_IMG_DIR', EF_THEME_DIR . "/afb");
-define('EF_IMG_URI', EF_THEME_URI . "/afb");
-define('EF_JS_DIR', EF_THEME_DIR . "/js");
-define('EF_JS_URI', EF_THEME_URI . "/js");
+define('KZ_IMG_DIR', KZ_THEME_DIR . "/afb");
+define('KZ_IMG_URI', KZ_THEME_URI . "/afb");
+define('KZ_JS_DIR', KZ_THEME_DIR . "/js");
+define('KZ_JS_URI', KZ_THEME_URI . "/js");
 
 
-function Ef_scripts_in_rij() {
+function Kz_scripts_in_rij() {
 
 
 
@@ -73,16 +73,16 @@ function Ef_scripts_in_rij() {
     $stijl_postfix = '';
 
     foreach ($pak_scripts as $s) {
-        wp_register_script( "efiber-$s", plugins_url("efiber/js/{$s}".$script_postfix.".js"), array(), null, true );
-        wp_enqueue_script( "efiber-$s" );
+        wp_register_script( "keuzehulp-$s", plugins_url("keuzehulp/js/{$s}".$script_postfix.".js"), array(), null, true );
+        wp_enqueue_script( "keuzehulp-$s" );
     }
 
-    wp_register_script( 'efiber-script', plugins_url('efiber/js/{efiber}'.$script_postfix.'.js'), array(), null, true );
-    wp_enqueue_script( 'efiber-script' );
+    wp_register_script( 'keuzehulp-script', plugins_url('keuzehulp/js/{keuzehulp}'.$script_postfix.'.js'), array(), null, true );
+    wp_enqueue_script( 'keuzehulp-script' );
 
     foreach ($pak_stijlen as $s) {
         $v = ($s !== '' ? "-$s" : $s);
-        wp_register_style( "kz$v", plugins_url("efiber/css/kz{$v}".$stijl_postfix.".css"), array(), null);
+        wp_register_style( "kz$v", plugins_url("keuzehulp/css/kz{$v}".$stijl_postfix.".css"), array(), null);
         wp_enqueue_style( "kz$v" );
     }
 
@@ -119,30 +119,30 @@ function Ef_scripts_in_rij() {
 
 }
 
-function Ef_init () {
+function Kz_init () {
 
     foreach ( glob( plugin_dir_path( __FILE__ ) . "inc/*.php" ) as $file ) {
         require_once $file;
     }
 
-    add_action( 'wp_enqueue_scripts', 'Ef_scripts_in_rij' );
+    add_action( 'wp_enqueue_scripts', 'Kz_scripts_in_rij' );
 
 }
 
 
-function Ef_pakket_opties() {
+function Kz_pakket_opties() {
 
     if ( function_exists( 'acf_add_options_sub_page' ) ){
         acf_add_options_sub_page(array(
             'title'      => 'opties',
-            'parent'     => 'admin.php?page=efiber',
+            'parent'     => 'admin.php?page=keuzehulp',
             'capability' => 'manage_options'
         ));
     }
 
 }
 
-function Ef_teksten() {
+function Kz_teksten() {
 
     if ( function_exists( 'acf_add_options_sub_page' ) ){
         $page = acf_add_options_page(array(
@@ -164,18 +164,18 @@ function Ef_teksten() {
 
 }
 
-function Ef_menu(){
-    add_menu_page( 'keuzehulp', 'Keuzehulp CSV', 'manage_options', 'efiber', 'print_efiber_postcode_pagina' );
+function Kz_menu(){
+    add_menu_page( 'keuzehulp', 'Keuzehulp CSV', 'manage_options', 'keuzehulp', 'print_keuzehulp_postcode_pagina' );
 }
 
-add_action('init', 'Ef_init');
+add_action('init', 'Kz_init');
 
-add_action('admin_menu', 'Ef_menu');
-add_action('init', 'Ef_pakket_opties');
-add_action('admin_menu', 'Ef_teksten');
-add_action('init', 'Ef_registreer_posttypes');
+add_action('admin_menu', 'Kz_menu');
+add_action('init', 'Kz_pakket_opties');
+add_action('admin_menu', 'Kz_teksten');
+add_action('init', 'Kz_registreer_posttypes');
 
-function print_efiber_postcode_pagina( ){
+function print_keuzehulp_postcode_pagina( ){
     include_once plugin_dir_path( __FILE__ ) . "templates/csv_naar_db.php" ;
 }
 
@@ -216,7 +216,7 @@ class PageTemplater {
             array( $this, 'view_project_template')
         );
         $this->templates = array(
-            'templates/keuzehulp.php' => 'Efiber Keuzehulp',
+            'templates/keuzehulp.php' => 'Keuzehulp',
             'templates/bedankt.php' => 'bedankt',
         );
     }

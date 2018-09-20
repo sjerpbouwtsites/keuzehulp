@@ -1,12 +1,12 @@
 <div class="kz-navigatie-beneden kz-navigatie-beneden_buiten">
 	<div class="kz-navigatie-beneden_binnen">
-		<a data-efiber-func="toon-stap" data-keuzehulp-stap="7" class="knop kz-navigatie-beneden_knop blauwe-knop" href="#8">
+		<a data-kz-func="toon-stap" data-keuzehulp-stap="7" class="knop kz-navigatie-beneden_knop blauwe-knop" href="#8">
 			<span>Verder naar televisie</span>
 		</a>
-		<a data-efiber-func="toon-stap" data-keuzehulp-stap="9" class="knop kz-navigatie-beneden_knop blauwe-knop" href="#11">
+		<a data-kz-func="toon-stap" data-keuzehulp-stap="9" class="knop kz-navigatie-beneden_knop blauwe-knop" href="#11">
 			<span>Verder naar installatie</span>
 		</a>
-		<a data-efiber-func="stap-terug" class="knop efiber-stap-terug kz-navigatie-beneden_knop" href="#">
+		<a data-kz-func="stap-terug" class="knop kz-stap-terug kz-navigatie-beneden_knop" href="#">
 			<?php require plugin_dir_path(__FILE__)."../iconen-nieuw/svg/terug.svg"; ?>
 			<span>stap terug</span>
 		</a>
@@ -16,14 +16,14 @@
 
 <?php
 /*
-	$terug = new Ef_knop(array(
-		'class'		=> 'efiber-stap-terug efiber-navigatie',
+	$terug = new Kz_knop(array(
+		'class'		=> 'kz-stap-terug kz-navigatie',
 		'tekst'		=> 'stap terug',
 		'func'		=> 'stap-terug',
 		'ikoon'		=> require 
 	));
 
-	echo "<div class='efiber-navigatie-buiten'><div class='efiber-navigatie-binnen'>";
+	echo "<div class='kz-navigatie-buiten'><div class='kz-navigatie-binnen'>";
 	$terug->print();
 
 	$knop->class = '';

@@ -3,7 +3,7 @@
 
 
 
-	*** EFIBER TESTPROCEDURE *** 
+	*** kz TESTPROCEDURE *** 
 
 	edgecases & risicofactoren
 

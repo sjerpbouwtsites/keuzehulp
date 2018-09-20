@@ -6,9 +6,9 @@ function knoppenDispatcher() {
 	/*------------------------------------------------------
 	|
 	|	een knop (class='knop') kan 0 tot n functies hebben
-	|	data-efiber-func='efiber-stap-terug efiber-drink-koffie'
-	|	doet: knoppenFuncs['efiberStapTerug'](knop) en
-	|	knoppenFuncs['efiberDrinkKoffie'](knop)
+	|	data-kz-func='kz-stap-terug kz-drink-koffie'
+	|	doet: knoppenFuncs['kzStapTerug'](knop) en
+	|	knoppenFuncs['kzDrinkKoffie'](knop)
 	|	met de knop dus als parameter.
 	|
 	|	Het nut van deze dispatcher zit er in dat pas op het moment dat de daadwerkelijke
@@ -23,19 +23,19 @@ function knoppenDispatcher() {
 	body.addEventListener('click', function(e){
 
 		var t = e.target;
-		var knop = efiberVindKnop(t, 'knop');
+		var knop = kzVindKnop(t, 'knop');
 
 
 		if (knop) {
 			e.preventDefault();
 
 			if (
-				!knop.hasAttribute('data-efiber-func') ||
+				!knop.hasAttribute('data-kz-func') ||
 				knop.className.indexOf('invalide') !== -1
 			) return;
 
 
-			var funcAttr = knop.getAttribute('data-efiber-func').trim();
+			var funcAttr = knop.getAttribute('data-kz-func').trim();
 
 			if (!funcAttr || typeof funcAttr === 'undefined') {
 				console.error('funcAttr undefined');
@@ -79,7 +79,7 @@ var knoppenFuncs = {
 			? knop.href.split('#')[1]
 			: knop.getAttribute('data-href').split('#')[1]
 
-		efiberRouting.ga(n);
+		kzRouting.ga(n);
 
 
 	},
@@ -90,113 +90,113 @@ var knoppenFuncs = {
 	},
 	stapTerug: function(knop){
 
-		efiberRouting.stapTerug();
+		kzRouting.stapTerug();
 
 	},
 	leegKeuzehulp: function (){
 
-		sessionStorage.setItem('efiber-keuzehulp', JSON.stringify({}));
+		sessionStorage.setItem('kz-keuzehulp', JSON.stringify({}));
 
 	},
 	zetNiveauKnop: function(knop){
 
-		efiberZetNiveauKnop(knop);
+		kzZetNiveauKnop(knop);
 
 	},
 	zetSituatie: function (knop){
 
-		var s = knop.getAttribute('data-efiber-situatie-keuze');
+		var s = knop.getAttribute('data-kz-situatie-keuze');
 
-		keuzehulpGeneriek(knop, 'data-efiber-situatie-keuze', 'situatie', function (){
-			body.setAttribute('data-efiber-situatie-keuze', s);
+		keuzehulpGeneriek(knop, 'data-kz-situatie-keuze', 'situatie', function (){
+			body.setAttribute('data-kz-situatie-keuze', s);
 		});
 
-		eFiberSluitRoutesUit(naarCamelCase(s));
+		kzSluitRoutesUit(naarCamelCase(s));
 
 		// dit is de eerste keuze waar je langs komt als je
 		// van IWWIW komt en vervolgens naar de keuzehulp gaat.
 		// in het aanmeldformulier is het bestaan van die sleutel en test of je daarvandaan komt
 		// dus hier weghalen
-		var kh = JSON.parse(sessionStorage.getItem('efiber-keuzehulp'));
+		var kh = JSON.parse(sessionStorage.getItem('kz-keuzehulp'));
 		if ('ik-weet-wat-ik-wil' in kh) {
 			delete kh['ik-weet-wat-ik-wil'];
-			sessionStorage.setItem('efiber-keuzehulp', JSON.stringify(kh));
+			sessionStorage.setItem('kz-keuzehulp', JSON.stringify(kh));
 		}
 
 	},
 	haalZakelijkFormulier: function(){
 
-		efiberAjaxKleineFormulieren('efiber_haal_zakelijk_formulier', 'print-zakelijk-formulier', {gebiedscode: sessionStorage.getItem('efiber-gebiedscode')});
+		kzAjaxKleineFormulieren('keuzehulp_haal_zakelijk_formulier', 'print-zakelijk-formulier', {gebiedscode: sessionStorage.getItem('kz-gebiedscode')});
 
 	},
 	zetKeuzeInternet: function(knop) {
 
-		keuzehulpGeneriek(knop, 'data-efiber-internet-keuze', 'internet');
+		keuzehulpGeneriek(knop, 'data-kz-internet-keuze', 'internet');
 
 	},
 	zetNummersConsequentie: function (knop){
 
-		var k = JSON.parse(sessionStorage.getItem('efiber-keuzehulp'));
+		var k = JSON.parse(sessionStorage.getItem('kz-keuzehulp'));
 
 		if ('situatie' in k) {
 			if (k['situatie'] === 'kleinZakelijk') {
-				eFiberSluitRoutesUit('nummersZakelijk');
+				kzSluitRoutesUit('nummersZakelijk');
 			} else {
-				eFiberSluitRoutesUit('nummersParticulier');
+				kzSluitRoutesUit('nummersParticulier');
 			}
 		} else {
-			eFiberSluitRoutesUit('nummersParticulier');
+			kzSluitRoutesUit('nummersParticulier');
 		}
 
 	},
 	zetKeuzeBellen: function(knop) {
 
-		keuzehulpGeneriek(knop, 'data-efiber-bellen-keuze', 'bellen');
+		keuzehulpGeneriek(knop, 'data-kz-bellen-keuze', 'bellen');
 
 	},
 	zetKeuzeNummers: function (knop) {
 
-		keuzehulpGeneriek(knop, 'data-efiber-nummers-keuze', 'nummers');
+		keuzehulpGeneriek(knop, 'data-kz-nummers-keuze', 'nummers');
 
 	},
 	zetKeuzeTelevisie: function (knop) {
 
-		keuzehulpGeneriek(knop, 'data-efiber-televisie-keuze', 'televisie');
+		keuzehulpGeneriek(knop, 'data-kz-televisie-keuze', 'televisie');
 
 
 /*		//als interactieve TV, sla dan kabelstap over en sla op dat keuze kabels is UTP.
-		var tvOptiesVerderKnop = doc.querySelector('.efiber-navigatie-binnen a[data-keuzehulp-stap="9"]');
+		var tvOptiesVerderKnop = doc.querySelector('.kz-navigatie-binnen a[data-keuzehulp-stap="9"]');
 
-		if (knop.getAttribute('data-efiber-televisie-keuze') == 3) {
+		if (knop.getAttribute('data-kz-televisie-keuze') == 3) {
 			tvOptiesVerderKnop.setAttribute('href', '#11');
 
-			var kh = JSON.parse(sessionStorage.getItem('efiber-keuzehulp'));
+			var kh = JSON.parse(sessionStorage.getItem('kz-keuzehulp'));
 			kh.bekabeling = "2";
-			sessionStorage.setItem('efiber-keuzehulp', JSON.stringify(kh));
+			sessionStorage.setItem('kz-keuzehulp', JSON.stringify(kh));
 
-		} else if (knop.getAttribute('data-efiber-televisie-keuze') == 2)  {
+		} else if (knop.getAttribute('data-kz-televisie-keuze') == 2)  {
 			tvOptiesVerderKnop.setAttribute('href', '#10');
 		}*/
 
 	},
 	zetKeuzeTelevisieOpties: function (knop) {
 
-		keuzehulpGeneriek(knop, 'data-efiber-televisie-opties-keuze', 'televisie-opties');
+		keuzehulpGeneriek(knop, 'data-kz-televisie-opties-keuze', 'televisie-opties');
 
 	},
 	zetKeuzeBekabeling: function (knop) {
 
-		keuzehulpGeneriek(knop, 'data-efiber-bekabeling-keuze', 'bekabeling');
+		keuzehulpGeneriek(knop, 'data-kz-bekabeling-keuze', 'bekabeling');
 
 	},
 	zetKeuzeInstallatie: function (knop) {
 
-		keuzehulpGeneriek(knop, 'data-efiber-installatie-keuze', 'installatie');
+		keuzehulpGeneriek(knop, 'data-kz-installatie-keuze', 'installatie');
 
 	},
 	zetKeuzeIkWeetWatIkWil: function (knop) {
 
-		keuzehulpGeneriek(knop, 'data-efiber-ik-weet-wat-ik-wil-keuze', 'ik-weet-wat-ik-wil');
+		keuzehulpGeneriek(knop, 'data-kz-ik-weet-wat-ik-wil-keuze', 'ik-weet-wat-ik-wil');
 
 	},
 
@@ -219,7 +219,7 @@ var knoppenFuncs = {
 
 	},
 	zakelijkFormulier: function(){
-		efiberHaalZakelijkFormulieren();
+		kzHaalZakelijkFormulieren();
 	},
 
 	aanmeldingSchakel: function(knop){
@@ -227,17 +227,17 @@ var knoppenFuncs = {
 		if (knop.className.indexOf('radio') !== -1) {
 
 			// aanmeldformulier.js
-			efiberSchakelRadio(knop);
+			kzSchakelRadio(knop);
 
 		} else if (knop.className.indexOf('checkbox') !== -1)  {
 
 			// aanmeldformulier.js
-			efiberSchakelCheckbox(knop);
+			kzSchakelCheckbox(knop);
 
 		} else if (knop.hasAttribute('type') && knop.getAttribute('type') === 'number')  {
 
 			// aanmeldformulier.js
-			efiberSchakelNumber(knop);
+			kzSchakelNumber(knop);
 
 		} else {
 			console.warn('formulier schakel func onbekend');
@@ -249,33 +249,33 @@ var knoppenFuncs = {
 	belpakketten: function (knop) {
 
 		// aanmeldformulier.js
-		efiberBelpakketten(knop);
+		kzBelpakketten(knop);
 
 	},
 	extraVastNummer: function (knop) {
 
 		// aanmeldformulier.js
-		efiberExtraVastNummer(knop);
+		kzExtraVastNummer(knop);
 
 	},
 	foxSports: function () {
 
 		// aanmeldformulier.js
-		efiberFoxSports();
+		kzFoxSports();
 
 	},
 	updateHidden: function(){
 
 		// aanmeldformulier.js
-		efiberUpdateHidden();
+		kzUpdateHidden();
 	},
 	verwijderModal: function() {
-		efiberVerwijderModal();
+		kzVerwijderModal();
 
 	},
 	toonMeerPakket: function(){
 
-		var secties = doc.getElementById('print-vergelijking').getElementsByClassName('efiber-form-sectie');
+		var secties = doc.getElementById('print-vergelijking').getElementsByClassName('kz-form-sectie');
 
 		for (var i = 1; i < secties.length; i++) {
 
@@ -320,7 +320,7 @@ var knoppenFuncs = {
 	},
 	tooltip: function (knop){
 		
-		efiberModal({
+		kzModal({
 			kop: knop.getAttribute('data-tooltip-titel'),
 			torso: knop.getAttribute('data-tooltip-tekst')
 		});
@@ -333,7 +333,7 @@ var knoppenFuncs = {
 	},
 	stappenNav(knop){
 		doc.getElementById('keuze-menu-lijst').classList.remove('actief');
-		efiberRouting.ga(knop.id.replace('stappen-links-', ''));
+		kzRouting.ga(knop.id.replace('stappen-links-', ''));
 	}
 
 

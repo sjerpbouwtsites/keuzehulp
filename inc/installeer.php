@@ -1,8 +1,8 @@
 <?php
 
-register_activation_hook( __FILE__, 'installeer_efiber' );
+register_activation_hook( __FILE__, 'installeer_kz' );
 
-function installeer_efiber(){
+function installeer_kz(){
 
 
         /*---------------------------------------------------------

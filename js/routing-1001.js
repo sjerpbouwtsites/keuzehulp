@@ -1,7 +1,7 @@
-/* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren  */
+/* globals doc, location, KzAjax, kzModal, kzTekst, kzRouting, kzStickyKeuzes, teksten, KzAjaxKleineFormulieren  */
 // ROUTING
 
-const efiberRouting = {
+const kzRouting = {
 
 
 	/*------------------------------------------------------
@@ -62,7 +62,7 @@ const efiberRouting = {
 	gs: [1], // initiele waarde.
 
 	laatsteInGs() {
-		return efiberRouting.gs[efiberRouting.gs.length - 1];
+		return kzRouting.gs[kzRouting.gs.length - 1];
 	},
 
 	stapTerug() {
@@ -81,14 +81,14 @@ const efiberRouting = {
 			case 2:
 
 			// @TODO dit hoort hier niet thuis
-			sessionStorage.setItem('efiber-keuzehulp', JSON.stringify({}));
+			sessionStorage.setItem('kz-keuzehulp', JSON.stringify({}));
 		break;
 
 		case 7:
 
 		// als gekozen voor 'ik bel alleen mobiel' cq telefoon = 1
 		// dan niet door naar nummerkeuze.
-		if ((JSON.parse(sessionStorage.getItem('efiber-keuzehulp'))).bellen === '1') {
+		if ((JSON.parse(sessionStorage.getItem('kz-keuzehulp'))).bellen === '1') {
 			stapNr = 8;
 		}
 		break;
@@ -138,7 +138,7 @@ const efiberRouting = {
 
 		// ook de evt. knop in de navigatie onderaan schakelen.
 
-		const knopOnder = doc.querySelector(`.efiber-navigatie-binnen [data-keuzehulp-stap="${stap}"]`);
+		const knopOnder = doc.querySelector(`.kz-navigatie-binnen [data-keuzehulp-stap="${stap}"]`);
 		if (knopOnder) {
 			knopOnder.style.display = 'inline-block';
 		}

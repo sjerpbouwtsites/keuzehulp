@@ -1,5 +1,5 @@
 
-/* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren  */
+/* globals doc, location, KzAjax, kzModal, kzTekst, kzRouting, kzStickyKeuzes, teksten, KzAjaxKleineFormulieren  */
 
 function postcodeAjaxCB(r) {
 	/*------------------------------------------------------
@@ -20,8 +20,8 @@ function postcodeAjaxCB(r) {
 			// "Er is al een aanvraag gedaan vanaf uw adres bij %provider%.
 			// Bezoekt u de website op %providerURL% of mailt u naar %providerMail%"
 
-			efiberModal(efiberTekst('aanvraag_gedaan', [r.aanvraag_info.naam,	r.aanvraag_info.URL, r.aanvraag_info.naam, r.aanvraag_info.email]), 60000);
-			efiberRouting.ga(1); // terug naar de voorpagina.
+			kzModal(kzTekst('aanvraag_gedaan', [r.aanvraag_info.naam,	r.aanvraag_info.URL, r.aanvraag_info.naam, r.aanvraag_info.email]), 60000);
+			kzRouting.ga(1); // terug naar de voorpagina.
 			return;
 		}
 
@@ -30,36 +30,36 @@ function postcodeAjaxCB(r) {
 		// hoe wordt door de achterkant teruggegeven?!
 		r.data.gebiedscode = r.gebiedscode;
 		r.data.status = r.status;
-		sessionStorage.setItem('efiber-adres', JSON.stringify(r.data));
-		sessionStorage.setItem('efiber-code', r.gebiedscode);
+		sessionStorage.setItem('kz-adres', JSON.stringify(r.data));
+		sessionStorage.setItem('kz-code', r.gebiedscode);
 
 		body.setAttribute('data-kz-status', r.data.status);
 
 		if (r.status === '100') { //geannuleerd
 
 			if (r.provider_beschikbaar) {
-				efiberModal(
-					efiberTekst('succes_annulering'),
+				kzModal(
+					kzTekst('succes_annulering'),
 					2000,
 				);
-				efiberRouting.ga(2);
+				kzRouting.ga(2);
 			} else {
-				efiberModal(
-					efiberTekst('lead_annulering'), 
+				kzModal(
+					kzTekst('lead_annulering'), 
 					5000
 				);
-				efiberRouting.ga(51);
-				EfiberAjaxKleineFormulieren('efiber_haal_lead_formulier', 'print-lead-formulier', {});				
+				kzRouting.ga(51);
+				KzAjaxKleineFormulieren('keuzehulp_haal_lead_formulier', 'print-lead-formulier', {});				
 			}
 
 		} else if (r.status === '0') {
 
 			if (r.provider_beschikbaar) {
-				efiberModal(
-					efiberTekst('succes_coax'),
+				kzModal(
+					kzTekst('succes_coax'),
 					2000,
 				);
-				efiberRouting.ga(2);
+				kzRouting.ga(2);
 			} else {
 				logFouteSituatiePostcodeCheck(r);
 			}
@@ -76,11 +76,11 @@ function postcodeAjaxCB(r) {
 					status5: 'succes_opgeleverd',
 				};
 
-				efiberModal(
-					efiberTekst(tekstSleutel[`status${r.status}`], r.regio),
+				kzModal(
+					kzTekst(tekstSleutel[`status${r.status}`], r.regio),
 					2000,
 				);
-				efiberRouting.ga(2);			
+				kzRouting.ga(2);			
 
 			} else {
 				logFouteSituatiePostcodeCheck(r);
@@ -89,22 +89,22 @@ function postcodeAjaxCB(r) {
 		}
 
 	} else {
-		efiberModal(efiberTekst('niet_in_uw_gebied'), 5000);
-		efiberRouting.ga(51);
-		efiberAjaxKleineFormulieren('efiber_haal_lead_formulier', 'print-lead-formulier', {});
-		// efiberHaalLeadFormulier();
+		kzModal(kzTekst('niet_in_uw_gebied'), 5000);
+		kzRouting.ga(51);
+		kzAjaxKleineFormulieren('keuzehulp_haal_lead_formulier', 'print-lead-formulier', {});
+		// kzHaalLeadFormulier();
 	}
 }
 
 
 function logFouteSituatiePostcodeCheck(r){
 	
-	efiberModal(
-		efiberTekst('postcodecheck_fout'), 
+	kzModal(
+		kzTekst('postcodecheck_fout'), 
 		5000
 	);
 
-	const ajf = new EfiberAjax({
+	const ajf = new KzAjax({
 		ajaxData: {
 			action: 'kz_schrijf_fout',
 			data: {
@@ -128,7 +128,7 @@ function controleerPostcode() {
 	|
 	| 	Gaat om met de input van de postcodeformulier
 	| 	Valideert de invoer
-	| 	Stuurt info naar de achterkantfunctie efiber_controleer_postcode
+	| 	Stuurt info naar de achterkantfunctie keuzehulp_controleer_postcode
 	| 	Laat de afhandeling van die ajax call verder doen door postcodeAjaxCB
 	|
 	| 	Bevat een stukje routing; als iemand op een url komt waarop de keuzehulp niet draait
@@ -155,9 +155,9 @@ function controleerPostcode() {
 
 		// minimaal vereist: postcode en huisnummer
 		if (getVars.huisnummer && getVars.postcode) {
-			const ajf = new EfiberAjax({
+			const ajf = new KzAjax({
 				ajaxData: {
-					action: 'efiber_controleer_postcode',
+					action: 'keuzehulp_controleer_postcode',
 					data: {
 						postcode: getVars.postcode,
 						huisnummer: getVars.huisnummer,
@@ -184,14 +184,14 @@ function controleerPostcode() {
 			huisnummer = doc.getElementById('huisnummer').value.replace(' ', '').toLowerCase();
 
 		if (!huisnummer.length) {
-			efiberModal(efiberTekst('vul_huis_nummer_in'), 2500);
+			kzModal(kzTekst('vul_huis_nummer_in'), 2500);
 			return;
 		}
 
 		if (correctePostcode) {
-			const ajf = new EfiberAjax({
+			const ajf = new KzAjax({
 				ajaxData: {
-					action: 'efiber_controleer_postcode',
+					action: 'keuzehulp_controleer_postcode',
 					data: {
 						postcode: postcodeTekst,
 						huisnummer,
@@ -206,7 +206,7 @@ function controleerPostcode() {
 
 		// verkeerd geformatteerde postcode
 		} else {
-			efiberModal(efiberTekst('postcode_verkeerd_geformatteerd'), 2500);
+			kzModal(kzTekst('postcode_verkeerd_geformatteerd'), 2500);
 		}
 	});
 }

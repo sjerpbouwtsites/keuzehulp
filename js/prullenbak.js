@@ -1,7 +1,7 @@
 function uitsessionStorageZetKnoppenActief() {
 	// gaat door het geheugen heen en zet de relevante knoppen op actief.
 
-	const kh = JSON.parse(sessionStorage.getItem('efiber-keuzehulp'));
+	const kh = JSON.parse(sessionStorage.getItem('kz-keuzehulp'));
 	let gs;
 
 	if (kh) {
@@ -18,18 +18,18 @@ function uitsessionStorageZetKnoppenActief() {
 	}
 }
 function uitsessionStorageZetKnoppenActiefHelper(s, keuze) {
-	let el = doc.querySelector(`[data-efiber-${s}-keuze="${keuze}"]`);
+	let el = doc.querySelector(`[data-kz-${s}-keuze="${keuze}"]`);
 
 	if (!el) {
 		// opnieuw zoeken met streepcase
-		const selector = `[data-efiber-${naarStreepCase(s)}-keuze="${naarStreepCase(keuze)}"]`;
+		const selector = `[data-kz-${naarStreepCase(s)}-keuze="${naarStreepCase(keuze)}"]`;
 		el = doc.querySelector(selector);
 	}
 
 	if (el) {
 		el.className += ' actief';
 		// en zet ze ook in de zijbalk
-		efiberAppendNiveauKnop(el);
+		kzAppendNiveauKnop(el);
 	} else {
 		console.warn('el null', s, keuze);
 	}

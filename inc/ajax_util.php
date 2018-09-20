@@ -1,5 +1,5 @@
 <?php
-function efiber_pakket_eigenschappen_snelheid_prijs_concreet($snelheid_prijs, $gc_id){
+function keuzehulp_pakket_eigenschappen_snelheid_prijs_concreet($snelheid_prijs, $gc_id){
 
 
 	/*---------------------------------------------------------
@@ -27,7 +27,7 @@ function efiber_pakket_eigenschappen_snelheid_prijs_concreet($snelheid_prijs, $g
 
 }
 
-function efiber_pakket_eigenschappen_up_snelheid_concreet($snelheid_prijs, $gc_id){
+function keuzehulp_pakket_eigenschappen_up_snelheid_concreet($snelheid_prijs, $gc_id){
 
 
 	/*---------------------------------------------------------
@@ -66,7 +66,7 @@ function efiber_pakket_eigenschappen_up_snelheid_concreet($snelheid_prijs, $gc_i
 
 }
 
-function efiber_pakket_eigenschappen_basis_eenmalig_concreet($eenmalig, $gc_id){
+function keuzehulp_pakket_eigenschappen_basis_eenmalig_concreet($eenmalig, $gc_id){
 
 
 	/*---------------------------------------------------------
@@ -95,7 +95,7 @@ function efiber_pakket_eigenschappen_basis_eenmalig_concreet($eenmalig, $gc_id){
 
 }
 
-function efiber_telefonie_bundels($slug = ''){
+function keuzehulp_telefonie_bundels($slug = ''){
 	return get_posts(array(
 		'posts_per_page'	=> -1,
 		'post_type'			=> 'telefonie-bundel',
@@ -109,7 +109,7 @@ function efiber_telefonie_bundels($slug = ''){
 	));
 }
 
-function efiber_televisie_bundels($provider_naam = '') {
+function keuzehulp_televisie_bundels($provider_naam = '') {
 	$bundels =  get_posts(array(
 		'posts_per_page'	=> -1,
 		'post_type'			=> 'tv-bundel',
@@ -156,7 +156,7 @@ class Kz_optie {
 	}
 }
 
-function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
+function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 
 
 	/*---------------------------------------------------------
@@ -265,7 +265,7 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 		);
 
 
-		$snelheid_prijs_concreet = efiber_pakket_eigenschappen_snelheid_prijs_concreet(
+		$snelheid_prijs_concreet = keuzehulp_pakket_eigenschappen_snelheid_prijs_concreet(
 			$financieel['snelheid-prijs'],
 			$gebiedscode_id
 		);
@@ -277,7 +277,7 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 		sort($snelheden);
 
 		//upload ophalen
-		$down_up_ar = efiber_pakket_eigenschappen_up_snelheid_concreet(			
+		$down_up_ar = keuzehulp_pakket_eigenschappen_up_snelheid_concreet(			
 			$financieel['snelheid-prijs'],
 			$gebiedscode_id);
 
@@ -304,7 +304,7 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 		$return['eenmalig']['basis'] = new Kz_optie(array(
 			'naam'		=> 'basis',
 			'aantal'	=> 1,
-			'prijs'		=> efiber_pakket_eigenschappen_basis_eenmalig_concreet(
+			'prijs'		=> keuzehulp_pakket_eigenschappen_basis_eenmalig_concreet(
 				$financieel['eenmalig'],
 				$gebiedscode_id
 			)
@@ -365,7 +365,7 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 			'prijs'		=> $prijs
 		));
 
-		$telefonie_bundel_posts = efiber_telefonie_bundels($provider_tax_data[0]->slug);
+		$telefonie_bundel_posts = keuzehulp_telefonie_bundels($provider_tax_data[0]->slug);
 
 		$telefonie_bundels = array();
 
@@ -454,7 +454,7 @@ function efiber_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 		}
 
 
-		$televisie_bundels = efiber_televisie_bundels($provider_post->post_name);
+		$televisie_bundels = keuzehulp_televisie_bundels($provider_post->post_name);
 
 		// zijn de bundels voor specifieke snelheden?
 		// dat is zo als er meer dan één bundel is.
@@ -697,7 +697,7 @@ function getdb(){
     return $conn;
 }
 
-function efiber_form_sectie ($titel = '', $inh = '', $svg = '', $extra_tekst = '') {
+function keuzehulp_form_sectie ($titel = '', $inh = '', $svg = '', $extra_tekst = '') {
 
 
 	/*---------------------------------------------------------
@@ -713,10 +713,10 @@ function efiber_form_sectie ($titel = '', $inh = '', $svg = '', $extra_tekst = '
 	$slak = strtolower(preg_replace("/[^A-Za-z0-9 ]/", '', $titel));
 
 	if ($titel !== '') {
-		$header = "<header class='efiber-form-sectie-header'>
+		$header = "<header class='kz-form-sectie-header'>
 				".
 				($extra_tekst !== ''
-					? "<span class='efiber-form-sectie-header_groen'>$extra_tekst</span>"
+					? "<span class='kz-form-sectie-header_groen'>$extra_tekst</span>"
 					: ''
 				)."
 				".(($svg||$titel) ? "<h3>$svg $titel</h3>" : "")."
@@ -724,9 +724,9 @@ function efiber_form_sectie ($titel = '', $inh = '', $svg = '', $extra_tekst = '
 	}
 
 	return "
-		<section class='efiber-form-sectie $slak'>
+		<section class='kz-form-sectie $slak'>
 			$header
-			<div class='efiber-form-sectie-torso'>
+			<div class='kz-form-sectie-torso'>
 				$inh
 			</div>
 		</section>
@@ -734,7 +734,7 @@ function efiber_form_sectie ($titel = '', $inh = '', $svg = '', $extra_tekst = '
 }
 
 
-function efiber_form_rij ($veld1, $veld2 = null, $extra_klasse = '', $rij_onder = array()) {
+function keuzehulp_form_rij ($veld1, $veld2 = null, $extra_klasse = '', $rij_onder = array()) {
 
 
 	/*---------------------------------------------------------
@@ -749,7 +749,7 @@ function efiber_form_rij ($veld1, $veld2 = null, $extra_klasse = '', $rij_onder 
 	//tbv stijling
 	$klasse = strtolower(str_replace(' ', '-', preg_replace("/[^A-Za-z0-9 ]/", '', $e[0])));
 
-	$rij_onder_html = !empty($rij_onder) ? efiber_form_rij(...$rij_onder) : '';
+	$rij_onder_html = !empty($rij_onder) ? keuzehulp_form_rij(...$rij_onder) : '';
 
 	return "<div class='rij $klasse $extra_klasse'>
 		<div class='veld veld-1'>
@@ -762,7 +762,7 @@ function efiber_form_rij ($veld1, $veld2 = null, $extra_klasse = '', $rij_onder 
 	</div>";
 }
 
-function efiber_input ($params = array()) {
+function keuzehulp_input ($params = array()) {
 
 
 	/*---------------------------------------------------------
@@ -804,7 +804,7 @@ function efiber_input ($params = array()) {
 	$tekst = $waarde !== '' ? kz_maak_geld_op($waarde) : '';
 
 	$v = ($value ? " value='$value' " : "");
-	$f = ($func ? "data-efiber-func='$func'" : "");
+	$f = ($func ? "data-kz-func='$func'" : "");
 
 	$id = slugify($naam);
 
@@ -821,10 +821,10 @@ function efiber_input ($params = array()) {
 				type='$type'
 				name='$naam'
 				id='$id'
-				data-efiber-waarde='$waarde'
-				data-efiber-vorige-value='$value'
-				data-efiber-value='$value'
-				data-efiber-func='update-hidden $func'
+				data-kz-waarde='$waarde'
+				data-kz-vorige-value='$value'
+				data-kz-value='$value'
+				data-kz-func='update-hidden $func'
 				$v
 				$f
 			>
@@ -834,12 +834,12 @@ function efiber_input ($params = array()) {
 	} else {
 		return "
 			<div
-				class='efiber-$type $class $eclass knop'
+				class='kz-$type $class $eclass knop'
 				id='$id'
-				data-efiber-func='aanmelding-schakel update-hidden $func'
-				data-efiber-waarde='$waarde'
-				data-efiber-vorige-value='$value'
-				data-efiber-value='$value'
+				data-kz-func='aanmelding-schakel update-hidden $func'
+				data-kz-waarde='$waarde'
+				data-kz-vorige-value='$value'
+				data-kz-value='$value'
 				>
 				<span class='label'>$label</span>
 			</div>";

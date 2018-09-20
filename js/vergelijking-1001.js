@@ -1,13 +1,13 @@
-/* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren  */
+/* globals doc, location, KzAjax, kzModal, kzTekst, kzRouting, kzStickyKeuzes, teksten, KzAjaxKleineFormulieren  */
  function vergelijkingAjax() {
-  	const keuzehulp = JSON.parse(sessionStorage.getItem('efiber-keuzehulp')),
-  	adres = JSON.parse(sessionStorage.getItem('efiber-adres'));
+  	const keuzehulp = JSON.parse(sessionStorage.getItem('kz-keuzehulp')),
+  	adres = JSON.parse(sessionStorage.getItem('kz-adres'));
 
   	doc.getElementById('print-vergelijking').innerHTML = '<p>Uw pakketten worden opgehaald en vergeleken.</p>';
 
-	(new EfiberAjax({
+	(new KzAjax({
 		ajaxData: {
-			action: 'efiber_vergelijking',
+			action: 'keuzehulp_vergelijking',
 			data: {
 				adres,
 				keuzehulp,
@@ -22,9 +22,9 @@ const kzRenderVergelijking = {
 
 	hoofd(r, keuzehulp) {
 		this.keuzehulp = keuzehulp;
+		this.providers = r.providers;
 		doc.getElementById('print-vergelijking').innerHTML = '';
-
-		if (r.providers && r.providers.length) {
+		if (this.erIsWatTePrinten()) {
 			
 			const printVergelijking = doc.getElementById('print-vergelijking');
 			let printPakketten = '';
@@ -82,8 +82,8 @@ const kzRenderVergelijking = {
 
 			// door naar pakketoverzicht voor alternatieven
 
-			efiberRouting.ga(21); 
-			const keuzehulp = JSON.parse(sessionStorage.getItem('efiber-keuzehulp'));
+			kzRouting.ga(21); 
+			const keuzehulp = JSON.parse(sessionStorage.getItem('kz-keuzehulp'));
 
 			if (keuzehulp.bellen === '2' || keuzehulp.bellen === '3') {
 
@@ -104,17 +104,17 @@ const kzRenderVergelijking = {
 			}
 
 
-		sessionStorage.setItem('efiber-keuzehulp', JSON.stringify(keuzehulp));
+		sessionStorage.setItem('kz-keuzehulp', JSON.stringify(keuzehulp));
 
 		ikWeetWatIkWilPakkettenAjax();
 
 
-/*			efiberModal(efiberTekst('geen_pakketten_gevonden'), 2000);
-			efiberRouting.ga(1); // terug naar de voorpagina.
+/*			kzModal(kzTekst('geen_pakketten_gevonden'), 2000);
+			kzRouting.ga(1); // terug naar de voorpagina.
 
-			const adres = JSON.parse(sessionStorage.getItem('efiber-adres'));
+			const adres = JSON.parse(sessionStorage.getItem('kz-adres'));
 
-			const ajf2 = new EfiberAjax({
+			const ajf2 = new KzAjax({
 				ajaxData: {
 					action: 'kz_schrijf_fout',
 					data: {
@@ -130,6 +130,17 @@ const kzRenderVergelijking = {
 			return;				*/
 		
 		} // als r cq response
+	},
+	erIsWatTePrinten(){
+
+		// KAN ALS ARRAY EN ALS OBJECT BINNENKOMEN :o
+
+		if (this.providers.hasOwnProperty('length')) {
+			return !!this.providers.length;
+		} else {
+			return !!Object.entries(this.providers);
+		}
+
 	},
 	printPakkettenLijst(pakket, providerTal) {
 
@@ -158,7 +169,7 @@ const kzRenderVergelijking = {
 					class='knop blauwe-knop'
 					href='#'
 					data-doel='#provider-pakketten-vergelijking-hoofd-${pakket.ID}, .pakketten-section-${pakket.ID}'
-					data-efiber-func='schakel'
+					data-kz-func='schakel'
 					data-scroll='.pakketten-section-${pakket.ID}'
 					><span class='als-niet-actief'>bekijken</span><span class='als-actief'>dichtvouwen</span><svg class='svg-dichtklappen' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><style>.cc94da39-046e-4f53-b263-e21794d5c601{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class="cc94da39-046e-4f53-b263-e21794d5c601" d="M35.47,59.76,50,45.38,64.53,59.76C65.68,61,66.82,61,68,59.83a2.23,2.23,0,0,0,0-3.51L51.72,40.07a2.29,2.29,0,0,0-3.44,0L32,56.32a2.23,2.23,0,0,0,0,3.51C33.18,61,34.32,61,35.47,59.76Z"/></svg>
 				</a>
@@ -181,10 +192,10 @@ const kzRenderVergelijking = {
 			
 			<footer>
 				<a
-					class='knop blauwe-knop geen-ikoon efiber-bestelknop'
-					data-efiber-func='toon-stap animeer aanmeldformulier'
+					class='knop blauwe-knop geen-ikoon kz-bestelknop'
+					data-kz-func='toon-stap animeer aanmeldformulier'
 					href='#100'
-					efiber-data-pakket-id='${pakket.ID}'
+					kz-data-pakket-id='${pakket.ID}'
 					>Bestellen
 				</a>
 			</footer>
@@ -254,7 +265,7 @@ const kzRenderVergelijking = {
 				</table>
 
 				<footer class='provider-pakketten-vergelijking-sectie_footer'>
-					<a href='#' class='knop blauwe-knop' data-efiber-func='telefonie-modal' data-pakket-id='${this.pakket.ID}'>Meer over deze telefoniebundel</a>
+					<a href='#' class='knop blauwe-knop' data-kz-func='telefonie-modal' data-pakket-id='${this.pakket.ID}'>Meer over deze telefoniebundel</a>
 				</footer>
 
 			</div>			
@@ -316,7 +327,7 @@ const kzRenderVergelijking = {
 				</table>
 
 				<!--<footer class='provider-pakketten-vergelijking-sectie_footer'>
-					<a href='#' class='blauwe-knop knop' data-efiber-func='aantal-zenders-modal' data-pakket-id='${this.pakket.ID}'>meer over deze televisiebundel</a>
+					<a href='#' class='blauwe-knop knop' data-kz-func='aantal-zenders-modal' data-pakket-id='${this.pakket.ID}'>meer over deze televisiebundel</a>
 				</footer>-->
 
 			</div>			
@@ -429,7 +440,7 @@ const kzRenderVergelijking = {
 
 function kzTelefonieModal(knop) {
 
-	const pakket = window['efiber-pakket-'+ knop.getAttribute('data-pakket-id')];
+	const pakket = window['kz-pakket-'+ knop.getAttribute('data-pakket-id')];
 	
 	const belPakket = pakket.huidigeTelefonieBundel();
 
@@ -488,7 +499,7 @@ function kzTelefonieModal(knop) {
 		</table>
 	`;
 
-	efiberModal({
+	kzModal({
 		kop: belPakket.naam,
 		torso: html
 	});
@@ -496,7 +507,7 @@ function kzTelefonieModal(knop) {
 
 function kzZendersModal(knop){
 
-	const pakket = window['efiber-pakket-'+ knop.getAttribute('data-pakket-id')];
+	const pakket = window['kz-pakket-'+ knop.getAttribute('data-pakket-id')];
 
 	const zenderInfo = pakket.pakZenders();
 
@@ -506,13 +517,13 @@ function kzZendersModal(knop){
 		${zenderInfo.zenderlijst}
 	`;
 
-	efiberModal({
+	kzModal({
 		kop: pakket.naam_composiet,
 		torso: html
 	});	
 }
 
-function efiberVergelijkingstabelOpVolgorde(tabel) {
+function kzVergelijkingstabelOpVolgorde(tabel) {
 	// maak verzameling met bedragen als getallen
 	const bedragen = tabel.maandelijksTotaal.map((waarde, index) => Number(waarde.replace('&euro; ', '').replace(',', '.'))),
 

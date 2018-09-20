@@ -1,7 +1,7 @@
-/* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren  */
+/* globals doc, location, KzAjax, kzModal, kzTekst, kzRouting, kzStickyKeuzes, teksten, KzAjaxKleineFormulieren  */
 
 /* LEGACY NAAM! */
-function efiberZetNiveauKnop(knop) {
+function kzZetNiveauKnop(knop) {
 
 	const kzSectie = kzVindSectie(knop);
 

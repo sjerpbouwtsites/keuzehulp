@@ -1,4 +1,4 @@
-/* global doc, location, EfiberAjax, efiberModal, efiberTekst, gformInitDatepicker */
+/* global doc, location, KzAjax, kzModal, kzTekst, gformInitDatepicker */
 
 function aanmeldformulierHaalWaardeUitRij(rij) {
 	const knop1 = rij.getElementsByClassName('knop')[0];
@@ -6,7 +6,7 @@ function aanmeldformulierHaalWaardeUitRij(rij) {
 	// is het een tekstveld, nummer oid?
 	if (knop1.hasAttribute('type')) {
 		return knop1.value;
-	} if (knop1.classList.contains('efiber-radio')) {
+	} if (knop1.classList.contains('kz-radio')) {
 		const actieveKnop = rij.getElementsByClassName('actief');
 		if (actieveKnop.length) {
 			const ID = actieveKnop[0].id;
@@ -76,7 +76,7 @@ function kzMaakPrintMap(){
 
 }
 
-function efiberUpdateHidden() {
+function kzUpdateHidden() {
 	/*------------------------------------------------------
 	|
 	| 	functie draait iedere keer dat een knop wordt aangeklikt
@@ -87,14 +87,14 @@ function efiberUpdateHidden() {
 	const printMappen = kzMaakPrintMap();
 
 	const aanmeldformulier = doc.getElementById('print-aanmeldformulier');
-	const inputs = aanmeldformulier.querySelectorAll('[data-efiber-waarde]');
+	const inputs = aanmeldformulier.querySelectorAll('[data-kz-waarde]');
 	const rijen = Array
 		.from(inputs, input => kzVindRij(input))
 		.filter(uniek)
 		.forEach(rij => {
 
-			const inputs = rij.querySelectorAll('[data-efiber-waarde]');
-			const isRadio = !!rij.getElementsByClassName('efiber-radio').length;
+			const inputs = rij.querySelectorAll('[data-kz-waarde]');
+			const isRadio = !!rij.getElementsByClassName('kz-radio').length;
 			let printsleutel = null;
 
 			if (isRadio) {
@@ -109,7 +109,7 @@ function efiberUpdateHidden() {
 
 						if (input.classList.contains('tv-pakket')) {
 
-							const w = (efiberPakKnopValue(input) ? "ja" : "nee");
+							const w = (kzPakKnopValue(input) ? "ja" : "nee");
 							let s = input.id.split('-');
 						
 							s.pop();
@@ -119,7 +119,7 @@ function efiberUpdateHidden() {
 
 						} else {
 						
-							const w = efiberPakKnopValue(input);
+							const w = kzPakKnopValue(input);
 
 							if (w) {
 
@@ -144,7 +144,7 @@ function efiberUpdateHidden() {
 				if (['huidige-nummer', 'huidige-extra-nummer'].includes(printsleutel)) {
 					printMappen[printsleutel].print = [inputs[0].value];
 				} else {
-					const w = efiberPakKnopValue(inputs[0]);
+					const w = kzPakKnopValue(inputs[0]);
 
 					if(!printMappen[printsleutel]) {
 						console.warn(printsleutel + 'niet gevonden in printmap');
@@ -172,7 +172,7 @@ function efiberUpdateHidden() {
 function haalPrintAanmeldformulier(knop) {
 	/*------------------------------------------------------
 	|
-	| 	Haalt het formulier op van efiber_haal_aanmeldformulier
+	| 	Haalt het formulier op van keuzehulp_haal_aanmeldformulier
 	| 	Doe formulier nabewerking, zet wat eventhandlers er op
 	| 	Doet wat inputvalidatie
 	| 	Zet de datepicker 'juist aan'
@@ -183,24 +183,24 @@ function haalPrintAanmeldformulier(knop) {
 
 
 	// bereid pakket voor voor verzending
-	let pakket = window[`efiber-pakket-${knop.getAttribute('efiber-data-pakket-id')}`];
+	let pakket = window[`kz-pakket-${knop.getAttribute('kz-data-pakket-id')}`];
 
 	pakket.bereidJSONverzendingVoor();
 
 	doc.getElementById('print-aanmeldformulier').innerHTML = '<p>Formulier wordt geladen...</p>';
 	doc.getElementById('print-aanmeldformulier').setAttribute('data-pakket-id', pakket.ID);
 
-	const ajf = new EfiberAjax({
+	const ajf = new KzAjax({
 		ajaxData: {
-			action: 'efiber_haal_aanmeldformulier',
-			adres: JSON.parse(sessionStorage.getItem('efiber-adres')),
-			keuzehulp: JSON.parse(sessionStorage.getItem('efiber-keuzehulp')),
+			action: 'keuzehulp_haal_aanmeldformulier',
+			adres: JSON.parse(sessionStorage.getItem('kz-adres')),
+			keuzehulp: JSON.parse(sessionStorage.getItem('kz-keuzehulp')),
 			pakket: pakket.klaarVoorJSON,
 		},
 		cb(r) {
 			if (!r) console.warn('geen correcte JSON teruggekregen haalPrintAanmeldformulier');
 
-			// const keuzehulp = JSON.parse(sessionStorage.getItem('efiber-keuzehulp'));
+			// const keuzehulp = JSON.parse(sessionStorage.getItem('kz-keuzehulp'));
 
 			const printPlek = doc.getElementById('print-aanmeldformulier');
 			printPlek.innerHTML = '';
@@ -210,7 +210,7 @@ function haalPrintAanmeldformulier(knop) {
 
 			printPlek.getElementsByTagName('form')[0].setAttribute('action', `${location.origin}/keuzehulp`);
 
-			pakket = window[`efiber-pakket-${r.id}`];
+			pakket = window[`kz-pakket-${r.id}`];
 
 			// het zijn de click events die de verwerking van de data aanjagen..
 			printPlek.addEventListener('change', (e) => {
@@ -226,7 +226,7 @@ function haalPrintAanmeldformulier(knop) {
 
 
 			// hieronder printen we het adres naar het formulier, voorzover we dat hebben.
-			const adres = JSON.parse(sessionStorage.getItem('efiber-adres')),
+			const adres = JSON.parse(sessionStorage.getItem('kz-adres')),
 			adresDataToewijzing = {
 				input_1_20: 'postcode',
 				input_1_21: 'huisnummer',
@@ -259,7 +259,7 @@ function haalPrintAanmeldformulier(knop) {
 			doc.getElementById('input_1_64').value = pakket.provider;
 
 			// schrijf opties naar GF
-			efiberUpdateHidden();
+			kzUpdateHidden();
 
 
 			jQuery.datepicker.regional.nl = {
@@ -295,7 +295,7 @@ function haalPrintAanmeldformulier(knop) {
 				if (v.length > 5) {
 					const is18 = (Number(v.split('/')[2]) - 2000) < 0;
 					if (!is18) {
-						efiberModal(efiberTekst('minimum_18'), 2000);
+						kzModal(kzTekst('minimum_18'), 2000);
 						$('#gform_submit_button_1').hide();
 					} else {
 						$('#gform_submit_button_1').show();
@@ -308,7 +308,7 @@ function haalPrintAanmeldformulier(knop) {
 				mobielNummer = /^(((\\+31|0|0031)6){1}[1-9]{1}[0-9]{7})$/i;
 
 				if (!(vastNummer.test(this.value) || mobielNummer.test(this.value))) {
-					efiberModal(efiberTekst('correct_tel'), 1500);
+					kzModal(kzTekst('correct_tel'), 1500);
 				}
 			});
 
@@ -349,7 +349,7 @@ function haalPrintAanmeldformulier(knop) {
 	ajf.doeAjax();
 }
 
-function efiberUpdatePrijs(knop) {
+function kzUpdatePrijs(knop) {
 	/*------------------------------------------------------
 	|
 	| 	Haalt pakket op
@@ -361,9 +361,9 @@ function efiberUpdatePrijs(knop) {
 	let pakket = null;
 
 	if (knop.hasAttribute('data-pakket-id')) {
-		pakket = window[`efiber-pakket-${knop.getAttribute('data-pakket-id')}`];
+		pakket = window[`kz-pakket-${knop.getAttribute('data-pakket-id')}`];
 	} else {
-		pakket = window[`efiber-pakket-${doc.getElementById('print-aanmeldformulier').getAttribute('data-pakket-id')}`];
+		pakket = window[`kz-pakket-${doc.getElementById('print-aanmeldformulier').getAttribute('data-pakket-id')}`];
 	}
 
 	let optie,
@@ -374,13 +374,13 @@ function efiberUpdatePrijs(knop) {
 		hoeveelheid = knop.value;
 	} else if (knop.classList.contains('belpakket')) {
 		optie = knop.id.replace('belpakket-keuze-', '');
-		hoeveelheid = efiberPakKnopValue(knop);
+		hoeveelheid = kzPakKnopValue(knop);
 	} else if (knop.classList.contains('installatie')) {
 		optie = knop.id.replace('keuze-', '');
-		hoeveelheid = efiberPakKnopValue(knop);
+		hoeveelheid = kzPakKnopValue(knop);
 	} else {
 		optie = knop.id;
-		hoeveelheid = efiberPakKnopValue(knop);
+		hoeveelheid = kzPakKnopValue(knop);
 	}
 
 	pakket.mutatie(optie, hoeveelheid);
@@ -388,7 +388,7 @@ function efiberUpdatePrijs(knop) {
 	pakket.printPrijzen();
 }
 
-function efiberSchakelInputGeneriek(knop) {
+function kzSchakelInputGeneriek(knop) {
 	/*------------------------------------------------------
 	|
 	|	Vindt de rij en schakelt op rij en knop de klasse actief.
@@ -411,11 +411,11 @@ function efiberSchakelInputGeneriek(knop) {
 
 }
 
-function efiberPakKnopValue(knop) {
+function kzPakKnopValue(knop) {
 	/*------------------------------------------------------
 	|
 	|	Een number of text input gebruikt de 'echte' input.
-	| 	Een zelfgebouwde radio of checkbox gebruikt data-efiber-value
+	| 	Een zelfgebouwde radio of checkbox gebruikt data-kz-value
 	| 	Dit normaliseert dat.
 	|
 	|-----------------------------------------------------*/
@@ -424,10 +424,10 @@ function efiberPakKnopValue(knop) {
 	if (knop.hasAttribute('value') || typeof knop.value !== 'undefined') {
 		return Number(knop.value);
 	}
-		return Number(knop.getAttribute('data-efiber-value'));
+		return Number(knop.getAttribute('data-kz-value'));
 }
 
-function efiberSchakelCheckbox(knop) {
+function kzSchakelCheckbox(knop) {
 	/*------------------------------------------------------
 	|
 	| 	Stuurt functies aan die de klassen schakelen,
@@ -436,22 +436,22 @@ function efiberSchakelCheckbox(knop) {
 	|-----------------------------------------------------*/
 
 
-	efiberSchakelInputGeneriek(knop);
+	kzSchakelInputGeneriek(knop);
 
-	let val = efiberPakKnopValue(knop);
+	let val = kzPakKnopValue(knop);
 
 	if (!val) val = 0;
 
 	if (val === 0) {
-		knop.setAttribute('data-efiber-value', 1);
+		knop.setAttribute('data-kz-value', 1);
 	} else {
-		knop.setAttribute('data-efiber-value', 0);
+		knop.setAttribute('data-kz-value', 0);
 	}
 
-	efiberUpdatePrijs(knop);
+	kzUpdatePrijs(knop);
 }
 
-function efiberFoxSports(knop) {
+function kzFoxSports(knop) {
 	/*------------------------------------------------------
 	|
 	| 	regelt het schakelen tussen de fox sports abonnementen.
@@ -467,10 +467,10 @@ function efiberFoxSports(knop) {
 
 	// Zet andere fox uit
 	if (eredivisie.className.indexOf('actief') !== -1) {
-		efiberSchakelCheckbox(eredivisie);
+		kzSchakelCheckbox(eredivisie);
 	}
 	if (internationaal.className.indexOf('actief') !== -1) {
-		efiberSchakelCheckbox(internationaal);
+		kzSchakelCheckbox(internationaal);
 	}
 
 	// als nu zelf actief, invalideer andere fox.
@@ -484,11 +484,11 @@ function efiberFoxSports(knop) {
 	}
 }
 
-function efiberSchakelRadio(knop) {
+function kzSchakelRadio(knop) {
 	/*------------------------------------------------------
 	|
 	|	Zorgt er voor dat (quasi)-radio's hun werk doen
-	| 	En gebruikt efiberSchakelCheckbox voor het effectueren van keuzes.
+	| 	En gebruikt kzSchakelCheckbox voor het effectueren van keuzes.
 	| 	Je zou een verzameling radio's als een verzameling gekoppelde
 	| 	checkboxes kunnen zien, daar maakt het gebruik van.
 	|
@@ -503,13 +503,13 @@ function efiberSchakelRadio(knop) {
 	if (rij.classList.contains('print-aanmeldformulier')) return new Error('rij niet gevonden');
 
 	const echteRadio = knop.classList.contains('installatie');
-	const magErGeenTweeHebben = knop.classList.contains('efiber-radio');
+	const magErGeenTweeHebben = knop.classList.contains('kz-radio');
 	const knoppenInVerzameling = rij.getElementsByClassName('knop');
 	const isActief = knop.classList.contains('actief');
 
 	if ( isActief && !echteRadio ) {
 		
-		efiberSchakelCheckbox(knop);
+		kzSchakelCheckbox(knop);
 
 	} else if ( isActief && echteRadio ){
 		
@@ -521,11 +521,11 @@ function efiberSchakelRadio(knop) {
 
 			// eerst zelf uitzetten
 			// dan eerste best aanzetten.
-			efiberSchakelCheckbox(knop);
+			kzSchakelCheckbox(knop);
 
 			
 			Array.from(knoppenInVerzameling).forEach(knopUitVerz => {
-				if (knopUitVerz.id !== knop.id) efiberSchakelCheckbox(knopUitVerz);
+				if (knopUitVerz.id !== knop.id) kzSchakelCheckbox(knopUitVerz);
 			});
 
 		}
@@ -535,35 +535,35 @@ function efiberSchakelRadio(knop) {
 
 		if (magErGeenTweeHebben) {
 			if (rij.getElementsByClassName('actief').length) { 
-				efiberSchakelCheckbox(rij.getElementsByClassName('actief')[0]);
+				kzSchakelCheckbox(rij.getElementsByClassName('actief')[0]);
 			}
 		}
 
-		efiberSchakelCheckbox(knop);
+		kzSchakelCheckbox(knop);
 
 	} else {
 
 		
 		if (rij.getElementsByClassName('actief').length) { 
-			efiberSchakelCheckbox(rij.getElementsByClassName('actief')[0]);
+			kzSchakelCheckbox(rij.getElementsByClassName('actief')[0]);
 		}
-		efiberSchakelCheckbox(knop);
+		kzSchakelCheckbox(knop);
 
 	}
 
 }
 
-function efiberSchakelNumber(knop) {
+function kzSchakelNumber(knop) {
 	/*------------------------------------------------------
 	|
 	|	Een nummer input is lekker simpel.
 	|
 	|-----------------------------------------------------*/
 
-	efiberUpdatePrijs(knop);
+	kzUpdatePrijs(knop);
 
 	const rij = kzVindRij(knop);
-	if (efiberPakKnopValue(knop) > 0) {
+	if (kzPakKnopValue(knop) > 0) {
 		rij.classList.add('heeft-actieve-knop');
 	} else {
 		rij.classList.remove('heeft-actieve-knop');

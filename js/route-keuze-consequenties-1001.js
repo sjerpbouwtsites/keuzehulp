@@ -1,4 +1,4 @@
-/* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren  */
+/* globals doc, location, KzAjax, kzModal, kzTekst, kzRouting, kzStickyKeuzes, teksten, KzAjaxKleineFormulieren  */
 // hierin staan gedefinieerd, per stap
 // welkle opties wèl getoond worden.
 // let op: het veranderen van de volgorde van de knoppen heeft consequenties.
@@ -23,7 +23,7 @@ keuzeConsequenties = {
 };
 
 
-function eFiberSluitRoutesUit(keuze) {
+function kzSluitRoutesUit(keuze) {
 	if (!(keuze in keuzeConsequenties)) {
 		console.error('keuze consequentie onbekend');
 		console.trace();
@@ -46,7 +46,7 @@ function eFiberSluitRoutesUit(keuze) {
 		// dit pakt de knoppen op volgorde van links naar rechts in de secties;
 		// zo komt het overeen met het plan van Gaby en evt. aanpassingen daarin.
 
-		selector = `[data-efiber-${titelNormaleSpelling}-keuze]`;
+		selector = `[data-kz-${titelNormaleSpelling}-keuze]`;
 
 		sectieKnoppen = doc.querySelectorAll(selector);
 
@@ -61,7 +61,7 @@ function eFiberSluitRoutesUit(keuze) {
 
 			for (i = 0; i < config.length; i++) {
 
-				let sel = `[data-efiber-${titelNormaleSpelling}-keuze='${config[i]}']`;
+				let sel = `[data-kz-${titelNormaleSpelling}-keuze='${config[i]}']`;
 				let knop = doc.querySelector(sel);
 				if (knop) {
 					kzVindCombiKnop(knop).style.display = 'flex';

@@ -23,7 +23,7 @@
  *
  */
 
-class Ef_posttype_voorb {
+class Kz_posttype_voorb {
 
 	function __construct($enkelvoud, $meervoud = '', $overschrijven = array()){
 
@@ -121,38 +121,38 @@ class Ef_posttype_voorb {
 
 
 
-function Ef_registreer_posttypes() {
+function Kz_registreer_posttypes() {
 
-    $zakelijke_provider = new Ef_posttype_voorb('zakelijke-provider', 'zakelijke-providers');
+    $zakelijke_provider = new Kz_posttype_voorb('zakelijke-provider', 'zakelijke-providers');
     $zakelijke_provider->pas_args_aan(array( 'menu_icon'  => 'dashicons-building', 'supports' => array( 'title', ) ));
     $zakelijke_provider->registreer();
 
-    $provider = new Ef_posttype_voorb('provider', 'providers');
+    $provider = new Kz_posttype_voorb('provider', 'providers');
     $provider->pas_args_aan(array( 'menu_icon'  => 'dashicons-admin-site', 'supports'  => array( 'title', 'thumbnail' ) ));
     $provider->registreer();
 
-/*    $pakket = new Ef_posttype_voorb('pakket', 'pakketten');
+/*    $pakket = new Kz_posttype_voorb('pakket', 'pakketten');
     $pakket->pas_args_aan(array( 'menu_icon' => 'dashicons-thumbs-down', 'supports'  => array( 'title', 'editor' ) ));
     $pakket->maak_taxonomie('type', 'typen');
     $pakket->registreer();*/
 
-    $nieuw_pakket = new Ef_posttype_voorb('nieuw-pakket', 'nieuwe-pakketten');
+    $nieuw_pakket = new Kz_posttype_voorb('nieuw-pakket', 'nieuwe-pakketten');
     $nieuw_pakket->pas_args_aan(array( 'menu_icon'   => 'dashicons-cart', 'supports' => array( 'title' ) ));    
     $nieuw_pakket->maak_taxonomie('tv-type', 'tv-typen');
     $nieuw_pakket->maak_taxonomie('type', 'typen');
     $nieuw_pakket->registreer();
 
-    $tv_bundel = new Ef_posttype_voorb('tv-bundel', 'tv-bundels');
+    $tv_bundel = new Kz_posttype_voorb('tv-bundel', 'tv-bundels');
     $tv_bundel->pas_args_aan(array( 'menu_icon'  => 'dashicons-video-alt3', 'supports'  => array( 'title' ) ));    
     $tv_bundel->registreer();
 
-    $telefonie_bundel = new Ef_posttype_voorb('telefonie-bundel', 'telefonie-bundels');
+    $telefonie_bundel = new Kz_posttype_voorb('telefonie-bundel', 'telefonie-bundels');
     $telefonie_bundel->pas_args_aan(array( 'menu_icon'  => 'dashicons-phone', 'supports'  => array( 'title' ) ));    
     $telefonie_bundel->maak_taxonomie('bereik', 'bereiken');
     $telefonie_bundel->registreer();
 
 
-    $status = new Ef_posttype_voorb('status', 'statussen');
+    $status = new Kz_posttype_voorb('status', 'statussen');
     $status->pas_args_aan(array( 'menu_icon'  => 'dashicons-forms', 'supports'  => array( 'title' ) ));    
     $status->registreer();
 

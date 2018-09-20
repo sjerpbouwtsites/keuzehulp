@@ -1,6 +1,6 @@
 <?php
 
-class EfiberSectie extends Ef_basis_class {
+class KzSectie extends Kz_basis_class {
 
 
 	/*---------------------------------------------------------

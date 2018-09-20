@@ -1,43 +1,43 @@
 /* NIET IN GEBRUIK */
 
-form[class~="efiber-insert"] {
+form[class~="kz-insert"] {
 	padding: 20px;
 	color: white;
 	display: inline-block;
 	vertical-align: top;
 	max-width: 400px;
 }
-	form[class~="efiber-insert"] .button {
+	form[class~="kz-insert"] .button {
 		box-shadow: none;
 		text-shadow: none;
 		font-weight: 900;		
 		border: none !important;
 	}
 			
-	form[class~="efiber-insert"] legend {
+	form[class~="kz-insert"] legend {
 		font-weight: 800;
 		font-size: 20px;
 	}
-	form[class~="efiber-insert"] label { 
+	form[class~="kz-insert"] label { 
 		color: white;
 	}
 
-	form.efiber-insert {
+	form.kz-insert {
 		background:  linear-gradient(to right bottom,#b4157f 0%,#a31e83 50%,#7a338d 100%);
 	}
-		form.efiber-insert .button {
+		form.kz-insert .button {
 			background-color: #31084bdd;
 		}
-			form.efiber-insert .button:hover {
+			form.kz-insert .button:hover {
 				background-color: #31084bff;
 			}
-	form.efiber-delete {
+	form.kz-delete {
 		background:  linear-gradient(to right bottom,#010101 0%,#112111 50%,#212191 100%);
 	}	
-		form.efiber-delete .button {
+		form.kz-delete .button {
 			background-color: #b91543dd;
 		}
-			form.efiber-delete .button:hover {
+			form.kz-delete .button:hover {
 				background-color: #b91543ff;
 			}
 

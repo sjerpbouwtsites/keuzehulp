@@ -1,4 +1,4 @@
-/* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren, iwwiwProcedure, VerrijktPakket  */
+/* globals doc, location, KzAjax, kzModal, kzTekst, kzRouting, kzStickyKeuzes, teksten, KzAjaxKleineFormulieren, iwwiwProcedure, VerrijktPakket  */
 function ikWeetWatIkWilPakkettenAjax() {
 	/*------------------------------------------------------
 	|
@@ -10,16 +10,16 @@ function ikWeetWatIkWilPakkettenAjax() {
 
 
 	// keuzehulp vullen met data installatie
-	const keuzehulp = JSON.parse(sessionStorage.getItem('efiber-keuzehulp')),
-	adres = JSON.parse(sessionStorage.getItem('efiber-adres'));
+	const keuzehulp = JSON.parse(sessionStorage.getItem('kz-keuzehulp')),
+	adres = JSON.parse(sessionStorage.getItem('kz-adres'));
 	keuzehulp.installatie = '1';
-	sessionStorage.setItem('efiber-keuzehulp', JSON.stringify(keuzehulp));
+	sessionStorage.setItem('kz-keuzehulp', JSON.stringify(keuzehulp));
 
 	document.getElementById('print-provider-pakketten').innerHTML = '<p><br>Moment geduld a.u.b.</p>';
 
-	const ajf = new EfiberAjax({
+	const ajf = new KzAjax({
 		ajaxData: {
-			action: 'efiber_ik_weet_wat_ik_wil_pakketten',
+			action: 'keuzehulp_ik_weet_wat_ik_wil_pakketten',
 			data: {
 				keuzehulp,
 				adres
@@ -31,15 +31,15 @@ function ikWeetWatIkWilPakkettenAjax() {
 			let printPakketten = '';
 
 			if (!r.providers || !Object.entries(r.providers).length) {
-				efiberModal(efiberTekst('alternatieve_pakketten'), 2000);
+				kzModal(kzTekst('alternatieve_pakketten'), 2000);
 
 				r.providers = {};
-				let keuzehulp = JSON.parse(sessionStorage.getItem('efiber-keuzehulp'));
+				let keuzehulp = JSON.parse(sessionStorage.getItem('kz-keuzehulp'));
 				let teller = 0;
 	
 				jQuery.post(`${location.origin}/wp-admin/admin-ajax.php`, 
 					{
-						action: 'efiber_ik_weet_wat_ik_wil_pakketten',
+						action: 'keuzehulp_ik_weet_wat_ik_wil_pakketten',
 						data: {
 							keuzehulp: {
 								installatie: '1',
@@ -105,7 +105,7 @@ function ikWeetWatIkWilPakkettenAjax() {
 	
 				jQuery.post(`${location.origin}/wp-admin/admin-ajax.php`, 
 					{
-						action: 'efiber_ik_weet_wat_ik_wil_pakketten',
+						action: 'keuzehulp_ik_weet_wat_ik_wil_pakketten',
 						data: {
 							keuzehulp: {
 								installatie: '1',
@@ -171,7 +171,7 @@ function ikWeetWatIkWilPakkettenAjax() {
 
 				jQuery.post(`${location.origin}/wp-admin/admin-ajax.php`, 
 					{
-						action: 'efiber_ik_weet_wat_ik_wil_pakketten',
+						action: 'keuzehulp_ik_weet_wat_ik_wil_pakketten',
 						data: {
 							keuzehulp: {
 								installatie: '1',
@@ -237,7 +237,7 @@ function ikWeetWatIkWilPakkettenAjax() {
 
 				jQuery.post(`${location.origin}/wp-admin/admin-ajax.php`, 
 					{
-						action: 'efiber_ik_weet_wat_ik_wil_pakketten',
+						action: 'keuzehulp_ik_weet_wat_ik_wil_pakketten',
 						data: {
 							keuzehulp: {
 								installatie: '1',
@@ -355,9 +355,9 @@ function ikWeetWatIkWilPakkettenAjax() {
 		},
 		helemaalFout: () =>  {
 
-/*				efiberRouting.ga(21); // .
+/*				kzRouting.ga(21); // .
 
-				const ajf2 = new EfiberAjax({
+				const ajf2 = new KzAjax({
 					ajaxData: {
 						action: 'kz_schrijf_fout',
 						data: {
@@ -401,10 +401,10 @@ function ikWeetWatIkWilPakkettenAjax() {
 				</div>
 				<div class='provider-pakketten-pakket-rechts'>
 					<a
-						class='knop blauwe-knop efiber-bestelknop'
-						data-efiber-func='toon-stap animeer aanmeldformulier'
+						class='knop blauwe-knop kz-bestelknop'
+						data-kz-func='toon-stap animeer aanmeldformulier'
 						href='#100'
-						efiber-data-pakket-id='${nieuwPakket.ID}'
+						kz-data-pakket-id='${nieuwPakket.ID}'
 						>
 
 						<svg version="1.1" class='bestel-svg' xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"

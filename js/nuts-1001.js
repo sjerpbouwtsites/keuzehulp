@@ -1,6 +1,6 @@
-/* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren  */
+/* globals doc, location, KzAjax, kzModal, kzTekst, kzRouting, kzStickyKeuzes, teksten, KzAjaxKleineFormulieren  */
 function kzPluginRelURL(){
-	return "/wp-content/plugins/efiber";
+	return "/wp-content/plugins/kz";
 }
 
 function naarCamelCase(str) {
@@ -41,7 +41,7 @@ function uniek(waarde, index, lijst) {
     return lijst.indexOf(waarde) === index;
 }
 
-function efiberVindKnop(t, klasse) {
+function kzVindKnop(t, klasse) {
 	/*----------------------------------
 	|
 	|	Gebruikt in het aanmeldformulier
@@ -72,7 +72,7 @@ function efiberVindKnop(t, klasse) {
 	}
 }
 
-function efiberEuro(bedrag) {
+function kzEuro(bedrag) {
 	/*----------------------------------
 	|
 	| 	Formateert bedragen:
@@ -92,7 +92,7 @@ function efiberEuro(bedrag) {
 		return '-'; // als false oid
 }
 
-function efiberNietMin1ReturnZelfOfFalse(a) {
+function kzNietMin1ReturnZelfOfFalse(a) {
 	/*----------------------------------
 	|
 	|	Onderdeel van het normaliseren van
@@ -105,7 +105,7 @@ function efiberNietMin1ReturnZelfOfFalse(a) {
 }
 
 
-function efiberMaakBestelKnop(pakket, eigenschappen, tekst) {
+function kzMaakBestelKnop(pakket, eigenschappen, tekst) {
 	/*----------------------------------
 	|
 	|	Deze functie zou niet mogen bestaan.
@@ -122,7 +122,7 @@ function efiberMaakBestelKnop(pakket, eigenschappen, tekst) {
 
 	// @TODO combineren van deze twee acties is WAANZIN... html genereren en geheugen schrijven :(
 	sessionStorage.setItem(`pakket-${pakket.ID}`, JSON.stringify(arguments));
-	this.HTML = `<a class='knop geen-ikoon efiber-bestelknop' data-efiber-func='toon-stap animeer aanmeldformulier' href='#100' efiber-data-pakket-id='${pakket.ID}'>${tekst}</a>`;
+	this.HTML = `<a class='knop geen-ikoon kz-bestelknop' data-kz-func='toon-stap animeer aanmeldformulier' href='#100' kz-data-pakket-id='${pakket.ID}'>${tekst}</a>`;
 }
 
 function kzVindCombiKnop(knop){

@@ -41,11 +41,11 @@
 		display: inline-block;
 		width: 65px;
 		height: 27px;
-		background-image: url('/wp-content/plugins/efiber/iconen-nieuw/png/nee schuif.png');
+		background-image: url('/wp-content/plugins/keuzehulp/iconen-nieuw/png/nee schuif.png');
 		background-size: cover;
 		background-position: center;
 		background-repeat: no-repeat;
 	}
 		.knop.multiselect.actief {
-			background-image: url('/wp-content/plugins/efiber/iconen-nieuw/png/ja schuif.png');
+			background-image: url('/wp-content/plugins/keuzehulp/iconen-nieuw/png/ja schuif.png');
 		}

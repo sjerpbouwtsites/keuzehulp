@@ -6,8 +6,8 @@
 
 @media all and (-ms-high-contrast:none)
      {
-     *::-ms-backdrop, .print-vergelijking .efiber-form-sectie:first-child .rij:first-child .veld h3, 
-     .print-vergelijking .efiber-form-sectie:first-child .rij:first-child .veld { display: block } /* IE11 */
+     *::-ms-backdrop, .print-vergelijking .kz-form-sectie:first-child .rij:first-child .veld h3, 
+     .print-vergelijking .kz-form-sectie:first-child .rij:first-child .veld { display: block } /* IE11 */
      }
 
 

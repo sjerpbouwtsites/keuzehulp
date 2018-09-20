@@ -1,5 +1,5 @@
-/* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren  */
-function EfiberAjax(params) {
+/* globals doc, location, KzAjax, kzModal, kzTekst, kzRouting, kzStickyKeuzes, teksten, KzAjaxKleineFormulieren  */
+function KzAjax(params) {
 	/*------------------------------------------------------
 	|
 	| 	Wrapperklasse voor ajaxcalls naar achterkant.
@@ -33,7 +33,7 @@ function EfiberAjax(params) {
 	};
 }
 
-function efiberFormStijlKlassen() {
+function kzFormStijlKlassen() {
 	/*------------------------------------------------------
 	|
 	|	Focus is op input-niveau,
@@ -49,14 +49,14 @@ function efiberFormStijlKlassen() {
 	});
 }
 
-function efiberAjaxKleineFormulieren(backendFunctie, printElID, data) {
+function kzAjaxKleineFormulieren(backendFunctie, printElID, data) {
 	/*------------------------------------------------------
 	|
 	|	Generieke functie die ajaxcalls aanstuurt voor lead en zakelijk formulier.
 	|
 	|-----------------------------------------------------*/
 
-	const ajf = new EfiberAjax({
+	const ajf = new KzAjax({
 		ajaxData: {
 			action: backendFunctie,
 			data,
@@ -65,7 +65,7 @@ function efiberAjaxKleineFormulieren(backendFunctie, printElID, data) {
 			jQuery(`#${printElID}`).append($(r.print));
 			jQuery(`#${printElID}`).find('form').attr('action', 'https://iedereenglasvezel.nl/keuzehulp/');
 
-			efiberFormStijlKlassen();
+			kzFormStijlKlassen();
 		},
 	});
 

@@ -1,6 +1,6 @@
-/* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren, naarCamelCase  */
+/* globals doc, location, KzAjax, kzModal, kzTekst, kzRouting, kzStickyKeuzes, teksten, KzAjaxKleineFormulieren, naarCamelCase  */
 
-function eFiberNormaliseerGeheugen(str) {
+function kzNormaliseerGeheugen(str) {
 	const isJSON = sessionStorage.getItem(str);
 	let geheugenObj;
 	if (isJSON) {
@@ -13,7 +13,7 @@ function eFiberNormaliseerGeheugen(str) {
 
 function keuzehulpGeneriek(knop, dataAttrNaam, keuzeSleutel, callback) {
 	const dezeKeuze = naarCamelCase(knop.getAttribute(dataAttrNaam)),
-	keuzehulpGeheugen = eFiberNormaliseerGeheugen('efiber-keuzehulp');
+	keuzehulpGeheugen = kzNormaliseerGeheugen('kz-keuzehulp');
 
 	if (knop.className.indexOf('multiselect') !== -1) {
 		// als multiselect, sla op in array, en controleer of deze in array, verwijderen zo ja etc.
@@ -35,7 +35,7 @@ function keuzehulpGeneriek(knop, dataAttrNaam, keuzeSleutel, callback) {
 		keuzehulpGeheugen[keuzeSleutel] = dezeKeuze;
 	}
 
-	sessionStorage.setItem('efiber-keuzehulp', JSON.stringify(keuzehulpGeheugen));
+	sessionStorage.setItem('kz-keuzehulp', JSON.stringify(keuzehulpGeheugen));
 
 	if (typeof callback === 'function') {
 		callback();

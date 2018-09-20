@@ -1,7 +1,7 @@
-/* globals doc, location, EfiberAjax, efiberModal, efiberTekst, efiberRouting, efiberStickyKeuzes, teksten, EfiberAjaxKleineFormulieren  */
+/* globals doc, location, KzAjax, kzModal, kzTekst, kzRouting, kzStickyKeuzes, teksten, KzAjaxKleineFormulieren  */
 
 function kzPakPakket(getal) {
-	return window[`efiber-pakket-${getal}`];
+	return window[`kz-pakket-${getal}`];
 }
 
 function VerrijktPakket(p) {
@@ -291,7 +291,7 @@ function iwwiwProcedure(pakket) {
 	pakket.mutatie(`installatie-${installatieStr}`, 1);
 
 	// zitten we op een belpakket? dan basis aanzetten.
-	const kz = JSON.parse(sessionStorage.getItem('efiber-keuzehulp')),
+	const kz = JSON.parse(sessionStorage.getItem('kz-keuzehulp')),
 	 isBelKeuze = kz['ik-weet-wat-ik-wil'] === '2' || kz['ik-weet-wat-ik-wil'] === '4';
 
 	if (isBelKeuze && pakket.heeftTelefonieBereik('basis')) {
@@ -300,7 +300,7 @@ function iwwiwProcedure(pakket) {
 	}
 
 	// zet pakketten in window om later te laden.
-	window[`efiber-pakket-${pakket.ID}`] = pakket;
+	window[`kz-pakket-${pakket.ID}`] = pakket;
 
 	return pakket;
 }
@@ -368,6 +368,7 @@ function vergelijkingsProcedure(pakket, keuzehulp) {
 
 	// schrijf TV opties.
 	if (keuzehulp['televisie-opties']) {
+
 		const to = keuzehulp['televisie-opties'],
 
 		 nummerNaamMap = {
@@ -430,7 +431,7 @@ function vergelijkingsProcedure(pakket, keuzehulp) {
 
 
 	// zet pakketten in window om later te laden.
-	window[`efiber-pakket-${pakket.ID}`] = pakket;
+	window[`kz-pakket-${pakket.ID}`] = pakket;
 
 	return pakket;
 }

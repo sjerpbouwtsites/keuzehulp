@@ -17,18 +17,18 @@ function kz_schrijf_fout() {
 
 
 
-$func_n = "efiber_controleer_postcode";
+$func_n = "keuzehulp_controleer_postcode";
 
 add_action( 'wp_ajax_'.$func_n, $func_n );
 add_action( 'wp_ajax_nopriv_'.$func_n, $func_n );
 
 
-function efiber_controleer_aanvraag_al_gedaan ($ad, $con) {
+function keuzehulp_controleer_aanvraag_al_gedaan ($ad, $con) {
 
 
 	/*---------------------------------------------------------
 	|
-	| 	Dit is een hulp functie van efiber_controleer_postcode.
+	| 	Dit is een hulp functie van keuzehulp_controleer_postcode.
 	| 	Als op een postcode al een aanvraag is gedaan dient de gebruiker 
 	| 	niet in de keuzehulp te komen.
 	| 	In plaats daarvan krijgt de gebruiker info van de provider te zien;
@@ -90,7 +90,7 @@ function kz_provider_beschikbaar ($gebiedscode = '') {
 }
 
 
-function efiber_controleer_postcode() {
+function keuzehulp_controleer_postcode() {
 
 	
 
@@ -124,7 +124,7 @@ function efiber_controleer_postcode() {
     if ($result) {
 
     	// als onderstaande functie wat vindt wordt huidige functie afgebroken
-    	$gezocht_naar_aanvraag = efiber_controleer_aanvraag_al_gedaan($ajax_data, $con);
+    	$gezocht_naar_aanvraag = keuzehulp_controleer_aanvraag_al_gedaan($ajax_data, $con);
 
 	    $rij = mysqli_fetch_assoc($result);
 	    if ($rij and count($rij)) {
@@ -155,7 +155,7 @@ function efiber_controleer_postcode() {
 		   if ($result) {
 
 		   		// als onderstaande functie wat vindt wordt huidige functie afgebroken
-				$gezocht_naar_aanvraag = efiber_controleer_aanvraag_al_gedaan($ajax_data, $con);
+				$gezocht_naar_aanvraag = keuzehulp_controleer_aanvraag_al_gedaan($ajax_data, $con);
 
 			    $rij = mysqli_fetch_assoc($result);
 			    if ($rij and count($rij)) {
@@ -205,7 +205,7 @@ function filter_op_regio_en_verrijk_pakket ($pakketten, $toegestane_providers, $
 	foreach ($pakketten as $p) :
 
 		// eigenschappen als provider, minimale contractsduur en pakketopties
-		$p->eigenschappen = efiber_pakket_eigenschappen($p, $ajax_data['adres']['gebiedscode'], $status, $ajax_data);
+		$p->eigenschappen = keuzehulp_pakket_eigenschappen($p, $ajax_data['adres']['gebiedscode'], $status, $ajax_data);
 		$p->provider = $p->eigenschappen['provider_meta']['naam'];
 
 		// nu pakketten filteren op provider cq filteren op regio.
@@ -239,12 +239,12 @@ function toegestane_providers($regio = '') {
 }
 
 
-$func_n = "efiber_vergelijking";
+$func_n = "keuzehulp_vergelijking";
 
 add_action( 'wp_ajax_'.$func_n, $func_n );
 add_action( 'wp_ajax_nopriv_'.$func_n, $func_n );
 
-function efiber_vergelijking() {
+function keuzehulp_vergelijking() {
 
 
 	/*---------------------------------------------------------
@@ -357,14 +357,7 @@ function efiber_vergelijking() {
 
 		echo json_encode(array(
 			'providers'		=> $providers,
-			'console'		=> array(
-				'filter_params'		=> array(
-					'$pakketten' => $pakketten, 
-					'$toegestane_providers' => $toegestane_providers, 
-					'$postfix' => $postfix, 
-					'$status' => $status
-				)
-			)
+
 		));
 		die();
 
@@ -382,12 +375,12 @@ function efiber_vergelijking() {
 
 
 
-$func_n = "efiber_ik_weet_wat_ik_wil_pakketten";
+$func_n = "keuzehulp_ik_weet_wat_ik_wil_pakketten";
 
 add_action( 'wp_ajax_'.$func_n, $func_n );
 add_action( 'wp_ajax_nopriv_'.$func_n, $func_n );
 
-function efiber_ik_weet_wat_ik_wil_pakketten() {
+function keuzehulp_ik_weet_wat_ik_wil_pakketten() {
 
 
 	/*---------------------------------------------------------

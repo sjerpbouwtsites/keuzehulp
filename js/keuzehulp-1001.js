@@ -12,7 +12,9 @@ function ankerRedirect() {
 	|
 	|-----------------------------------------------------*/
 
+	// legacy ? 
 
+/*
 	var ankers = doc.querySelectorAll("a[href^='https://iedereenglasvezel']");
 	var ankers2 = doc.querySelectorAll("a[href^='https://e-fiber']");
 
@@ -33,7 +35,7 @@ function ankerRedirect() {
 			ankers[i].style.visibility = "hidden";
 		}
 
-	}	
+	}	*/
 }
 
 function kzInit() {

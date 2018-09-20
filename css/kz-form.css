@@ -44,3 +44,20 @@ input[type='text'], textarea, select {
 		    padding: 10px 4px;
 		    letter-spacing: normal;
 		}	
+
+
+.gform_ajax_spinner {
+	max-width: 20px;
+}
+
+		.gform_button {
+			color: white;
+			font-weight: 700;
+			text-transform: uppercase;
+			border: none;
+			background: linear-gradient(.45turn, #2381cc, #1d6ba9);
+			display: block;
+			font-size: 16px;
+			padding: 15px;			
+			border: 0;
+		}

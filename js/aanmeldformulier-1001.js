@@ -48,7 +48,7 @@ function kzMaakPrintMap(){
 	const printMappen = {
 		'begin-gemist': 					this.printMapInit('input_1_53'),
 		'dvb-c': 							this.printMapInit('input_1_76'),
-		'erotiek-pakket': 					this.printMapInit('input_1_60'),
+		'erotiek': 							this.printMapInit('input_1_60'),
 		'extra-optie': 						this.printMapInit('input_1_75'),
 		'extra-tv-ontvangers': 				this.printMapInit('input_1_62'),
 		'extra-vast-nummer': 				this.printMapInit('input_1_41'),
@@ -89,7 +89,7 @@ function kzUpdateHidden() {
 	const aanmeldformulier = doc.getElementById('print-aanmeldformulier');
 	const inputs = aanmeldformulier.querySelectorAll('[data-kz-waarde]');
 	const rijen = Array
-		.from(inputs, input => kzVindRij(input))
+		.from(inputs, (input) => kzVindRij(input))
 		.filter(uniek)
 		.forEach(rij => {
 
@@ -261,47 +261,9 @@ function haalPrintAanmeldformulier(knop) {
 			// schrijf opties naar GF
 			kzUpdateHidden();
 
-
-			jQuery.datepicker.regional.nl = {
-				closeText: 'Sluiten',
-				prevText: '←',
-				nextText: '→',
-				currentText: 'Vandaag',
-				monthNames: ['januari', 'februari', 'maart', 'april', 'mei', 'juni',
-				'juli', 'augustus', 'september', 'oktober', 'november', 'december'],
-				monthNamesShort: ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun',
-				'jul', 'aug', 'sep', 'okt', 'nov', 'dec'],
-				dayNames: ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'],
-				dayNamesShort: ['zon', 'maa', 'din', 'woe', 'don', 'vri', 'zat'],
-				dayNamesMin: ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'],
-				weekHeader: 'Wk',
-				dateFormat: 'dd-mm-yy',
-				firstDay: 1,
-				isRTL: false,
-				showMonthAfterYear: false,
-				yearSuffix: '',
-			};
-
-			jQuery.datepicker.setDefaults(jQuery.datepicker.regional.nl);
-
-			// date field interactief.
-			gformInitDatepicker();
+			kzInitialiseerGF();
 
 
-			// valideert minimumleeftijd = 18 want je moet minstens in 2000 geboren zijn.
-			$('.datepicker_with_icon').on('change', function () {
-				const v = this.value;
-
-				if (v.length > 5) {
-					const is18 = (Number(v.split('/')[2]) - 2000) < 0;
-					if (!is18) {
-						kzModal(kzTekst('minimum_18'), 2000);
-						$('#gform_submit_button_1').hide();
-					} else {
-						$('#gform_submit_button_1').show();
-					}
-				}
-			});
 
 			$('#input_1_30').on('blur', function () {
 				const vastNummer = /^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$/,
@@ -348,6 +310,91 @@ function haalPrintAanmeldformulier(knop) {
 
 	ajf.doeAjax();
 }
+
+function kzInitialiseerGF() {
+
+
+	console.log('wordt geladen');
+
+	jQuery.datepicker.regional.nl = {
+		closeText: 'Sluiten',
+		prevText: '←',
+		nextText: '→',
+		currentText: 'Vandaag',
+		monthNames: ['januari', 'februari', 'maart', 'april', 'mei', 'juni',
+		'juli', 'augustus', 'september', 'oktober', 'november', 'december'],
+		monthNamesShort: ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun',
+		'jul', 'aug', 'sep', 'okt', 'nov', 'dec'],
+		dayNames: ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'],
+		dayNamesShort: ['zon', 'maa', 'din', 'woe', 'don', 'vri', 'zat'],
+		dayNamesMin: ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'],
+		weekHeader: 'Wk',
+		dateFormat: 'dd-mm-yy',
+		firstDay: 1,
+		isRTL: false,
+		showMonthAfterYear: false,
+		yearSuffix: '',
+	};
+
+	jQuery.datepicker.setDefaults(jQuery.datepicker.regional.nl);
+
+	// date field interactief.
+	gformInitDatepicker();
+
+	// valideert minimumleeftijd = 18 want je moet minstens in 2000 geboren zijn.
+	$('.datepicker_with_icon').on('change', function () {
+		const v = this.value;
+
+		if (v.length > 5) {
+			const is18 = (Number(v.split('/')[2]) - 2000) < 0;
+			if (!is18) {
+				kzModal(kzTekst('minimum_18'), 2000);
+				$('#gform_submit_button_1').hide();
+			} else {
+				$('#gform_submit_button_1').show();
+			}
+		}
+	});
+	
+/*		
+	jQuery(document).bind('gform_load_field_settings', function (event, field, form) {
+
+		var backColor = field.backgroundColor == undefined ? '' : field.backgroundColor;
+		jQuery('#field_signature_background_color').val(backColor);
+		SetColorPickerColor('field_signature_background_color', backColor);
+		var borderColor = field.borderColor == undefined ? '' : field.borderColor;
+		jQuery('#field_signature_border_color').val(borderColor);
+		SetColorPickerColor('field_signature_border_color', borderColor);
+		var penColor = field.penColor == undefined ? '' : field.penColor;
+		jQuery('#field_signature_pen_color').val(penColor);
+		SetColorPickerColor('field_signature_pen_color', penColor);
+		var boxWidth = field.boxWidth == undefined || field.boxWidth.trim().length == 0 ? '300' : field.boxWidth;
+		jQuery('#field_signature_box_width').val(boxWidth);
+		var borderStyle = field.borderStyle == undefined ? '' : field.borderStyle.toLowerCase();
+		jQuery('#field_signature_border_style').val(borderStyle);
+		var borderWidth = field.borderWidth == undefined ? '' : field.borderWidth;
+		jQuery('#field_signature_border_width').val(borderWidth);
+		var penSize = field.penSize == undefined ? '' : field.penSize;
+		jQuery('#field_signature_pen_size').val(penSize);
+
+	});
+
+	jQuery(document).ready(function () {
+		jQuery('#field_signature_box_width').mask('?9999', {placeholder: ' '});
+	});*/
+
+
+}
+
+/*function SetDefaultValues_signature(field) {field.label = 'handtekening';}
+function SetSignatureBackColor(color) {SetFieldProperty('backgroundColor', color);jQuery('.field_selected .gf_signature_container').css('background-color', color);}
+function SetSignatureBorderColor(color) {SetFieldProperty('borderColor', color);jQuery('.field_selected .gf_signature_container').css('border-color', color);}
+function SetSignaturePenColor(color) {SetFieldProperty('penColor', color);}
+function SetSignatureBoxWidth(size) {SetFieldProperty('boxWidth', size);}
+function SetSignatureBorderStyle(style) {SetFieldProperty('borderStyle', style);jQuery('.field_selected .gf_signature_container').css('border-style', style);}
+function SetSignatureBorderWidth(size) {SetFieldProperty('borderWidth', size);jQuery('.field_selected .gf_signature_container').css('border-width', size + 'px');}
+function SetSignaturePenSize(size) {SetFieldProperty('penSize', size);}*/
+
 
 function kzUpdatePrijs(knop) {
 	/*------------------------------------------------------
@@ -580,4 +627,144 @@ function KzAantalTvs(optellen) {
 		extraTVontvangers.value = Number(extraTVontvangers.value) - 1; 
 	}
 	extraTVontvangers.click();
+}
+
+
+
+
+
+var Base64 = {
+ 
+	// private property
+	_keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+ 
+	// public method for encoding
+	encode : function (input) {
+		var output = "";
+		var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+		var i = 0;
+ 
+		input = Base64._utf8_encode(input);
+ 
+		while (i < input.length) {
+ 
+			chr1 = input.charCodeAt(i++);
+			chr2 = input.charCodeAt(i++);
+			chr3 = input.charCodeAt(i++);
+ 
+			enc1 = chr1 >> 2;
+			enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+			enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+			enc4 = chr3 & 63;
+ 
+			if (isNaN(chr2)) {
+				enc3 = enc4 = 64;
+			} else if (isNaN(chr3)) {
+				enc4 = 64;
+			}
+ 
+			output = output +
+			this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
+			this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+ 
+		}
+ 
+		return output;
+	},
+ 
+	// public method for decoding
+	decode : function (input) {
+		var output = "";
+		var chr1, chr2, chr3;
+		var enc1, enc2, enc3, enc4;
+		var i = 0;
+ 
+		input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+ 
+		while (i < input.length) {
+ 
+			enc1 = this._keyStr.indexOf(input.charAt(i++));
+			enc2 = this._keyStr.indexOf(input.charAt(i++));
+			enc3 = this._keyStr.indexOf(input.charAt(i++));
+			enc4 = this._keyStr.indexOf(input.charAt(i++));
+ 
+			chr1 = (enc1 << 2) | (enc2 >> 4);
+			chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+			chr3 = ((enc3 & 3) << 6) | enc4;
+ 
+			output = output + String.fromCharCode(chr1);
+ 
+			if (enc3 != 64) {
+				output = output + String.fromCharCode(chr2);
+			}
+			if (enc4 != 64) {
+				output = output + String.fromCharCode(chr3);
+			}
+ 
+		}
+ 
+		output = Base64._utf8_decode(output);
+ 
+		return output;
+ 
+	},
+ 
+	// private method for UTF-8 encoding
+	_utf8_encode : function (string) {
+		string = string.replace(/\r\n/g,"\n");
+		var utftext = "";
+ 
+		for (var n = 0; n < string.length; n++) {
+ 
+			var c = string.charCodeAt(n);
+ 
+			if (c < 128) {
+				utftext += String.fromCharCode(c);
+			}
+			else if((c > 127) && (c < 2048)) {
+				utftext += String.fromCharCode((c >> 6) | 192);
+				utftext += String.fromCharCode((c & 63) | 128);
+			}
+			else {
+				utftext += String.fromCharCode((c >> 12) | 224);
+				utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+				utftext += String.fromCharCode((c & 63) | 128);
+			}
+ 
+		}
+ 
+		return utftext;
+	},
+ 
+	// private method for UTF-8 decoding
+	_utf8_decode : function (utftext) {
+		var string = "";
+		var i = 0;
+		var c = c1 = c2 = 0;
+ 
+		while ( i < utftext.length ) {
+ 
+			c = utftext.charCodeAt(i);
+ 
+			if (c < 128) {
+				string += String.fromCharCode(c);
+				i++;
+			}
+			else if((c > 191) && (c < 224)) {
+				c2 = utftext.charCodeAt(i+1);
+				string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+				i += 2;
+			}
+			else {
+				c2 = utftext.charCodeAt(i+1);
+				c3 = utftext.charCodeAt(i+2);
+				string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+				i += 3;
+			}
+ 
+		}
+ 
+		return string;
+	}
+ 
 }

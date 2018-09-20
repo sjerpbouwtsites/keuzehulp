@@ -114,7 +114,7 @@ function logFouteSituatiePostcodeCheck(r){
 		},
 		cb: function(){
 			setTimeout(()=>{
-				location.href = "https://iedereenglasvezel.nl";
+				location.href = location.origin;
 			}, 1500);
 		},
 	});

@@ -362,7 +362,7 @@ section.kz-form-sectie:last-of-type {
 
 	.kz-form-sectie .sub-rij {
 		display: none;
-		min-width: 100%;
+		min-width: calc(100% - 20px);
 	}
 	.kz-form-sectie .heeft-actieve-knop.heeft-sub-rij {
 		margin-bottom: 0

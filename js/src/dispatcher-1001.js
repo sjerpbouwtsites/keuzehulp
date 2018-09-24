@@ -24,7 +24,7 @@ function knoppenDispatcher() {
 
 		var t = e.target;
 		var knop = kzVindKnop(t, 'knop');
-
+ 
 
 		if (knop) {
 			e.preventDefault();

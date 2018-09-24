@@ -793,14 +793,18 @@ function postcodeAjaxCB(r) {
       }
     } else {
       if (r.provider_beschikbaar) {
-        var tekstSleutel = {
-          status1: 'succes_vraag_bundeling',
-          status2: 'succes_schouwen',
-          status3: 'succes_graafwerkzaamheden',
-          status4: 'succes_huisaansluitingen',
-          status5: 'succes_opgeleverd'
-        };
-        kzModal(kzTekst(tekstSleutel["status".concat(r.status)], r.regio), 2000);
+        /*				const tekstSleutel = {
+        					status1: 'succes_vraag_bundeling',
+        					status2: 'succes_schouwen',
+        					status3: 'succes_graafwerkzaamheden',
+        					status4: 'succes_huisaansluitingen',
+        					status5: 'succes_opgeleverd',
+        				};
+        
+        				kzModal(
+        					kzTekst(tekstSleutel[`status${r.status}`], r.regio),
+        					2000,
+        				);*/
         kzRouting.ga(2);
       } else {
         logFouteSituatiePostcodeCheck(r);

@@ -12,7 +12,7 @@ function kzTekst(snede, invoeging) {
 		return kzModalTeksten[snede];
 	}
 
-	//console.log('modal '+snede);
+	// console.log('modal '+snede);
 
 	if (typeof invoeging === 'string') {
 		return kzModalTeksten[snede].replace('%s', invoeging);
@@ -20,16 +20,15 @@ function kzTekst(snede, invoeging) {
 
 		let r = kzModalTeksten[snede];
 
-		for (let i = 0; i < invoeging.length; i++) {
-			r = r.replace(`%s${i}`, invoeging[i]);
-		}
+		invoeging.forEach((invoeg, index) => {
+			r = r.replace(`%s${index}`, invoeg);
+		});
 
 		return r;
 }
 
 
 function kzModal(tekst, tijd = false) {
-	
 	doc.body.className = `${doc.body.className} kz-modal-open`;
 
 	$modal = jQuery("<div class='kz-modal'></div>");
@@ -40,12 +39,10 @@ function kzModal(tekst, tijd = false) {
 			$modalBinnen.append(jQuery(`<header><h3>${tekst.kop}</h3></header>`));
 		}
 		if ('torso' in tekst) {
-			const t = (tekst.torso.indexOf('<') === -1) ? `<p>${tekst.torso}</p>` : tekst.torso;
-			$modalBinnen.append(jQuery(t));
+			$modalBinnen.append(jQuery(`<span>${tekst.torso}</span>`));
 		}
 	} else {
-		const t = (tekst.indexOf('<') === -1) ? `<p>${tekst}</p>` : tekst;
-		$modalBinnen.append(jQuery(t));
+		$modalBinnen.append(jQuery(`<span>${tekst}</span>`));
 	}
 
 	const $sluiten = jQuery("<a href='#' class='knop kz-modal-sluiten' data-kz-func='verwijder-modal'>X</a>");
@@ -69,7 +66,6 @@ function kzModal(tekst, tijd = false) {
 }
 
 function kzVerwijderModal() {
-
 	jQuery('.kz-modal-achtergrond').fadeOut(300, () => {
 		jQuery('.kz-modal-achtergrond').remove();
 	});

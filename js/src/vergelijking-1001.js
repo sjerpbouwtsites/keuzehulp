@@ -15,7 +15,6 @@
 		},
 		cb: r => kzRenderVergelijking.hoofd(r, keuzehulp),
 	})).doeAjax();
-
 } // vergelijking ajax
 
 const kzRenderVergelijking = {
@@ -25,32 +24,30 @@ const kzRenderVergelijking = {
 		this.providers = r.providers;
 		doc.getElementById('print-vergelijking').innerHTML = '';
 		if (this.erIsWatTePrinten()) {
-			
 			const printVergelijking = doc.getElementById('print-vergelijking');
-			let printPakketten = '';
+			let printPakketten = '',
 
-			let providerTal = 0;
+			 providerTal = 0;
 			for (const provider in r.providers) {
-
 				// maak de rekenklassen
-				// stel laagste snelheid in als gekozen pakket				
+				// stel laagste snelheid in als gekozen pakket
 				const pakketten = r.providers[provider]
 					.map(pakket => new VerrijktPakket(pakket))
 					.map(pakket => vergelijkingsProcedure(pakket, this.keuzehulp)),
 
-				 p1 = pakketten[0];
+				 p1 = pakketten[0],
 
 				// per provider aantal pakketten, zoals DTV, ITV. Vaak maar één.
 
-				const pakketClasses = pakketten.map(pakket => `pakketten-section-${pakket.ID}`).join(' ');
+				 pakketClasses = pakketten.map(pakket => `pakketten-section-${pakket.ID}`).join(' ');
 
-				if(providerTal++ === 3) {
+				if (providerTal++ === 3) {
 					printPakketten += `
 					<div class='provider-pakketten-break'>
 						<h2>Overige selectie pakketten die goed bij jouw voorkeuren passen</h2>
 					</div>
 					`;
-				}				
+				}
 
 				printPakketten += `<section class='provider-pakketten vergelijking ${pakketClasses}'>
 
@@ -58,9 +55,9 @@ const kzRenderVergelijking = {
 
 						<div class='provider-logo-contain'>${p1.eigenschappen.provider_meta.thumb}</div>
 
-						${(providerTal < 4 
+						${(providerTal < 4
 							? `<span class='prijs-bolletje provider-pakketten-header-prijs'><span>${p1.maandelijksTotaal(true)}</span><span>p/m</span></span>`
-							: `<span class='vergelijking-vanaf-4e-prijs'><span>${p1.maandelijksTotaal(true)}</span><span>p/m</span></span>`
+							: ''
 						)}
 
 					</header>
@@ -71,37 +68,29 @@ const kzRenderVergelijking = {
 					</ul>
 
 				</section>
-				
+
 
 				`;
 			} // for provider DIT IS DE HELE LOOP OM DE PROVIDERS HEEN
 
 			printVergelijking.innerHTML = printPakketten;
-
 		} else {
-
 			// door naar pakketoverzicht voor alternatieven
 
-			kzRouting.ga(21); 
+			kzRouting.ga(21);
 			const keuzehulp = JSON.parse(sessionStorage.getItem('kz-keuzehulp'));
 
 			if (keuzehulp.bellen === '2' || keuzehulp.bellen === '3') {
-
-				if (keuzehulp.televisie === '2' || keuzehulp.televisie === '3' ) {
-					keuzehulp['ik-weet-wat-ik-wil'] = "4";
+				if (keuzehulp.televisie === '2' || keuzehulp.televisie === '3') {
+					keuzehulp['ik-weet-wat-ik-wil'] = '4';
 				} else {
-					keuzehulp['ik-weet-wat-ik-wil'] = "2";
+					keuzehulp['ik-weet-wat-ik-wil'] = '2';
 				}
-
-			} else {
-
-				if (keuzehulp.televisie === '2' || keuzehulp.televisie === '3' ) {
-					keuzehulp['ik-weet-wat-ik-wil'] = "3";
+			} else if (keuzehulp.televisie === '2' || keuzehulp.televisie === '3') {
+					keuzehulp['ik-weet-wat-ik-wil'] = '3';
 				} else {
-					keuzehulp['ik-weet-wat-ik-wil'] = "1";
+					keuzehulp['ik-weet-wat-ik-wil'] = '1';
 				}
-
-			}
 
 
 		sessionStorage.setItem('kz-keuzehulp', JSON.stringify(keuzehulp));
@@ -126,26 +115,23 @@ const kzRenderVergelijking = {
 				cb: function(){ console.warn('geen pakketten gevonden. Gerapporteerd.'); },
 			});
 
-			ajf2.doeAjax();				
+			ajf2.doeAjax();
 			return;				*/
-		
 		} // als r cq response
 	},
-	erIsWatTePrinten(){
-
+	erIsWatTePrinten() {
 		// KAN ALS ARRAY EN ALS OBJECT BINNENKOMEN :o
 
 		if (this.providers.hasOwnProperty('length')) {
 			return !!this.providers.length;
-		} else {
-			return !!Object.entries(this.providers);
 		}
-
+			return !!Object.entries(this.providers);
 	},
 	printPakkettenLijst(pakket, providerTal) {
-
 		this.pakket = pakket;
-		
+
+		const ds = pakket.pakHuidigeSnelheid(),
+		us = pakket.pakHuidigeUploadSnelheid();
 
 		return `
 		<li class='provider-pakketten-pakket'>
@@ -154,10 +140,25 @@ const kzRenderVergelijking = {
 				<h3 class='provider-pakketten-pakket-titel'>${pakket.naam_composiet}</h3>
 
 				<div class='flex'>
-					<div class='provider-pakketten-pakket-links'>
-						<h4>Down- en uploadsnelheid</h4>
-						<strong>${pakket.pakHuidigeSnelheid()} / ${pakket.pakHuidigeUploadSnelheid()} Mb/s</strong>
-					</div>
+
+					${(ds === us
+						? `<div class='provider-pakketten-pakket-links'>
+							<h4>Snelheid</h4>
+							<strong>${ds} Mb/s</strong>
+						</div>`
+						: `<div class='provider-pakketten-pakket-links'>
+							<h4>Down- en uploadsnelheid</h4>
+							<strong>${ds} / ${us} Mb/s</strong>
+						</div>`
+					)}
+
+					${(providerTal > 3
+						? `<div class='provider-pakketten-pakket-midden'>
+							<h4>Maandelijks totaal</h4>
+							<strong>${pakket.maandelijksTotaal(true)}</strong>
+						</div>`
+						: ''
+					)}
 
 					<div class='provider-pakketten-pakket-rechts'>
 						<h4>Eenmalig totaal</h4>
@@ -168,7 +169,7 @@ const kzRenderVergelijking = {
 				<a
 					class='knop blauwe-knop'
 					href='#'
-					data-doel='#provider-pakketten-vergelijking-hoofd-${pakket.ID}, .pakketten-section-${pakket.ID}'
+					data-doel='#provider-pakketten-vergelijking-hoofd-${pakket.ID}, .pakketten-section-${pakket.ID}, .pakketten-section-${pakket.ID} .provider-pakketten_footer'
 					data-kz-func='schakel'
 					data-scroll='.pakketten-section-${pakket.ID}'
 					><span class='als-niet-actief'>bekijken</span><span class='als-actief'>dichtvouwen</span><svg class='svg-dichtklappen' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><style>.cc94da39-046e-4f53-b263-e21794d5c601{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class="cc94da39-046e-4f53-b263-e21794d5c601" d="M35.47,59.76,50,45.38,64.53,59.76C65.68,61,66.82,61,68,59.83a2.23,2.23,0,0,0,0-3.51L51.72,40.07a2.29,2.29,0,0,0-3.44,0L32,56.32a2.23,2.23,0,0,0,0,3.51C33.18,61,34.32,61,35.47,59.76Z"/></svg>
@@ -189,8 +190,8 @@ const kzRenderVergelijking = {
 				${this.aanvullendeSectie()}
 
 			</div>
-			
-			<footer>
+
+			<footer class='provider-pakketten_footer'>
 				<a
 					class='knop blauwe-knop geen-ikoon kz-bestelknop'
 					data-kz-func='toon-stap animeer aanmeldformulier'
@@ -201,7 +202,7 @@ const kzRenderVergelijking = {
 			</footer>
 		</li>`;
 	},
-	telefonieSectiePrijsTD(a) {return (isNaN(Number(a)) ? a : this.pakket.formatteerPrijs(a))},
+	telefonieSectiePrijsTD(a) { return (isNaN(Number(a)) ? a : this.pakket.formatteerPrijs(a)); },
 	telefonieSectie() {
 		const telBundel = this.pakket.huidigeTelefonieBundel();
 
@@ -219,7 +220,7 @@ const kzRenderVergelijking = {
 			<div class='provider-pakketten-vergelijking-sectie'>
 
 				<header>
-					<svg class='svg-bellen' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><style>.e97ef855-384b-4714-91e0-2d37881c1420{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class="e97ef855-384b-4714-91e0-2d37881c1420" d="M70.94,58.25a7.15,7.15,0,0,0-5.18-2.38,7.43,7.43,0,0,0-5.24,2.36l-4.84,4.83-1.18-.61c-.55-.28-1.07-.54-1.52-.81a52.83,52.83,0,0,1-12.61-11.5,30.92,30.92,0,0,1-4.13-6.52c1.25-1.15,2.42-2.35,3.55-3.5.43-.42.86-.87,1.29-1.3,3.22-3.21,3.22-7.38,0-10.6L36.9,24c-.48-.48-1-1-1.43-1.46-.92-.95-1.88-1.93-2.88-2.85a7.24,7.24,0,0,0-5.13-2.25,7.5,7.5,0,0,0-5.21,2.25l0,0L17,25a11.18,11.18,0,0,0-3.32,7.12,26.84,26.84,0,0,0,2,11.37A65.89,65.89,0,0,0,27.37,63.06a72.09,72.09,0,0,0,24,18.8,37.2,37.2,0,0,0,13.48,4l1,0a11.54,11.54,0,0,0,8.84-3.8s0,0,.06-.07a34.89,34.89,0,0,1,2.69-2.78c.65-.62,1.33-1.28,2-2A7.68,7.68,0,0,0,81.71,72a7.36,7.36,0,0,0-2.36-5.26Zm5.48,16.13s0,0,0,0c-.59.65-1.21,1.23-1.86,1.87a39.39,39.39,0,0,0-3,3.07,7.4,7.4,0,0,1-5.76,2.43h-.71a33.14,33.14,0,0,1-11.95-3.59A68.15,68.15,0,0,1,30.57,60.44a62.05,62.05,0,0,1-11-18.37,21.8,21.8,0,0,1-1.72-9.59,7,7,0,0,1,2.12-4.55l5.22-5.23a3.5,3.5,0,0,1,2.33-1.08,3.27,3.27,0,0,1,2.24,1.07l0,0c.94.87,1.83,1.77,2.76,2.74L34,27l4.18,4.19c1.62,1.62,1.62,3.12,0,4.75-.45.44-.87.88-1.32,1.31C35.56,38.53,34.34,39.76,33,41c0,0-.07,0-.08.08a3.14,3.14,0,0,0-.8,3.48l0,.13a33.61,33.61,0,0,0,5,8.08h0A56.22,56.22,0,0,0,50.75,65.11c.63.4,1.27.72,1.88,1s1.07.54,1.52.81l.18.11a3.32,3.32,0,0,0,1.52.38,3.29,3.29,0,0,0,2.33-1l5.24-5.24A3.43,3.43,0,0,1,65.73,60a3.14,3.14,0,0,1,2.21,1.11l0,0,8.44,8.44C78,71.15,78,72.76,76.42,74.38Z"/><path class="e97ef855-384b-4714-91e0-2d37881c1420" d="M52.8,30.55A19.72,19.72,0,0,1,68.86,46.61a2,2,0,0,0,2,1.71,2.19,2.19,0,0,0,.36,0A2.08,2.08,0,0,0,73,45.9,23.88,23.88,0,0,0,53.52,26.47a2.09,2.09,0,0,0-2.39,1.69A2,2,0,0,0,52.8,30.55Z"/><path class="e97ef855-384b-4714-91e0-2d37881c1420" d="M86.08,45.3a39.3,39.3,0,0,0-32-32,2.07,2.07,0,1,0-.68,4.08A35.07,35.07,0,0,1,82,46a2.07,2.07,0,0,0,4.08-.68Z"/></svg>						
+					<svg class='svg-bellen' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><style>.e97ef855-384b-4714-91e0-2d37881c1420{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class="e97ef855-384b-4714-91e0-2d37881c1420" d="M70.94,58.25a7.15,7.15,0,0,0-5.18-2.38,7.43,7.43,0,0,0-5.24,2.36l-4.84,4.83-1.18-.61c-.55-.28-1.07-.54-1.52-.81a52.83,52.83,0,0,1-12.61-11.5,30.92,30.92,0,0,1-4.13-6.52c1.25-1.15,2.42-2.35,3.55-3.5.43-.42.86-.87,1.29-1.3,3.22-3.21,3.22-7.38,0-10.6L36.9,24c-.48-.48-1-1-1.43-1.46-.92-.95-1.88-1.93-2.88-2.85a7.24,7.24,0,0,0-5.13-2.25,7.5,7.5,0,0,0-5.21,2.25l0,0L17,25a11.18,11.18,0,0,0-3.32,7.12,26.84,26.84,0,0,0,2,11.37A65.89,65.89,0,0,0,27.37,63.06a72.09,72.09,0,0,0,24,18.8,37.2,37.2,0,0,0,13.48,4l1,0a11.54,11.54,0,0,0,8.84-3.8s0,0,.06-.07a34.89,34.89,0,0,1,2.69-2.78c.65-.62,1.33-1.28,2-2A7.68,7.68,0,0,0,81.71,72a7.36,7.36,0,0,0-2.36-5.26Zm5.48,16.13s0,0,0,0c-.59.65-1.21,1.23-1.86,1.87a39.39,39.39,0,0,0-3,3.07,7.4,7.4,0,0,1-5.76,2.43h-.71a33.14,33.14,0,0,1-11.95-3.59A68.15,68.15,0,0,1,30.57,60.44a62.05,62.05,0,0,1-11-18.37,21.8,21.8,0,0,1-1.72-9.59,7,7,0,0,1,2.12-4.55l5.22-5.23a3.5,3.5,0,0,1,2.33-1.08,3.27,3.27,0,0,1,2.24,1.07l0,0c.94.87,1.83,1.77,2.76,2.74L34,27l4.18,4.19c1.62,1.62,1.62,3.12,0,4.75-.45.44-.87.88-1.32,1.31C35.56,38.53,34.34,39.76,33,41c0,0-.07,0-.08.08a3.14,3.14,0,0,0-.8,3.48l0,.13a33.61,33.61,0,0,0,5,8.08h0A56.22,56.22,0,0,0,50.75,65.11c.63.4,1.27.72,1.88,1s1.07.54,1.52.81l.18.11a3.32,3.32,0,0,0,1.52.38,3.29,3.29,0,0,0,2.33-1l5.24-5.24A3.43,3.43,0,0,1,65.73,60a3.14,3.14,0,0,1,2.21,1.11l0,0,8.44,8.44C78,71.15,78,72.76,76.42,74.38Z"/><path class="e97ef855-384b-4714-91e0-2d37881c1420" d="M52.8,30.55A19.72,19.72,0,0,1,68.86,46.61a2,2,0,0,0,2,1.71,2.19,2.19,0,0,0,.36,0A2.08,2.08,0,0,0,73,45.9,23.88,23.88,0,0,0,53.52,26.47a2.09,2.09,0,0,0-2.39,1.69A2,2,0,0,0,52.8,30.55Z"/><path class="e97ef855-384b-4714-91e0-2d37881c1420" d="M86.08,45.3a39.3,39.3,0,0,0-32-32,2.07,2.07,0,1,0-.68,4.08A35.07,35.07,0,0,1,82,46a2.07,2.07,0,0,0,4.08-.68Z"/></svg>
 					<h3>Bellen</h3>
 				</header>
 
@@ -238,7 +239,7 @@ const kzRenderVergelijking = {
 						<tr>
 							<td>Start vast</td>
 							<td>${this.telefonieSectiePrijsTD(telBundel.data.vast.nederland.start)}</td>
-						</tr>					
+						</tr>
 						<tr>
 							<td>Vast p/m</td>
 							<td>${this.telefonieSectiePrijsTD(telBundel.data.vast.nederland.per_minuut)}</td>
@@ -246,20 +247,19 @@ const kzRenderVergelijking = {
 						<tr>
 							<td>Mobiel start</td>
 							<td>${this.telefonieSectiePrijsTD(telBundel.data.mobiel.nederland.start)}</td>
-						</tr>																					
+						</tr>
 						<tr>
 							<td>Mobiel p/m</td>
 							<td>${this.telefonieSectiePrijsTD(telBundel.data.mobiel.nederland.per_minuut)}</td>
 						</tr>
 						${
-							this.pakket.optieAantal('extra-vast-nummer') 
-								? 
-									`<tr>
+							this.pakket.optieAantal('extra-vast-nummer')
+								?									`<tr>
 										<td>Extra vast nummer</td>
 										<td>${this.pakket.optiePrijs('extra-vast-nummer', true)}</td>
 									</td>`
-								: `` 
-						}																												
+								: ''
+						}
 					<tbody>
 
 				</table>
@@ -268,13 +268,13 @@ const kzRenderVergelijking = {
 					<a href='#' class='knop blauwe-knop' data-kz-func='telefonie-modal' data-pakket-id='${this.pakket.ID}'>Meer over deze telefoniebundel</a>
 				</footer>
 
-			</div>			
+			</div>
 		`;
 	},
 	televisieSectieTD(sleutel, naam) {
-		return this.pakket.optieAantal(sleutel) 
+		return this.pakket.optieAantal(sleutel)
 			? `<tr><td>${naam}</td><td>${this.pakket.optiePrijs(sleutel, true)}</td>`
-			: ``
+			: '';
 	},
 	televisieSectie() {
 		const z = this.pakket.pakZenders();
@@ -283,13 +283,19 @@ const kzRenderVergelijking = {
 			return '';
 		}
 
+		const tooltipHTML = `<a href='#' class='knop' data-kz-func='tooltip'
+								data-tooltip-titel='Snelheidsafhankelijke zenderpakketten'
+								data-tooltip-tekst='Bij ${this.pakket.provider} zijn er verschillende zenderpakketten beschikbaar, afhankelijk van de snelheid van uw internetverbinding. Dit zenderoverzicht hoort bij de snelheid ${z.snelheid} Mb/s.'>
+								<svg class='svg-info' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><style>.f7f0e9f1-f859-4dfe-95fb-3d086fc32618{fill:#159a3c;}</style></defs><circle class="f7f0e9f1-f859-4dfe-95fb-3d086fc32618" cx="49.91" cy="71.51" r="4.36"/><path class="f7f0e9f1-f859-4dfe-95fb-3d086fc32618" d="M49.91,5.52A44.64,44.64,0,1,0,94.54,50.15,44.61,44.61,0,0,0,49.91,5.52Zm0,82.29A37.66,37.66,0,1,1,87.57,50.15,37.63,37.63,0,0,1,49.91,87.81Z"/><path class="f7f0e9f1-f859-4dfe-95fb-3d086fc32618" d="M49.91,27.92A14,14,0,0,0,36,41.87a3.49,3.49,0,1,0,7,0,7,7,0,1,1,7,7,3.49,3.49,0,0,0-3.49,3.49v8.72a3.49,3.49,0,0,0,7,0V55.38a14,14,0,0,0-3.49-27.46Z"/></svg>
+							 </a>`;
+
 		return `
 			<div class='provider-pakketten-vergelijking-sectie'>
 
 				<header>
-					<svg 
-						class='svg-tv' 
-						xmlns="http://www.w3.org/2000/svg" 
+					<svg
+						class='svg-tv'
+						xmlns="http://www.w3.org/2000/svg"
 						viewBox="0 0 100 100">
 							<defs>
 								<style>.25a40c2a-e21f-4ff6-8508-46524cd51bfe{fill:#159a3c;}
@@ -305,15 +311,15 @@ const kzRenderVergelijking = {
 						<tr>
 							<th>Type TV</th>
 							<th>${this.pakket.pakTypeTV()}</th
-						</tr>						
+						</tr>
 						<tr>
 							<th>Aantal zenders</th>
-							<th>${z.totaal}</th
+							<th>${z.totaal}  ${(z.aantalUniekeZenderPakketten > 1 ? tooltipHTML : '')}</th
 						</tr>
 						<tr>
 							<th>Aantal HD zenders</th>
 							<th>${z.hd}</th
-						</tr>							
+						</tr>
 					</thead>
 					<tbody>
 						${this.televisieSectieTD('app', 'App')}
@@ -330,7 +336,7 @@ const kzRenderVergelijking = {
 					<a href='#' class='blauwe-knop knop' data-kz-func='aantal-zenders-modal' data-pakket-id='${this.pakket.ID}'>meer over deze televisiebundel</a>
 				</footer>-->
 
-			</div>			
+			</div>
 		`;
 	},
 	televisieBundels() {
@@ -347,9 +353,9 @@ const kzRenderVergelijking = {
 					n = n.join(' ');
 					n = n.charAt(0).toUpperCase() + n.slice(1);
 
-					const s = this.pakket.optieAantal(optieNaam) 
-						? `<tr><td>${n}</td><td>${this.pakket.optiePrijs(optieNaam, true)}</td></tr>` 
-						: ``;
+					const s = this.pakket.optieAantal(optieNaam)
+						? `<tr><td>${n}</td><td>${this.pakket.optiePrijs(optieNaam, true)}</td></tr>`
+						: '';
 
 					ret.push(s);
 				}
@@ -358,12 +364,11 @@ const kzRenderVergelijking = {
 		return ret.join('');
 	},
 	installatieSectieTD(sleutel, naam) {
-		return this.pakket.optieAantal(sleutel) 
-			? `<tr><td>${naam}</td><td>${this.pakket.optiePrijs(sleutel, true)}</td></tr>` 
-			: ''
+		return this.pakket.optieAantal(sleutel)
+			? `<tr><td>${naam}</td><td>${this.pakket.optiePrijs(sleutel, true)}</td></tr>`
+			: '';
 	},
 	installatieSectie() {
-
 		return `
 			<div class='provider-pakketten-vergelijking-sectie'>
 
@@ -380,7 +385,7 @@ const kzRenderVergelijking = {
 					</tbody>
 				</table>
 
-			</div>			
+			</div>
 		`;
 	},
 	kostenSectie() {
@@ -388,15 +393,15 @@ const kzRenderVergelijking = {
 			<div class='provider-pakketten-vergelijking-sectie'>
 
 				<header>
-					<svg 
-						class='svg-kosten' 
-						xmlns="http://www.w3.org/2000/svg" 
+					<svg
+						class='svg-kosten'
+						xmlns="http://www.w3.org/2000/svg"
 						viewBox="0 0 100 100"><defs><style>.90a4297-b0d6-49b3-bfa6-51cb9d624468{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class="390a4297-b0d6-49b3-bfa6-51cb9d624468" d="M64.64,54.26a2.18,2.18,0,0,0-.59,1.61,2.38,2.38,0,1,0,2.34-2.34A2.36,2.36,0,0,0,64.64,54.26Zm-5.27,8.63v-14H82.79v14ZM29.66,25.43l41.27-6.74,1,6.74ZM17.21,30.11H78.1v14H59.37a4.75,4.75,0,0,0-4.69,4.68v14a4.75,4.75,0,0,0,4.69,4.69H78.1v14H17.21Zm65.58,14v-14a4.75,4.75,0,0,0-4.69-4.68H76.64l-1.47-9.81a2.17,2.17,0,0,0-1-1.46,2.39,2.39,0,0,0-1.83-.44L21.46,22.06a2.3,2.3,0,0,0-1.46.88,2.18,2.18,0,0,0-.44,1.75l.14.74H17.21a4.5,4.5,0,0,0-3.29,1.39,4.47,4.47,0,0,0-1.39,3.29V81.63a4.47,4.47,0,0,0,1.39,3.29,4.5,4.5,0,0,0,3.29,1.39H78.1a4.75,4.75,0,0,0,4.69-4.68v-14a4.75,4.75,0,0,0,4.68-4.69v-14a4.75,4.75,0,0,0-4.68-4.68Z"/></svg>
 					<h3>Kosten</h3>
 				</header>
 
 				<table>
-					
+
 					<tbody>
 						<tr>
 							<td><strong>Borg apparatuur</strong></td>
@@ -409,17 +414,16 @@ const kzRenderVergelijking = {
 						<tr>
 							<td><strong>Maandelijks totaal</strong></td>
 							<td>${this.pakket.maandelijksTotaal(true)}</td>
-						</tr>												
+						</tr>
 					<tbody>
 
 				</table>
 
-			</div>			
+			</div>
 		`;
-	},	
+	},
 	aanvullendeSectie() {
-
-		if (!this.pakket.eigenschappen.teksten.aanvullende_informatie) return ``;
+		if (!this.pakket.eigenschappen.teksten.aanvullende_informatie) return '';
 
 		return `
 			<div class='provider-pakketten-vergelijking-sectie'>
@@ -431,34 +435,31 @@ const kzRenderVergelijking = {
 
 				<p>${this.pakket.eigenschappen.teksten.aanvullende_informatie}</p>
 
-			</div>			
+			</div>
 		`;
-	},	
+	},
 
 };
 
 
 function kzTelefonieModal(knop) {
+	const pakket = window[`kz-pakket-${knop.getAttribute('data-pakket-id')}`],
 
-	const pakket = window['kz-pakket-'+ knop.getAttribute('data-pakket-id')];
-	
-	const belPakket = pakket.huidigeTelefonieBundel();
+	 belPakket = pakket.huidigeTelefonieBundel();
 
-	this.cel = prijs => {
-		return isNaN(Number(prijs)) 
-			? prijs 
-			: pakket.formatteerPrijs(prijs) 
-	};
+	this.cel = prijs => (isNaN(Number(prijs))
+			? prijs
+			: pakket.formatteerPrijs(prijs));
 
 
 	const html = `
 
 		<p>${isNaN(Number(belPakket.data.maandbedrag))
-			? belPakket.data.maandbedrag 
+			? belPakket.data.maandbedrag
 			: `Abonnementsprijs: ${pakket.formatteerPrijs(belPakket.data.maandbedrag)}`
 		}</p>
 
-		<p><strong>Maximum minuten binnen bundel: </strong> ${belPakket.data.maximum_minuten ? belPakket.data.maximum_minuten : "geen"}</p>
+		<p><strong>Maximum minuten binnen bundel: </strong> ${belPakket.data.maximum_minuten ? belPakket.data.maximum_minuten : 'geen'}</p>
 
 		<table>
 			<thead>
@@ -494,24 +495,23 @@ function kzTelefonieModal(knop) {
 					<td>${this.cel(belPakket.data.mobiel.buitenland.start)}</td>
 					<td>${this.cel(belPakket.data.mobiel.buitenland.per_minuut)}</td>
 				</tr>
-					
+
 			</tbody>
 		</table>
 	`;
 
 	kzModal({
 		kop: belPakket.naam,
-		torso: html
+		torso: html,
 	});
 }
 
-function kzZendersModal(knop){
+function kzZendersModal(knop) {
+	const pakket = window[`kz-pakket-${knop.getAttribute('data-pakket-id')}`],
 
-	const pakket = window['kz-pakket-'+ knop.getAttribute('data-pakket-id')];
+	 zenderInfo = pakket.pakZenders(),
 
-	const zenderInfo = pakket.pakZenders();
-
-	const html = `
+	 html = `
 		Zenders totaal: ${zenderInfo.totaal}<br>
 		Zenders HD: ${zenderInfo.hd}<br>
 		${zenderInfo.zenderlijst}
@@ -519,8 +519,8 @@ function kzZendersModal(knop){
 
 	kzModal({
 		kop: pakket.naam_composiet,
-		torso: html
-	});	
+		torso: html,
+	});
 }
 
 function kzVergelijkingstabelOpVolgorde(tabel) {

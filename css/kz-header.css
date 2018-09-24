@@ -1,6 +1,23 @@
 .app-header {
 	box-shadow: 0px 1px 3px rgba(0, 50, 0, 0.2);
 }
+@media (min-width: 1200px) {
+	.app-header {
+		position: absolute;
+		left: 0;
+		top: 0;
+		z-index: 10;
+		width: 100%;
+	}
+		[data-kz-stap~="hoofd"] .app-header,
+		[data-kz-stap~="hoofd"][data-kz-stap~="nog-geen-niveau"] .app-header {
+			background-color: #f3f3f0;
+		}
+	.keuzehulp main {
+		padding-top: 73px;
+	}
+}
+
 .app-header .verpakking{
 	display: flex;
 	flex-direction: row;
@@ -54,11 +71,11 @@
 					ol.stappen-visualisatie {
 						margin: 0 20px;
 					}
-						
+
 						.stappen-visualisatie_stap {
 							position: relative;
 							padding-left: 17px;
-							padding-right: 20px;						
+							padding-right: 20px;
 						}
 							.stappen-visualisatie_stap::before {
 								position: absolute;
@@ -67,7 +84,7 @@
 								content: '';
 								display: block;
 								height: 46px;
-								border-left: 1px solid #dcdcd9;							
+								border-left: 1px solid #dcdcd9;
 							}
 							.stappen-visualisatie_stap:last-child::before {
 								position: absolute;
@@ -76,8 +93,8 @@
 								content: '';
 								display: block;
 								height: 46px;
-								border-left: 1px solid #dcdcd9;							
-							}						
+								border-left: 1px solid #dcdcd9;
+							}
 				}
 
 
@@ -110,13 +127,13 @@
 				}
 				[data-kz-stap~='samenstellen'] .stappen-visualisatie_stap:nth-child(2) .stappen-visualisatie_tekst {
 					opacity: .6;
-				}				
+				}
 				[data-kz-stap~='samenstellen'] .stappen-visualisatie_stap:nth-child(3) .stappen-visualisatie_afb {
 					opacity: .6;
 				}
 				[data-kz-stap~='samenstellen'] .stappen-visualisatie_stap:nth-child(3) .stappen-visualisatie_tekst {
 					opacity: .6;
-				}		
+				}
 
 
 				[data-kz-stap~='vergelijken'] .stappen-visualisatie_stap:nth-child(1) .stappen-visualisatie_afb {
@@ -127,15 +144,15 @@
 					opacity: .6;
 					color: #159a3c;
 					font-weight: 400;
-				}				
+				}
 				[data-kz-stap~='vergelijken'] .stappen-visualisatie_stap:nth-child(2) .stappen-visualisatie_afb {
 					opacity: 1;
 				}
 				[data-kz-stap~='vergelijken'] .stappen-visualisatie_stap:nth-child(2) .stappen-visualisatie_tekst {
 					opacity: 1;
 					color: #159a3c;
-					font-weight: 500;					
-				}				
+					font-weight: 500;
+				}
 				[data-kz-stap~='vergelijken'] .stappen-visualisatie_stap:nth-child(3) .stappen-visualisatie_afb {
 					opacity: .6;
 				}
@@ -151,7 +168,7 @@
 				[data-kz-stap~='bestellen'] .stappen-visualisatie_stap:nth-child(1) .stappen-visualisatie_tekst {
 					opacity: .6;
 					color: #159a3c;
-					font-weight: 400;					
+					font-weight: 400;
 				}
 				[data-kz-stap~='bestellen'] .stappen-visualisatie_stap:nth-child(2) .stappen-visualisatie_afb {
 					opacity: 1;
@@ -160,7 +177,7 @@
 				[data-kz-stap~='bestellen'] .stappen-visualisatie_stap:nth-child(2) .stappen-visualisatie_tekst {
 					opacity: .6;
 					color: #159a3c;
-					font-weight: 400;					
+					font-weight: 400;
 				}
 				[data-kz-stap~='bestellen'] .stappen-visualisatie_stap:nth-child(3) .stappen-visualisatie_afb {
 					opacity: 1;
@@ -168,7 +185,7 @@
 				[data-kz-stap~='bestellen'] .stappen-visualisatie_stap:nth-child(3) .stappen-visualisatie_tekst {
 					opacity: 1;
 					color: #159a3c;
-					font-weight: 500;										
+					font-weight: 500;
 				}
 
 
@@ -188,7 +205,7 @@
 
 		.app-header .header-rechts span.telefoonnummer {
 			font-size: 18px;
-			font-weight: 500;		
+			font-weight: 500;
 		}
 		.app-header .header-rechts span.voor-telefoon {
 			font-size: 12px;
@@ -237,5 +254,5 @@
 
 			.app-header .header-rechts svg path{
 				fill: #159a3c;
-			}	
+			}
 }

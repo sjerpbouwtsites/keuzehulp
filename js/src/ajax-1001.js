@@ -19,7 +19,7 @@ function KzAjax(params) {
 
 		// @TODO zoek naar 'error' in r zo ja, afbreken.
 
-		if ('console' in r) {
+		if ('console' in r && r.console) {
 			console.dir(r.console);
 		}
 

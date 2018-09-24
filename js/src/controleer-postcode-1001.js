@@ -20,7 +20,14 @@ function postcodeAjaxCB(r) {
 			// "Er is al een aanvraag gedaan vanaf uw adres bij %provider%.
 			// Bezoekt u de website op %providerURL% of mailt u naar %providerMail%"
 
-			kzModal(kzTekst('aanvraag_gedaan', [r.aanvraag_info.naam,	r.aanvraag_info.URL, r.aanvraag_info.naam, r.aanvraag_info.email]), 60000);
+
+			//Iemand heeft reeds een aanvraag gedaan vanaf uw adres bij de provider %s0. Wij kunnen u nu niet verder helpen.<br>Bezoekt u <a href='%s1'>%s2s website</a> of mailt u naar %s3. U kunt ook bellen naar %s4
+
+			kzModal({
+				kop: 'Aanvraag al gedaan',
+				torso: kzTekst('aanvraag_gedaan', [r.aanvraag_info.naam, r.aanvraag_info.URL, r.aanvraag_info.naam, r.aanvraag_info.email, r.aanvraag_info.telefoon])
+			}, 60000);
+
 			kzRouting.ga(1); // terug naar de voorpagina.
 			return;
 		}
@@ -45,11 +52,11 @@ function postcodeAjaxCB(r) {
 				kzRouting.ga(2);
 			} else {
 				kzModal(
-					kzTekst('lead_annulering'), 
+					kzTekst('lead_annulering'),
 					5000
 				);
 				kzRouting.ga(51);
-				KzAjaxKleineFormulieren('keuzehulp_haal_lead_formulier', 'print-lead-formulier', {});				
+				KzAjaxKleineFormulieren('keuzehulp_haal_lead_formulier', 'print-lead-formulier', {});
 			}
 
 		} else if (r.status === '0') {
@@ -68,7 +75,7 @@ function postcodeAjaxCB(r) {
 
 			if (r.provider_beschikbaar) {
 
-				const tekstSleutel = {
+/*				const tekstSleutel = {
 					status1: 'succes_vraag_bundeling',
 					status2: 'succes_schouwen',
 					status3: 'succes_graafwerkzaamheden',
@@ -79,8 +86,9 @@ function postcodeAjaxCB(r) {
 				kzModal(
 					kzTekst(tekstSleutel[`status${r.status}`], r.regio),
 					2000,
-				);
-				kzRouting.ga(2);			
+				);*/
+				
+				kzRouting.ga(2);
 
 			} else {
 				logFouteSituatiePostcodeCheck(r);
@@ -98,9 +106,9 @@ function postcodeAjaxCB(r) {
 
 
 function logFouteSituatiePostcodeCheck(r){
-	
+
 	kzModal(
-		kzTekst('postcodecheck_fout'), 
+		kzTekst('postcodecheck_fout'),
 		5000
 	);
 

@@ -44,8 +44,8 @@ function keuzehulp_pakket_eigenschappen_up_snelheid_concreet($snelheid_prijs, $g
 	foreach ($snelheid_prijs as $s) {
 		if (!$s['regio_specifiek']) {
 			if (array_key_exists('uploadsnelheid', $s)) {
-				$werk[($s['snelheid'])] = $s['uploadsnelheid'] 
-					? (float) $s['uploadsnelheid'] 
+				$werk[($s['snelheid'])] = $s['uploadsnelheid']
+					? (float) $s['uploadsnelheid']
 					: (float) $s['snelheid'];
 			}
 		}
@@ -55,8 +55,8 @@ function keuzehulp_pakket_eigenschappen_up_snelheid_concreet($snelheid_prijs, $g
 	foreach ($snelheid_prijs as $s) {
 		if ($s['regio_specifiek'] and in_array($gc_id, $s['regio_specifiek'])) {
 			if (array_key_exists('uploadsnelheid', $s)) {
-				$werk[($s['snelheid'])] = $s['uploadsnelheid'] 
-					? (float) $s['uploadsnelheid'] 
+				$werk[($s['snelheid'])] = $s['uploadsnelheid']
+					? (float) $s['uploadsnelheid']
 					: (float) $s['snelheid'];
 			}
 		}
@@ -135,7 +135,7 @@ class Kz_optie {
 
 	function __construct($params){
 
-		// maakt een object met adhv $params. Zet params eigenlijk om in een object, 
+		// maakt een object met adhv $params. Zet params eigenlijk om in een object,
 		// indien sleutels niet voorkomen, wordt terugval gebruikt.
 
 		$tv = array(
@@ -148,8 +148,8 @@ class Kz_optie {
 		);
 
 		foreach ($tv as $s => $w) {
-			$this->$s = array_key_exists($s, $params) 
-				? $params[$s] 
+			$this->$s = array_key_exists($s, $params)
+				? $params[$s]
 				: $w;
 		}
 
@@ -172,7 +172,32 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 
 		$provider_tax_data = wp_get_post_terms($p->ID, 'provider');
 		if (!count($provider_tax_data)) return false;
-		$provider_post = get_page_by_title($provider_tax_data[0]->name, 'object', 'provider' );
+		//$provider_post = get_page_by_title($provider_tax_data[0]->name, 'object', 'provider' );
+
+		//////////////////////////////////////
+
+		$provider_query = get_posts(array(
+			'posts_per_page' =>'1',
+			'post_type' => 'provider',
+			'tax_query' => array(
+		 		array(
+		  			'taxonomy' => 'provider',
+					'field' => 'slug',
+					'terms' => $provider_tax_data[0]->slug
+		  		)
+			)
+		));
+
+		if (!$provider_query || !count($provider_query)) {
+			 trigger_error ('geen provider gevonden onder '.$provider_tax_data->slug );
+		}
+
+		$provider_post = $provider_query[0];
+
+
+		////////////////////
+
+
 
 		$financieel = get_field('financieel', $p->ID);
 
@@ -191,6 +216,7 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 		);
 	}
 
+
 	/////////////////////////////////////////////////////
 	// - - - - - - - - - - - - - - - - - - - - - - - - //
 	/////////////////////////////////////////////////////
@@ -206,7 +232,7 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
                 'taxonomy' => 'status',
                 'field' => 'slug',
                 'terms' => 'status-'.$status,
-            ),	            
+            ),
         )
     ));
 
@@ -233,7 +259,7 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
     	$return['status'] = false;
     }
 
-	
+
 	/////////////////////////////////////////////////////
 	// - - - - - - - - - - - - - - - - - - - - - - - - //
 	/////////////////////////////////////////////////////
@@ -277,7 +303,7 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 		sort($snelheden);
 
 		//upload ophalen
-		$down_up_ar = keuzehulp_pakket_eigenschappen_up_snelheid_concreet(			
+		$down_up_ar = keuzehulp_pakket_eigenschappen_up_snelheid_concreet(
 			$financieel['snelheid-prijs'],
 			$gebiedscode_id);
 
@@ -461,6 +487,7 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 		// we zetten het voor alle snelheden er in.
 
 		if (count($televisie_bundels) > 1) {
+			$return['test'] = 'optie 1';
 			foreach ($televisie_bundels as $tv_bundel) {
 				foreach ($tv_bundel->pakketten as $pakketgroep) {
 					foreach ($pakketgroep['opties'] as $optie) {
@@ -483,6 +510,7 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 				}
 			}
 		} else {
+			$return['test'] = 'optie 2';
 			foreach ($televisie_bundels[0]->pakketten as $pakketgroep) {
 				foreach ($pakketgroep['opties'] as $optie) {
 					foreach ($snelheden as $snelheid) {
@@ -494,7 +522,7 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 							'naam'			=> $optie['publieke_naam'],
 							'optietype' 	=> 'televisie-bundel',
 							'suboptietype'	=> $pakketgroep['pakket_naam'],
-							'snelheid'		=> $snelheid,							
+							'snelheid'		=> $snelheid,
 							'aantal' 		=> $prijs < 0.01 ? 1 : 0,
 							'prijs' 		=> $prijs
 						));
@@ -515,7 +543,7 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 				$return['maandelijks']['opnemen-replay-begin-gemist-samen'] = new Kz_optie(array(
 					'naam'			=> "opnemen, terugkijken & begin gemist",
 					'optietype' 	=> 'televisie-extra',
-					'suboptietype'	=> 'nonlineair', 
+					'suboptietype'	=> 'nonlineair',
 					'aantal' 		=> $prijs < 0.01 ? 1 : 0,
 					'prijs'			=> $prijs
 				));
@@ -528,11 +556,11 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 						$return['maandelijks'][slugify($n)] = new Kz_optie(array(
 							'naam'			=> slugify($n),
 							'optietype' 	=> 'televisie-extra',
-							'suboptietype'	=> 'nonlineair', 							
+							'suboptietype'	=> 'nonlineair',
 							'aantal' 		=> $prijs < 0.01 ? 1 : 0,
 							'prijs'	 		=> $prijs
 						));
-					} 
+					}
 				}
 				$return['nonlineair'] = $nonlineair;
 
@@ -543,7 +571,7 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 				$return['maandelijks']['app'] = new Kz_optie(array(
 					'naam'			=> 'app',
 					'optietype' 	=> 'televisie-extra',
-					'suboptietype'	=> 'nonlineair', 							
+					'suboptietype'	=> 'nonlineair',
 					'aantal' 		=> $prijs < 0.01 ? 1 : 0,
 					'prijs' 		=> $prijs
 				));
@@ -558,7 +586,7 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 			$prijs = (float) $extra_tv_ontvanger['eenmalig'];
 			$return['eenmalig']['extra-tv-ontvangers'] = new Kz_optie(array(
 				'naam'			=> 'extra TV ontvanger',
-				'optietype'		=> 'televisie-extra', 
+				'optietype'		=> 'televisie-extra',
 				'aantal' 		=> $prijs < 0.01 ? 1 : 0,
 				'prijs'  		=> $prijs
 			));
@@ -568,7 +596,7 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 			$prijs = (float) $extra_tv_ontvanger['maandelijks'];
 			$return['maandelijks']['extra-tv-ontvangers'] = new Kz_optie(array(
 				'naam'			=> 'extra TV ontvanger',
-				'optietype'		=> 'televisie-extra', 				
+				'optietype'		=> 'televisie-extra',
 				'aantal' 		=> $prijs < 0.01 ? 1 : 0,
 				'prijs'  		=> $prijs,
 			));
@@ -590,13 +618,13 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 			if (  $dvb_c['dvb-c_maandelijks'] != 0 ) {
 				$return['maandelijks']['dvb-c'] = new Kz_optie(array(
 					'naam'			=> 'dvb-c',
-					'optietype'		=> 'televisie-extra',					
+					'optietype'		=> 'televisie-extra',
 					'aantal' 		=> 0,
 					'prijs'  		=> (float) $dvb_c['dvb-c_maandelijks'],
 				));
 			}
 
-		} 
+		}
 
 
 		$return['tv_type'] = wp_get_post_terms($p->ID, 'tv-type')[0]->name;
@@ -628,7 +656,7 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 		if (!!$extra_optie['extra_optie_maandelijks']) {
 			$return['maandelijks']['extra-optie'] = new Kz_optie(array(
 				'naam'		=> 'extra_optie',
-				'optietype'	=> 'diversen',				
+				'optietype'	=> 'diversen',
 				'aantal'	=> 0,
 				'prijs'		=> (float) $extra_optie['extra_optie_maandelijks'],
 			));
@@ -671,7 +699,7 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 
 	// RETURN
 
-	sort($return['telsten']);
+	sort($return['teksten']);
 
 	return $return;
 

@@ -9,7 +9,7 @@
 	[data-kz-stap~="pad-keuze"] main .keuzehulp .verpakking {
 		width: 840px;
 	}
-			
+
 }
 
 .keuzehulp-sectie {
@@ -29,31 +29,36 @@
 	}
 
 
+[data-kz-status="0"] .kz-sectie-20 .knoppendoos .kz-knop-combi:last-child,
+[data-kz-status="0"] .kz-sectie-3 .knoppendoos .kz-knop-combi + .kz-knop-combi ~ .kz-knop-combi { /* zakelijk */
+	display: none;
+}
+
 
 .statusbepaald {
 	display: none !important;
 }
 [data-kz-status='0'] .statusbepaald.status-0 {
-	display: inline-block !important;	
+	display: inline-block !important;
 }
 [data-kz-status='1'] .statusbepaald.status-1 {
-	display: inline-block !important;	
+	display: inline-block !important;
 }
 [data-kz-status='2'] .statusbepaald.status-2 {
-	display: inline-block !important;	
+	display: inline-block !important;
 }
 [data-kz-status='3'] .statusbepaald.status-3 {
-	display: inline-block !important;	
+	display: inline-block !important;
 }
 [data-kz-status='4'] .statusbepaald.status-4 {
-	display: inline-block !important;	
+	display: inline-block !important;
 }
 [data-kz-status='5'] .statusbepaald.status-5 {
-	display: inline-block !important;	
+	display: inline-block !important;
 }
 [data-kz-status='6'] .statusbepaald.status-6 {
-	display: inline-block !important;	
+	display: inline-block !important;
 }
 [data-kz-status='100'] .statusbepaald.status-100 {
-	display: inline-block !important;	
+	display: inline-block !important;
 }

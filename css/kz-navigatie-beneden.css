@@ -23,7 +23,7 @@
 		display: none;
 	}
 		.knop.kz-navigatie-beneden_knop:last-child {
-			display: block; 
+			display: block;
 		}
 
 		.knop.kz-navigatie-beneden_knop, .knop.kz-navigatie-beneden_knop span {
@@ -36,6 +36,7 @@
 			.knop.kz-navigatie-beneden_knop.blauwe-knop {
 				text-align: center;
 				margin-bottom: 10px;
+				max-width: 250px;
 			}
 			.knop.kz-navigatie-beneden_knop.blauwe-knop span{
 				color: white;

@@ -137,27 +137,27 @@ function Kz_registreer_posttypes() {
     $pakket->registreer();*/
 
     $nieuw_pakket = new Kz_posttype_voorb('nieuw-pakket', 'nieuwe-pakketten');
-    $nieuw_pakket->pas_args_aan(array( 'menu_icon'   => 'dashicons-cart', 'supports' => array( 'title' ) ));    
+    $nieuw_pakket->pas_args_aan(array( 'menu_icon'   => 'dashicons-cart', 'supports' => array( 'title' ) ));
     $nieuw_pakket->maak_taxonomie('tv-type', 'tv-typen');
     $nieuw_pakket->maak_taxonomie('type', 'typen');
     $nieuw_pakket->registreer();
 
     $tv_bundel = new Kz_posttype_voorb('tv-bundel', 'tv-bundels');
-    $tv_bundel->pas_args_aan(array( 'menu_icon'  => 'dashicons-video-alt3', 'supports'  => array( 'title' ) ));    
+    $tv_bundel->pas_args_aan(array( 'menu_icon'  => 'dashicons-video-alt3', 'supports'  => array( 'title' ) ));
     $tv_bundel->registreer();
 
     $telefonie_bundel = new Kz_posttype_voorb('telefonie-bundel', 'telefonie-bundels');
-    $telefonie_bundel->pas_args_aan(array( 'menu_icon'  => 'dashicons-phone', 'supports'  => array( 'title' ) ));    
+    $telefonie_bundel->pas_args_aan(array( 'menu_icon'  => 'dashicons-phone', 'supports'  => array( 'title' ) ));
     $telefonie_bundel->maak_taxonomie('bereik', 'bereiken');
     $telefonie_bundel->registreer();
 
 
     $status = new Kz_posttype_voorb('status', 'statussen');
-    $status->pas_args_aan(array( 'menu_icon'  => 'dashicons-forms', 'supports'  => array( 'title' ) ));    
+    $status->pas_args_aan(array( 'menu_icon'  => 'dashicons-forms', 'supports'  => array( 'title' ) ));
     $status->registreer();
 
 
-    // ONDERSTAANDE TAXONOMIEEN WORDEN DOOR MEERDERE POSTTYPES GEDEELD 
+    // ONDERSTAANDE TAXONOMIEEN WORDEN DOOR MEERDERE POSTTYPES GEDEELD
     // DAAROM APART INGESTELD
 
     //////////////////////
@@ -185,7 +185,7 @@ function Kz_registreer_posttypes() {
         'rewrite'           => array( 'slug' => 'provider' ),
     );
 
-    register_taxonomy( 'provider', array( 'telefonie-bundel', 'tv-bundel', 'nieuw-pakket' ), $args );
+    register_taxonomy( 'provider', array( 'telefonie-bundel', 'tv-bundel', 'nieuw-pakket', 'provider' ), $args );
 
     //////////////////////
 

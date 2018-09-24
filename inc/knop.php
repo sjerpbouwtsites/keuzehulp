@@ -90,18 +90,36 @@ class Kz_knop_combi extends Kz_knop {
 
 	public function maak_tooltip(){
 		if (!$this->cp_truthy('tooltip', $this)) {
-			$this->tooltipHTML = "";	
+			$this->tooltipHTML = "";
 		} else {
-			$this->tooltipHTML = "<a 
-				href='#' 
-				class='knop kz-tooltip' 
-				data-tooltip-titel='{$this->tekst}' 
-				data-tooltip-tekst='{$this->tooltip}'
+
+			$print_teksten = is_array($this->tooltip)
+				? 'NULL'
+				: $this->tooltip;
+
+			$st = is_array($this->tooltip) ? '' : strip_tags($this->tekst);
+
+			$json_tt = '';
+
+			if (is_array($this->tooltip)) {
+				foreach ($this->tooltip as $status => $status_tekst) {
+					$json_tt .= " data-tooltip-$status='$status_tekst' ";
+				}
+			}
+
+			$ec = (is_array($this->tooltip) ? "status-tooltip" : '');
+
+			$this->tooltipHTML = "<a
+				href='#'
+				class='knop kz-tooltip $ec'
+				data-tooltip-titel='$st'
+				data-tooltip-tekst='$print_teksten'
+				$json_tt
 				data-kz-func='tooltip'
 				title='Meer informatie'
 			>"
-			. file_get_contents (plugin_dir_path(__FILE__)."../iconen-nieuw/svg/info.svg") . 
-			"</a>";	
+			. file_get_contents (plugin_dir_path(__FILE__)."../iconen-nieuw/svg/info.svg") .
+			"</a>";
 		}
 	}
 
@@ -114,19 +132,19 @@ class Kz_knop_combi extends Kz_knop {
 
 	public function maak_knop() {
 
-		$i = knop_enumerator();		
+		$this->enum = knop_enumerator();
 		$f = $this->func !== '' ? " data-kz-func='$this->func' " : "";
 		$this->knop_html = "
-			<a 
+			<a
 				{$f}
 				{$this->attr}
 				class='knop  {$this->class}'
 				href='{$this->link}'
-				data-knop-id='$i'
+				data-knop-id='{$this->enum}'
 			>
 			{$this->als_single_select_blauwe_knop()}
-			</a>		
-		";		
+			</a>
+		";
 		return $this->knop_html;
 	}
 
@@ -138,7 +156,7 @@ class Kz_knop_combi extends Kz_knop {
 		$ikoon = $this->print_ikoon();
 
 		$ccc = (in_array('multiselect', (explode(' ', $this->class))) ? "heeft-multiselect" : "");
-		$this->html = 
+		$this->html =
 		"
 		<div class='kz-knop-combi $ccc'>
 			<div class='kz-knop-combi_links'>

@@ -1,0 +1,31 @@
+{
+  "name": "keuzehulp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "babel": "babel js/src/*.js --watch --out-file js/dist/keuzehulp.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sjerpbouwtsites/keuzehulp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sjerpbouwtsites/keuzehulp/issues"
+  },
+  "homepage": "https://github.com/sjerpbouwtsites/keuzehulp#readme",
+  "dependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
+    "babel-cli": "^7.0.0-beta.3",
+    "babel-preset-env": "^7.0.0-beta.3"
+  },
+  "babel": {
+    "presets": [
+      [
+        "babel-preset-env"
+      ]
+    ]
+  }
+}

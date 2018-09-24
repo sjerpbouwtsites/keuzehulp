@@ -2,7 +2,7 @@
 .print-provider-pakketten {
 	margin: 0 -10px;
 }
-.print-vergelijking .blauwe-knop, 
+.print-vergelijking .blauwe-knop,
 .print-provider-pakketten .blauwe-knop{
 	text-align: center;
 }
@@ -49,7 +49,7 @@
 		.provider-pakketten-header-prijs {
 
 		}
-			.provider-pakketten-header-prijs 
+			.provider-pakketten-header-prijs
 {
 			}
 
@@ -81,7 +81,8 @@
 			opacity: .8;
 		}
 			.provider-pakketten-pakket header .flex > div {
-				flex-basis: 50%;
+				min-width: 80px;
+				margin-right: 15px;
 			}
 			.provider-pakketten-pakket header h4 {
 				font-size: 12px;
@@ -103,7 +104,7 @@
 					transform: rotate(.5turn);
 					width: 30px;
 					height: 30px;
-					margin: -5px -5px -5px 5px;				
+					margin: -5px -5px -5px 5px;
 					transition: 0.2s ease-in-out;
 				}
 					.actief .provider-pakketten-pakket header .blauwe-knop svg {
@@ -114,11 +115,11 @@
 						fill: white;
 					}
 
-	.provider-pakketten-pakket > footer {
+	.provider-pakketten-pakket .provider-pakketten_footer {
 		display: none;
 	}
 
-		.actief .provider-pakketten-pakket > footer {
+		.provider-pakketten-pakket .provider-pakketten_footer.actief {
 			display: block;
 		}
 
@@ -129,6 +130,12 @@
 		display: block;
 	}
 
+					.print-vergelijking  .provider-pakketten.actief .provider-pakketten-pakket > * > * {
+						max-width: 600px;
+					}
+					.print-vergelijking  .provider-pakketten.actief .provider-pakketten-pakket  .blauwe-knop {
+						max-width: 180px;
+					}
 	.provider-pakketten-vergelijking-sectie {
 		margin: 20px 0;
 	}
@@ -136,18 +143,18 @@
 			margin-top: 40px;
 		}
 		.provider-pakketten-vergelijking-sectie header {
-			
+
 		}
 			.provider-pakketten-vergelijking-sectie header svg,
 			.provider-pakketten-vergelijking-sectie header h3{
 				vertical-align: middle;
 				display: inline-block;
-			}	
+			}
 			.provider-pakketten-vergelijking-sectie header svg {
 				width: 30px;
 				height: 30px;
 			}
-				.provider-pakketten-vergelijking-sectie header path, 
+				.provider-pakketten-vergelijking-sectie header path,
 				.provider-pakketten-vergelijking-sectie header circle {
 					fill: #1d1d1b;
 				}
@@ -156,18 +163,27 @@
 				margin: 20px 0;
 				width: 100%;
 			}
+				.provider-pakketten-vergelijking-sectie tr {
+					display: flex;
+					flex-direction: row;
+				}
 
-				.provider-pakketten-vergelijking-sectie td, 
+				.provider-pakketten-vergelijking-sectie td,
 				.provider-pakketten-vergelijking-sectie th {
-					max-width: calc(60% - 5px);
+					width: calc(60% - 5px);
 					padding-right: 5px;
 				}
-				.provider-pakketten-vergelijking-sectie td + td, 
+				.provider-pakketten-vergelijking-sectie td + td,
 				.provider-pakketten-vergelijking-sectie th + th{
-					max-width: calc(40% - 5px);
+					width: calc(40% - 5px);
 					padding-right: 0;
 					padding-left: 5px
 				}
+					.provider-pakketten-vergelijking-sectie th + th svg{
+						width: 20px;
+						height: 20px;
+						display: inline-block;
+					}
 
 
 		.provider-pakketten-vergelijking-sectie .blauwe-knop {
@@ -177,7 +193,7 @@
 
 		/****************************/
 
-	
+
 
 	.provider-pakketten-header-pakkettental {
 		font-weight: 600;
@@ -210,13 +226,13 @@
 			display: inline-block;
 			width: auto;
 			padding: 15px 20px;
-			margin-top: 20px;	
+			margin-top: 20px;
 		}
 			.bestel-svg {
 				width: 50px;
 				height: 50px;
 				transform: rotate(.5turn);
-				margin: -20px;			
+				margin: -20px;
 			}
 
 
@@ -242,12 +258,12 @@
 				padding: 0;
 				padding-left: 20px;
 				padding-top: 20px;
-				flex-direction: column;			
+				flex-direction: column;
 			}
 				.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten:not(.actief)  .provider-pakketten-header .provider-logo-contain {
 					max-width: initial;
 					height: calc(100% + 20px);
-				}		
+				}
 					.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten .provider-logo-contain img{
 						max-width: 100%;
 					}
@@ -262,19 +278,19 @@
 				flex-basis: 100%;
 			}
 				.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten:not(.actief) .provider-pakketten-pakket {
-	/*				display: flex;
-					flex-direction: row;	*/			
+					position: relative;
+					padding-right: 220px;
 				}
 					.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten:not(.actief) .provider-pakketten-pakket header {
 						width: 100%;
 						padding-bottom: 0;
-						display: flex;					
+						display: flex;
 						justify-content: space-between;
 						align-items: flex-start;
+						flex-direction: column;
 					}
 						.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten:not(.actief) .provider-pakketten-pakket header .provider-pakketten-pakket-titel {
-							margin-top: 0 !important;
-							margin-right: 20px;						
+							margin-top: -5px !important;
 						}
 
 							.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten:not(.actief) .provider-pakketten-pakket header .flex {
@@ -290,18 +306,31 @@
 					.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten:not(.actief) .provider-pakketten-pakket footer {
 						display: none;
 					}
+
+				.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten .blauwe-knop {
+					max-width: 180px;
+					position: absolute;
+					top: 0;
+					right: 0;
+				}
+
+					.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten.actief .blauwe-knop {
+						position: static;
+						top: auto;
+						left: auto;
+					}
 	}
 
 
 
 /*******************************************************/
 
-@media (min-width: 1200px) {
+@media (min-width: 900px) {
 
 	.print-vergelijking,
 	.print-provider-pakketten {
 		margin: 0 -10px;
-	}	
+	}
 
 	.print-provider-pakketten, .print-vergelijking {
 		display: flex;
@@ -311,7 +340,7 @@
 		/*justify-content: space-between;*/
 	}
 
-		.print-provider-pakketten .provider-pakketten, 
+		.print-provider-pakketten .provider-pakketten,
 		.print-vergelijking .provider-pakketten{
 			flex-basis: 25%;
 			margin-right: 20px;
@@ -322,7 +351,7 @@
 		}
 
 		.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten{
-			min-width: calc(100% - 40px);	
+			min-width: calc(100% - 40px);
 		}
 
 		.provider-pakketten-pakket header .flex {
@@ -331,9 +360,15 @@
 			.provider-pakketten-pakket header .provider-pakketten-pakket-rechts {
 				margin-top: 10px;
 			}
+				.provider-pakketten:nth-child(3) .provider-pakketten-pakket header .provider-pakketten-pakket-rechts h4,
+				.provider-pakketten:nth-child(3) .provider-pakketten-pakket header .provider-pakketten-pakket-links h4 {
+					margin-top: -5px;
+				}
+
 
 	.provider-pakketten-break {
 		padding: 0 20px;
+		min-width: calc(100% - 50px);
 	}
 
 }

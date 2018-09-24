@@ -39,6 +39,11 @@
 					overflow: auto;
 					max-height: 80vh;
 				}
+					.kz-modal-binnen > span {
+						max-width: calc(100% - 60px);
+						display: inline-block;
+					}
+
 					.kz-modal header {
 						width: calc(100% - 55px);
 						float:none;
@@ -69,12 +74,12 @@
 		border-collapse: collapse;
 	}
 
-		.kz-modal thead, 
+		.kz-modal thead,
 		.kz-modal tr:nth-child(even) {
 			background-color: #e1e1e1;
 		}
 
-			.kz-modal td, 
+			.kz-modal td,
 			.kz-modal th {
 				padding: 5px;
 				border-collapse: collapse;
@@ -85,3 +90,14 @@
 	.kz-modal ol {
 		padding-left: 24px;
 	}
+
+
+/* tooltips status afhankelijk gevuld tonen */
+[data-kz-status='0'] .knop.status-tooltip[data-tooltip-status-0='']{ display: none; }
+[data-kz-status='1'] .knop.status-tooltip[data-tooltip-status-1='']{ display: none; }
+[data-kz-status='2'] .knop.status-tooltip[data-tooltip-status-2='']{ display: none; }
+[data-kz-status='3'] .knop.status-tooltip[data-tooltip-status-3='']{ display: none; }
+[data-kz-status='4'] .knop.status-tooltip[data-tooltip-status-4='']{ display: none; }
+[data-kz-status='5'] .knop.status-tooltip[data-tooltip-status-5='']{ display: none; }
+[data-kz-status='6'] .knop.status-tooltip[data-tooltip-status-6='']{ display: none; }
+[data-kz-status='100'] .knop.status-tooltip[data-tooltip-status-100='']{ display: none; }

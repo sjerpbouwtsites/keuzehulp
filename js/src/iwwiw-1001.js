@@ -375,7 +375,11 @@ function ikWeetWatIkWilPakkettenAjax() {
 		printPakkettenLijst: (pakketHTMLvoorraad, nieuwPakket) => `${pakketHTMLvoorraad}
 			<li class='provider-pakketten-pakket'>
 				<div class='provider-pakketten-pakket-links'>
-					<h3 class='provider-pakketten-pakket-titel'>${nieuwPakket.naam_composiet}${
+					<h3 class='provider-pakketten-pakket-titel'>${(
+							nieuwPakket.eigenschappen.pakket_type.includes('eigenlijk alleen tv')
+								? nieuwPakket.provider + " alleen TV "
+								: nieuwPakket.naam_composiet
+						)} ${
 						nieuwPakket.eigenschappen.pakket_type.includes('Internet en TV')
 						|| nieuwPakket.eigenschappen.pakket_type.includes('Alles in 1') 
 							? ' - '+ nieuwPakket.eigenschappen.tv_type
@@ -388,7 +392,11 @@ function ikWeetWatIkWilPakkettenAjax() {
 						
 						<span class='provider-pakketten-pakket-links-onder_snelheid'>
 							<span class='provider-pakketten-pakket-snelheid'>
-								${nweSnelheid} Mb/s 
+								${(
+									Number(nweSnelheid) < 1
+									? `alleen TV`
+									: `${nweSnelheid} Mb/s `
+								)}
 							</span>
 							<span class='provider-pakketten-pakket-prijs'>
 								voor ${nieuwPakket.geefMaandtotaalVoorSnelheid(nweSnelheid)}

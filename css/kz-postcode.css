@@ -1,4 +1,5 @@
 [data-kz-stap~='postcode-check'] {
+	background-color: #269d38;
 	background: linear-gradient(.25turn, #269d38 0%, #269d38 40%, #bfd24d 100%);
 }
 	@media (min-width: 600px) {
@@ -17,8 +18,8 @@
 	background-position: bottom left;
 }
 
-	
-	.kz-sectie-1 .binnen h2, 
+
+	.kz-sectie-1 .binnen h2,
 	.kz-sectie-1 .keuzehulp-sectie_torso p {
 		color: #f7f7f7;
 	}
@@ -41,7 +42,7 @@
 
 
 	.kz-sectie-1 label input { /* alle behalve submit */
-		border: 1px solid #81d899;  
+		border: 1px solid #81d899;
 		margin-bottom: .8em;
 		padding: .75em;
 		display: block;
@@ -95,7 +96,7 @@
 		padding: 41px 20px 20px 20px;
 		background-size: initial;
 		background-position: bottom left;
-		min-height: calc(100vh - 135px);	
+		min-height: calc(100vh - 135px);
 	}
 
 		.keuzehulp-sectie.kz-sectie-1 .binnen {
@@ -109,7 +110,7 @@
 			}
 			.keuzehulp-sectie.kz-sectie-1 .binnen form{
 				flex-basis: 360px;
-			}			
+			}
 
 
 			.kz-sectie-1 form {

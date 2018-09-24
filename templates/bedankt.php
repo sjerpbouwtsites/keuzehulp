@@ -2,15 +2,8 @@
 
 /* template name: bedankt */
 
- $provider = $_GET['prov']; ?>
-
-
-<?php
-
- 
-
+$provider = $_GET['prov'];
 $afb_pad = plugins_url( '../iconen-nieuw/png-rekam/', __FILE__ );
-
 require 'header.php';
 
 ?>
@@ -31,7 +24,6 @@ require 'header.php';
 		$postcode_sectie->print();
 
 		/////////////////////////////////////////////////
-
 
 
 	?>

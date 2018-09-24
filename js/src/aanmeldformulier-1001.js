@@ -1,4 +1,5 @@
 /* global doc, location, KzAjax, kzModal, kzTekst, gformInitDatepicker */
+/* eslint-disable */
 
 function aanmeldformulierHaalWaardeUitRij(rij) {
 	const knop1 = rij.getElementsByClassName('knop')[0];
@@ -35,33 +36,32 @@ function aanmeldformulierHaalWaardeUitRij(rij) {
 }
 
 function kzMaakPrintMap(){
-
 	if (window['kzPrintMappen']) return window['kzPrintMappen'];
 
 	this.printMapInit = function (id){
 		return {
 			printEl: document.getElementById(id),
-			print: [],				
+			print: [],
 		};
 	}
 
 	const printMappen = {
-		'begin-gemist': 					this.printMapInit('input_1_53'),
+		'begin-gemist':						this.printMapInit('input_1_53'),
 		'dvb-c': 							this.printMapInit('input_1_76'),
-		'erotiek': 							this.printMapInit('input_1_60'),
+		erotiek: 							this.printMapInit('input_1_60'),
 		'extra-optie': 						this.printMapInit('input_1_75'),
 		'extra-tv-ontvangers': 				this.printMapInit('input_1_62'),
 		'extra-vast-nummer': 				this.printMapInit('input_1_41'),
-		'foxsportscompleet': 				this.printMapInit('input_1_57'),
-		'foxsportseredivisie': 				this.printMapInit('input_1_55'),
-		'foxsportsinternationaal': 			this.printMapInit('input_1_56'),
+		foxsportscompleet: 					this.printMapInit('input_1_57'),
+		foxsportseredivisie: 				this.printMapInit('input_1_55'),
+		foxsportsinternationaal: 			this.printMapInit('input_1_56'),
 		'huidige-extra-nummer': 			this.printMapInit('input_1_43'),
 		'huidige-nummer': 					this.printMapInit('input_1_40'),
 		'inschrijving-telefoonboek': 		this.printMapInit('input_1_74'),
 		'nummerbehoud-extra-vast-nummer': 	this.printMapInit('input_1_42'),
-		'opnemen-replay-begin-gemist-samen': this.printMapInit('input_1_50'),
-		'plus': 							this.printMapInit('input_1_61'),
-		'ziggosporttotaal': 				this.printMapInit('input_1_58'),
+		'opnemen-replay-begin-gemist-samen':this.printMapInit('input_1_50'),
+		'plus':								this.printMapInit('input_1_61'),
+		ziggosporttotaal: 					this.printMapInit('input_1_58'),
 		app: 								this.printMapInit('input_1_54'),
 		belpakket: 							this.printMapInit('input_1_38'),
 		film1: 								this.printMapInit('input_1_59'),
@@ -69,11 +69,10 @@ function kzMaakPrintMap(){
 		nummerbehoud: 						this.printMapInit('input_1_39'),
 		opnemen: 							this.printMapInit('input_1_51'),
 		replay: 							this.printMapInit('input_1_52'),
-	};	
+	};
 
-	window['kzPrintMappen'] = printMappen;
+	window.kzPrintMappen = printMappen;
 	return printMappen;
-
 }
 
 function kzUpdateHidden() {
@@ -89,7 +88,7 @@ function kzUpdateHidden() {
 	const aanmeldformulier = doc.getElementById('print-aanmeldformulier');
 	const inputs = aanmeldformulier.querySelectorAll('[data-kz-waarde]');
 	const rijen = Array
-		.from(inputs, (input) => kzVindRij(input))
+		.from(inputs, input => kzVindRij(input))
 		.filter(uniek)
 		.forEach(rij => {
 
@@ -98,27 +97,27 @@ function kzUpdateHidden() {
 			let printsleutel = null;
 
 			if (isRadio) {
-				
+
+				// bv belpakket
 				let famIDPrefix = inputs[0].id.split('-')[0];
 
 				if (!printMappen[famIDPrefix]) {
-					console.warn(famIDPrefix + 'niet gevonden in printmap');
+					console.warn(famIDPrefix + 'niet gevonden in printmap', inputs);
 				} else {
+					printMappen[famIDPrefix].contekst = 'radio';
 					const dezeRadios = doc.querySelectorAll(`[id*="${famIDPrefix}"]`);
 					printMappen[famIDPrefix].print = Array.from(dezeRadios, input => {
 
 						if (input.classList.contains('tv-pakket')) {
+							printMappen[famIDPrefix].radioType = 'tv-pakket';
 
 							const w = (kzPakKnopValue(input) ? "ja" : "nee");
-							let s = input.id.split('-');
-						
-							s.pop();
-							s.shift();
-							s = s.join(' ');
-							return `${s}: ${w}`;
+							const s = input.id.split('-');
+
+							return `Type: ${s[0]} - subtype: ${s[1]} => ${w}.`;
 
 						} else {
-						
+							printMappen[famIDPrefix].radioType = 'normale-radio';
 							const w = kzPakKnopValue(input);
 
 							if (w) {
@@ -133,7 +132,7 @@ function kzUpdateHidden() {
 							}
 
 						}
-						
+
 					});
 				}
 
@@ -143,19 +142,21 @@ function kzUpdateHidden() {
 
 				if (['huidige-nummer', 'huidige-extra-nummer'].includes(printsleutel)) {
 					printMappen[printsleutel].print = [inputs[0].value];
+					printMappen[printsleutel].contekst = 'tekstveld';
 				} else {
 					const w = kzPakKnopValue(inputs[0]);
 
 					if(!printMappen[printsleutel]) {
 						console.warn(printsleutel + 'niet gevonden in printmap');
 					} else {
+						printMappen[printsleutel].contekst = 'getal of ja/nee';
 						if (!w) {
 							printMappen[printsleutel].print = ['nee'];
 						} else if (w < 2) {
 							printMappen[printsleutel].print = ['ja'];
 						} else {
 							printMappen[printsleutel].print = [w];
-						}				
+						}
 					}
 
 				}
@@ -243,7 +244,7 @@ function haalPrintAanmeldformulier(knop) {
 
 			// alle rijen met actieve knoppen op actief
 			Array.from(printPlek.getElementsByClassName('knop')).forEach((knopE) => {
-				
+
 				const rij = kzVindRij(knopE);
 				if (knopE.classList.contains('actief')) {
 					rij.classList.add('heeft-actieve-knop');
@@ -263,7 +264,10 @@ function haalPrintAanmeldformulier(knop) {
 
 			kzInitialiseerGF();
 
-
+			// schrijf de user
+			if (kzUser && kzUser.data && kzUser.data.display_name) {
+				doc.getElementById('input_1_80').value = kzUser.data.display_name;
+			}
 
 			$('#input_1_30').on('blur', function () {
 				const vastNummer = /^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$/,
@@ -295,15 +299,19 @@ function haalPrintAanmeldformulier(knop) {
 			pakket.printPrijzen();
 
 			// op veranderen snelheid, opnieuw pakket versturen naar dit formulier.
-			doc.getElementById('schakel-snelheid').addEventListener('change', () => {
-				pakket.veranderSnelheid(doc.getElementById('schakel-snelheid').value);
+			const schakelSnelheid  = doc.getElementById('schakel-snelheid');
+			if (schakelSnelheid) {
+				doc.getElementById('schakel-snelheid').addEventListener('change', () => {
+					pakket.veranderSnelheid(doc.getElementById('schakel-snelheid').value);
 
-				doc.getElementById('print-aanmeldformulier').innerHTML = '<p>Formulier wordt geladen...</p>';
+					doc.getElementById('print-aanmeldformulier').innerHTML = '<p>Formulier wordt geladen...</p>';
 
-				pakket.bereidJSONverzendingVoor();
-				this.ajaxData.pakket = pakket.klaarVoorJSON;
-				this.doeAjax();
-			});
+					pakket.bereidJSONverzendingVoor();
+					this.ajaxData.pakket = pakket.klaarVoorJSON;
+					this.doeAjax();
+				});
+			}
+
 		},
 
 	}); // ajax
@@ -312,9 +320,6 @@ function haalPrintAanmeldformulier(knop) {
 }
 
 function kzInitialiseerGF() {
-
-
-	console.log('wordt geladen');
 
 	jQuery.datepicker.regional.nl = {
 		closeText: 'Sluiten',
@@ -355,45 +360,8 @@ function kzInitialiseerGF() {
 			}
 		}
 	});
-	
-/*		
-	jQuery(document).bind('gform_load_field_settings', function (event, field, form) {
-
-		var backColor = field.backgroundColor == undefined ? '' : field.backgroundColor;
-		jQuery('#field_signature_background_color').val(backColor);
-		SetColorPickerColor('field_signature_background_color', backColor);
-		var borderColor = field.borderColor == undefined ? '' : field.borderColor;
-		jQuery('#field_signature_border_color').val(borderColor);
-		SetColorPickerColor('field_signature_border_color', borderColor);
-		var penColor = field.penColor == undefined ? '' : field.penColor;
-		jQuery('#field_signature_pen_color').val(penColor);
-		SetColorPickerColor('field_signature_pen_color', penColor);
-		var boxWidth = field.boxWidth == undefined || field.boxWidth.trim().length == 0 ? '300' : field.boxWidth;
-		jQuery('#field_signature_box_width').val(boxWidth);
-		var borderStyle = field.borderStyle == undefined ? '' : field.borderStyle.toLowerCase();
-		jQuery('#field_signature_border_style').val(borderStyle);
-		var borderWidth = field.borderWidth == undefined ? '' : field.borderWidth;
-		jQuery('#field_signature_border_width').val(borderWidth);
-		var penSize = field.penSize == undefined ? '' : field.penSize;
-		jQuery('#field_signature_pen_size').val(penSize);
-
-	});
-
-	jQuery(document).ready(function () {
-		jQuery('#field_signature_box_width').mask('?9999', {placeholder: ' '});
-	});*/
-
 
 }
-
-/*function SetDefaultValues_signature(field) {field.label = 'handtekening';}
-function SetSignatureBackColor(color) {SetFieldProperty('backgroundColor', color);jQuery('.field_selected .gf_signature_container').css('background-color', color);}
-function SetSignatureBorderColor(color) {SetFieldProperty('borderColor', color);jQuery('.field_selected .gf_signature_container').css('border-color', color);}
-function SetSignaturePenColor(color) {SetFieldProperty('penColor', color);}
-function SetSignatureBoxWidth(size) {SetFieldProperty('boxWidth', size);}
-function SetSignatureBorderStyle(style) {SetFieldProperty('borderStyle', style);jQuery('.field_selected .gf_signature_container').css('border-style', style);}
-function SetSignatureBorderWidth(size) {SetFieldProperty('borderWidth', size);jQuery('.field_selected .gf_signature_container').css('border-width', size + 'px');}
-function SetSignaturePenSize(size) {SetFieldProperty('penSize', size);}*/
 
 
 function kzUpdatePrijs(knop) {
@@ -498,38 +466,6 @@ function kzSchakelCheckbox(knop) {
 	kzUpdatePrijs(knop);
 }
 
-function kzFoxSports(knop) {
-	/*------------------------------------------------------
-	|
-	| 	regelt het schakelen tussen de fox sports abonnementen.
-	| 	@TODO WERKT NOG NIET  !!!!
-	|
-	|-----------------------------------------------------*/
-
-	// @TODO dit werkt niet goed
-
-	const eredivisie 	= doc.getElementById('fox_sports_ed'),
-		internationaal 	= doc.getElementById('fox_sports_int'),
-		compleet 		= doc.getElementById('fox_sports_compl');
-
-	// Zet andere fox uit
-	if (eredivisie.className.indexOf('actief') !== -1) {
-		kzSchakelCheckbox(eredivisie);
-	}
-	if (internationaal.className.indexOf('actief') !== -1) {
-		kzSchakelCheckbox(internationaal);
-	}
-
-	// als nu zelf actief, invalideer andere fox.
-	if (compleet.className.indexOf('actief') !== -1) {
-		internationaal.className += ' invalide';
-		eredivisie.className += ' invalide';
-	} else {
-		// anders zijn ze zelf weer klikbaar
-		internationaal.className = internationaal.className.replace('invalide', '').trim();
-		eredivisie.className = eredivisie.className.replace('invalide', '').trim();
-	}
-}
 
 function kzSchakelRadio(knop) {
 	/*------------------------------------------------------
@@ -543,7 +479,7 @@ function kzSchakelRadio(knop) {
 
 	let rij = knop;
 	do {rij = rij.parentNode} while (
-		!rij.classList.contains('rij') 
+		!rij.classList.contains('rij')
 		&& !rij.classList.contains('print-aanmeldformulier')
 	);
 
@@ -555,22 +491,22 @@ function kzSchakelRadio(knop) {
 	const isActief = knop.classList.contains('actief');
 
 	if ( isActief && !echteRadio ) {
-		
+
 		kzSchakelCheckbox(knop);
 
 	} else if ( isActief && echteRadio ){
-		
+
 
 		if (knoppenInVerzameling.length === 1) {
-			
-			// niets doen. 
+
+			// niets doen.
 		} else {
 
 			// eerst zelf uitzetten
 			// dan eerste best aanzetten.
 			kzSchakelCheckbox(knop);
 
-			
+
 			Array.from(knoppenInVerzameling).forEach(knopUitVerz => {
 				if (knopUitVerz.id !== knop.id) kzSchakelCheckbox(knopUitVerz);
 			});
@@ -578,10 +514,10 @@ function kzSchakelRadio(knop) {
 		}
 
 	} else if ( !isActief && !echteRadio ) {
-		
+
 
 		if (magErGeenTweeHebben) {
-			if (rij.getElementsByClassName('actief').length) { 
+			if (rij.getElementsByClassName('actief').length) {
 				kzSchakelCheckbox(rij.getElementsByClassName('actief')[0]);
 			}
 		}
@@ -590,14 +526,46 @@ function kzSchakelRadio(knop) {
 
 	} else {
 
-		
-		if (rij.getElementsByClassName('actief').length) { 
+
+		if (rij.getElementsByClassName('actief').length) {
 			kzSchakelCheckbox(rij.getElementsByClassName('actief')[0]);
 		}
 		kzSchakelCheckbox(knop);
 
 	}
 
+}
+
+function kzFoxSchakel(knop) {
+	// is dit de compleet knop of eredivisie / internationaal?
+	const alleFox = Array.from(doc.querySelectorAll('[data-kz-func~="fox-sports"]'));
+	if (knop.id.includes('compleet')) {
+		// de knop domineert. Als deze uitgaat, blijven anderen uit. Als de aan gaat, gaan anderen uit.
+		// dus naar normale schakelCheckbox slechts de andere twee uitzetten.
+		if (kzPakKnopValue(knop)) {
+			alleFox
+				.filter(filterKnop => !filterKnop.id.includes('compleet') && kzPakKnopValue(filterKnop))
+				.forEach(zetKnop => kzSchakelCheckbox(zetKnop));
+		}
+	} else if (alleFox.length > 2) {
+		// zijn er wel drie pakketten?
+		// als ze allebei aan staan, dan allebei uit en compleet knop aan.
+		// andere gevallen hoeft niet geschakeld te worden.
+		// dus loopen en schakelen
+		const aantalAan = alleFox.filter(knop2 => !knop2.id.includes('compleet') && kzPakKnopValue(knop2)).length;
+
+		// altijd compleet uit, voor de vergelijking, als je op een losse klikt.
+		alleFox.filter(knop3 => knop3.id.includes('compleet') && kzPakKnopValue(knop3)).forEach(knop4 => kzSchakelCheckbox(knop4));
+
+		if (aantalAan > 1) {
+			alleFox
+				.filter(nietDeCompleetKnop => !nietDeCompleetKnop.id.includes('compleet'))
+				.forEach(zetMUit => kzSchakelCheckbox(zetMUit));
+			alleFox
+				.filter(nietDeCompleetKnop => nietDeCompleetKnop.id.includes('compleet'))
+				.forEach(zetMAan => kzSchakelCheckbox(zetMAan));
+		}
+	}
 }
 
 function kzSchakelNumber(knop) {
@@ -624,7 +592,7 @@ function KzAantalTvs(optellen) {
 	if (optellen) {
 		extraTVontvangers.value = Number(extraTVontvangers.value) + 1;
 	} else if (Number(extraTVontvangers.value)) { // is niet 0
-		extraTVontvangers.value = Number(extraTVontvangers.value) - 1; 
+		extraTVontvangers.value = Number(extraTVontvangers.value) - 1;
 	}
 	extraTVontvangers.click();
 }
@@ -634,90 +602,90 @@ function KzAantalTvs(optellen) {
 
 
 var Base64 = {
- 
+
 	// private property
 	_keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
- 
+
 	// public method for encoding
 	encode : function (input) {
 		var output = "";
 		var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
 		var i = 0;
- 
+
 		input = Base64._utf8_encode(input);
- 
+
 		while (i < input.length) {
- 
+
 			chr1 = input.charCodeAt(i++);
 			chr2 = input.charCodeAt(i++);
 			chr3 = input.charCodeAt(i++);
- 
+
 			enc1 = chr1 >> 2;
 			enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
 			enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
 			enc4 = chr3 & 63;
- 
+
 			if (isNaN(chr2)) {
 				enc3 = enc4 = 64;
 			} else if (isNaN(chr3)) {
 				enc4 = 64;
 			}
- 
+
 			output = output +
 			this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
 			this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
- 
+
 		}
- 
+
 		return output;
 	},
- 
+
 	// public method for decoding
 	decode : function (input) {
 		var output = "";
 		var chr1, chr2, chr3;
 		var enc1, enc2, enc3, enc4;
 		var i = 0;
- 
+
 		input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
- 
+
 		while (i < input.length) {
- 
+
 			enc1 = this._keyStr.indexOf(input.charAt(i++));
 			enc2 = this._keyStr.indexOf(input.charAt(i++));
 			enc3 = this._keyStr.indexOf(input.charAt(i++));
 			enc4 = this._keyStr.indexOf(input.charAt(i++));
- 
+
 			chr1 = (enc1 << 2) | (enc2 >> 4);
 			chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
 			chr3 = ((enc3 & 3) << 6) | enc4;
- 
+
 			output = output + String.fromCharCode(chr1);
- 
+
 			if (enc3 != 64) {
 				output = output + String.fromCharCode(chr2);
 			}
 			if (enc4 != 64) {
 				output = output + String.fromCharCode(chr3);
 			}
- 
+
 		}
- 
+
 		output = Base64._utf8_decode(output);
- 
+
 		return output;
- 
+
 	},
- 
+
 	// private method for UTF-8 encoding
 	_utf8_encode : function (string) {
 		string = string.replace(/\r\n/g,"\n");
 		var utftext = "";
- 
+
 		for (var n = 0; n < string.length; n++) {
- 
+
 			var c = string.charCodeAt(n);
- 
+
 			if (c < 128) {
 				utftext += String.fromCharCode(c);
 			}
@@ -730,22 +698,22 @@ var Base64 = {
 				utftext += String.fromCharCode(((c >> 6) & 63) | 128);
 				utftext += String.fromCharCode((c & 63) | 128);
 			}
- 
+
 		}
- 
+
 		return utftext;
 	},
- 
+
 	// private method for UTF-8 decoding
 	_utf8_decode : function (utftext) {
 		var string = "";
 		var i = 0;
 		var c = c1 = c2 = 0;
- 
+
 		while ( i < utftext.length ) {
- 
+
 			c = utftext.charCodeAt(i);
- 
+
 			if (c < 128) {
 				string += String.fromCharCode(c);
 				i++;
@@ -761,10 +729,12 @@ var Base64 = {
 				string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
 				i += 3;
 			}
- 
+
 		}
- 
+
 		return string;
 	}
- 
+
 }
+
+/* eslint-enable */

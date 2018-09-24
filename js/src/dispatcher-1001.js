@@ -12,10 +12,10 @@ function knoppenDispatcher() {
 	|	met de knop dus als parameter.
 	|
 	|	Het nut van deze dispatcher zit er in dat pas op het moment dat de daadwerkelijke
-	| 	klik gedaan wordt, en deze dus aankomt bij de body, de functie wordt aangeroepen. 
+	| 	klik gedaan wordt, en deze dus aankomt bij de body, de functie wordt aangeroepen.
 	| 	Het eea. is dus niet HTML of JS-volgorde afhankelijk, louter van of de body bestaat als
 	| 	deze dispatcherfunctie wordt gedraaid.
-	| 
+	|
 	| 	In principe stuur de dispatcher alleen aan maar voor zeer kleine functies is een uitzondering gemaakt.
 	|
 	|-----------------------------------------------------*/
@@ -258,10 +258,10 @@ var knoppenFuncs = {
 		kzExtraVastNummer(knop);
 
 	},
-	foxSports: function () {
+	foxSports: function (knop) {
 
 		// aanmeldformulier.js
-		kzFoxSports();
+		kzFoxSchakel(knop);
 
 	},
 	updateHidden: function(){
@@ -319,10 +319,22 @@ var knoppenFuncs = {
 
 	},
 	tooltip: function (knop){
-		
+
+		const status = JSON.parse(sessionStorage.getItem('kz-adres')).status;
+		let tekst = null;
+
+		if(!knop.classList.contains('status-tooltip')) {
+			tekst = knop.getAttribute('data-tooltip-tekst');
+		} else {
+			tekst = knop.getAttribute(`data-tooltip-status-${status}`);
+			if (!(tekst.trim()) && knop.getAttribute('data-tooltip-tekst')) {
+				tekst = knop.getAttribute('data-tooltip-tekst');
+			}
+		}
+
 		kzModal({
 			kop: knop.getAttribute('data-tooltip-titel'),
-			torso: knop.getAttribute('data-tooltip-tekst')
+			torso: tekst
 		});
 	},
 	aantalTvsPlus: function (){

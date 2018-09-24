@@ -78,6 +78,10 @@ body.keuzehulp {
 	flex-shrink: 0;
 }*/
 
+.euro {
+	margin-right: .17em;
+}
+
 .prijs-bolletje {
 	background: linear-gradient(0.28turn, #41a33b, #93be43);
 	color: white;
@@ -91,7 +95,7 @@ body.keuzehulp {
 	position: absolute;
 	top: -10px;
 	right: 10px;
-	flex-shrink: 0;	
+	flex-shrink: 0;
 }
 	.iwwiw-bolletje .provider-pakketten-header-prijs-bedrag {
 		order: 2;
@@ -102,15 +106,15 @@ body.keuzehulp {
 	}
 
 	.prijs-bolletje > span:first-child {
-		display: block;					
-		font-weight: bold;	
+		display: block;
+		font-weight: bold;
 		font-size: 16px;
 	}
 
 	.prijs-bolletje > span:last-child {
 		font-size: 12px;
 		display: block;
-	}	
+	}
 	.prijs-bolletje .euro {
 		font-size: 12px;
 		font-weight: 400;
@@ -155,3 +159,10 @@ body.keuzehulp {
 		display: none !important; /*want moet overschrijven*/
 	}
 }
+
+
+
+
+
+
+

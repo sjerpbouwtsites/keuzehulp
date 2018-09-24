@@ -6,7 +6,7 @@
 // !! Omwille van geheugengebruik maak ik maar één keer een instance aan van de Kz_knop klasse.
 // Denk er aan dat als je een waarde aanpast bij knop n, knop n + 1 wellicht die eigenschap erft.
 
-///<link href="https://fonts.googleapis.com/css?family=Maven+Pro" rel="stylesheet"> 
+///<link href="https://fonts.googleapis.com/css?family=Maven+Pro" rel="stylesheet">
 
 $afb_pad = plugins_url( '../iconen-nieuw/png-rekam/', __FILE__ );
 
@@ -85,13 +85,17 @@ require 'keuze-menu-lijst.php';
 
 		$kofnt = get_field('keuzehulp_of_niet_teksten', 'option');
 
+		echo "<script>console.dir(".json_encode($kofnt).")</script>";
+
 		$keuzehulp_of_niet_titel = [];
 		$keuzehulp_of_niet_intro = [];
 		$keuzehulp_of_niet_ja_knoptekst = [];
 		$keuzehulp_of_niet_nee_knoptekst = [];
+		$wel_keuze_hulp_tooltip = [];
+		$geen_keuze_hulp_tooltip = [];
 
 		foreach ($kofnt as $groepnaam => $verzameling) {
-			
+
 			if (!is_array($verzameling)) {
 				continue;
 			}
@@ -106,7 +110,9 @@ require 'keuze-menu-lijst.php';
 			$keuzehulp_of_niet_titel[] = "<span class='statusbepaald status-$statuscode'>".$verzameling['titel']."</span>";
 			$keuzehulp_of_niet_intro[] = "<div class='statusbepaald status-$statuscode'>".$verzameling['intro']."</div>";
 			$keuzehulp_of_niet_ja_knoptekst[] = "<span class='statusbepaald status-$statuscode'>".$verzameling['wel_keuze_hulp']."</span>";
-			$keuzehulp_of_niet_nee_knoptekst[] = "<span class='statusbepaald status-$statuscode'>".$verzameling['geen_keuzehulp']."</span>";						
+			$keuzehulp_of_niet_nee_knoptekst[] = "<span class='statusbepaald status-$statuscode'>".$verzameling['geen_keuzehulp']."</span>";
+			$wel_keuze_hulp_tooltip['status-'.$statuscode] = $verzameling['wel_keuze_hulp_tooltip'];
+			$geen_keuze_hulp_tooltip['status-'.$statuscode] =$verzameling['geen_keuze_hulp_tooltip'];
 
 		}
 
@@ -115,7 +121,7 @@ require 'keuze-menu-lijst.php';
 			'func'		=> "animeer zet-niveau-knop toon-stap",
 			'link'		=> '#3',
 			'tekst'		=> implode('', $keuzehulp_of_niet_ja_knoptekst),
-			'tooltip'	=> $kofnt['wel_keuze_hulp_tooltip'],
+			'tooltip'	=> $wel_keuze_hulp_tooltip,
 			'geen_ikoon'=> false,
 			'ikoon'		=> keuzehulp_keuzehulp_pak_afb("meta 2"),
 			'class'		=> 'blauwe-knop'
@@ -126,7 +132,7 @@ require 'keuze-menu-lijst.php';
 		$knop->tekst = implode('', $keuzehulp_of_niet_nee_knoptekst);
 		$knop->ikoon = keuzehulp_keuzehulp_pak_afb("meta 3");
 		$knop->func = 'toon-stap animeer leeg-keuzehulp';
-		$knop->tooltip = $kofnt['geen_keuze_hulp_tooltip'];
+		$knop->tooltip = $geen_keuze_hulp_tooltip;
 		$keuzehulp_knoppen .= $knop->maak();
 
 

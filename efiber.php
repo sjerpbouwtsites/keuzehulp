@@ -31,25 +31,6 @@ define('KZ_JS_URI', KZ_THEME_URI . "/js");
 function Kz_scripts_in_rij() {
 
 
-
-    $pak_scripts = array(
-        'aanmeldformulier', 
-        'ajax', 
-        'controleer-postcode', 
-        'dispatcher',
-        'geheugen', 
-        'iwwiw', 
-        'keuze-niveaus', 
-        'knoppen', 
-        'modal',
-        'nuts', 
-        'pakket',
-        'route-keuze-consequenties', 
-        'routing', 
-        'vergelijking', 
-    );
-
-
     $pak_stijlen = array(
         '',
         'aanmeldformulier',
@@ -72,12 +53,7 @@ function Kz_scripts_in_rij() {
     $script_postfix = "-1001";
     $stijl_postfix = '';
 
-    foreach ($pak_scripts as $s) {
-        wp_register_script( "keuzehulp-$s", plugins_url("keuzehulp/js/{$s}".$script_postfix.".js"), array(), null, true );
-        wp_enqueue_script( "keuzehulp-$s" );
-    }
-
-    wp_register_script( 'keuzehulp-script', plugins_url('keuzehulp/js/{keuzehulp}'.$script_postfix.'.js'), array(), null, true );
+    wp_register_script( 'keuzehulp-script', plugins_url('keuzehulp/js/dist/keuzehulp.js'), array(), null, true );
     wp_enqueue_script( 'keuzehulp-script' );
 
     foreach ($pak_stijlen as $s) {
@@ -113,9 +89,21 @@ function Kz_scripts_in_rij() {
     wp_register_script( 'gf-masked-input', plugins_url('gravityforms/js/jquery.maskedinput.min.js'), array(), null, true );
     wp_enqueue_script( 'gf-masked-input' );
 
+
+    wp_register_script( 'supersignature', plugins_url('gravityformssignature/includes/super_signature/ss.js'), array(), null, true );
+    wp_enqueue_script( 'supersignature' );
+
+    wp_register_script( 'base64', plugins_url('gravityformssignature/includes/super_signature/base64.js'), array(), null, true );
+    wp_enqueue_script( 'base64' );
+
+
+
+
+
+
     // POLYFILL.IO
 
-    wp_enqueue_script( 'polyfill-io', 'https://cdn.polyfill.io/v2/polyfill.min.js', array(), null, true );
+    //wp_enqueue_script( 'polyfill-io', 'https://cdn.polyfill.io/v2/polyfill.min.js', array(), null, true );
 
 }
 
@@ -339,3 +327,58 @@ function slugify($str) {
 
   return $str;
 }
+
+
+
+function add_roles_on_plugin_activation() {
+    $result = add_role(
+        'reseller',
+        __( 'Reseller' ),
+        array(
+            'read'         => false,  // true allows this capability
+            'edit_posts'   => false,
+            'delete_posts' => false, // Use false to explicitly deny
+        )
+    );
+    if ( null !== $result ) {
+
+    }
+    else {
+        echo 'Oh... the basic_contributor role already exists.';
+    }
+}
+
+register_activation_hook( __FILE__, 'add_roles_on_plugin_activation' );
+//$P(1OtBy5V9sINksqQX16NIf
+
+
+
+function my_login_redirect( $redirect_to, $request, $user ) {
+    //is there a user to check?
+    global $user;
+    if ( isset( $user->roles ) && is_array( $user->roles ) ) {
+
+        if ( in_array( 'reseller', $user->roles ) ) {
+            // redirect them to the default place
+            return site_url() . "/keuzehulp";
+        } else {
+            return site_url() . "/wp-admin";
+        }
+    }
+}
+add_filter( 'login_redirect', 'my_login_redirect', 10, 3 );
+
+
+
+// Show custom logo wp-admin login
+function my_custom_login_logo() {
+    echo '<style type="text/css">
+        h1 a { background-image: url("/wp-content/plugins/keuzehulp/iconen-nieuw/png/logo-rekam-2016.png") !important;
+height: 97px !important;
+width: 369px !important;
+background-size: cover !important;
+background-position: center center !important; }
+        .login h1 a { background-size: inherit; height: 47px; width: 360px; }
+    </style>';
+}
+add_action('login_head', 'my_custom_login_logo');

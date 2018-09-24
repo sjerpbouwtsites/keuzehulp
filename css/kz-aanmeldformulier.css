@@ -3,7 +3,7 @@
 	border: 4px;
 	background-color: white;
 	border-radius: 5px;
-	box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.15);
+	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
 	margin-bottom: 20px;
 	margin-left: -10px;
 	margin-right: -10px;
@@ -19,7 +19,7 @@
 		cursor: pointer;
 		-moz-appearance: none;
 		text-indent: 0.01px;
-		text-overflow: '';		
+		text-overflow: '';
 		text-transform: none;
 		overflow: visible;
 		padding: 12px 32px 12px 8px;
@@ -41,7 +41,7 @@
 
 .kz-form-sectie .rij {
 	display: flex;
-	justify-content: space-between;	
+	justify-content: space-between;
 	padding: 20px 10px;
 	background-color: #f3f3f0;
 	margin: 0 -10px 3px -10px;
@@ -133,13 +133,13 @@
 			color: black;
 		}
 
-		.veld-flex span + span:last-child, 
+		.veld-flex span + span:last-child,
 		.radio-prijs {
 			 text-decoration: line-through;
 			 opacity: .7;
 		}
 
-			.heeft-actieve-knop .veld-flex span + span:last-child, 
+			.heeft-actieve-knop .veld-flex span + span:last-child,
 			.heeft-actieve-knop .radio-prijs {
 				 text-decoration: none;
 				 opacity: 1;
@@ -148,7 +148,7 @@
 	.veld-2 .kz-tooltip {
 		position: absolute;
 		top: -15px;
-		right: -5px;		
+		right: -5px;
 	}
 
 /*********************************/
@@ -163,13 +163,13 @@
 			left: calc(50% + 10px);
 			transform: translate(-50%, 0%);
 			border-left: 100vw solid white;
-			border-right: 100vw solid white;			
+			border-right: 100vw solid white;
 			box-shadow: none;
 			top: 0;
-			z-index: 5;			
+			z-index: 5;
 			max-width: calc(100% - 60px);
 		}
-		.voorbij-350 .kz-form-sectie.samenvatting .rij[class*='bijzonderheden']{ 
+		.voorbij-350 .kz-form-sectie.samenvatting .rij[class*='bijzonderheden']{
 			display: none;
 		}
 
@@ -228,7 +228,7 @@
 	}
 		.voorbij-350 .kz-form-sectie.samenvatting .rij:nth-child(2) { /* rij met naam product */
 			display: none;
-		}	
+		}
 		.kz-form-sectie.samenvatting .veld-2 {
 			position: static;
 		}
@@ -243,15 +243,15 @@
 
 
 [name="extra-tv-ontvangers"] {
-	-webkit-appearance: none; 
-	margin: 0; 	
+	-webkit-appearance: none;
+	margin: 0;
 	-moz-appearance:textfield;
 	appearance: none;
 	border: 0;
-	width: 10px;  
+	width: 20px;
 	margin-left: 5px;
 	font-weight: bold;
-	color: #159a3c;	
+	color: #159a3c;
 }
 
 .knop[name='huidige_nummer'],
@@ -267,7 +267,7 @@
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	min-width: 65px;
+	min-width: 45px;
 }
 
 	.plus-en-min-svgs svg{
@@ -302,6 +302,7 @@
 					flex-basis: 70px;
 					min-width: 70px;
 					margin-right: 5px;
+					height: 29px;
 
 				}
 				.kz-form-sectie .rij.radios .veld-2 .radio-naam-en-prijs{
@@ -323,7 +324,7 @@ section.kz-form-sectie:last-of-type {
 	section.kz-form-sectie:last-of-type .kz-form-sectie-header {
 		padding-bottom: 10px;
 		margin-bottom: 10px;
-		border-bottom: 2px solid #666;		
+		border-bottom: 2px solid #666;
 	}
 
 	section.kz-form-sectie:last-of-type .rij {
@@ -341,16 +342,30 @@ section.kz-form-sectie:last-of-type {
 			font-size: 18px;
 			justify-content: flex-end;
 			font-weight: bold;
-		}		
+		}
 		section.kz-form-sectie:last-of-type .rij:last-child {
 			color: #159a3c;
 			border-top: 2px solid #666;
 			padding-top: 5px;
 			margin-top: 10px;
-			font-weight: 900;			
+			font-weight: 900;
 		}
 
 
+
+/* Dirty hack op handtekening reset knop meervoudig geladen */
+#input_1_77_toolbar ~ div {
+	display: none;
+}
+
+/* handtekeninginput*/
+#field_1_77 {
+	display: none;
+}
+
+.logged-in #field_1_77 {
+	display: block;
+}
 
 
 

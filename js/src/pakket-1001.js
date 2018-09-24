@@ -1,4 +1,8 @@
-/* globals doc, location, KzAjax, kzModal, kzTekst, kzRouting, kzStickyKeuzes, teksten, KzAjaxKleineFormulieren  */
+/* globals doc, location, uniek, KzAjax, kzModal, kzTekst, kzRouting, kzStickyKeuzes, teksten, KzAjaxKleineFormulieren  */
+
+function log(a){
+	console.log(a);
+}
 
 function kzPakPakket(getal) {
 	return window[`kz-pakket-${getal}`];
@@ -88,7 +92,6 @@ function VerrijktPakket(p) {
 			Object.entries(this.eigenschappen[prijsCat]).forEach(([optieNaam, optieWaarden]) => {
 				// selectie op 1) snelheidsafhankelijk 2) vorige snelheid
 				if (optieWaarden.snelheid && optieWaarden.snelheid === vorigeSnelheid) {
-					
 					const oudeHoeveelheid = optieWaarden.aantal;
 
 					// nu zet je de oude snelheid op aantal 0
@@ -158,6 +161,38 @@ function VerrijktPakket(p) {
 		if (e.maandelijks[optie]) return Number(e.maandelijks[optie].aantal);
 
 		return 0;
+	};
+
+	this.zoekSubOptie = (suboptietype = '') => {
+		const mOpties = Object.entries(this.eigenschappen.maandelijks)
+		.filter(([sleutel, optie]) => optie.suboptietype === suboptietype)
+		.map(([sleutel, optie]) => Object.assign({ sleutel }, optie)),
+
+		eOpties = Object.entries(this.eigenschappen.eenmalig)
+		.filter(([sleutel, optie]) => optie.suboptietype === suboptietype)
+		.map(([sleutel, optie]) => Object.assign({ sleutel }, optie));
+
+		return {
+			bestaat: mOpties.length || eOpties.length,
+			mOpties,
+			eOpties,
+		};
+	};
+
+	this.zoekOptieType = (optietype = '') => {
+		const mOpties = Object.entries(this.eigenschappen.maandelijks)
+		.filter(([sleutel, optie]) => optie.optietype === optietype)
+		.map(([sleutel, optie]) => Object.assign({ sleutel }, optie)),
+
+		eOpties = Object.entries(this.eigenschappen.eenmalig)
+		.filter(([sleutel, optie]) => optie.optietype === optietype)
+		.map(([sleutel, optie]) => Object.assign({ sleutel }, optie));
+
+		return {
+			bestaat: mOpties.length || eOpties.length,
+			mOpties,
+			eOpties,
+		};
 	};
 
 
@@ -255,7 +290,19 @@ function VerrijktPakket(p) {
 		}).join('') ;*/
 	}
 
-	this.pakZenders = () => this.eigenschappen[`zenders-${this.huidige_snelheid}`];
+	this.pakZenders = () => {
+		const aantalUniekeZenderPakketten = Object
+			.entries(this.eigenschappen)
+			.filter(([sleutel, object]) => sleutel.includes('zender'))
+			.map(([s, o]) => o.totaal + o.hd)
+			.filter(uniek).length;
+
+		return Object.assign(this.eigenschappen[`zenders-${this.huidige_snelheid}`],
+			{
+				snelheid: this.huidige_snelheid,
+				aantalUniekeZenderPakketten,
+			});
+	};
 
 
 	this.pakTypeTV = () => (this.eigenschappen.tv_type === 'ITV' ? 'Interactief' : 'Digitaal');
@@ -281,7 +328,7 @@ function iwwiwProcedure(pakket) {
 	// idem installatie
 
 	const laagsteSnelheid = pakket.eigenschappen.snelheden
-		.reduce((nieuweWaarde, huidigeWaarde) => (nieuweWaarde < huidigeWaarde ? nieuweWaarde : huidigeWaarde), 1000000);
+	.reduce((nieuweWaarde, huidigeWaarde) => (nieuweWaarde < huidigeWaarde ? nieuweWaarde : huidigeWaarde), 1000000);
 
 	pakket.mutatie(`snelheid-${laagsteSnelheid}`, 1);
 	pakket.huidige_snelheid = laagsteSnelheid;
@@ -360,7 +407,7 @@ function vergelijkingsProcedure(pakket, keuzehulp) {
 		}
 	});
 
-	if (!gekozenSnelheid) gekozenSnelheid = snelheden[0];
+	if (!gekozenSnelheid) [gekozenSnelheid] = [(snelheden[0])];
 
 	const ss = gekozenSnelheid.toString();
 
@@ -368,32 +415,53 @@ function vergelijkingsProcedure(pakket, keuzehulp) {
 
 	// schrijf TV opties.
 	if (keuzehulp['televisie-opties']) {
+		const telOpts 		= keuzehulp['televisie-opties'],
+		film1Fam 			= pakket.zoekSubOptie('Film1'),
+		PlusFam 			= pakket.zoekSubOptie('Plus'),
+		ZiggoSportFam 		= pakket.zoekSubOptie('ZiggoSportTotaal');
 
-		const to = keuzehulp['televisie-opties'],
+		let fsEdOptieFam 	= pakket.zoekSubOptie('FoxSportsEredivisie'),
+		fsIntOptieFam 		= pakket.zoekSubOptie('FoxSportsInternationaal'),
+		fsComplOptieFam 	= pakket.zoekSubOptie('FoxSportsCompleet');
 
-		 nummerNaamMap = {
-			1: 'foxsportseredivisie',
-			2: 'ziggosporttotaal',
-			3: 'foxsportsinternationaal',
-			4: 'plus',
-			5: 'film1',
-		};
+		const telOptMap 	= [fsEdOptieFam, ZiggoSportFam, fsIntOptieFam, PlusFam, film1Fam];
 
-		for (const kzTVOptieNr in nummerNaamMap) {
-			if (to.indexOf(kzTVOptieNr) !== -1) {
-				// nu alle opties, met huidige snelheid, aanzetten. Kunnen families zijn!
-				const optieFamNaam = nummerNaamMap[kzTVOptieNr];
+		// aanname: alleen maandelijks
+		telOptMap.forEach((familie, nummer) => {
+			const telOptNr = nummer + 1;
+			if (telOpts.includes(telOptNr.toString())) {
+				familie.mOpties.forEach(optie => pakket.mutatie(optie.sleutel, 1));
+			}
+		});
 
-				for (const optieNaam in pakket.eigenschappen.maandelijks) {
-					// is het deze familie, en deze snelheid?
-					if (optieNaam.indexOf(optieFamNaam) !== -1 && optieNaam.indexOf(ss) !== -1) {
-						pakket.mutatie(optieNaam, 1);
-					}
-				}
+
+		if (pakket.optieBestaat('extra-tv-ontvangers')) {
+			const etoPrijs = pakket.optiePrijs('extra-tv-ontvangers');
+			if (telOpts.includes('6')
+				&& (etoPrijs.mp || etoPrijs.ep)) {
+				pakket.mutatie('extra-tv-ontvangers', 1);
 			}
 		}
 
-		if (to.indexOf('6') !== -1) pakket.mutatie('extra-tv-ontvangers', 1);
+
+		// fox sport compleet?
+		// als allebei gekozen & foxsportscompleet bestaat...
+		// aanname: maar één opties binnen al die pakketten.
+
+		fsEdOptieFam 		= pakket.zoekSubOptie('FoxSportsEredivisie');
+		fsIntOptieFam 		= pakket.zoekSubOptie('FoxSportsInternationaal');
+		fsComplOptieFam 	= pakket.zoekSubOptie('FoxSportsCompleet');
+
+		if (fsEdOptieFam.bestaat
+			&& fsIntOptieFam.bestaat
+			&& fsComplOptieFam.bestaat) {
+			if (fsEdOptieFam.mOpties[0].aantal
+				&& fsIntOptieFam.mOpties[0].aantal) {
+				pakket.mutatie(fsEdOptieFam.mOpties[0].sleutel, 0);
+				pakket.mutatie(fsIntOptieFam.mOpties[0].sleutel, 0);
+				pakket.mutatie(fsComplOptieFam.mOpties[0].sleutel, 1);
+			}
+		}
 	}
 
 	if (keuzehulp.televisie === '3') {

@@ -43,7 +43,7 @@ function kz_maak_tooltip ($arg = array()){
 	$t = $arg['e']['teksten'];
 	if (array_key_exists($arg['sleutel'], $t)) {
 		if ($t[($arg['sleutel'])] !== '') {
-		
+
 			$ttt = array_key_exists('titel', $arg)
 				? $arg['titel'] !== ''
 					? $arg['titel']
@@ -55,8 +55,8 @@ function kz_maak_tooltip ($arg = array()){
 			$tekst = strip_tags($t[$s]);
 
 
-			return 
-			"<a href='#' class='knop kz-tooltip' data-tooltip-titel='$ttt' data-tooltip-tekst='$tekst' data-kz-func='tooltip' title='Meer informatie'><svg class='svg-info' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><style>.f7f0e9f1-f859-4dfe-95fb-3d086fc32618{fill:#159a3c;}</style></defs><circle class='f7f0e9f1-f859-4dfe-95fb-3d086fc32618' cx='49.91' cy='71.51' r='4.36'></circle><path class='f7f0e9f1-f859-4dfe-95fb-3d086fc32618' d='M49.91,5.52A44.64,44.64,0,1,0,94.54,50.15,44.61,44.61,0,0,0,49.91,5.52Zm0,82.29A37.66,37.66,0,1,1,87.57,50.15,37.63,37.63,0,0,1,49.91,87.81Z'></path><path class='f7f0e9f1-f859-4dfe-95fb-3d086fc32618' d='M49.91,27.92A14,14,0,0,0,36,41.87a3.49,3.49,0,1,0,7,0,7,7,0,1,1,7,7,3.49,3.49,0,0,0-3.49,3.49v8.72a3.49,3.49,0,0,0,7,0V55.38a14,14,0,0,0-3.49-27.46Z'></path></svg></a>";			
+			return
+			"<a href='#' class='knop kz-tooltip' data-tooltip-titel='$ttt' data-tooltip-tekst='$tekst' data-kz-func='tooltip' title='Meer informatie'><svg class='svg-info' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><style>.f7f0e9f1-f859-4dfe-95fb-3d086fc32618{fill:#159a3c;}</style></defs><circle class='f7f0e9f1-f859-4dfe-95fb-3d086fc32618' cx='49.91' cy='71.51' r='4.36'></circle><path class='f7f0e9f1-f859-4dfe-95fb-3d086fc32618' d='M49.91,5.52A44.64,44.64,0,1,0,94.54,50.15,44.61,44.61,0,0,0,49.91,5.52Zm0,82.29A37.66,37.66,0,1,1,87.57,50.15,37.63,37.63,0,0,1,49.91,87.81Z'></path><path class='f7f0e9f1-f859-4dfe-95fb-3d086fc32618' d='M49.91,27.92A14,14,0,0,0,36,41.87a3.49,3.49,0,1,0,7,0,7,7,0,1,1,7,7,3.49,3.49,0,0,0-3.49,3.49v8.72a3.49,3.49,0,0,0,7,0V55.38a14,14,0,0,0-3.49-27.46Z'></path></svg></a>";
 
 		} else {
 			return '';
@@ -67,13 +67,24 @@ function kz_maak_tooltip ($arg = array()){
 
 }
 
+//kz_tv_pakketten($tv_pakket_naam, $eigenschappen, $gekozen_snelheid);
+
 function kz_tv_pakketten($tv_pakket, $e, $s) {
 
 	// geeft array terug van alle tv pakketten binnen die bundel, zoals alle plus pakket opties.
 
 	$r = array();
-	$s = (string) $s;
+
 	foreach ($e['maandelijks'] as $naam => $v) {
+
+		if ($v['suboptietype'] === $tv_pakket && $s == $v['snelheid']) {
+			$r[] = $v;
+		}
+
+	}
+
+	return $r;
+/*	foreach ($e['maandelijks'] as $naam => $v) {
 
 		$expl = explode('-', $naam);
 
@@ -90,7 +101,19 @@ function kz_tv_pakketten($tv_pakket, $e, $s) {
 			$r[] = $v;
 		}
 	}
-	return $r;
+	return $r;*/
+}
+
+function kz_maak_geld_op_beide($optie, $eigenschappen) {
+
+	if (array_key_exists($optie, $eigenschappen['eenmalig']) && array_key_exists($optie, $eigenschappen['maandelijks'])) {
+		return kz_maak_geld_op(	$eigenschappen['maandelijks'][$optie]['prijs']) . " <small>(maandelijks)</small><br>" . kz_maak_geld_op($eigenschappen['eenmalig'][$optie]['prijs']) . " <small>(eenmalig)</small>";
+	} else if (array_key_exists($optie, $eigenschappen['eenmalig'])) {
+		return kz_maak_geld_op($eigenschappen['eenmalig'][$optie]['prijs']);
+	} else {
+		return kz_maak_geld_op($eigenschappen['maandelijks'][$optie]['prijs']);
+	}
+
 }
 
 function keuzehulp_haal_aanmeldformulier() {
@@ -181,7 +204,7 @@ function keuzehulp_haal_aanmeldformulier() {
 //		) .
 
 		keuzehulp_form_rij (
-			$pakket['naam_composiet'],
+			!in_array('eigenlijk alleen tv', $eigenschappen['pakket_type']) ? $pakket['naam_composiet'] : $pakket['titel'],
 			""
 		) .
 
@@ -190,11 +213,14 @@ function keuzehulp_haal_aanmeldformulier() {
 			 "<span class='eenmalig-totaal veld-span'></span>"
 		) .
 
-		keuzehulp_form_rij (
-			'<span class="veld-span">Down- en upload<br>snelheid</span>',
-			"<select id='schakel-snelheid' name='internetsnelheid'>
-				$snelheden_opts
-			</select>"
+		(in_array('eigenlijk alleen tv', $eigenschappen['pakket_type'])
+			? ''
+			: keuzehulp_form_rij (
+				'<span class="veld-span">Down- en upload<br>snelheid</span>',
+				"<select id='schakel-snelheid' name='internetsnelheid'>
+					$snelheden_opts
+				</select>"
+			)
 		) .
 
 		(
@@ -213,7 +239,7 @@ function keuzehulp_haal_aanmeldformulier() {
 	if (in_array('Alles in 1', $eigenschappen['pakket_type']) || in_array('Internet en TV', $eigenschappen['pakket_type'])) :
 
 		$tv = array(); // WEGHALEN UIT PHP
-
+		$tv_inhoud = '';
 		$tv_inhoud .= keuzehulp_form_rij (
 			$eigenschappen['tv_type'] === "ITV" ? "<span class='ovaal'>Ja</span>" : "<span class='ovaal'>Nee</span>",
 			'<strong>TV interactief</strong>',
@@ -234,7 +260,7 @@ function keuzehulp_haal_aanmeldformulier() {
 								<title>Rekam icons groen</title>
 								<circle class='c12351a7-9ebf-4540-b8e7-1c0281cccf8c' cx='49.24' cy='49.74' r='40.49'/>
 								<path class='0b328a88-6a35-4e9f-a653-e1e9b298c3f4' d='M63,43.69A1.18,1.18,0,0,1,64.29,45v9.44A1.17,1.17,0,0,1,63,55.78H35.52a1.17,1.17,0,0,1-1.32-1.32V45a1.17,1.17,0,0,1,1.32-1.33Z'/>
-							</svg>			
+							</svg>
 				</a>
 				<a href='#' class='knop' data-kz-func='aantal-tvs-plus'>
 					<svg class='svg-plus' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><style>.\31 ddb3e84-39b9-4147-9057-4c1f5c35c23c{fill:#159a3c;}.\39 35d1f77-3a66-4c34-b817-b76fbcca01fa{fill:#fff;}</style></defs><title>Rekam icons groen</title><circle class='1ddb3e84-39b9-4147-9057-4c1f5c35c23c' cx='50' cy='50' r='40.49'/><path class='935d1f77-3a66-4c34-b817-b76fbcca01fa' d='M55,28.29a1.19,1.19,0,0,1,1.34,1.35V44.05H71.08a1.19,1.19,0,0,1,1.34,1.34v9.13a1.18,1.18,0,0,1-1.34,1.34H56.31v14.5A1.19,1.19,0,0,1,55,71.71H45.21a1.19,1.19,0,0,1-1.34-1.35V55.86H28.92a1.18,1.18,0,0,1-1.34-1.34V45.39a1.18,1.18,0,0,1,1.34-1.34H43.87V29.64a1.19,1.19,0,0,1,1.34-1.35Z'/></svg>
@@ -258,7 +284,9 @@ function keuzehulp_haal_aanmeldformulier() {
 				'sleutel'	=> 'extra-tv-ontvangers'
 			));
 
-			$veld2 ='<span class="veld-flex"><span>Extra TV ontvangers</span><span>'.kz_maak_geld_op($p). "</span>$tt</span>"; 
+			$etp = kz_maak_geld_op_beide('extra-tv-ontvangers', $eigenschappen);
+
+			$veld2 ='<span class="veld-flex"><span>Extra TV ontvangers</span><span>'.$etp."</span>$tt</span>";
 
 			$tv_inhoud .= keuzehulp_form_rij ($veld1, $veld2, $koos_extra_tv ? "heeft-actieve-knop" : '');
 
@@ -298,7 +326,7 @@ function keuzehulp_haal_aanmeldformulier() {
 							'<span class="ovaal">Ja</span>',
 							"<span class='veld-flex'><span>Opnemen, terugkijken, begin gemist</span>$tt</span>",
 							'heeft-actieve-knop'
-						);					
+						);
 				}
 
 			else : // dus on demand niet samen
@@ -341,10 +369,10 @@ function keuzehulp_haal_aanmeldformulier() {
 						'e'			=> $eigenschappen,
 						'sleutel'	=> "replay_tekst",
 						'titel'		=> "Terugkijken"
-					));					
+					));
 
 					if (kz_optie_kost_geld('replay', $eigenschappen)) {
-						
+
 						$tv_inhoud .= keuzehulp_form_rij (
 							keuzehulp_input (array(
 								'naam'		=> 'replay',
@@ -371,7 +399,7 @@ function keuzehulp_haal_aanmeldformulier() {
 						'e'			=> $eigenschappen,
 						'sleutel'	=> "replay_tekst",
 						'titel'		=> "Terugkijken"
-					));						
+					));
 
 					if (kz_optie_kost_geld('begin-gemist', $eigenschappen)) {
 						$p = kz_optie_prijs('begin-gemist', $eigenschappen);
@@ -430,32 +458,42 @@ function keuzehulp_haal_aanmeldformulier() {
 		endif; // tv app beschikbaar
 
 
-		$tv_pakket_namen = array('film1', 'plus', 'fox-sports-eredivisie', 'fox-sports-internationaal', 'fox-sports-compleet', 'ziggo-sport-totaal', 'erotiek');
+		//$tv_pakket_namen = array('film1', 'plus', 'fox-sports-eredivisie', 'fox-sports-internationaal', 'fox-sports-compleet', 'ziggo-sport-totaal', 'erotiek');
+		$tv_pakket_namen = array('Film1', 'Plus', 'FoxSportsEredivisie', 'FoxSportsInternationaal', 'FoxSportsCompleet', 'ZiggoSportTotaal', 'Erotiek');
 
 		foreach ($tv_pakket_namen as $tv_pakket_naam) {
 
 			$deze_pakketten = kz_tv_pakketten($tv_pakket_naam, $eigenschappen, $gekozen_snelheid);
 
 			if (count($deze_pakketten) > 0) :
+				$naam_teller = 0;
 				foreach ($deze_pakketten as $dit_pakket) :
-
-					$volledige_naam = $dit_pakket['naam_volledig'];
+					$naam_teller++;
 
 					$tt = kz_maak_tooltip(array(
 						'e'			=> $eigenschappen,
-						'sleutel'	=> $volledige_naam,
+						'sleutel'	=> $dit_pakket['naam'],
 						'titel'		=> ucfirst($dit_pakket['naam'])
 					));
+/*
+					ob_start();
+					echo "<pre>";
+					var_dump($dit_pakket);
+					echo "</pre>";
+					$print .= ob_get_clean();
+*/
+					$naar_id = str_replace('-', '', slugify($dit_pakket['suboptietype'])) . "-" . str_replace('-', '', slugify($dit_pakket['naam']));
 
-					if (kz_optie_kost_geld($volledige_naam, $eigenschappen)) {
+					if ( (float) $dit_pakket['prijs'] > 0.01) {
 						$p = $dit_pakket['prijs'];
 
 						$tv_inhoud .= keuzehulp_form_rij (
 							keuzehulp_input (array(
-								'naam'		=> $volledige_naam,
+								'naam'		=> $naar_id,
 								'type'		=> "radio",
 								'value'		=> $dit_pakket['aantal'],
 								'waarde'	=> $p,
+								'func'		=> in_array($tv_pakket_naam, ['FoxSportsEredivisie', 'FoxSportsInternationaal', 'FoxSportsCompleet']) ? "fox-sports" : '',
 								'label'		=> $svgs,
 								'eclass'	=> 'tv-pakket'
 							)),
@@ -463,6 +501,7 @@ function keuzehulp_haal_aanmeldformulier() {
 						);
 
 					} else { // gratis optie
+
 						$tv_inhoud .= keuzehulp_form_rij (
 							'<span class="ovaal">Ja</span>',
 							"<span class='veld-flex'><span>".$dit_pakket['naam']."</span>$tt</span>",
@@ -492,7 +531,10 @@ function keuzehulp_haal_aanmeldformulier() {
 	// HTML houder
 	$bel_inhoud = '';
 
-	if (in_array('Alles in 1', $eigenschappen['pakket_type']) || in_array('Internet en bellen', $eigenschappen['pakket_type'])) :
+	if ( (
+		in_array('Alles in 1', $eigenschappen['pakket_type'])
+		|| in_array('Internet en bellen', $eigenschappen['pakket_type'])
+	) && !in_array('eigenlijk alleen tv', $eigenschappen['pakket_type']) ):
 
 		$belknoppen = '';
 
@@ -508,7 +550,7 @@ function keuzehulp_haal_aanmeldformulier() {
 
 					$n = slugify($tb['naam']);
 					$p = kz_optie_prijs($n, $eigenschappen);
-					$label = 
+					$label =
 					"<span class='radio-naam-en-prijs veld-flex'>
 						<span class='radio-naam'>".$tb['naam']."</span>
 						<span class='radio-prijs'>".kz_maak_geld_op($p)."</span>
@@ -539,7 +581,6 @@ function keuzehulp_haal_aanmeldformulier() {
 			keuzehulp_input (array(
 				'naam'		=> 'nummerbehoud',
 				'type'		=> "checkbox",
-				'func'		=> 'form-toon-rij',
 				'value'		=> 0,
 				'label'		=> $svgs
 			)),
@@ -552,11 +593,11 @@ function keuzehulp_haal_aanmeldformulier() {
 					'func'		=> '',
 				)),
 				"<span class='veld-flex'><span>Huidige nummer</span></span>",
-				'sub-rij',				
+				'sub-rij',
 			)
 		);
 
-		if (kz_heeft_optie('extra-vast-nummer', $eigenschappen)) :
+		if (kz_heeft_optie('extra-vast-nummer', $eigenschappen) and kz_optie_kost_geld('extra-vast-nummer', $eigenschappen)) :
 
 			$p = kz_optie_prijs('extra-vast-nummer', $eigenschappen);
 			$bel_inhoud .= keuzehulp_form_rij (
@@ -576,14 +617,14 @@ function keuzehulp_haal_aanmeldformulier() {
 						'label'		=> $svgs
 					)),
 					"<span class='veld-flex'><span>Nummerbehoud extra vast nummer</span></span>",
-					($koos_extra_nummer ? '' : 'heeft-sub-rij sub-rij'),
+					(!!kz_optie_aantal('extra-vast-nummer') ? '' : 'heeft-sub-rij sub-rij'),
 					array(
 						keuzehulp_input (array(
 							'naam'		=> 'huidige_extra_nummer',
 							'type'		=> "text",
 						)),
 						"<span class='veld-flex'><span>Huidige extra nummer</span></span>",
-						'sub-rij sub-sub-rij' // wordt zichtbaar als extra nummer gekozen en nummerbehoud					
+						'sub-rij sub-sub-rij' // wordt zichtbaar als extra nummer gekozen en nummerbehoud
 					)
 				)
 
@@ -623,7 +664,7 @@ function keuzehulp_haal_aanmeldformulier() {
 
 	$installatie_namen = array("Doe het zelf", 'Basis installatie', 'Volledige installatie');
 	$installatie_sleutels = array("dhz", 'basis', 'volledig');
-
+	$installatie_knoppen = '';
 
 	for ($i = 0; $i < count($installatie_namen); $i++) {
 
@@ -631,7 +672,7 @@ function keuzehulp_haal_aanmeldformulier() {
 
 			$p = kz_optie_prijs('installatie-'.$installatie_sleutels[($i)], $eigenschappen);
 
-			$label = 
+			$label =
 			"<span class='radio-naam-en-prijs veld-flex'>
 				<span class='radio-naam'>".$installatie_namen[$i]."</span>
 				<span class='radio-prijs'>".kz_maak_geld_op($p)."</span>
@@ -645,7 +686,7 @@ function keuzehulp_haal_aanmeldformulier() {
 					'waarde'	=> $p,
 					'value'		=> kz_optie_aantal('installatie-'.$installatie_sleutels[($i)], $eigenschappen),
 					'eclass'	=> 'installatie'
-				), 
+				),
 				kz_maak_geld_op($p)
 			);
 
@@ -687,7 +728,7 @@ function keuzehulp_haal_aanmeldformulier() {
 				'waarde'	=> $p,
 				'value'		=> kz_optie_aantal('extra-optie', $eigenschappen),
 			)),
-			"<span class='veld-flex'><span>$eon</span><span>".kz_maak_geld_op($p)."</span>$tt</span>"
+			"<span class='veld-flex'><span>$eon</span><span>".kz_maak_geld_op_beide('extra-optie', $eigenschappen)."</span>$tt</span>"
 		);
 
 	}
@@ -709,14 +750,14 @@ function keuzehulp_haal_aanmeldformulier() {
 				'waarde'	=> $p,
 				'value'		=> kz_optie_aantal('dvb-c', $eigenschappen),
 			)),
-			"<span class='veld-flex'><span>DVB-C</span><span>".kz_maak_geld_op($p)."</span>$tt</span>"
+			"<span class='veld-flex'><span>DVB-C</span><span>".kz_maak_geld_op_beide('dvb-c', $eigenschappen)."</span>$tt</span>"
 		);
 
-	}	
+	}
 
 
-	$wrt = $eigenschappen['provider_meta']['incl_wifi_router'] === "true" 
-		? "Ja" : 
+	$wrt = $eigenschappen['provider_meta']['incl_wifi_router'] === "true"
+		? "Ja" :
 		"Nee";
 
 	$meta_inhoud .= (
@@ -732,9 +773,8 @@ function keuzehulp_haal_aanmeldformulier() {
 	);
 
 
-
 	// bij klein zakelijk kan een waarschuwing komen dat sommigen geen zakelijke factuur kunnen sturen aan een consumentenpakket (=kleinzakelijk)
-	if ($keuzehulp['situatie'] === 'kleinZakelijk') {
+	if (array_key_exists('situatie', $keuzehulp) and $keuzehulp['situatie'] === 'kleinZakelijk') {
 
 		if ($eigenschappen['teksten']['klein_zakelijk_waarschuwing']) {
 			$meta_inhoud .= "<small>" . $klein_zakelijk_waarschuwing . "</small>";
@@ -755,7 +795,7 @@ function keuzehulp_haal_aanmeldformulier() {
 
 
 
-	$financieel_inhoud = 
+	$financieel_inhoud =
 
 		keuzehulp_form_rij (
 			'Eenmalige kosten',
@@ -769,7 +809,7 @@ function keuzehulp_haal_aanmeldformulier() {
 				keuzehulp_form_rij (
 					'Waarvan kosten glasvezel naar huis doortrekken',
 					kz_maak_geld_op($eigenschappen['eenmalig']['glasvezel_naar_huis']['prijs'])
-				)		
+				)
 			: ''
 		) .
 		keuzehulp_form_rij (
@@ -797,7 +837,7 @@ function keuzehulp_haal_aanmeldformulier() {
 
 	// nu de algemene voorwaarden van de provider er in zetten.
 	// gaat via stringherkenning
-	$algemene_voorwaarden = $eigenschappen['pakket_meta']['provider']['ik_ga_akkoord_met'];
+	$algemene_voorwaarden = $eigenschappen['teksten']['ik_ga_akkoord_met'];
 	$algemene_voorwaarden = str_replace("\\", '', $algemene_voorwaarden); // ook kapotge-ajaxt
 	$gf = str_replace('%PRINT_ALGEMENE_VOORWAARDEN%', $algemene_voorwaarden, $gf);
 
@@ -813,7 +853,7 @@ function keuzehulp_haal_aanmeldformulier() {
 	$r = array(
 		'id'			=> $pakket['ID'],
 		'print'			=> $print,
-		'console'		=> $pakket,
+		//'console'		=> $pakket,
 	);
 
 	// @TODO hier is geen foutafhandeling?

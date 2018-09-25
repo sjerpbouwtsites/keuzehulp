@@ -21,8 +21,9 @@ body.keuzehulp {
 
 .keuzehulp .verpakking {
 	width: 1200px;
-	max-width: calc(100% - 40px);
-	margin: 0 auto;
+	max-width: 100%;
+/*	max-width: calc(100% - 40px);
+	margin: 0 auto;*/
 	padding-top: 0;
 }
 

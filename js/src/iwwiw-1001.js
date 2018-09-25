@@ -375,7 +375,7 @@ function ikWeetWatIkWilPakkettenAjax() {
 		printPakkettenLijst: (pakketHTMLvoorraad, nieuwPakket) => `${pakketHTMLvoorraad}
 			<li class='provider-pakketten-pakket'>
 				<div class='provider-pakketten-pakket-links'>
-					<h3 class='provider-pakketten-pakket-titel'>${(
+					<h3 class='provider-pakketten-pakket-titel'><span class='provider-pakketten-pakket-titel_naam'>${(
 							nieuwPakket.eigenschappen.pakket_type.includes('eigenlijk alleen tv')
 								? nieuwPakket.provider + " alleen TV "
 								: nieuwPakket.naam_composiet
@@ -384,7 +384,9 @@ function ikWeetWatIkWilPakkettenAjax() {
 						|| nieuwPakket.eigenschappen.pakket_type.includes('Alles in 1') 
 							? ' - '+ nieuwPakket.eigenschappen.tv_type
 							: ``
-					}</h3>
+					}</span>
+					<span class='provider-pakketten-pakket-titel_usp'>${nieuwPakket.eigenschappen.teksten.usps}</span>
+					</h3>
 					<span class='provider-pakketten-pakket-links-onder'>
 
 					<strong>Beschikbare snelheden:</strong>

@@ -126,7 +126,9 @@ var knoppenFuncs = {
 	},
 	haalZakelijkFormulier: function(){
 
-		kzAjaxKleineFormulieren('keuzehulp_haal_zakelijk_formulier', 'print-zakelijk-formulier', {gebiedscode: sessionStorage.getItem('kz-gebiedscode')});
+		const gebiedscode = JSON.parse(sessionStorage.getItem('kz-adres')).gebiedscode
+
+		kzAjaxKleineFormulieren('keuzehulp_haal_zakelijk_formulier', 'print-zakelijk-formulier', {gebiedscode} );
 
 	},
 	zetKeuzeInternet: function(knop) {

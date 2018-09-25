@@ -1,7 +1,6 @@
 
 .kz-navigatie-beneden {
 	display: none;
-	margin: 0 -10px;
 }
 
 [data-kz-stap~='hoofd'] .kz-navigatie-beneden {
@@ -17,7 +16,7 @@
 }
 
 .kz-navigatie-beneden {
-	padding: 20px 0;
+	padding: 20px;
 }
 	.knop.kz-navigatie-beneden_knop {
 		display: none;

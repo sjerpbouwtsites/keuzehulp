@@ -23,8 +23,13 @@ const kzRenderVergelijking = {
 		this.keuzehulp = keuzehulp;
 		this.providers = r.providers;
 		doc.getElementById('print-vergelijking').innerHTML = '';
-		if (this.erIsWatTePrinten()) {
+		if (this.erIsWatTePrinten()) { 
 			const printVergelijking = doc.getElementById('print-vergelijking');
+
+			if (Object.entries(r.providers).length < 3) {
+				printVergelijking.classList.add("minder-dan-drie");
+			}
+			
 			let printPakketten = '',
 
 			 providerTal = 0;
@@ -123,7 +128,7 @@ const kzRenderVergelijking = {
 		// KAN ALS ARRAY EN ALS OBJECT BINNENKOMEN :o
 
 		if (this.providers.hasOwnProperty('length')) {
-			return !!this.providers.length;
+			return !!this.providers.length; 
 		}
 			return !!Object.entries(this.providers);
 	},
@@ -137,19 +142,22 @@ const kzRenderVergelijking = {
 		<li class='provider-pakketten-pakket'>
 
 			<header>
-				<h3 class='provider-pakketten-pakket-titel'>${pakket.naam_composiet}</h3>
+				<h3 class='provider-pakketten-pakket-titel'><span class='provider-pakketten-pakket-titel_naam'>${pakket.naam_composiet}</span><span class='provider-pakketten-pakket-titel_usp'>${pakket.eigenschappen.teksten.usps}</span></h3>
 
 				<div class='flex'>
 
-					${(ds === us
+					${(ds && ds === us
 						? `<div class='provider-pakketten-pakket-links'>
 							<h4>Snelheid</h4>
 							<strong>${ds} Mb/s</strong>
 						</div>`
-						: `<div class='provider-pakketten-pakket-links'>
-							<h4>Down- en uploadsnelheid</h4>
-							<strong>${ds} / ${us} Mb/s</strong>
-						</div>`
+						: (ds && ds !== us 
+							? `<div class='provider-pakketten-pakket-links'>
+								<h4>Down- en uploadsnelheid</h4>
+								<strong>${ds} / ${us} Mb/s</strong>
+							</div>`
+							: ``
+							)
 					)}
 
 					${(providerTal > 3

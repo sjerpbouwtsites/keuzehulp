@@ -28,9 +28,7 @@
 			<span class='vanaf-600-px voor-telefoon'>Heb je een vraag? Neem contact op of bel</span>
 			<a href='<?=get_field('contactpagina', 'option')?>' target="_blank">
 				<span>
-					<?php require plugin_dir_path(__FILE__)."../iconen-nieuw/svg/bellen.svg"; ?>
-				</span>
-				<span class='vanaf-600-px telefoonnummer'><?=get_field('telefoonnummer', 'option')?>
+					<?php require plugin_dir_path(__FILE__)."../iconen-nieuw/svg/operator.svg"; ?>
 				</span>
 			</a>
 		</div>

@@ -5,9 +5,16 @@
 	border-radius: 5px;
 	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
 	margin-bottom: 20px;
-	margin-left: -10px;
-	margin-right: -10px;
+	margin-left: 0;
+	margin-right: 0;
 }
+	@media (max-width: 600px) {
+		.kz-form-sectie + .kz-form-sectie {
+			padding-left: 10px;
+			padding-right: 10px;
+		}
+	}
+
 
 
 	.print-aanmeldformulier select {
@@ -44,7 +51,7 @@
 	justify-content: space-between;
 	padding: 20px 10px;
 	background-color: #f3f3f0;
-	margin: 0 -10px 3px -10px;
+	margin: 0 0 3px 0;
 }
 
 	.kz-form-sectie .rij.heeft-actieve-knop {
@@ -159,15 +166,13 @@
 		.voorbij-350 .kz-form-sectie.samenvatting{
 			position: fixed;
 			margin-top: 0 !important;
-			width: 820px;
-			left: calc(50% + 10px);
-			transform: translate(-50%, 0%);
-			border-left: 100vw solid white;
-			border-right: 100vw solid white;
+			width: calc(1200px - 60px);
 			box-shadow: none;
 			top: 0;
 			z-index: 5;
-			max-width: calc(100% - 60px);
+			left: 0;
+			border-right: calc(100vw - 1180px) solid white;
+			max-width: calc(100vw - 40px);
 		}
 		.voorbij-350 .kz-form-sectie.samenvatting .rij[class*='bijzonderheden']{
 			display: none;
@@ -183,8 +188,8 @@
 		padding: 0;
 		background: none;
 		margin-bottom: 0;
-		margin-right: -10px;
-		margin-left: -10px;
+/*		margin-right: -10px;
+		margin-left: -10px;*/
 	}
 		@media (min-width: 900px) {
 			.kz-form-sectie.samenvatting .rij {
@@ -226,7 +231,9 @@
 		color: #2a2a28;
 		margin-bottom: 0;
 	}
-		.voorbij-350 .kz-form-sectie.samenvatting .rij:nth-child(2) { /* rij met naam product */
+		.voorbij-350 .kz-form-sectie.samenvatting .rij:nth-child(2), /* rij met naam product */
+		.voorbij-350 .kz-form-sectie.samenvatting .rij:nth-child(4), /* snelheid schakel */
+		.voorbij-350 .kz-form-sectie.samenvatting .rij:nth-child(5), /* speciale aanbieding*/ { 
 			display: none;
 		}
 		.kz-form-sectie.samenvatting .veld-2 {

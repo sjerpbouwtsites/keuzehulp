@@ -85,8 +85,6 @@ require 'keuze-menu-lijst.php';
 
 		$kofnt = get_field('keuzehulp_of_niet_teksten', 'option');
 
-		echo "<script>console.dir(".json_encode($kofnt).")</script>";
-
 		$keuzehulp_of_niet_titel = [];
 		$keuzehulp_of_niet_intro = [];
 		$keuzehulp_of_niet_ja_knoptekst = [];

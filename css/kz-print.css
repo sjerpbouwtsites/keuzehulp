@@ -1,7 +1,4 @@
-.print-vergelijking,
-.print-provider-pakketten {
-	margin: 0 -10px;
-}
+
 .print-vergelijking .blauwe-knop,
 .print-provider-pakketten .blauwe-knop{
 	text-align: center;
@@ -17,9 +14,9 @@
 	margin-bottom: 40px;
 	box-sizing: border-box;
 }
-	.provider-pakketten.actief {
+/*	.provider-pakketten.actief {
 		min-width: calc(100% - 40px);
-	}
+	}*/
 	.provider-pakketten-header {
 		display: flex;
 		flex-direction: row;
@@ -206,6 +203,16 @@
 	.provider-pakketten-pakket-titel {
 		margin-top: 20px !important;
 	}
+		.provider-pakketten-pakket-titel span {
+			display: block;
+		}
+			.provider-pakketten-pakket-titel_naam {
+				/* geregeld via h3*/
+			}
+			.provider-pakketten-pakket-titel_usp {
+				font-size: 12px;
+				font-weight: 400;				
+			}
 
 	.provider-pakketten-pakket-links-onder_snelheid {
 		display: block;
@@ -243,7 +250,7 @@
 	@media (min-width: 600px) {
 		.provider-pakketten-break h2{
 			color: rgb(21, 154, 60);
-			padding: 20px;
+			padding: 20px 0;
 			font-size: 14px;
 		}
 
@@ -327,31 +334,38 @@
 
 @media (min-width: 900px) {
 
-	.print-vergelijking,
+/*	.print-vergelijking,
 	.print-provider-pakketten {
 		margin: 0 -10px;
-	}
+	}*/
 
 	.print-provider-pakketten, .print-vergelijking {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
 		margin-top: 50px;
-		/*justify-content: space-between;*/
+		justify-content: space-between;
 	}
+		.print-vergelijking.minder-dan-drie {
+			justify-content: flex-start;
+		}
 
 		.print-provider-pakketten .provider-pakketten,
 		.print-vergelijking .provider-pakketten{
 			flex-basis: 25%;
-			margin-right: 20px;
-			margin-left: 20px;
-			margin-bottom: 40px;
 			flex-grow: 1;
-			max-width: calc(33% - 38px);
+			max-width: calc(33% - 15px);
 		}
+		.print-provider-pakketten .provider-pakketten:first-child,
+		.print-vergelijking .provider-pakketten:first-child,
+		.print-provider-pakketten .provider-pakketten:nth-child(2),
+		.print-vergelijking .provider-pakketten:nth-child(2){	
+			margin-right: 20px;
+		}	
+
 
 		.print-vergelijking .provider-pakketten:nth-child(3) ~ .provider-pakketten{
-			min-width: calc(100% - 40px);
+			min-width: 100%;
 		}
 
 		.provider-pakketten-pakket header .flex {
@@ -367,7 +381,7 @@
 
 
 	.provider-pakketten-break {
-		padding: 0 20px;
+		padding: 0;
 		min-width: calc(100% - 50px);
 	}
 

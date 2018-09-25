@@ -699,8 +699,6 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 
 	// RETURN
 
-	sort($return['teksten']);
-
 	return $return;
 
 }

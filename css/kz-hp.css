@@ -1,7 +1,4 @@
-.keuzehulp .verpakking {
-	margin: 0;
-	padding-left: 15px;
-}
+
 
 
 .provider-pakketten-vergelijking-sectie td + td, , .provider-pakketten-vergelijking-sectie th + th {
@@ -9,18 +6,14 @@
 }
 
 
-provider-pakketten-pakket-midden header strong {
+.provider-pakketten-pakket-midden header strong {
 	color: rgb(21, 154, 60);
-}
-
-.binnen {
-	margin-left: -10px;
 }
 
 .vergelijking-disclaimer {
 	margin-left: 10px;
 }
-
+/*
 @media (min-width: 1200px) {
 
 	[data-kz-stap~="hoofd"] main .keuzehulp .verpakking,
@@ -31,14 +24,8 @@ provider-pakketten-pakket-midden header strong {
 	[data-kz-stap~="pad-keuze"] main .keuzehulp .verpakking {
 		width: auto!important;
 	}
-	
-	.keuzehulp .verpakking {
-
-		padding-left: 30px;
-	}
-	
 			
-}
+}*/
 
 
 

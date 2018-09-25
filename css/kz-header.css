@@ -21,9 +21,10 @@
 .app-header .verpakking{
 	display: flex;
 	flex-direction: row;
-	padding-top: 20px;
-	padding-bottom: 20px;
+	padding: 20px;
 	justify-content: space-between;
+	box-sizing: border-box;
+	width: auto;
 }
 	.app-header .header-links {
 		display: inline-block;

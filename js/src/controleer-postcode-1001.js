@@ -61,7 +61,9 @@ function postcodeAjaxCB(r) {
 
 		} else if (r.status === '0') {
 
-			if (r.provider_beschikbaar) {
+			kzRouting.ga(2);
+
+/*			if (r.provider_beschikbaar) {
 				kzModal(
 					kzTekst('succes_coax'),
 					2000,
@@ -69,7 +71,7 @@ function postcodeAjaxCB(r) {
 				kzRouting.ga(2);
 			} else {
 				logFouteSituatiePostcodeCheck(r);
-			}
+			} */
 
 		} else {
 
@@ -86,7 +88,7 @@ function postcodeAjaxCB(r) {
 				kzModal(
 					kzTekst(tekstSleutel[`status${r.status}`], r.regio),
 					2000,
-				);*/
+				);*/ 
 				
 				kzRouting.ga(2);
 

@@ -785,12 +785,16 @@ function postcodeAjaxCB(r) {
         KzAjaxKleineFormulieren('keuzehulp_haal_lead_formulier', 'print-lead-formulier', {});
       }
     } else if (r.status === '0') {
-      if (r.provider_beschikbaar) {
-        kzModal(kzTekst('succes_coax'), 2000);
-        kzRouting.ga(2);
-      } else {
-        logFouteSituatiePostcodeCheck(r);
-      }
+      kzRouting.ga(2);
+      /*			if (r.provider_beschikbaar) {
+      				kzModal(
+      					kzTekst('succes_coax'),
+      					2000,
+      				);
+      				kzRouting.ga(2);
+      			} else {
+      				logFouteSituatiePostcodeCheck(r);
+      			} */
     } else {
       if (r.provider_beschikbaar) {
         /*				const tekstSleutel = {
@@ -1007,8 +1011,9 @@ var knoppenFuncs = {
     }
   },
   haalZakelijkFormulier: function haalZakelijkFormulier() {
+    var gebiedscode = JSON.parse(sessionStorage.getItem('kz-adres')).gebiedscode;
     kzAjaxKleineFormulieren('keuzehulp_haal_zakelijk_formulier', 'print-zakelijk-formulier', {
-      gebiedscode: sessionStorage.getItem('kz-gebiedscode')
+      gebiedscode: gebiedscode
     });
   },
   zetKeuzeInternet: function zetKeuzeInternet(knop) {
@@ -1462,7 +1467,7 @@ function ikWeetWatIkWilPakkettenAjax() {
       				return;		*/
     },
     printPakkettenLijst: function printPakkettenLijst(pakketHTMLvoorraad, nieuwPakket) {
-      return "".concat(pakketHTMLvoorraad, "\n\t\t\t<li class='provider-pakketten-pakket'>\n\t\t\t\t<div class='provider-pakketten-pakket-links'>\n\t\t\t\t\t<h3 class='provider-pakketten-pakket-titel'>").concat(nieuwPakket.eigenschappen.pakket_type.includes('eigenlijk alleen tv') ? nieuwPakket.provider + " alleen TV " : nieuwPakket.naam_composiet, " ").concat(nieuwPakket.eigenschappen.pakket_type.includes('Internet en TV') || nieuwPakket.eigenschappen.pakket_type.includes('Alles in 1') ? ' - ' + nieuwPakket.eigenschappen.tv_type : "", "</h3>\n\t\t\t\t\t<span class='provider-pakketten-pakket-links-onder'>\n\n\t\t\t\t\t<strong>Beschikbare snelheden:</strong>\n\t\t\t\t\t").concat(nieuwPakket.eigenschappen.snelheden.reduce(function (snelheidPrijsHTMLvoorraad, nweSnelheid) {
+      return "".concat(pakketHTMLvoorraad, "\n\t\t\t<li class='provider-pakketten-pakket'>\n\t\t\t\t<div class='provider-pakketten-pakket-links'>\n\t\t\t\t\t<h3 class='provider-pakketten-pakket-titel'><span class='provider-pakketten-pakket-titel_naam'>").concat(nieuwPakket.eigenschappen.pakket_type.includes('eigenlijk alleen tv') ? nieuwPakket.provider + " alleen TV " : nieuwPakket.naam_composiet, " ").concat(nieuwPakket.eigenschappen.pakket_type.includes('Internet en TV') || nieuwPakket.eigenschappen.pakket_type.includes('Alles in 1') ? ' - ' + nieuwPakket.eigenschappen.tv_type : "", "</span>\n\t\t\t\t\t<span class='provider-pakketten-pakket-titel_usp'>").concat(nieuwPakket.eigenschappen.teksten.usps, "</span>\n\t\t\t\t\t</h3>\n\t\t\t\t\t<span class='provider-pakketten-pakket-links-onder'>\n\n\t\t\t\t\t<strong>Beschikbare snelheden:</strong>\n\t\t\t\t\t").concat(nieuwPakket.eigenschappen.snelheden.reduce(function (snelheidPrijsHTMLvoorraad, nweSnelheid) {
         return "".concat(snelheidPrijsHTMLvoorraad, "\n\t\t\t\t\t\t\n\t\t\t\t\t\t<span class='provider-pakketten-pakket-links-onder_snelheid'>\n\t\t\t\t\t\t\t<span class='provider-pakketten-pakket-snelheid'>\n\t\t\t\t\t\t\t\t").concat(Number(nweSnelheid) < 1 ? "alleen TV" : "".concat(nweSnelheid, " Mb/s "), "\n\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t<span class='provider-pakketten-pakket-prijs'>\n\t\t\t\t\t\t\t\tvoor ").concat(nieuwPakket.geefMaandtotaalVoorSnelheid(nweSnelheid), "\n\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t</span>\n\t\t\t\t\t\t");
       }, ''), "\n\t\t\t\t\t\t\n\t\t\t\t\t</span>\n\t\t\t\t</div>\n\t\t\t\t<div class='provider-pakketten-pakket-rechts'>\n\t\t\t\t\t<a\n\t\t\t\t\t\tclass='knop blauwe-knop kz-bestelknop'\n\t\t\t\t\t\tdata-kz-func='toon-stap animeer aanmeldformulier'\n\t\t\t\t\t\thref='#100'\n\t\t\t\t\t\tkz-data-pakket-id='").concat(nieuwPakket.ID, "'\n\t\t\t\t\t\t>\n\n\t\t\t\t\t\t<svg version=\"1.1\" class='bestel-svg' xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\n\t\t\t\t\t\t\t viewBox=\"0 0 100 100\" style=\"enable-background:new 0 0 100 100;\" xml:space=\"preserve\">\n\t\t\t\t\t\t<path style=\"fill:#FFFFFF;\" d=\"M56.993,65.162L42.618,50.631L56.993,36.1c1.25-1.146,1.276-2.292,0.078-3.438\n\t\t\t\t\t\t\tc-1.198-1.146-2.37-1.146-3.516,0l-16.25,16.25c-0.521,0.417-0.781,0.99-0.781,1.719c0,0.729,0.26,1.302,0.781,1.719l16.25,16.25\n\t\t\t\t\t\t\tc1.146,1.146,2.318,1.146,3.516,0C58.269,67.454,58.243,66.308,56.993,65.162z\"/>\n\t\t\t\t\t\t</svg>\n\n\t\t\t\t\t</a>\n\t\t\t\t</div>\n\t\t\t</li>");
     }
@@ -1657,7 +1662,7 @@ function kzSorteerIWWIW(pakketten) {
 
 function scrollCheck() {
   setInterval(function () {
-    if (document.documentElement.scrollTop > 350) {
+    if (Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) > 350) {
       if (!document.body.classList.contains('voorbij-350')) document.body.classList.add('voorbij-350');
     } else {
       if (document.body.classList.contains('voorbij-350')) document.body.classList.remove('voorbij-350');
@@ -2967,6 +2972,11 @@ var kzRenderVergelijking = {
     if (this.erIsWatTePrinten()) {
       (function () {
         var printVergelijking = doc.getElementById('print-vergelijking');
+
+        if (Object.entries(r.providers).length < 3) {
+          printVergelijking.classList.add("minder-dan-drie");
+        }
+
         var printPakketten = '',
             providerTal = 0;
 
@@ -3050,7 +3060,7 @@ var kzRenderVergelijking = {
     this.pakket = pakket;
     var ds = pakket.pakHuidigeSnelheid(),
         us = pakket.pakHuidigeUploadSnelheid();
-    return "\n\t\t<li class='provider-pakketten-pakket'>\n\n\t\t\t<header>\n\t\t\t\t<h3 class='provider-pakketten-pakket-titel'>".concat(pakket.naam_composiet, "</h3>\n\n\t\t\t\t<div class='flex'>\n\n\t\t\t\t\t").concat(ds === us ? "<div class='provider-pakketten-pakket-links'>\n\t\t\t\t\t\t\t<h4>Snelheid</h4>\n\t\t\t\t\t\t\t<strong>".concat(ds, " Mb/s</strong>\n\t\t\t\t\t\t</div>") : "<div class='provider-pakketten-pakket-links'>\n\t\t\t\t\t\t\t<h4>Down- en uploadsnelheid</h4>\n\t\t\t\t\t\t\t<strong>".concat(ds, " / ").concat(us, " Mb/s</strong>\n\t\t\t\t\t\t</div>"), "\n\n\t\t\t\t\t").concat(providerTal > 3 ? "<div class='provider-pakketten-pakket-midden'>\n\t\t\t\t\t\t\t<h4>Maandelijks totaal</h4>\n\t\t\t\t\t\t\t<strong>".concat(pakket.maandelijksTotaal(true), "</strong>\n\t\t\t\t\t\t</div>") : '', "\n\n\t\t\t\t\t<div class='provider-pakketten-pakket-rechts'>\n\t\t\t\t\t\t<h4>Eenmalig totaal</h4>\n\t\t\t\t\t\t<strong>").concat(pakket.eenmaligTotaal(true), "</strong>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<a\n\t\t\t\t\tclass='knop blauwe-knop'\n\t\t\t\t\thref='#'\n\t\t\t\t\tdata-doel='#provider-pakketten-vergelijking-hoofd-").concat(pakket.ID, ", .pakketten-section-").concat(pakket.ID, ", .pakketten-section-").concat(pakket.ID, " .provider-pakketten_footer'\n\t\t\t\t\tdata-kz-func='schakel'\n\t\t\t\t\tdata-scroll='.pakketten-section-").concat(pakket.ID, "'\n\t\t\t\t\t><span class='als-niet-actief'>bekijken</span><span class='als-actief'>dichtvouwen</span><svg class='svg-dichtklappen' xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><style>.cc94da39-046e-4f53-b263-e21794d5c601{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class=\"cc94da39-046e-4f53-b263-e21794d5c601\" d=\"M35.47,59.76,50,45.38,64.53,59.76C65.68,61,66.82,61,68,59.83a2.23,2.23,0,0,0,0-3.51L51.72,40.07a2.29,2.29,0,0,0-3.44,0L32,56.32a2.23,2.23,0,0,0,0,3.51C33.18,61,34.32,61,35.47,59.76Z\"/></svg>\n\t\t\t\t</a>\n\n\t\t\t</header>\n\n\t\t\t<div class='provider-pakketten-vergelijking-hoofd' id='provider-pakketten-vergelijking-hoofd-").concat(pakket.ID, "'>\n\n\t\t\t\t").concat(this.telefonieSectie(), "\n\n\t\t\t\t").concat(this.televisieSectie(), "\n\n\t\t\t\t").concat(this.installatieSectie(), "\n\n\t\t\t\t").concat(this.kostenSectie(), "\n\n\t\t\t\t").concat(this.aanvullendeSectie(), "\n\n\t\t\t</div>\n\n\t\t\t<footer class='provider-pakketten_footer'>\n\t\t\t\t<a\n\t\t\t\t\tclass='knop blauwe-knop geen-ikoon kz-bestelknop'\n\t\t\t\t\tdata-kz-func='toon-stap animeer aanmeldformulier'\n\t\t\t\t\thref='#100'\n\t\t\t\t\tkz-data-pakket-id='").concat(pakket.ID, "'\n\t\t\t\t\t>Bestellen\n\t\t\t\t</a>\n\t\t\t</footer>\n\t\t</li>");
+    return "\n\t\t<li class='provider-pakketten-pakket'>\n\n\t\t\t<header>\n\t\t\t\t<h3 class='provider-pakketten-pakket-titel'><span class='provider-pakketten-pakket-titel_naam'>".concat(pakket.naam_composiet, "</span><span class='provider-pakketten-pakket-titel_usp'>").concat(pakket.eigenschappen.teksten.usps, "</span></h3>\n\n\t\t\t\t<div class='flex'>\n\n\t\t\t\t\t").concat(ds && ds === us ? "<div class='provider-pakketten-pakket-links'>\n\t\t\t\t\t\t\t<h4>Snelheid</h4>\n\t\t\t\t\t\t\t<strong>".concat(ds, " Mb/s</strong>\n\t\t\t\t\t\t</div>") : ds && ds !== us ? "<div class='provider-pakketten-pakket-links'>\n\t\t\t\t\t\t\t\t<h4>Down- en uploadsnelheid</h4>\n\t\t\t\t\t\t\t\t<strong>".concat(ds, " / ").concat(us, " Mb/s</strong>\n\t\t\t\t\t\t\t</div>") : "", "\n\n\t\t\t\t\t").concat(providerTal > 3 ? "<div class='provider-pakketten-pakket-midden'>\n\t\t\t\t\t\t\t<h4>Maandelijks totaal</h4>\n\t\t\t\t\t\t\t<strong>".concat(pakket.maandelijksTotaal(true), "</strong>\n\t\t\t\t\t\t</div>") : '', "\n\n\t\t\t\t\t<div class='provider-pakketten-pakket-rechts'>\n\t\t\t\t\t\t<h4>Eenmalig totaal</h4>\n\t\t\t\t\t\t<strong>").concat(pakket.eenmaligTotaal(true), "</strong>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<a\n\t\t\t\t\tclass='knop blauwe-knop'\n\t\t\t\t\thref='#'\n\t\t\t\t\tdata-doel='#provider-pakketten-vergelijking-hoofd-").concat(pakket.ID, ", .pakketten-section-").concat(pakket.ID, ", .pakketten-section-").concat(pakket.ID, " .provider-pakketten_footer'\n\t\t\t\t\tdata-kz-func='schakel'\n\t\t\t\t\tdata-scroll='.pakketten-section-").concat(pakket.ID, "'\n\t\t\t\t\t><span class='als-niet-actief'>bekijken</span><span class='als-actief'>dichtvouwen</span><svg class='svg-dichtklappen' xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><style>.cc94da39-046e-4f53-b263-e21794d5c601{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class=\"cc94da39-046e-4f53-b263-e21794d5c601\" d=\"M35.47,59.76,50,45.38,64.53,59.76C65.68,61,66.82,61,68,59.83a2.23,2.23,0,0,0,0-3.51L51.72,40.07a2.29,2.29,0,0,0-3.44,0L32,56.32a2.23,2.23,0,0,0,0,3.51C33.18,61,34.32,61,35.47,59.76Z\"/></svg>\n\t\t\t\t</a>\n\n\t\t\t</header>\n\n\t\t\t<div class='provider-pakketten-vergelijking-hoofd' id='provider-pakketten-vergelijking-hoofd-").concat(pakket.ID, "'>\n\n\t\t\t\t").concat(this.telefonieSectie(), "\n\n\t\t\t\t").concat(this.televisieSectie(), "\n\n\t\t\t\t").concat(this.installatieSectie(), "\n\n\t\t\t\t").concat(this.kostenSectie(), "\n\n\t\t\t\t").concat(this.aanvullendeSectie(), "\n\n\t\t\t</div>\n\n\t\t\t<footer class='provider-pakketten_footer'>\n\t\t\t\t<a\n\t\t\t\t\tclass='knop blauwe-knop geen-ikoon kz-bestelknop'\n\t\t\t\t\tdata-kz-func='toon-stap animeer aanmeldformulier'\n\t\t\t\t\thref='#100'\n\t\t\t\t\tkz-data-pakket-id='").concat(pakket.ID, "'\n\t\t\t\t\t>Bestellen\n\t\t\t\t</a>\n\t\t\t</footer>\n\t\t</li>");
   },
   telefonieSectiePrijsTD: function telefonieSectiePrijsTD(a) {
     return isNaN(Number(a)) ? a : this.pakket.formatteerPrijs(a);

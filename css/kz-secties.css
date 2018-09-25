@@ -1,4 +1,4 @@
-
+/*
 @media (min-width: 1200px) {
 
 	[data-kz-stap~="hoofd"] main .keuzehulp .verpakking,
@@ -11,9 +11,9 @@
 	}
 
 }
-
+*/
 .keuzehulp-sectie {
-	padding: 40px 0 20px 0;
+	padding: 40px 20px 20px 20px;
 }
 
 .keuzehulp-sectie ~ .keuzehulp-sectie {

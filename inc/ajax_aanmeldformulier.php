@@ -84,24 +84,7 @@ function kz_tv_pakketten($tv_pakket, $e, $s) {
 	}
 
 	return $r;
-/*	foreach ($e['maandelijks'] as $naam => $v) {
 
-		$expl = explode('-', $naam);
-
-		//naam en snelheid komt overeen?
-		if (strpos($naam, $tv_pakket) !== false && in_array($s, $expl)) {
-
-			$sss = '';
-			for ($i=1; $i < count($expl) -1; $i++) {
-				$sss .= $expl[($i)] . " ";
-			}
-
-			$v['naam'] = trim($sss);
-			$v['naam_volledig'] = $naam;
-			$r[] = $v;
-		}
-	}
-	return $r;*/
 }
 
 function kz_maak_geld_op_beide($optie, $eigenschappen) {
@@ -224,9 +207,9 @@ function keuzehulp_haal_aanmeldformulier() {
 		) .
 
 		(
-			(array_key_exists('usps', $teksten)	and $teksten['usps'] !== '') ?
+			(array_key_exists('aanvullende_informatie', $teksten)	and $teksten['aanvullende_informatie'] !== '') ?
 				keuzehulp_form_rij (
-					'Bijzonderheden: '.$teksten['usps'],
+					'Aanbieding: '.$teksten['aanvullende_informatie'],
 					null
 				)
 			:
@@ -763,7 +746,7 @@ function keuzehulp_haal_aanmeldformulier() {
 	$meta_inhoud .= (
 		keuzehulp_form_rij (
 			"<span class='ovaal'>$wrt</span>",
-			'<span class="veld-flex"><span>Incl. wifi router</span></span>',
+			'<span class="veld-flex"><span>Wifi router</span></span>',
 			'heeft-actieve-knop'
 		) . (
 		keuzehulp_form_rij (

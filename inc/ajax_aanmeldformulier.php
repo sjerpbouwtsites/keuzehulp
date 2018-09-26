@@ -8,7 +8,7 @@ add_action( 'wp_ajax_nopriv_'.$func_n, $func_n );
 
 
 function kz_heeft_optie($optie, $e){
-	return array_key_exists($optie, $e['eenmalig']) || array_key_exists($optie, $e['maandelijks']);
+	return (array_key_exists($optie, $e['eenmalig']) || array_key_exists($optie, $e['maandelijks'])) and ($e['eenmalig'][$optie] || $e['maandelijks'][$optie]);
 }
 
 function kz_optie_prijs ($optie, $e) {
@@ -323,6 +323,7 @@ function keuzehulp_haal_aanmeldformulier() {
 					));
 
 					if (kz_optie_kost_geld('opnemen', $eigenschappen)) {
+						$p = kz_optie_prijs('opnemen', $eigenschappen);
 						$tv_inhoud .= keuzehulp_form_rij (
 							keuzehulp_input (array(
 								'naam'		=> 'opnemen',
@@ -346,16 +347,14 @@ function keuzehulp_haal_aanmeldformulier() {
 
 				if (kz_heeft_optie('replay', $eigenschappen)) :
 
-					$p = kz_optie_prijs('replay', $eigenschappen);
-
 					$tt = kz_maak_tooltip(array(
 						'e'			=> $eigenschappen,
 						'sleutel'	=> "replay_tekst",
 						'titel'		=> "Terugkijken"
 					));
-
+					
 					if (kz_optie_kost_geld('replay', $eigenschappen)) {
-
+						$p = kz_optie_prijs('replay', $eigenschappen);
 						$tv_inhoud .= keuzehulp_form_rij (
 							keuzehulp_input (array(
 								'naam'		=> 'replay',
@@ -836,7 +835,7 @@ function keuzehulp_haal_aanmeldformulier() {
 	$r = array(
 		'id'			=> $pakket['ID'],
 		'print'			=> $print,
-		//'console'		=> $pakket,
+		'console'		=> $pakket,
 	);
 
 	// @TODO hier is geen foutafhandeling?

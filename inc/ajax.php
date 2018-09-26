@@ -138,6 +138,7 @@ function keuzehulp_controleer_postcode() {
 			echo json_encode(array(
 				'gevonden'				=> true,
 				'gebiedscode'			=> $rij['gebiedscode'],
+				'perceelcode'			=> $rij['perceelcode'],
 				'regio'					=> $regio->name,
 				'data'					=> $ajax_data,
 				'aanvraag_al_gedaan'	=> false,
@@ -169,6 +170,7 @@ function keuzehulp_controleer_postcode() {
 					echo json_encode(array(
 						'gevonden'				=> true,
 						'gebiedscode'			=> $rij['gebiedscode'],
+						'perceelcode'			=> $rij['perceelcode'],
 						'regio'					=> $regio->name,
 						'data'					=> $ajax_data,
 						'aanvraag_al_gedaan'	=> false,

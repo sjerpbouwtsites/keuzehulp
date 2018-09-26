@@ -174,7 +174,7 @@ function kzSorteerIWWIW(pakketten) {
 
 function scrollCheck (){
 	setInterval(function(){
-		if (Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) > 350) {
+		if (Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) > 300) {
 			if (!document.body.classList.contains('voorbij-350')) document.body.classList.add('voorbij-350')
 		} else {
 			if (document.body.classList.contains('voorbij-350')) document.body.classList.remove('voorbij-350')

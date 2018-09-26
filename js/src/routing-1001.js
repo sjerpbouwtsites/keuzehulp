@@ -212,7 +212,7 @@ const kzRouting = {
 		// stabieler? dit is sneller...
 
 		const titel = dezeStap.getElementsByTagName('header')[0].getElementsByTagName('h2')[0].textContent.trim(),
-		 url = `/keuzehulp/${encodeURI(titel.replace(/[\W_]+/g, '-')).toLowerCase()}`;
+		 url = `/${encodeURI(titel.replace(/[\W_]+/g, '-')).toLowerCase()}`;
 		history.pushState(null, titel, url);
 	},
 };

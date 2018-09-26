@@ -550,8 +550,11 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 			} else {
 
 				$nl = array('opnemen', 'replay', 'begin_gemist');
+
 				foreach ($nl as $n) {
-					if ($nonlineair[$n] || $nonlineair[$n] == 0) {
+					if ($nonlineair[$n] !== '-1' 
+						&& ( $nonlineair[$n] || $nonlineair[$n] == 0)) 
+					{
 						$prijs = (float) $nonlineair[$n];
 						$return['maandelijks'][slugify($n)] = new Kz_optie(array(
 							'naam'			=> slugify($n),

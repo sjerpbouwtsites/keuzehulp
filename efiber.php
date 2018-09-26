@@ -41,13 +41,13 @@ function Kz_scripts_in_rij() {
         'keuze-menu-lijst',
         'knop-combi',
         'knoppen',
-        'lettertypen',
         'modal',
         'navigatie-beneden',
         'postcode',
         'print',
         'secties'
     );
+
 
 
     $script_postfix = "-1001";
@@ -382,3 +382,14 @@ background-position: center center !important; }
     </style>';
 }
 add_action('login_head', 'my_custom_login_logo');
+
+
+
+add_filter( 'body_class','my_body_classes' );
+function my_body_classes( $classes ) {
+ 
+    $classes[] = 'keuzehulp';
+     
+    return $classes;
+     
+}

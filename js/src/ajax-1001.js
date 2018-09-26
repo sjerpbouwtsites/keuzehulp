@@ -63,7 +63,7 @@ function kzAjaxKleineFormulieren(backendFunctie, printElID, data) {
 		},
 		cb(r) {
 			jQuery(`#${printElID}`).append($(r.print));
-			jQuery(`#${printElID}`).find('form').attr('action', location.origin + "/keuzehulp");
+			jQuery(`#${printElID}`).find('form').attr('action', location.origin);
 
 			kzFormStijlKlassen();
 		},

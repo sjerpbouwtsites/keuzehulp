@@ -17,6 +17,27 @@ if( array_key_exists('keuzehulp_insert', $_POST) ){
 	$notificatie = keuzehulp_delete($_POST['keuzehulp_delete_gebiedscode']);
 }
 
+function kz_naar_statuscode($rekam_code = '') {
+
+	$r = null;
+
+	switch ($rekam_code) {
+		case 'O':
+			$r = 5;
+			break;
+		case 'P':
+			$r = 5;
+			break;		
+		case 'C':
+			$r = 1;
+			break;			
+		default:
+			$r = 0;
+			break;
+	}
+
+	return $r;
+}
 
 
 function keuzehulp_insert() {
@@ -39,6 +60,11 @@ function keuzehulp_insert() {
 			'tekst' => 'Succes :)',
 		);
 
+		$notificatie_tekst = '';
+
+		$ging_goed = 0;
+		$ging_verkeerd = 0;
+
 		while (($getData = fgetcsv($file, 10000, ";")) !== FALSE) :
 
 			if (!$eerste_geweest) {
@@ -50,31 +76,33 @@ function keuzehulp_insert() {
 				continue;
 			}
 
-			$postcode_cols = "postcode, huisnummer, toevoeging, kamer, straatnaam, plaatsnaam, gemeentenaam, gebiedscode, aanvraag_gedaan, provider";
+			$postcode_cols = "perceelcode, postcode, huisnummer, toevoeging, kamer, straatnaam, plaatsnaam, gemeentenaam, gebiedscode, aanvraag_gedaan, provider, status";
 			$waardes = 
-				 "'".addslashes($getData[0])."','".
-				 addslashes($getData[1])."','".
-				 addslashes($getData[2])."','".
-				 addslashes($getData[3])."','".
-				 addslashes($getData[4])."','".
-				 addslashes($getData[5])."','".
-				 addslashes($getData[6])."','".
-				 addslashes($getData[7])."','".
-				 "0', ''";
+				 "'".addslashes($getData[0])."','". //perceelcode
+				 addslashes($getData[1])."','".		//postcode
+				 addslashes($getData[2])."','".		//huisnummer
+				 addslashes($getData[3])."','".		//toevoeging
+				 ""."','".							//kamer				 
+				 addslashes($getData[4])."','".		//straatnaam
+				 addslashes($getData[5])."','".		//plaatsnaam
+				 addslashes($getData[6])."','".		//gemeentenaam
+				 "rekam"."','".						//gebiedscode
+				 "0"."','".							//aanvraag_gedaan
+				 "0','".							//provider
+				  kz_naar_statuscode(addslashes($getData[7]))."'";		//status
 
-		   $sql = "INSERT into postcodes ($postcode_cols) 
+
+
+		    $sql = "INSERT into postcodes ($postcode_cols) 
 		       values ($waardes)";
 
-		       $result = mysqli_query($con, $sql);
+		    $result = mysqli_query($con, $sql);
 
 			if(!isset($result)) {
-
-				$notificatie = array(
-					'status' => 'error',
-					'tekst' => 'Sql error.',
-				);
-
-			} 
+				$ging_verkeerd++;
+			} else {
+				$ging_goed++;
+			}
 
 		endwhile; //while getdata
 
@@ -85,6 +113,11 @@ function keuzehulp_insert() {
 			'tekst' => 'Vergeet niet de CSV te uploaden',
 		);
 	endif; //if files csv size	
+
+		$notificatie = array(
+			'status' => 'melding',
+			'tekst' => "Ging $ging_goed keer goed en $ging_verkeerd keer verkeerd",
+		);
 
 	return $notificatie;
 }

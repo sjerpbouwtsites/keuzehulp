@@ -209,7 +209,7 @@ function haalPrintAanmeldformulier(knop) {
 
 			// @TODO DYNAMISCH MAKEN
 
-			printPlek.getElementsByTagName('form')[0].setAttribute('action', `${location.origin}/keuzehulp`);
+			printPlek.getElementsByTagName('form')[0].setAttribute('action', `${location.origin}`);
 
 			pakket = window[`kz-pakket-${r.id}`];
 
@@ -258,7 +258,7 @@ function haalPrintAanmeldformulier(knop) {
 			// schrijf pakket naam en provider naar formulier
 			doc.getElementById('input_1_66').value = `${pakket.naam_composiet} ${pakket.huidige_snelheid}`;
 			doc.getElementById('input_1_64').value = pakket.provider;
-
+			doc.getElementById("input_1_81").value = JSON.parse(sessionStorage.getItem('kz-adres')).perceelcode;
 			// schrijf opties naar GF
 			kzUpdateHidden();
 

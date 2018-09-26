@@ -37,6 +37,7 @@ function postcodeAjaxCB(r) {
 		// hoe wordt door de achterkant teruggegeven?!
 		r.data.gebiedscode = r.gebiedscode;
 		r.data.status = r.status;
+		r.data.perceelcode = r.perceelcode;
 		sessionStorage.setItem('kz-adres', JSON.stringify(r.data));
 		sessionStorage.setItem('kz-code', r.gebiedscode);
 
@@ -150,8 +151,8 @@ function controleerPostcode() {
 
 	const postcodeForm = doc.getElementById('keuze-postcodeform');
 
-	if (!postcodeForm) {
-		location.href = location.origin + '/keuzehulp';
+	if (!postcodeForm && !location.href.includes('bedankt') && !location.href.includes('dankje')) {
+		location.href = location.origin;
 	}
 
 	const getVars = {};

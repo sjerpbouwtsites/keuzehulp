@@ -206,7 +206,7 @@ function haalPrintAanmeldformulier(knop) {
       $(printPlek).append($(r.print)); // de HTML van het formulier.
       // @TODO DYNAMISCH MAKEN
 
-      printPlek.getElementsByTagName('form')[0].setAttribute('action', "".concat(location.origin, "/keuzehulp"));
+      printPlek.getElementsByTagName('form')[0].setAttribute('action', "".concat(location.origin));
       pakket = window["kz-pakket-".concat(r.id)]; // het zijn de click events die de verwerking van de data aanjagen..
 
       printPlek.addEventListener('change', function (e) {
@@ -246,7 +246,8 @@ function haalPrintAanmeldformulier(knop) {
       }); // schrijf pakket naam en provider naar formulier
 
       doc.getElementById('input_1_66').value = "".concat(pakket.naam_composiet, " ").concat(pakket.huidige_snelheid);
-      doc.getElementById('input_1_64').value = pakket.provider; // schrijf opties naar GF
+      doc.getElementById('input_1_64').value = pakket.provider;
+      doc.getElementById("input_1_81").value = JSON.parse(sessionStorage.getItem('kz-adres')).perceelcode; // schrijf opties naar GF
 
       kzUpdateHidden();
       kzInitialiseerGF(); // schrijf de user
@@ -733,7 +734,7 @@ function kzAjaxKleineFormulieren(backendFunctie, printElID, data) {
     },
     cb: function cb(r) {
       jQuery("#".concat(printElID)).append($(r.print));
-      jQuery("#".concat(printElID)).find('form').attr('action', location.origin + "/keuzehulp");
+      jQuery("#".concat(printElID)).find('form').attr('action', location.origin);
       kzFormStijlKlassen();
     }
   });
@@ -770,6 +771,7 @@ function postcodeAjaxCB(r) {
 
     r.data.gebiedscode = r.gebiedscode;
     r.data.status = r.status;
+    r.data.perceelcode = r.perceelcode;
     sessionStorage.setItem('kz-adres', JSON.stringify(r.data));
     sessionStorage.setItem('kz-code', r.gebiedscode);
     body.setAttribute('data-kz-status', r.data.status);
@@ -855,8 +857,8 @@ function controleerPostcode() {
   |-----------------------------------------------------*/
   var postcodeForm = doc.getElementById('keuze-postcodeform');
 
-  if (!postcodeForm) {
-    location.href = location.origin + '/keuzehulp';
+  if (!postcodeForm && !location.href.includes('bedankt') && !location.href.includes('dankje')) {
+    location.href = location.origin;
   }
 
   var getVars = {}; // binnenkomend via formulier op iedereenglasvel.nl?
@@ -1662,7 +1664,7 @@ function kzSorteerIWWIW(pakketten) {
 
 function scrollCheck() {
   setInterval(function () {
-    if (Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) > 350) {
+    if (Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) > 300) {
       if (!document.body.classList.contains('voorbij-350')) document.body.classList.add('voorbij-350');
     } else {
       if (document.body.classList.contains('voorbij-350')) document.body.classList.remove('voorbij-350');
@@ -2937,7 +2939,7 @@ var kzRouting = {
     // dit is een afgeleide... het zou opgehaald kunnen worden via laatsteInGs?
     // stabieler? dit is sneller...
     var titel = dezeStap.getElementsByTagName('header')[0].getElementsByTagName('h2')[0].textContent.trim(),
-        url = "/keuzehulp/".concat(encodeURI(titel.replace(/[\W_]+/g, '-')).toLowerCase());
+        url = "/".concat(encodeURI(titel.replace(/[\W_]+/g, '-')).toLowerCase());
     history.pushState(null, titel, url);
   }
 };

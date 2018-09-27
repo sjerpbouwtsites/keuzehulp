@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "babel": "babel js/src/*.js --watch --out-file js/dist/keuzehulp.js"
+    "babel": "babel js/src/*.js --watch --out-file js/dist/keuzehulp-1.js"
   },
   "repository": {
     "type": "git",

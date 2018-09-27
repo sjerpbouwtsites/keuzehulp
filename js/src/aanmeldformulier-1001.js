@@ -1,5 +1,4 @@
 /* global doc, location, KzAjax, kzModal, kzTekst, gformInitDatepicker */
-/* eslint-disable */
 
 function aanmeldformulierHaalWaardeUitRij(rij) {
 	const knop1 = rij.getElementsByClassName('knop')[0];
@@ -19,7 +18,7 @@ function aanmeldformulierHaalWaardeUitRij(rij) {
 			} if (rij.classList.contains('installatie')) {
 				return ID.replace('installatie-keuze-', '');
 			} if (rij.classList.contains('belpakketten')) {
-				return ID.replace('belpakket-keuze-', '').replace('-', ' ');
+				return ID.replace('belpakket-keuze-', '').replace('-', ' '); 
 			}
 			return ID;
 		}
@@ -38,12 +37,12 @@ function aanmeldformulierHaalWaardeUitRij(rij) {
 function kzMaakPrintMap(){
 	if (window['kzPrintMappen']) return window['kzPrintMappen'];
 
-	this.printMapInit = function (id){
+	this.printMapInit = id => {
 		return {
 			printEl: document.getElementById(id),
 			print: [],
 		};
-	}
+	};
 
 	const printMappen = {
 		'begin-gemist':						this.printMapInit('input_1_53'),
@@ -80,6 +79,7 @@ function kzUpdateHidden() {
 	|
 	| 	functie draait iedere keer dat een knop wordt aangeklikt
 	| 	print waarden van dynamische formulier in hidden velden GF.
+	| 	printwijze is afhankelijk van type data
 	|
 	|-----------------------------------------------------*/
 
@@ -94,47 +94,40 @@ function kzUpdateHidden() {
 
 			const inputs = rij.querySelectorAll('[data-kz-waarde]');
 			const isRadio = !!rij.getElementsByClassName('kz-radio').length;
-			let printsleutel = null;
+			let printsleutel = null; // sleutel in printMappen
 
 			if (isRadio) {
 
 				// bv belpakket
 				let famIDPrefix = inputs[0].id.split('-')[0];
+				
+				const dezeRadios = doc.querySelectorAll(`[id*="${famIDPrefix}"]`);
+				printMappen[famIDPrefix].print = Array.from(dezeRadios, input => {
 
-				if (!printMappen[famIDPrefix]) {
-					console.warn(famIDPrefix + 'niet gevonden in printmap', inputs);
-				} else {
-					printMappen[famIDPrefix].contekst = 'radio';
-					const dezeRadios = doc.querySelectorAll(`[id*="${famIDPrefix}"]`);
-					printMappen[famIDPrefix].print = Array.from(dezeRadios, input => {
+					if (input.classList.contains('tv-pakket')) {
+						const w = (kzPakKnopValue(input) ? "ja" : "nee");
+						const s = input.id.split('-');
 
-						if (input.classList.contains('tv-pakket')) {
-							printMappen[famIDPrefix].radioType = 'tv-pakket';
+						return `Type: ${s[0]} - subtype: ${s[1]} => ${w}.`;
 
-							const w = (kzPakKnopValue(input) ? "ja" : "nee");
-							const s = input.id.split('-');
+					} else {
+						const w = kzPakKnopValue(input);
 
-							return `Type: ${s[0]} - subtype: ${s[1]} => ${w}.`;
+						if (w) {
 
-						} else {
-							printMappen[famIDPrefix].radioType = 'normale-radio';
-							const w = kzPakKnopValue(input);
+							let s = input.id.split('-');
 
-							if (w) {
-
-								let s = input.id.split('-');
-
-								s.shift();
-								s.shift();
-								s = s.join(' ');
-								return s;
-
-							}
+							s.shift();
+							s.shift();
+							s = s.join(' ');
+							return s;
 
 						}
 
-					});
-				}
+					}
+
+				});
+				
 
 			} else {
 
@@ -398,7 +391,20 @@ function kzUpdatePrijs(knop) {
 		hoeveelheid = kzPakKnopValue(knop);
 	}
 
-	pakket.mutatie(optie, hoeveelheid);
+	if (knop.classList.contains('tv-pakket')) {
+		const sleutel = pakket.vindOptieSleutel({
+			naam: knop.dataset.kzOptienaam,
+			snelheid: pakket.huidige_snelheid,
+			optietype: 'televisie-bundel',
+			suboptietype: knop.dataset.kzSuboptietype
+		});
+
+		pakket.mutatie(sleutel, hoeveelheid);
+
+	} else {
+		pakket.mutatie(optie, hoeveelheid);
+	}
+	
 
 	pakket.printPrijzen();
 }
@@ -566,6 +572,7 @@ function kzFoxSchakel(knop) {
 				.forEach(zetMAan => kzSchakelCheckbox(zetMAan));
 		}
 	}
+
 }
 
 function kzSchakelNumber(knop) {

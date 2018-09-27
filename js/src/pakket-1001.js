@@ -44,6 +44,10 @@ function VerrijktPakket(p) {
 	this.maandelijksTotaal = formatteren => this.generiekTotaal('maandelijks', formatteren);
 
 
+	// Voorkant voor borgtotaal
+	this.borgTotaal = formatteren => this.generiekTotaal('borg', formatteren);
+
+
 	// Maakt van Amerikaans getal europese prijs.
 	// @TODO als 0 dan 'gratis' of 'inclusief'
 	this.formatteerPrijs = prijs => `<span class='euro'>&euro;</span>${Number(prijs).toFixed(2).replace('.', ',')}`;
@@ -56,7 +60,7 @@ function VerrijktPakket(p) {
 		| 	Al dan niet geformatteerd of als getal.
 		|
 		|-----------------------------------------------------*/
-		['maandelijks', 'eenmalig'].forEach((prijsCat) => {
+		['maandelijks', 'eenmalig', 'borg'].forEach((prijsCat) => {
 			const printHier = document.getElementsByClassName(`${prijsCat}-totaal`);
 			Array.from(printHier).forEach((printPlek) => {
 				printPlek.innerHTML = this.generiekTotaal(prijsCat, formatteer);
@@ -139,6 +143,24 @@ function VerrijktPakket(p) {
 		const e = this.eigenschappen;
 		if (e.eenmalig[optie]) e.eenmalig[optie].aantal = aantal;
 		if (e.maandelijks[optie]) e.maandelijks[optie].aantal = aantal;
+	};
+
+	this.vindOptieSleutel = zoek => {
+
+		let {naam, optietype, suboptietype, snelheid} = zoek;
+		//als zoekopdracht niet meegegegeven, altijd ok.
+		const r = Object.entries(this.eigenschappen.maandelijks)
+			.find( ([sleutel, optie]) => {
+			return ![
+				!naam || optie.naam === naam,
+				!optietype || optie.optietype === optietype,
+				!suboptietype || optie.suboptietype === suboptietype,
+				!snelheid || optie.snelheid === snelheid
+			].includes(false);
+		});
+
+		return r[0];
+
 	};
 
 
@@ -224,9 +246,9 @@ function VerrijktPakket(p) {
 				? { ep: this.formatteerPrijs(ep), mp: this.formatteerPrijs(mp) }
 				: { ep, mp };
 		}
+
 			console.warn(`rare fok op in pakket optieprijs van ${optie}`);
 			console.trace();
-
 
 		return 0;
 	};
@@ -353,6 +375,13 @@ function iwwiwProcedure(pakket) {
 }
 
 function vergelijkingsProcedure(pakket, keuzehulp) {
+
+
+	if (typeof keuzehulp === 'undefined') {
+		console.warn('keuzehulp undefined!');
+		keuzehulp = JSON.parse(sessionStorage.getItem('kz-keuzehulp'));
+	}
+
 	// schrijf de bel & nummer keuze.
 	// bellen = 1 							-> niet bellen.
 	// bellen = 2 							-> basispakket.
@@ -407,7 +436,25 @@ function vergelijkingsProcedure(pakket, keuzehulp) {
 		}
 	});
 
-	if (!gekozenSnelheid) [gekozenSnelheid] = [(snelheden[0])];
+	// dan met de hand toewijzen.
+	if (!gekozenSnelheid) {
+		if (keuzehulp.internet.includes('1')) {
+
+			gekozenSnelheid = snelheden[0];	
+
+		} else if (keuzehulp.internet.includes('2')) {
+
+			if (snelheden.length > 1){
+				gekozenSnelheid = snelheden[1];	
+			} else {
+				gekozenSnelheid = snelheden[0];	
+			}
+
+		} else {
+			gekozenSnelheid = snelheden[snelheden.length - 1];	
+		}
+		
+	}
 
 	const ss = gekozenSnelheid.toString();
 

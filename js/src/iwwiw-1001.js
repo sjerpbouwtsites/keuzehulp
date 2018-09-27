@@ -25,6 +25,75 @@ function ikWeetWatIkWilPakkettenAjax() {
 				adres
 			},
 		},
+		terugval(optie) {
+			const adres = JSON.parse(sessionStorage.getItem('kz-adres'));
+			const printProviderPakketten = document.getElementById('print-provider-pakketten');
+			jQuery.post(`${location.origin}/wp-admin/admin-ajax.php`, 
+				{
+					action: 'keuzehulp_ik_weet_wat_ik_wil_pakketten',
+					data: {
+						keuzehulp: {
+							installatie: '1',
+							'ik-weet-wat-ik-wil':optie
+						},
+						adres
+					},
+				}, 
+				(response) => {
+					let rr = JSON.parse(response);
+					if (!rr.error) {
+
+					let printPakketten = '';
+					Object.entries(rr.providers).forEach(([provider, providerBundel]) => {
+						// maak de rekenklassen
+						// stel laagste snelheid in als gekozen pakket
+						const pakketten = providerBundel.map(pakket => new VerrijktPakket(pakket))
+						.map(pakket => iwwiwProcedure(pakket)),
+
+						// maak array met maandTotalen en zoek laagste op.
+
+						providersLaagste = pakketten
+						.map(pakket => pakket.maandelijksTotaal())
+						.reduce((nieuweWaarde, huidigeWaarde) => (
+							nieuweWaarde < huidigeWaarde
+							? nieuweWaarde
+							: huidigeWaarde
+						),
+						1000000);
+
+						// per provider aantal pakketten, zoals DTV, ITV. Vaak maar één.
+						printPakketten += `<section class='provider-pakketten'>
+
+							<header class='provider-pakketten-header'>
+
+								<span class='provider-logo-contain'>${pakketten[0].eigenschappen.provider_meta.thumb}</span>
+
+								${(pakketten.length !== 1 
+									? `<span class='provider-pakketten-header-pakkettental'>${pakketten.length} pakketten</span>` 
+									: ''
+								)}
+
+								<span class='provider-pakketten-header-prijs prijs-bolletje iwwiw-bolletje'>
+									<span class='provider-pakketten-header-prijs-bedrag '>
+										<span>&euro;</span>${providersLaagste.toFixed(2).replace('.', ',')}
+									</span>
+									<span class='provider-pakketten-header-prijs-vanaf'>Vanaf</span>
+								</span>
+
+							</header>
+
+							<ul class='provider-pakketten-lijst'>
+								${pakketten.reduce(this.printPakkettenLijst, '')}
+							</ul>
+
+						</section>`;
+					});
+					printProviderPakketten.innerHTML = printProviderPakketten.innerHTML + printPakketten;
+
+					}
+				}
+			);			
+		},
 		cb(r) {
 			const printProviderPakketten = document.getElementById('print-provider-pakketten');
 
@@ -37,280 +106,20 @@ function ikWeetWatIkWilPakkettenAjax() {
 				let keuzehulp = JSON.parse(sessionStorage.getItem('kz-keuzehulp'));
 				let teller = 0;
 	
-				jQuery.post(`${location.origin}/wp-admin/admin-ajax.php`, 
-					{
-						action: 'keuzehulp_ik_weet_wat_ik_wil_pakketten',
-						data: {
-							keuzehulp: {
-								installatie: '1',
-								'ik-weet-wat-ik-wil':"1"
-							},
-							adres
-						},
-					}, 
-					(response) => {
-						let rr = JSON.parse(response);
-						if (!rr.error) {
-
-						let printPakketten = '';
-						Object.entries(rr.providers).forEach(([provider, providerBundel]) => {
-							// maak de rekenklassen
-							// stel laagste snelheid in als gekozen pakket
-							const pakketten = providerBundel.map(pakket => new VerrijktPakket(pakket))
-							.map(pakket => iwwiwProcedure(pakket)),
-
-							// maak array met maandTotalen en zoek laagste op.
-
-							providersLaagste = pakketten
-							.map(pakket => pakket.maandelijksTotaal())
-							.reduce((nieuweWaarde, huidigeWaarde) => (
-								nieuweWaarde < huidigeWaarde
-								? nieuweWaarde
-								: huidigeWaarde
-							),
-							1000000);
-
-							// per provider aantal pakketten, zoals DTV, ITV. Vaak maar één.
-							printPakketten += `<section class='provider-pakketten'>
-
-								<header class='provider-pakketten-header'>
-
-									<span class='provider-logo-contain'>${pakketten[0].eigenschappen.provider_meta.thumb}</span>
-
-									${(pakketten.length !== 1 
-										? `<span class='provider-pakketten-header-pakkettental'>${pakketten.length} pakketten</span>` 
-										: ''
-									)}
-
-									<span class='provider-pakketten-header-prijs prijs-bolletje iwwiw-bolletje'>
-										<span class='provider-pakketten-header-prijs-bedrag '>
-											<span>&euro;</span>${providersLaagste.toFixed(2).replace('.', ',')}
-										</span>
-										<span class='provider-pakketten-header-prijs-vanaf'>Vanaf</span>
-									</span>
-
-								</header>
-
-								<ul class='provider-pakketten-lijst'>
-									${pakketten.reduce(this.printPakkettenLijst, '')}
-								</ul>
-
-							</section>`;
-						});
-						printProviderPakketten.innerHTML = printProviderPakketten.innerHTML + printPakketten;
-
-						}
-					}
-				);
-	
-				jQuery.post(`${location.origin}/wp-admin/admin-ajax.php`, 
-					{
-						action: 'keuzehulp_ik_weet_wat_ik_wil_pakketten',
-						data: {
-							keuzehulp: {
-								installatie: '1',
-								'ik-weet-wat-ik-wil':"2"
-							},
-							adres
-						},
-					}, 
-					(response) => {
-						let rr = JSON.parse(response);
-						if (!rr.error) {
-
-						let printPakketten = '';
-						Object.entries(rr.providers).forEach(([provider, providerBundel]) => {
-							// maak de rekenklassen
-							// stel laagste snelheid in als gekozen pakket
-							const pakketten = providerBundel.map(pakket => new VerrijktPakket(pakket))
-							.map(pakket => iwwiwProcedure(pakket)),
-
-							// maak array met maandTotalen en zoek laagste op.
-
-							providersLaagste = pakketten
-							.map(pakket => pakket.maandelijksTotaal())
-							.reduce((nieuweWaarde, huidigeWaarde) => (
-								nieuweWaarde < huidigeWaarde
-								? nieuweWaarde
-								: huidigeWaarde
-							),
-							1000000);
-
-							// per provider aantal pakketten, zoals DTV, ITV. Vaak maar één.
-							printPakketten += `<section class='provider-pakketten'>
-
-								<header class='provider-pakketten-header'>
-
-									<span class='provider-logo-contain'>${pakketten[0].eigenschappen.provider_meta.thumb}</span>
-
-									${(pakketten.length !== 1 
-										? `<span class='provider-pakketten-header-pakkettental'>${pakketten.length} pakketten</span>` 
-										: ''
-									)}
-
-									<span class='provider-pakketten-header-prijs prijs-bolletje iwwiw-bolletje'>
-										<span class='provider-pakketten-header-prijs-bedrag '>
-											<span>&euro;</span>${providersLaagste.toFixed(2).replace('.', ',')}
-										</span>
-										<span class='provider-pakketten-header-prijs-vanaf'>Vanaf</span>
-									</span>
-
-								</header>
-
-								<ul class='provider-pakketten-lijst'>
-									${pakketten.reduce(this.printPakkettenLijst, '')}
-								</ul>
-
-							</section>`;
-						});
-						printProviderPakketten.innerHTML = printProviderPakketten.innerHTML + printPakketten;
-
-						}
-					}
-				);
-
-				jQuery.post(`${location.origin}/wp-admin/admin-ajax.php`, 
-					{
-						action: 'keuzehulp_ik_weet_wat_ik_wil_pakketten',
-						data: {
-							keuzehulp: {
-								installatie: '1',
-								'ik-weet-wat-ik-wil':"3"  
-							},
-							adres
-						},
-					}, 
-					(response) => {
-						let rr = JSON.parse(response);
-						if (!rr.error) {
-
-						let printPakketten = '';
-						Object.entries(rr.providers).forEach(([provider, providerBundel]) => {
-							// maak de rekenklassen
-							// stel laagste snelheid in als gekozen pakket
-							const pakketten = providerBundel.map(pakket => new VerrijktPakket(pakket))
-							.map(pakket => iwwiwProcedure(pakket)),
-
-							// maak array met maandTotalen en zoek laagste op.
-
-							providersLaagste = pakketten
-							.map(pakket => pakket.maandelijksTotaal())
-							.reduce((nieuweWaarde, huidigeWaarde) => (
-								nieuweWaarde < huidigeWaarde
-								? nieuweWaarde
-								: huidigeWaarde
-							),
-							1000000);
-
-							// per provider aantal pakketten, zoals DTV, ITV. Vaak maar één.
-							printPakketten += `<section class='provider-pakketten'>
-
-								<header class='provider-pakketten-header'>
-
-									<span class='provider-logo-contain'>${pakketten[0].eigenschappen.provider_meta.thumb}</span>
-
-									${(pakketten.length !== 1 
-										? `<span class='provider-pakketten-header-pakkettental'>${pakketten.length} pakketten</span>` 
-										: ''
-									)}
-
-									<span class='provider-pakketten-header-prijs prijs-bolletje iwwiw-bolletje'>
-										<span class='provider-pakketten-header-prijs-bedrag '>
-											<span>&euro;</span>${providersLaagste.toFixed(2).replace('.', ',')}
-										</span>
-										<span class='provider-pakketten-header-prijs-vanaf'>Vanaf</span>
-									</span>
-
-								</header>
-
-								<ul class='provider-pakketten-lijst'>
-									${pakketten.reduce(this.printPakkettenLijst, '')}
-								</ul>
-
-							</section>`;
-						});
-						printProviderPakketten.innerHTML = printProviderPakketten.innerHTML + printPakketten;
-
-						}
-					}
-				);
-
-				jQuery.post(`${location.origin}/wp-admin/admin-ajax.php`, 
-					{
-						action: 'keuzehulp_ik_weet_wat_ik_wil_pakketten',
-						data: {
-							keuzehulp: {
-								installatie: '1',
-								'ik-weet-wat-ik-wil':"4"
-							},
-							adres
-						},
-					}, 
-					(response) => {
-						let rr = JSON.parse(response);
-						if (!rr.error) {
-
-						let printPakketten = '';
-						Object.entries(rr.providers).forEach(([provider, providerBundel]) => {
-							// maak de rekenklassen
-							// stel laagste snelheid in als gekozen pakket
-							const pakketten = providerBundel.map(pakket => new VerrijktPakket(pakket))
-							.map(pakket => iwwiwProcedure(pakket)),
-
-							// maak array met maandTotalen en zoek laagste op.
-
-							providersLaagste = pakketten
-							.map(pakket => pakket.maandelijksTotaal())
-							.reduce((nieuweWaarde, huidigeWaarde) => (
-								nieuweWaarde < huidigeWaarde
-								? nieuweWaarde
-								: huidigeWaarde
-							),
-							1000000);
-
-							// per provider aantal pakketten, zoals DTV, ITV. Vaak maar één.
-							printPakketten += `<section class='provider-pakketten'>
-
-								<header class='provider-pakketten-header'>
-
-									<span class='provider-logo-contain'>${pakketten[0].eigenschappen.provider_meta.thumb}</span>
-
-									${(pakketten.length !== 1 
-										? `<span class='provider-pakketten-header-pakkettental'>${pakketten.length} pakketten</span>` 
-										: ''
-									)}
-
-									<span class='provider-pakketten-header-prijs prijs-bolletje iwwiw-bolletje'>
-										<span class='provider-pakketten-header-prijs-bedrag '>
-											<span>&euro;</span>${providersLaagste.toFixed(2).replace('.', ',')}
-										</span>
-										<span class='provider-pakketten-header-prijs-vanaf'>Vanaf</span>
-									</span>
-
-								</header>
-
-								<ul class='provider-pakketten-lijst'>
-									${pakketten.reduce(this.printPakkettenLijst, '')}
-								</ul>
-
-							</section>`;
-						});
-						printProviderPakketten.innerHTML = printProviderPakketten.innerHTML + printPakketten;
-
-						}
-					}
-				);								
+				this.terugval('1');
+				this.terugval('2');
+				this.terugval('3');
+				this.terugval('4');
 	
 			}
 
-			Object.entries(r.providers).forEach(([provider, providerBundel]) => {
-				// maak de rekenklassen
-				// stel laagste snelheid in als gekozen pakket
+			printProviderPakketten.innerHTML = Object.entries(r.providers)
+			.map(([provider, providerBundel]) => {
+
 				const pakketten = providerBundel.map(pakket => new VerrijktPakket(pakket))
 				.map(pakket => iwwiwProcedure(pakket)),
 
 				// maak array met maandTotalen en zoek laagste op.
-
 				providersLaagste = pakketten
 				.map(pakket => pakket.maandelijksTotaal())
 				.reduce((nieuweWaarde, huidigeWaarde) => (
@@ -318,10 +127,25 @@ function ikWeetWatIkWilPakkettenAjax() {
 					? nieuweWaarde
 					: huidigeWaarde
 				),
-				1000000);
+				1000000);		
 
-				// per provider aantal pakketten, zoals DTV, ITV. Vaak maar één.
-				printPakketten += `<section class='provider-pakketten'>
+				return {
+					provider,
+					providersLaagste,
+					pakketten
+				};
+
+			})
+			.sort((a, b) => {
+			  if (a.providersLaagste < b.providersLaagste)
+			    return -1;
+			  if (a.providersLaagste > b.providersLaagste)
+			    return 1;
+			  return 0;				
+			})
+			.map(({pakketten, providersLaagste}) => {
+				//providerInfoBundel
+				return `<section class='provider-pakketten'>
 
 					<header class='provider-pakketten-header'>
 
@@ -345,9 +169,9 @@ function ikWeetWatIkWilPakkettenAjax() {
 						${pakketten.reduce(this.printPakkettenLijst, '')}
 					</ul>
 
-				</section>`;
-			});
-			printProviderPakketten.innerHTML = printPakketten;
+				</section>`;				
+			})
+			.join('');
 
 		},
 		draaiDoorProviders: providers => {

@@ -53,7 +53,7 @@ function Kz_scripts_in_rij() {
     $script_postfix = "-1001";
     $stijl_postfix = '';
 
-    wp_register_script( 'keuzehulp-script', plugins_url('keuzehulp/js/dist/keuzehulp.js'), array(), null, true );
+    wp_register_script( 'keuzehulp-script', plugins_url('keuzehulp/js/dist/keuzehulp-1.js'), array(), null, true );
     wp_enqueue_script( 'keuzehulp-script' );
 
     foreach ($pak_stijlen as $s) {

@@ -23,45 +23,46 @@ const kzRenderVergelijking = {
 		this.keuzehulp = keuzehulp;
 		this.providers = r.providers;
 		doc.getElementById('print-vergelijking').innerHTML = '';
-		if (this.erIsWatTePrinten()) { 
-			const printVergelijking = doc.getElementById('print-vergelijking');
 
+		if (this.erIsWatTePrinten()) { 
+
+			const printVergelijking = doc.getElementById('print-vergelijking');
 			if (Object.entries(r.providers).length < 3) {
 				printVergelijking.classList.add("minder-dan-drie");
 			}
-			
-			let printPakketten = '',
 
-			 providerTal = 0;
-			for (const provider in r.providers) {
-				// maak de rekenklassen
-				// stel laagste snelheid in als gekozen pakket
-				const pakketten = r.providers[provider]
-					.map(pakket => new VerrijktPakket(pakket))
-					.map(pakket => vergelijkingsProcedure(pakket, this.keuzehulp)),
+			printVergelijking.innerHTML = Object.entries(r.providers)
+			.map(this.hoofdMap1)
+			.sort((a, b) => {
+			  if (a.providersLaagste < b.providersLaagste)
+			    return -1;
+			  if (a.providersLaagste > b.providersLaagste)
+			    return 1;
+			  return 0;				
+			})
+			.map(({pakketten, providersLaagste}, providerTal) => {
+				//providerInfoBundel
 
-				 p1 = pakketten[0],
+				const pakketClasses = pakketten.map(pakket => `pakketten-section-${pakket.ID}`).join(' ');
 
-				// per provider aantal pakketten, zoals DTV, ITV. Vaak maar één.
+				return `
+					${(providerTal === 3)
+						?`
+							<div class='provider-pakketten-break'>
+								<h2>Overige selectie pakketten die goed bij jouw voorkeuren passen</h2>
+							</div>
+							`
+							: ''
+					}
 
-				 pakketClasses = pakketten.map(pakket => `pakketten-section-${pakket.ID}`).join(' ');
-
-				if (providerTal++ === 3) {
-					printPakketten += `
-					<div class='provider-pakketten-break'>
-						<h2>Overige selectie pakketten die goed bij jouw voorkeuren passen</h2>
-					</div>
-					`;
-				}
-
-				printPakketten += `<section class='provider-pakketten vergelijking ${pakketClasses}'>
+				<section class='provider-pakketten vergelijking ${pakketClasses}'>
 
 					<header class='provider-pakketten-header'>
 
-						<div class='provider-logo-contain'>${p1.eigenschappen.provider_meta.thumb}</div>
+						<div class='provider-logo-contain'>${pakketten[0].eigenschappen.provider_meta.thumb}</div>
 
-						${(providerTal < 4
-							? `<span class='prijs-bolletje provider-pakketten-header-prijs'><span>${p1.maandelijksTotaal(true)}</span><span>p/m</span></span>`
+						${(providerTal < 3
+							? `<span class='prijs-bolletje provider-pakketten-header-prijs'><span>${pakketten[0].maandelijksTotaal(true)}</span><span>p/m</span></span>`
 							: ''
 						)}
 
@@ -74,11 +75,10 @@ const kzRenderVergelijking = {
 
 				</section>
 
+				`;				
+			})
+			.join('');
 
-				`;
-			} // for provider DIT IS DE HELE LOOP OM DE PROVIDERS HEEN
-
-			printVergelijking.innerHTML = printPakketten;
 		} else {
 			// door naar pakketoverzicht voor alternatieven
 
@@ -102,27 +102,28 @@ const kzRenderVergelijking = {
 
 		ikWeetWatIkWilPakkettenAjax();
 
-
-/*			kzModal(kzTekst('geen_pakketten_gevonden'), 2000);
-			kzRouting.ga(1); // terug naar de voorpagina.
-
-			const adres = JSON.parse(sessionStorage.getItem('kz-adres'));
-
-			const ajf2 = new KzAjax({
-				ajaxData: {
-					action: 'kz_schrijf_fout',
-					data: {
-						aType: 'geen pakketten gevonden',
-						keuzehulp: this.keuzehulp,
-						adres
-					},
-				},
-				cb: function(){ console.warn('geen pakketten gevonden. Gerapporteerd.'); },
-			});
-
-			ajf2.doeAjax();
-			return;				*/
 		} // als r cq response
+	},
+	hoofdMap1: ([provider, providerBundel]) => {
+		const pakketten = providerBundel.map(pakket => new VerrijktPakket(pakket))
+		.map(pakket => vergelijkingsProcedure(pakket, this.keuzehulp)),
+
+		// maak array met maandTotalen en zoek laagste op.
+		providersLaagste = pakketten
+		.map(pakket => pakket.maandelijksTotaal())
+		.reduce((nieuweWaarde, huidigeWaarde) => (
+			nieuweWaarde < huidigeWaarde
+			? nieuweWaarde
+			: huidigeWaarde
+		),
+		1000000);		
+
+		return {
+			provider,
+			providersLaagste,
+			pakketten
+		};
+
 	},
 	erIsWatTePrinten() {
 		// KAN ALS ARRAY EN ALS OBJECT BINNENKOMEN :o
@@ -160,7 +161,7 @@ const kzRenderVergelijking = {
 							)
 					)}
 
-					${(providerTal > 3
+					${(providerTal > 2
 						? `<div class='provider-pakketten-pakket-midden'>
 							<h4>Maandelijks totaal</h4>
 							<strong>${pakket.maandelijksTotaal(true)}</strong>
@@ -169,7 +170,7 @@ const kzRenderVergelijking = {
 					)}
 
 					<div class='provider-pakketten-pakket-rechts'>
-						<h4>Eenmalig totaal</h4>
+						<h4>Eenmalige kosten</h4>
 						<strong>${pakket.eenmaligTotaal(true)}</strong>
 					</div>
 				</div>
@@ -413,10 +414,10 @@ const kzRenderVergelijking = {
 					<tbody>
 						<tr>
 							<td><strong>Borg apparatuur</strong></td>
-							<td>${this.pakket.optiePrijs('borg', true)}</td>
+							<td>${this.pakket.formatteerPrijs(this.pakket.eigenschappen.borg.basis_borg.prijs)}</td>
 						</tr>
 						<tr>
-							<td><strong>Eenmalig totaal</strong></td>
+							<td><strong>Eenmalige kosten</strong></td>
 							<td>${this.pakket.eenmaligTotaal(true)}</td>
 						</tr>
 						<tr>

@@ -352,7 +352,7 @@
 
 		.print-provider-pakketten .provider-pakketten,
 		.print-vergelijking .provider-pakketten{
-			flex-basis: 25%;
+			flex-basis: 26%;
 			flex-grow: 1;
 			max-width: calc(33% - 15px);
 		}

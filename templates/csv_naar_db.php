@@ -79,17 +79,17 @@ function keuzehulp_insert() {
 			$postcode_cols = "perceelcode, postcode, huisnummer, toevoeging, kamer, straatnaam, plaatsnaam, gemeentenaam, gebiedscode, aanvraag_gedaan, provider, status";
 			$waardes = 
 				 "'".addslashes($getData[0])."','". //perceelcode
-				 addslashes($getData[1])."','".		//postcode
+				 addslashes($getData[4])."','".		//postcode
 				 addslashes($getData[2])."','".		//huisnummer
 				 addslashes($getData[3])."','".		//toevoeging
-				 ""."','".							//kamer				 
-				 addslashes($getData[4])."','".		//straatnaam
+				 ""."','".							//kamer		
+				 addslashes($getData[1])."','".		//straatnaam
 				 addslashes($getData[5])."','".		//plaatsnaam
-				 addslashes($getData[6])."','".		//gemeentenaam
+				 addslashes($getData[5])."','".		//gemeentenaam
 				 "rekam"."','".						//gebiedscode
 				 "0"."','".							//aanvraag_gedaan
 				 "0','".							//provider
-				  kz_naar_statuscode(addslashes($getData[7]))."'";		//status
+				  kz_naar_statuscode(addslashes($getData[6]))."'";		//status
 
 
 

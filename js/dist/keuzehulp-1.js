@@ -3,8 +3,6 @@ function _sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; 
 function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return _sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }
 
 /* global doc, location, KzAjax, kzModal, kzTekst, gformInitDatepicker */
-
-/* eslint-disable */
 function aanmeldformulierHaalWaardeUitRij(rij) {
   var knop1 = rij.getElementsByClassName('knop')[0]; // is het een tekstveld, nummer oid?
 
@@ -92,6 +90,7 @@ function kzUpdateHidden() {
   |
   | 	functie draait iedere keer dat een knop wordt aangeklikt
   | 	print waarden van dynamische formulier in hidden velden GF.
+  | 	printwijze is afhankelijk van type data
   |
   |-----------------------------------------------------*/
   var printMappen = kzMaakPrintMap();
@@ -102,41 +101,32 @@ function kzUpdateHidden() {
   }).filter(uniek).forEach(function (rij) {
     var inputs = rij.querySelectorAll('[data-kz-waarde]');
     var isRadio = !!rij.getElementsByClassName('kz-radio').length;
-    var printsleutel = null;
+    var printsleutel = null; // sleutel in printMappen
 
     if (isRadio) {
       // bv belpakket
       var famIDPrefix = inputs[0].id.split('-')[0];
+      var dezeRadios = doc.querySelectorAll("[id*=\"".concat(famIDPrefix, "\"]"));
+      printMappen[famIDPrefix].print = Array.from(dezeRadios, function (input) {
+        if (input.classList.contains('tv-pakket')) {
+          var w = kzPakKnopValue(input) ? "ja" : "nee";
+          var s = input.id.split('-');
+          return "Type: ".concat(s[0], " - subtype: ").concat(s[1], " => ").concat(w, ".");
+        } else {
+          var _w = kzPakKnopValue(input);
 
-      if (!printMappen[famIDPrefix]) {
-        console.warn(famIDPrefix + 'niet gevonden in printmap', inputs);
-      } else {
-        printMappen[famIDPrefix].contekst = 'radio';
-        var dezeRadios = doc.querySelectorAll("[id*=\"".concat(famIDPrefix, "\"]"));
-        printMappen[famIDPrefix].print = Array.from(dezeRadios, function (input) {
-          if (input.classList.contains('tv-pakket')) {
-            printMappen[famIDPrefix].radioType = 'tv-pakket';
-            var w = kzPakKnopValue(input) ? "ja" : "nee";
-            var s = input.id.split('-');
-            return "Type: ".concat(s[0], " - subtype: ").concat(s[1], " => ").concat(w, ".");
-          } else {
-            printMappen[famIDPrefix].radioType = 'normale-radio';
+          if (_w) {
+            var _s = input.id.split('-');
 
-            var _w = kzPakKnopValue(input);
+            _s.shift();
 
-            if (_w) {
-              var _s = input.id.split('-');
+            _s.shift();
 
-              _s.shift();
-
-              _s.shift();
-
-              _s = _s.join(' ');
-              return _s;
-            }
+            _s = _s.join(' ');
+            return _s;
           }
-        });
-      }
+        }
+      });
     } else {
       printsleutel = inputs[0].id;
 
@@ -368,7 +358,18 @@ function kzUpdatePrijs(knop) {
     hoeveelheid = kzPakKnopValue(knop);
   }
 
-  pakket.mutatie(optie, hoeveelheid);
+  if (knop.classList.contains('tv-pakket')) {
+    var sleutel = pakket.vindOptieSleutel({
+      naam: knop.dataset.kzOptienaam,
+      snelheid: pakket.huidige_snelheid,
+      optietype: 'televisie-bundel',
+      suboptietype: knop.dataset.kzSuboptietype
+    });
+    pakket.mutatie(sleutel, hoeveelheid);
+  } else {
+    pakket.mutatie(optie, hoeveelheid);
+  }
+
   pakket.printPrijzen();
 }
 
@@ -787,16 +788,11 @@ function postcodeAjaxCB(r) {
         KzAjaxKleineFormulieren('keuzehulp_haal_lead_formulier', 'print-lead-formulier', {});
       }
     } else if (r.status === '0') {
-      kzRouting.ga(2);
-      /*			if (r.provider_beschikbaar) {
-      				kzModal(
-      					kzTekst('succes_coax'),
-      					2000,
-      				);
-      				kzRouting.ga(2);
-      			} else {
-      				logFouteSituatiePostcodeCheck(r);
-      			} */
+      if (r.provider_beschikbaar) {
+        kzRouting.ga(20);
+      } else {
+        logFouteSituatiePostcodeCheck(r);
+      }
     } else {
       if (r.provider_beschikbaar) {
         /*				const tekstSleutel = {
@@ -1259,8 +1255,52 @@ function ikWeetWatIkWilPakkettenAjax() {
         adres: adres
       }
     },
-    cb: function cb(r) {
+    terugval: function terugval(optie) {
       var _this = this;
+
+      var adres = JSON.parse(sessionStorage.getItem('kz-adres'));
+      var printProviderPakketten = document.getElementById('print-provider-pakketten');
+      jQuery.post("".concat(location.origin, "/wp-admin/admin-ajax.php"), {
+        action: 'keuzehulp_ik_weet_wat_ik_wil_pakketten',
+        data: {
+          keuzehulp: {
+            installatie: '1',
+            'ik-weet-wat-ik-wil': optie
+          },
+          adres: adres
+        }
+      }, function (response) {
+        var rr = JSON.parse(response);
+
+        if (!rr.error) {
+          var printPakketten = '';
+          Object.entries(rr.providers).forEach(function (_ref) {
+            var _ref2 = _slicedToArray(_ref, 2),
+                provider = _ref2[0],
+                providerBundel = _ref2[1];
+
+            // maak de rekenklassen
+            // stel laagste snelheid in als gekozen pakket
+            var pakketten = providerBundel.map(function (pakket) {
+              return new VerrijktPakket(pakket);
+            }).map(function (pakket) {
+              return iwwiwProcedure(pakket);
+            }),
+                // maak array met maandTotalen en zoek laagste op.
+            providersLaagste = pakketten.map(function (pakket) {
+              return pakket.maandelijksTotaal();
+            }).reduce(function (nieuweWaarde, huidigeWaarde) {
+              return nieuweWaarde < huidigeWaarde ? nieuweWaarde : huidigeWaarde;
+            }, 1000000); // per provider aantal pakketten, zoals DTV, ITV. Vaak maar één.
+
+            printPakketten += "<section class='provider-pakketten'>\n\n\t\t\t\t\t\t\t<header class='provider-pakketten-header'>\n\n\t\t\t\t\t\t\t\t<span class='provider-logo-contain'>".concat(pakketten[0].eigenschappen.provider_meta.thumb, "</span>\n\n\t\t\t\t\t\t\t\t").concat(pakketten.length !== 1 ? "<span class='provider-pakketten-header-pakkettental'>".concat(pakketten.length, " pakketten</span>") : '', "\n\n\t\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs prijs-bolletje iwwiw-bolletje'>\n\t\t\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs-bedrag '>\n\t\t\t\t\t\t\t\t\t\t<span>&euro;</span>").concat(providersLaagste.toFixed(2).replace('.', ','), "\n\t\t\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs-vanaf'>Vanaf</span>\n\t\t\t\t\t\t\t\t</span>\n\n\t\t\t\t\t\t\t</header>\n\n\t\t\t\t\t\t\t<ul class='provider-pakketten-lijst'>\n\t\t\t\t\t\t\t\t").concat(pakketten.reduce(_this.printPakkettenLijst, ''), "\n\t\t\t\t\t\t\t</ul>\n\n\t\t\t\t\t\t</section>");
+          });
+          printProviderPakketten.innerHTML = printProviderPakketten.innerHTML + printPakketten;
+        }
+      });
+    },
+    cb: function cb(r) {
+      var _this2 = this;
 
       var printProviderPakketten = document.getElementById('print-provider-pakketten');
       var printPakketten = '';
@@ -1272,167 +1312,17 @@ function ikWeetWatIkWilPakkettenAjax() {
         var _keuzehulp = JSON.parse(sessionStorage.getItem('kz-keuzehulp'));
 
         var teller = 0;
-        jQuery.post("".concat(location.origin, "/wp-admin/admin-ajax.php"), {
-          action: 'keuzehulp_ik_weet_wat_ik_wil_pakketten',
-          data: {
-            keuzehulp: {
-              installatie: '1',
-              'ik-weet-wat-ik-wil': "1"
-            },
-            adres: adres
-          }
-        }, function (response) {
-          var rr = JSON.parse(response);
-
-          if (!rr.error) {
-            var _printPakketten = '';
-            Object.entries(rr.providers).forEach(function (_ref) {
-              var _ref2 = _slicedToArray(_ref, 2),
-                  provider = _ref2[0],
-                  providerBundel = _ref2[1];
-
-              // maak de rekenklassen
-              // stel laagste snelheid in als gekozen pakket
-              var pakketten = providerBundel.map(function (pakket) {
-                return new VerrijktPakket(pakket);
-              }).map(function (pakket) {
-                return iwwiwProcedure(pakket);
-              }),
-                  // maak array met maandTotalen en zoek laagste op.
-              providersLaagste = pakketten.map(function (pakket) {
-                return pakket.maandelijksTotaal();
-              }).reduce(function (nieuweWaarde, huidigeWaarde) {
-                return nieuweWaarde < huidigeWaarde ? nieuweWaarde : huidigeWaarde;
-              }, 1000000); // per provider aantal pakketten, zoals DTV, ITV. Vaak maar één.
-
-              _printPakketten += "<section class='provider-pakketten'>\n\n\t\t\t\t\t\t\t\t<header class='provider-pakketten-header'>\n\n\t\t\t\t\t\t\t\t\t<span class='provider-logo-contain'>".concat(pakketten[0].eigenschappen.provider_meta.thumb, "</span>\n\n\t\t\t\t\t\t\t\t\t").concat(pakketten.length !== 1 ? "<span class='provider-pakketten-header-pakkettental'>".concat(pakketten.length, " pakketten</span>") : '', "\n\n\t\t\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs prijs-bolletje iwwiw-bolletje'>\n\t\t\t\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs-bedrag '>\n\t\t\t\t\t\t\t\t\t\t\t<span>&euro;</span>").concat(providersLaagste.toFixed(2).replace('.', ','), "\n\t\t\t\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs-vanaf'>Vanaf</span>\n\t\t\t\t\t\t\t\t\t</span>\n\n\t\t\t\t\t\t\t\t</header>\n\n\t\t\t\t\t\t\t\t<ul class='provider-pakketten-lijst'>\n\t\t\t\t\t\t\t\t\t").concat(pakketten.reduce(_this.printPakkettenLijst, ''), "\n\t\t\t\t\t\t\t\t</ul>\n\n\t\t\t\t\t\t\t</section>");
-            });
-            printProviderPakketten.innerHTML = printProviderPakketten.innerHTML + _printPakketten;
-          }
-        });
-        jQuery.post("".concat(location.origin, "/wp-admin/admin-ajax.php"), {
-          action: 'keuzehulp_ik_weet_wat_ik_wil_pakketten',
-          data: {
-            keuzehulp: {
-              installatie: '1',
-              'ik-weet-wat-ik-wil': "2"
-            },
-            adres: adres
-          }
-        }, function (response) {
-          var rr = JSON.parse(response);
-
-          if (!rr.error) {
-            var _printPakketten2 = '';
-            Object.entries(rr.providers).forEach(function (_ref3) {
-              var _ref4 = _slicedToArray(_ref3, 2),
-                  provider = _ref4[0],
-                  providerBundel = _ref4[1];
-
-              // maak de rekenklassen
-              // stel laagste snelheid in als gekozen pakket
-              var pakketten = providerBundel.map(function (pakket) {
-                return new VerrijktPakket(pakket);
-              }).map(function (pakket) {
-                return iwwiwProcedure(pakket);
-              }),
-                  // maak array met maandTotalen en zoek laagste op.
-              providersLaagste = pakketten.map(function (pakket) {
-                return pakket.maandelijksTotaal();
-              }).reduce(function (nieuweWaarde, huidigeWaarde) {
-                return nieuweWaarde < huidigeWaarde ? nieuweWaarde : huidigeWaarde;
-              }, 1000000); // per provider aantal pakketten, zoals DTV, ITV. Vaak maar één.
-
-              _printPakketten2 += "<section class='provider-pakketten'>\n\n\t\t\t\t\t\t\t\t<header class='provider-pakketten-header'>\n\n\t\t\t\t\t\t\t\t\t<span class='provider-logo-contain'>".concat(pakketten[0].eigenschappen.provider_meta.thumb, "</span>\n\n\t\t\t\t\t\t\t\t\t").concat(pakketten.length !== 1 ? "<span class='provider-pakketten-header-pakkettental'>".concat(pakketten.length, " pakketten</span>") : '', "\n\n\t\t\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs prijs-bolletje iwwiw-bolletje'>\n\t\t\t\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs-bedrag '>\n\t\t\t\t\t\t\t\t\t\t\t<span>&euro;</span>").concat(providersLaagste.toFixed(2).replace('.', ','), "\n\t\t\t\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs-vanaf'>Vanaf</span>\n\t\t\t\t\t\t\t\t\t</span>\n\n\t\t\t\t\t\t\t\t</header>\n\n\t\t\t\t\t\t\t\t<ul class='provider-pakketten-lijst'>\n\t\t\t\t\t\t\t\t\t").concat(pakketten.reduce(_this.printPakkettenLijst, ''), "\n\t\t\t\t\t\t\t\t</ul>\n\n\t\t\t\t\t\t\t</section>");
-            });
-            printProviderPakketten.innerHTML = printProviderPakketten.innerHTML + _printPakketten2;
-          }
-        });
-        jQuery.post("".concat(location.origin, "/wp-admin/admin-ajax.php"), {
-          action: 'keuzehulp_ik_weet_wat_ik_wil_pakketten',
-          data: {
-            keuzehulp: {
-              installatie: '1',
-              'ik-weet-wat-ik-wil': "3"
-            },
-            adres: adres
-          }
-        }, function (response) {
-          var rr = JSON.parse(response);
-
-          if (!rr.error) {
-            var _printPakketten3 = '';
-            Object.entries(rr.providers).forEach(function (_ref5) {
-              var _ref6 = _slicedToArray(_ref5, 2),
-                  provider = _ref6[0],
-                  providerBundel = _ref6[1];
-
-              // maak de rekenklassen
-              // stel laagste snelheid in als gekozen pakket
-              var pakketten = providerBundel.map(function (pakket) {
-                return new VerrijktPakket(pakket);
-              }).map(function (pakket) {
-                return iwwiwProcedure(pakket);
-              }),
-                  // maak array met maandTotalen en zoek laagste op.
-              providersLaagste = pakketten.map(function (pakket) {
-                return pakket.maandelijksTotaal();
-              }).reduce(function (nieuweWaarde, huidigeWaarde) {
-                return nieuweWaarde < huidigeWaarde ? nieuweWaarde : huidigeWaarde;
-              }, 1000000); // per provider aantal pakketten, zoals DTV, ITV. Vaak maar één.
-
-              _printPakketten3 += "<section class='provider-pakketten'>\n\n\t\t\t\t\t\t\t\t<header class='provider-pakketten-header'>\n\n\t\t\t\t\t\t\t\t\t<span class='provider-logo-contain'>".concat(pakketten[0].eigenschappen.provider_meta.thumb, "</span>\n\n\t\t\t\t\t\t\t\t\t").concat(pakketten.length !== 1 ? "<span class='provider-pakketten-header-pakkettental'>".concat(pakketten.length, " pakketten</span>") : '', "\n\n\t\t\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs prijs-bolletje iwwiw-bolletje'>\n\t\t\t\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs-bedrag '>\n\t\t\t\t\t\t\t\t\t\t\t<span>&euro;</span>").concat(providersLaagste.toFixed(2).replace('.', ','), "\n\t\t\t\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs-vanaf'>Vanaf</span>\n\t\t\t\t\t\t\t\t\t</span>\n\n\t\t\t\t\t\t\t\t</header>\n\n\t\t\t\t\t\t\t\t<ul class='provider-pakketten-lijst'>\n\t\t\t\t\t\t\t\t\t").concat(pakketten.reduce(_this.printPakkettenLijst, ''), "\n\t\t\t\t\t\t\t\t</ul>\n\n\t\t\t\t\t\t\t</section>");
-            });
-            printProviderPakketten.innerHTML = printProviderPakketten.innerHTML + _printPakketten3;
-          }
-        });
-        jQuery.post("".concat(location.origin, "/wp-admin/admin-ajax.php"), {
-          action: 'keuzehulp_ik_weet_wat_ik_wil_pakketten',
-          data: {
-            keuzehulp: {
-              installatie: '1',
-              'ik-weet-wat-ik-wil': "4"
-            },
-            adres: adres
-          }
-        }, function (response) {
-          var rr = JSON.parse(response);
-
-          if (!rr.error) {
-            var _printPakketten4 = '';
-            Object.entries(rr.providers).forEach(function (_ref7) {
-              var _ref8 = _slicedToArray(_ref7, 2),
-                  provider = _ref8[0],
-                  providerBundel = _ref8[1];
-
-              // maak de rekenklassen
-              // stel laagste snelheid in als gekozen pakket
-              var pakketten = providerBundel.map(function (pakket) {
-                return new VerrijktPakket(pakket);
-              }).map(function (pakket) {
-                return iwwiwProcedure(pakket);
-              }),
-                  // maak array met maandTotalen en zoek laagste op.
-              providersLaagste = pakketten.map(function (pakket) {
-                return pakket.maandelijksTotaal();
-              }).reduce(function (nieuweWaarde, huidigeWaarde) {
-                return nieuweWaarde < huidigeWaarde ? nieuweWaarde : huidigeWaarde;
-              }, 1000000); // per provider aantal pakketten, zoals DTV, ITV. Vaak maar één.
-
-              _printPakketten4 += "<section class='provider-pakketten'>\n\n\t\t\t\t\t\t\t\t<header class='provider-pakketten-header'>\n\n\t\t\t\t\t\t\t\t\t<span class='provider-logo-contain'>".concat(pakketten[0].eigenschappen.provider_meta.thumb, "</span>\n\n\t\t\t\t\t\t\t\t\t").concat(pakketten.length !== 1 ? "<span class='provider-pakketten-header-pakkettental'>".concat(pakketten.length, " pakketten</span>") : '', "\n\n\t\t\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs prijs-bolletje iwwiw-bolletje'>\n\t\t\t\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs-bedrag '>\n\t\t\t\t\t\t\t\t\t\t\t<span>&euro;</span>").concat(providersLaagste.toFixed(2).replace('.', ','), "\n\t\t\t\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs-vanaf'>Vanaf</span>\n\t\t\t\t\t\t\t\t\t</span>\n\n\t\t\t\t\t\t\t\t</header>\n\n\t\t\t\t\t\t\t\t<ul class='provider-pakketten-lijst'>\n\t\t\t\t\t\t\t\t\t").concat(pakketten.reduce(_this.printPakkettenLijst, ''), "\n\t\t\t\t\t\t\t\t</ul>\n\n\t\t\t\t\t\t\t</section>");
-            });
-            printProviderPakketten.innerHTML = printProviderPakketten.innerHTML + _printPakketten4;
-          }
-        });
+        this.terugval('1');
+        this.terugval('2');
+        this.terugval('3');
+        this.terugval('4');
       }
 
-      Object.entries(r.providers).forEach(function (_ref9) {
-        var _ref10 = _slicedToArray(_ref9, 2),
-            provider = _ref10[0],
-            providerBundel = _ref10[1];
+      printProviderPakketten.innerHTML = Object.entries(r.providers).map(function (_ref3) {
+        var _ref4 = _slicedToArray(_ref3, 2),
+            provider = _ref4[0],
+            providerBundel = _ref4[1];
 
-        // maak de rekenklassen
-        // stel laagste snelheid in als gekozen pakket
         var pakketten = providerBundel.map(function (pakket) {
           return new VerrijktPakket(pakket);
         }).map(function (pakket) {
@@ -1443,11 +1333,22 @@ function ikWeetWatIkWilPakkettenAjax() {
           return pakket.maandelijksTotaal();
         }).reduce(function (nieuweWaarde, huidigeWaarde) {
           return nieuweWaarde < huidigeWaarde ? nieuweWaarde : huidigeWaarde;
-        }, 1000000); // per provider aantal pakketten, zoals DTV, ITV. Vaak maar één.
-
-        printPakketten += "<section class='provider-pakketten'>\n\n\t\t\t\t\t<header class='provider-pakketten-header'>\n\n\t\t\t\t\t\t<span class='provider-logo-contain'>".concat(pakketten[0].eigenschappen.provider_meta.thumb, "</span>\n\n\t\t\t\t\t\t").concat(pakketten.length !== 1 ? "<span class='provider-pakketten-header-pakkettental'>".concat(pakketten.length, " pakketten</span>") : '', "\n\n\t\t\t\t\t\t<span class='provider-pakketten-header-prijs prijs-bolletje iwwiw-bolletje'>\n\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs-bedrag '>\n\t\t\t\t\t\t\t\t<span>&euro;</span>").concat(providersLaagste.toFixed(2).replace('.', ','), "\n\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs-vanaf'>Vanaf</span>\n\t\t\t\t\t\t</span>\n\n\t\t\t\t\t</header>\n\n\t\t\t\t\t<ul class='provider-pakketten-lijst'>\n\t\t\t\t\t\t").concat(pakketten.reduce(_this.printPakkettenLijst, ''), "\n\t\t\t\t\t</ul>\n\n\t\t\t\t</section>");
-      });
-      printProviderPakketten.innerHTML = printPakketten;
+        }, 1000000);
+        return {
+          provider: provider,
+          providersLaagste: providersLaagste,
+          pakketten: pakketten
+        };
+      }).sort(function (a, b) {
+        if (a.providersLaagste < b.providersLaagste) return -1;
+        if (a.providersLaagste > b.providersLaagste) return 1;
+        return 0;
+      }).map(function (_ref5) {
+        var pakketten = _ref5.pakketten,
+            providersLaagste = _ref5.providersLaagste;
+        //providerInfoBundel
+        return "<section class='provider-pakketten'>\n\n\t\t\t\t\t<header class='provider-pakketten-header'>\n\n\t\t\t\t\t\t<span class='provider-logo-contain'>".concat(pakketten[0].eigenschappen.provider_meta.thumb, "</span>\n\n\t\t\t\t\t\t").concat(pakketten.length !== 1 ? "<span class='provider-pakketten-header-pakkettental'>".concat(pakketten.length, " pakketten</span>") : '', "\n\n\t\t\t\t\t\t<span class='provider-pakketten-header-prijs prijs-bolletje iwwiw-bolletje'>\n\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs-bedrag '>\n\t\t\t\t\t\t\t\t<span>&euro;</span>").concat(providersLaagste.toFixed(2).replace('.', ','), "\n\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs-vanaf'>Vanaf</span>\n\t\t\t\t\t\t</span>\n\n\t\t\t\t\t</header>\n\n\t\t\t\t\t<ul class='provider-pakketten-lijst'>\n\t\t\t\t\t\t").concat(pakketten.reduce(_this2.printPakkettenLijst, ''), "\n\t\t\t\t\t</ul>\n\n\t\t\t\t</section>");
+      }).join('');
     },
     draaiDoorProviders: function draaiDoorProviders(providers) {},
     helemaalFout: function helemaalFout() {
@@ -1994,6 +1895,11 @@ function VerrijktPakket(p) {
 
   this.maandelijksTotaal = function (formatteren) {
     return _this.generiekTotaal('maandelijks', formatteren);
+  }; // Voorkant voor borgtotaal
+
+
+  this.borgTotaal = function (formatteren) {
+    return _this.generiekTotaal('borg', formatteren);
   }; // Maakt van Amerikaans getal europese prijs.
   // @TODO als 0 dan 'gratis' of 'inclusief'
 
@@ -2011,7 +1917,7 @@ function VerrijktPakket(p) {
     | 	Al dan niet geformatteerd of als getal.
     |
     |-----------------------------------------------------*/
-    ['maandelijks', 'eenmalig'].forEach(function (prijsCat) {
+    ['maandelijks', 'eenmalig', 'borg'].forEach(function (prijsCat) {
       var printHier = document.getElementsByClassName("".concat(prijsCat, "-totaal"));
       Array.from(printHier).forEach(function (printPlek) {
         printPlek.innerHTML = _this.generiekTotaal(prijsCat, formatteer);
@@ -2095,6 +2001,22 @@ function VerrijktPakket(p) {
     var e = _this.eigenschappen;
     if (e.eenmalig[optie]) e.eenmalig[optie].aantal = aantal;
     if (e.maandelijks[optie]) e.maandelijks[optie].aantal = aantal;
+  };
+
+  this.vindOptieSleutel = function (zoek) {
+    var naam = zoek.naam,
+        optietype = zoek.optietype,
+        suboptietype = zoek.suboptietype,
+        snelheid = zoek.snelheid; //als zoekopdracht niet meegegegeven, altijd ok.
+
+    var r = Object.entries(_this.eigenschappen.maandelijks).find(function (_ref7) {
+      var _ref8 = _slicedToArray(_ref7, 2),
+          sleutel = _ref8[0],
+          optie = _ref8[1];
+
+      return ![!naam || optie.naam === naam, !optietype || optie.optietype === optietype, !suboptietype || optie.suboptietype === suboptietype, !snelheid || optie.snelheid === snelheid].includes(false);
+    });
+    return r[0];
   }; // doet niet meer dat de naam aangeeft.
 
 
@@ -2121,31 +2043,31 @@ function VerrijktPakket(p) {
 
   this.zoekSubOptie = function () {
     var suboptietype = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    var mOpties = Object.entries(_this.eigenschappen.maandelijks).filter(function (_ref7) {
-      var _ref8 = _slicedToArray(_ref7, 2),
-          sleutel = _ref8[0],
-          optie = _ref8[1];
-
-      return optie.suboptietype === suboptietype;
-    }).map(function (_ref9) {
+    var mOpties = Object.entries(_this.eigenschappen.maandelijks).filter(function (_ref9) {
       var _ref10 = _slicedToArray(_ref9, 2),
           sleutel = _ref10[0],
           optie = _ref10[1];
+
+      return optie.suboptietype === suboptietype;
+    }).map(function (_ref11) {
+      var _ref12 = _slicedToArray(_ref11, 2),
+          sleutel = _ref12[0],
+          optie = _ref12[1];
 
       return Object.assign({
         sleutel: sleutel
       }, optie);
     }),
-        eOpties = Object.entries(_this.eigenschappen.eenmalig).filter(function (_ref11) {
-      var _ref12 = _slicedToArray(_ref11, 2),
-          sleutel = _ref12[0],
-          optie = _ref12[1];
-
-      return optie.suboptietype === suboptietype;
-    }).map(function (_ref13) {
+        eOpties = Object.entries(_this.eigenschappen.eenmalig).filter(function (_ref13) {
       var _ref14 = _slicedToArray(_ref13, 2),
           sleutel = _ref14[0],
           optie = _ref14[1];
+
+      return optie.suboptietype === suboptietype;
+    }).map(function (_ref15) {
+      var _ref16 = _slicedToArray(_ref15, 2),
+          sleutel = _ref16[0],
+          optie = _ref16[1];
 
       return Object.assign({
         sleutel: sleutel
@@ -2160,31 +2082,31 @@ function VerrijktPakket(p) {
 
   this.zoekOptieType = function () {
     var optietype = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    var mOpties = Object.entries(_this.eigenschappen.maandelijks).filter(function (_ref15) {
-      var _ref16 = _slicedToArray(_ref15, 2),
-          sleutel = _ref16[0],
-          optie = _ref16[1];
-
-      return optie.optietype === optietype;
-    }).map(function (_ref17) {
+    var mOpties = Object.entries(_this.eigenschappen.maandelijks).filter(function (_ref17) {
       var _ref18 = _slicedToArray(_ref17, 2),
           sleutel = _ref18[0],
           optie = _ref18[1];
+
+      return optie.optietype === optietype;
+    }).map(function (_ref19) {
+      var _ref20 = _slicedToArray(_ref19, 2),
+          sleutel = _ref20[0],
+          optie = _ref20[1];
 
       return Object.assign({
         sleutel: sleutel
       }, optie);
     }),
-        eOpties = Object.entries(_this.eigenschappen.eenmalig).filter(function (_ref19) {
-      var _ref20 = _slicedToArray(_ref19, 2),
-          sleutel = _ref20[0],
-          optie = _ref20[1];
-
-      return optie.optietype === optietype;
-    }).map(function (_ref21) {
+        eOpties = Object.entries(_this.eigenschappen.eenmalig).filter(function (_ref21) {
       var _ref22 = _slicedToArray(_ref21, 2),
           sleutel = _ref22[0],
           optie = _ref22[1];
+
+      return optie.optietype === optietype;
+    }).map(function (_ref23) {
+      var _ref24 = _slicedToArray(_ref23, 2),
+          sleutel = _ref24[0],
+          optie = _ref24[1];
 
       return Object.assign({
         sleutel: sleutel
@@ -2240,10 +2162,10 @@ function VerrijktPakket(p) {
 
   this.huidigeTelefonieBundel = function () {
     var gevonden = false;
-    Object.entries(_this.eigenschappen.telefonie_bundels).forEach(function (_ref23) {
-      var _ref24 = _slicedToArray(_ref23, 2),
-          bundelNaam = _ref24[0],
-          bundels = _ref24[1];
+    Object.entries(_this.eigenschappen.telefonie_bundels).forEach(function (_ref25) {
+      var _ref26 = _slicedToArray(_ref25, 2),
+          bundelNaam = _ref26[0],
+          bundels = _ref26[1];
 
       bundels.forEach(function (bundel) {
         if (_this.eigenschappen.maandelijks[bundel.slug].aantal > 0) {
@@ -2259,10 +2181,10 @@ function VerrijktPakket(p) {
   };
 
   this.alleTelefonieBundelsUit = function () {
-    Object.entries(_this.eigenschappen.maandelijks).forEach(function (_ref25) {
-      var _ref26 = _slicedToArray(_ref25, 2),
-          optieNaam = _ref26[0],
-          optieWaarden = _ref26[1];
+    Object.entries(_this.eigenschappen.maandelijks).forEach(function (_ref27) {
+      var _ref28 = _slicedToArray(_ref27, 2),
+          optieNaam = _ref28[0],
+          optieWaarden = _ref28[1];
 
       if (optieWaarden.optietype === 'telefonie-bundel') {
         _this.mutatie(optieNaam, 0);
@@ -2295,16 +2217,16 @@ function VerrijktPakket(p) {
   };
 
   this.pakZenders = function () {
-    var aantalUniekeZenderPakketten = Object.entries(_this.eigenschappen).filter(function (_ref27) {
-      var _ref28 = _slicedToArray(_ref27, 2),
-          sleutel = _ref28[0],
-          object = _ref28[1];
+    var aantalUniekeZenderPakketten = Object.entries(_this.eigenschappen).filter(function (_ref29) {
+      var _ref30 = _slicedToArray(_ref29, 2),
+          sleutel = _ref30[0],
+          object = _ref30[1];
 
       return sleutel.includes('zender');
-    }).map(function (_ref29) {
-      var _ref30 = _slicedToArray(_ref29, 2),
-          s = _ref30[0],
-          o = _ref30[1];
+    }).map(function (_ref31) {
+      var _ref32 = _slicedToArray(_ref31, 2),
+          s = _ref32[0],
+          o = _ref32[1];
 
       return o.totaal + o.hd;
     }).filter(uniek).length;
@@ -2362,11 +2284,16 @@ function iwwiwProcedure(pakket) {
 }
 
 function vergelijkingsProcedure(pakket, keuzehulp) {
-  // schrijf de bel & nummer keuze.
+  if (typeof keuzehulp === 'undefined') {
+    console.warn('keuzehulp undefined!');
+    keuzehulp = JSON.parse(sessionStorage.getItem('kz-keuzehulp'));
+  } // schrijf de bel & nummer keuze.
   // bellen = 1 							-> niet bellen.
   // bellen = 2 							-> basispakket.
   // bellen = 3 							-> NL pakket.
   // bellen = 3 + '2' in nummers-array 	-> Internationaal pakket.
+
+
   if (keuzehulp.bellen === '1') {
     pakket.alleTelefonieBundelsUit();
   } else if (keuzehulp.bellen === '2') {
@@ -2411,11 +2338,20 @@ function vergelijkingsProcedure(pakket, keuzehulp) {
         gekozenSnelheid = snelheid;
       }
     }
-  });
+  }); // dan met de hand toewijzen.
 
   if (!gekozenSnelheid) {
-    var _ref31 = [snelheden[0]];
-    gekozenSnelheid = _ref31[0];
+    if (keuzehulp.internet.includes('1')) {
+      gekozenSnelheid = snelheden[0];
+    } else if (keuzehulp.internet.includes('2')) {
+      if (snelheden.length > 1) {
+        gekozenSnelheid = snelheden[1];
+      } else {
+        gekozenSnelheid = snelheden[0];
+      }
+    } else {
+      gekozenSnelheid = snelheden[snelheden.length - 1];
+    }
   }
 
   var ss = gekozenSnelheid.toString();
@@ -2943,6 +2879,12 @@ var kzRouting = {
     history.pushState(null, titel, url);
   }
 };
+var _this2 = this;
+
+function _sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return _sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }
+
 /* globals doc, location, KzAjax, kzModal, kzTekst, kzRouting, kzStickyKeuzes, teksten, KzAjaxKleineFormulieren  */
 function vergelijkingAjax() {
   var keuzehulp = JSON.parse(sessionStorage.getItem('kz-keuzehulp')),
@@ -2972,42 +2914,27 @@ var kzRenderVergelijking = {
     doc.getElementById('print-vergelijking').innerHTML = '';
 
     if (this.erIsWatTePrinten()) {
-      (function () {
-        var printVergelijking = doc.getElementById('print-vergelijking');
+      var printVergelijking = doc.getElementById('print-vergelijking');
 
-        if (Object.entries(r.providers).length < 3) {
-          printVergelijking.classList.add("minder-dan-drie");
-        }
+      if (Object.entries(r.providers).length < 3) {
+        printVergelijking.classList.add("minder-dan-drie");
+      }
 
-        var printPakketten = '',
-            providerTal = 0;
-
-        for (var provider in r.providers) {
-          // maak de rekenklassen
-          // stel laagste snelheid in als gekozen pakket
-          var pakketten = r.providers[provider].map(function (pakket) {
-            return new VerrijktPakket(pakket);
-          }).map(function (pakket) {
-            return vergelijkingsProcedure(pakket, _this.keuzehulp);
-          }),
-              p1 = pakketten[0],
-              // per provider aantal pakketten, zoals DTV, ITV. Vaak maar één.
-          pakketClasses = pakketten.map(function (pakket) {
-            return "pakketten-section-".concat(pakket.ID);
-          }).join(' ');
-
-          if (providerTal++ === 3) {
-            printPakketten += "\n\t\t\t\t\t<div class='provider-pakketten-break'>\n\t\t\t\t\t\t<h2>Overige selectie pakketten die goed bij jouw voorkeuren passen</h2>\n\t\t\t\t\t</div>\n\t\t\t\t\t";
-          }
-
-          printPakketten += "<section class='provider-pakketten vergelijking ".concat(pakketClasses, "'>\n\n\t\t\t\t\t<header class='provider-pakketten-header'>\n\n\t\t\t\t\t\t<div class='provider-logo-contain'>").concat(p1.eigenschappen.provider_meta.thumb, "</div>\n\n\t\t\t\t\t\t").concat(providerTal < 4 ? "<span class='prijs-bolletje provider-pakketten-header-prijs'><span>".concat(p1.maandelijksTotaal(true), "</span><span>p/m</span></span>") : '', "\n\n\t\t\t\t\t</header>\n\n\n\t\t\t\t\t<ul class='provider-pakketten-lijst'>\n\t\t\t\t\t\t").concat(pakketten.map(function (pakket) {
-            return _this.printPakkettenLijst(pakket, providerTal);
-          }).join(''), "\n\t\t\t\t\t</ul>\n\n\t\t\t\t</section>\n\n\n\t\t\t\t");
-        } // for provider DIT IS DE HELE LOOP OM DE PROVIDERS HEEN
-
-
-        printVergelijking.innerHTML = printPakketten;
-      })();
+      printVergelijking.innerHTML = Object.entries(r.providers).map(this.hoofdMap1).sort(function (a, b) {
+        if (a.providersLaagste < b.providersLaagste) return -1;
+        if (a.providersLaagste > b.providersLaagste) return 1;
+        return 0;
+      }).map(function (_ref, providerTal) {
+        var pakketten = _ref.pakketten,
+            providersLaagste = _ref.providersLaagste;
+        //providerInfoBundel
+        var pakketClasses = pakketten.map(function (pakket) {
+          return "pakketten-section-".concat(pakket.ID);
+        }).join(' ');
+        return "\n\t\t\t\t\t".concat(providerTal === 3 ? "\n\t\t\t\t\t\t\t<div class='provider-pakketten-break'>\n\t\t\t\t\t\t\t\t<h2>Overige selectie pakketten die goed bij jouw voorkeuren passen</h2>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t" : '', "\n\n\t\t\t\t<section class='provider-pakketten vergelijking ").concat(pakketClasses, "'>\n\n\t\t\t\t\t<header class='provider-pakketten-header'>\n\n\t\t\t\t\t\t<div class='provider-logo-contain'>").concat(pakketten[0].eigenschappen.provider_meta.thumb, "</div>\n\n\t\t\t\t\t\t").concat(providerTal < 3 ? "<span class='prijs-bolletje provider-pakketten-header-prijs'><span>".concat(pakketten[0].maandelijksTotaal(true), "</span><span>p/m</span></span>") : '', "\n\n\t\t\t\t\t</header>\n\n\n\t\t\t\t\t<ul class='provider-pakketten-lijst'>\n\t\t\t\t\t\t").concat(pakketten.map(function (pakket) {
+          return _this.printPakkettenLijst(pakket, providerTal);
+        }).join(''), "\n\t\t\t\t\t</ul>\n\n\t\t\t\t</section>\n\n\t\t\t\t");
+      }).join('');
     } else {
       // door naar pakketoverzicht voor alternatieven
       kzRouting.ga(21);
@@ -3028,27 +2955,30 @@ var kzRenderVergelijking = {
 
       sessionStorage.setItem('kz-keuzehulp', JSON.stringify(_keuzehulp));
       ikWeetWatIkWilPakkettenAjax();
-      /*			kzModal(kzTekst('geen_pakketten_gevonden'), 2000);
-      			kzRouting.ga(1); // terug naar de voorpagina.
-      
-      			const adres = JSON.parse(sessionStorage.getItem('kz-adres'));
-      
-      			const ajf2 = new KzAjax({
-      				ajaxData: {
-      					action: 'kz_schrijf_fout',
-      					data: {
-      						aType: 'geen pakketten gevonden',
-      						keuzehulp: this.keuzehulp,
-      						adres
-      					},
-      				},
-      				cb: function(){ console.warn('geen pakketten gevonden. Gerapporteerd.'); },
-      			});
-      
-      			ajf2.doeAjax();
-      			return;				*/
     } // als r cq response
 
+  },
+  hoofdMap1: function hoofdMap1(_ref2) {
+    var _ref3 = _slicedToArray(_ref2, 2),
+        provider = _ref3[0],
+        providerBundel = _ref3[1];
+
+    var pakketten = providerBundel.map(function (pakket) {
+      return new VerrijktPakket(pakket);
+    }).map(function (pakket) {
+      return vergelijkingsProcedure(pakket, _this2.keuzehulp);
+    }),
+        // maak array met maandTotalen en zoek laagste op.
+    providersLaagste = pakketten.map(function (pakket) {
+      return pakket.maandelijksTotaal();
+    }).reduce(function (nieuweWaarde, huidigeWaarde) {
+      return nieuweWaarde < huidigeWaarde ? nieuweWaarde : huidigeWaarde;
+    }, 1000000);
+    return {
+      provider: provider,
+      providersLaagste: providersLaagste,
+      pakketten: pakketten
+    };
   },
   erIsWatTePrinten: function erIsWatTePrinten() {
     // KAN ALS ARRAY EN ALS OBJECT BINNENKOMEN :o
@@ -3062,7 +2992,7 @@ var kzRenderVergelijking = {
     this.pakket = pakket;
     var ds = pakket.pakHuidigeSnelheid(),
         us = pakket.pakHuidigeUploadSnelheid();
-    return "\n\t\t<li class='provider-pakketten-pakket'>\n\n\t\t\t<header>\n\t\t\t\t<h3 class='provider-pakketten-pakket-titel'><span class='provider-pakketten-pakket-titel_naam'>".concat(pakket.naam_composiet, "</span><span class='provider-pakketten-pakket-titel_usp'>").concat(pakket.eigenschappen.teksten.usps, "</span></h3>\n\n\t\t\t\t<div class='flex'>\n\n\t\t\t\t\t").concat(ds && ds === us ? "<div class='provider-pakketten-pakket-links'>\n\t\t\t\t\t\t\t<h4>Snelheid</h4>\n\t\t\t\t\t\t\t<strong>".concat(ds, " Mb/s</strong>\n\t\t\t\t\t\t</div>") : ds && ds !== us ? "<div class='provider-pakketten-pakket-links'>\n\t\t\t\t\t\t\t\t<h4>Down- en uploadsnelheid</h4>\n\t\t\t\t\t\t\t\t<strong>".concat(ds, " / ").concat(us, " Mb/s</strong>\n\t\t\t\t\t\t\t</div>") : "", "\n\n\t\t\t\t\t").concat(providerTal > 3 ? "<div class='provider-pakketten-pakket-midden'>\n\t\t\t\t\t\t\t<h4>Maandelijks totaal</h4>\n\t\t\t\t\t\t\t<strong>".concat(pakket.maandelijksTotaal(true), "</strong>\n\t\t\t\t\t\t</div>") : '', "\n\n\t\t\t\t\t<div class='provider-pakketten-pakket-rechts'>\n\t\t\t\t\t\t<h4>Eenmalig totaal</h4>\n\t\t\t\t\t\t<strong>").concat(pakket.eenmaligTotaal(true), "</strong>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<a\n\t\t\t\t\tclass='knop blauwe-knop'\n\t\t\t\t\thref='#'\n\t\t\t\t\tdata-doel='#provider-pakketten-vergelijking-hoofd-").concat(pakket.ID, ", .pakketten-section-").concat(pakket.ID, ", .pakketten-section-").concat(pakket.ID, " .provider-pakketten_footer'\n\t\t\t\t\tdata-kz-func='schakel'\n\t\t\t\t\tdata-scroll='.pakketten-section-").concat(pakket.ID, "'\n\t\t\t\t\t><span class='als-niet-actief'>bekijken</span><span class='als-actief'>dichtvouwen</span><svg class='svg-dichtklappen' xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><style>.cc94da39-046e-4f53-b263-e21794d5c601{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class=\"cc94da39-046e-4f53-b263-e21794d5c601\" d=\"M35.47,59.76,50,45.38,64.53,59.76C65.68,61,66.82,61,68,59.83a2.23,2.23,0,0,0,0-3.51L51.72,40.07a2.29,2.29,0,0,0-3.44,0L32,56.32a2.23,2.23,0,0,0,0,3.51C33.18,61,34.32,61,35.47,59.76Z\"/></svg>\n\t\t\t\t</a>\n\n\t\t\t</header>\n\n\t\t\t<div class='provider-pakketten-vergelijking-hoofd' id='provider-pakketten-vergelijking-hoofd-").concat(pakket.ID, "'>\n\n\t\t\t\t").concat(this.telefonieSectie(), "\n\n\t\t\t\t").concat(this.televisieSectie(), "\n\n\t\t\t\t").concat(this.installatieSectie(), "\n\n\t\t\t\t").concat(this.kostenSectie(), "\n\n\t\t\t\t").concat(this.aanvullendeSectie(), "\n\n\t\t\t</div>\n\n\t\t\t<footer class='provider-pakketten_footer'>\n\t\t\t\t<a\n\t\t\t\t\tclass='knop blauwe-knop geen-ikoon kz-bestelknop'\n\t\t\t\t\tdata-kz-func='toon-stap animeer aanmeldformulier'\n\t\t\t\t\thref='#100'\n\t\t\t\t\tkz-data-pakket-id='").concat(pakket.ID, "'\n\t\t\t\t\t>Bestellen\n\t\t\t\t</a>\n\t\t\t</footer>\n\t\t</li>");
+    return "\n\t\t<li class='provider-pakketten-pakket'>\n\n\t\t\t<header>\n\t\t\t\t<h3 class='provider-pakketten-pakket-titel'><span class='provider-pakketten-pakket-titel_naam'>".concat(pakket.naam_composiet, "</span><span class='provider-pakketten-pakket-titel_usp'>").concat(pakket.eigenschappen.teksten.usps, "</span></h3>\n\n\t\t\t\t<div class='flex'>\n\n\t\t\t\t\t").concat(ds && ds === us ? "<div class='provider-pakketten-pakket-links'>\n\t\t\t\t\t\t\t<h4>Snelheid</h4>\n\t\t\t\t\t\t\t<strong>".concat(ds, " Mb/s</strong>\n\t\t\t\t\t\t</div>") : ds && ds !== us ? "<div class='provider-pakketten-pakket-links'>\n\t\t\t\t\t\t\t\t<h4>Down- en uploadsnelheid</h4>\n\t\t\t\t\t\t\t\t<strong>".concat(ds, " / ").concat(us, " Mb/s</strong>\n\t\t\t\t\t\t\t</div>") : "", "\n\n\t\t\t\t\t").concat(providerTal > 2 ? "<div class='provider-pakketten-pakket-midden'>\n\t\t\t\t\t\t\t<h4>Maandelijks totaal</h4>\n\t\t\t\t\t\t\t<strong>".concat(pakket.maandelijksTotaal(true), "</strong>\n\t\t\t\t\t\t</div>") : '', "\n\n\t\t\t\t\t<div class='provider-pakketten-pakket-rechts'>\n\t\t\t\t\t\t<h4>Eenmalige kosten</h4>\n\t\t\t\t\t\t<strong>").concat(pakket.eenmaligTotaal(true), "</strong>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<a\n\t\t\t\t\tclass='knop blauwe-knop'\n\t\t\t\t\thref='#'\n\t\t\t\t\tdata-doel='#provider-pakketten-vergelijking-hoofd-").concat(pakket.ID, ", .pakketten-section-").concat(pakket.ID, ", .pakketten-section-").concat(pakket.ID, " .provider-pakketten_footer'\n\t\t\t\t\tdata-kz-func='schakel'\n\t\t\t\t\tdata-scroll='.pakketten-section-").concat(pakket.ID, "'\n\t\t\t\t\t><span class='als-niet-actief'>bekijken</span><span class='als-actief'>dichtvouwen</span><svg class='svg-dichtklappen' xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><style>.cc94da39-046e-4f53-b263-e21794d5c601{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class=\"cc94da39-046e-4f53-b263-e21794d5c601\" d=\"M35.47,59.76,50,45.38,64.53,59.76C65.68,61,66.82,61,68,59.83a2.23,2.23,0,0,0,0-3.51L51.72,40.07a2.29,2.29,0,0,0-3.44,0L32,56.32a2.23,2.23,0,0,0,0,3.51C33.18,61,34.32,61,35.47,59.76Z\"/></svg>\n\t\t\t\t</a>\n\n\t\t\t</header>\n\n\t\t\t<div class='provider-pakketten-vergelijking-hoofd' id='provider-pakketten-vergelijking-hoofd-").concat(pakket.ID, "'>\n\n\t\t\t\t").concat(this.telefonieSectie(), "\n\n\t\t\t\t").concat(this.televisieSectie(), "\n\n\t\t\t\t").concat(this.installatieSectie(), "\n\n\t\t\t\t").concat(this.kostenSectie(), "\n\n\t\t\t\t").concat(this.aanvullendeSectie(), "\n\n\t\t\t</div>\n\n\t\t\t<footer class='provider-pakketten_footer'>\n\t\t\t\t<a\n\t\t\t\t\tclass='knop blauwe-knop geen-ikoon kz-bestelknop'\n\t\t\t\t\tdata-kz-func='toon-stap animeer aanmeldformulier'\n\t\t\t\t\thref='#100'\n\t\t\t\t\tkz-data-pakket-id='").concat(pakket.ID, "'\n\t\t\t\t\t>Bestellen\n\t\t\t\t</a>\n\t\t\t</footer>\n\t\t</li>");
   },
   telefonieSectiePrijsTD: function telefonieSectiePrijsTD(a) {
     return isNaN(Number(a)) ? a : this.pakket.formatteerPrijs(a);
@@ -3096,7 +3026,7 @@ var kzRenderVergelijking = {
     return "\n\t\t\t<div class='provider-pakketten-vergelijking-sectie'>\n\n\t\t\t\t<header>\n\t\t\t\t\t<svg\n\t\t\t\t\t\tclass='svg-tv'\n\t\t\t\t\t\txmlns=\"http://www.w3.org/2000/svg\"\n\t\t\t\t\t\tviewBox=\"0 0 100 100\">\n\t\t\t\t\t\t\t<defs>\n\t\t\t\t\t\t\t\t<style>.25a40c2a-e21f-4ff6-8508-46524cd51bfe{fill:#159a3c;}\n\t\t\t\t\t\t\t\t</style>\n\t\t\t\t\t\t\t</defs>\n\t\t\t\t\t\t\t<title>Rekam icons groen</title>\n\t\t\t\t\t\t\t<path class=\"25a40c2a-e21f-4ff6-8508-46524cd51bfe\" d=\"M86.9,15.56v-.12H13.05v.12A4.89,4.89,0,0,0,8.6,19.94V68.47a4.71,4.71,0,0,0,.65,2.43,4.53,4.53,0,0,0,4.21,2.47H40.12V80.1H35.05a2.23,2.23,0,1,0,0,4.46H64.91a2.23,2.23,0,1,0,0-4.46H59.84V73.37H86.5a4.52,4.52,0,0,0,4.21-2.47,4.86,4.86,0,0,0,.69-2.43V19.94A5,5,0,0,0,86.9,15.56Zm0,4.78V68.47c0,.29-.12.41-.4.41h-73c-.28,0-.41-.12-.41-.41V19.94H86.9v.4Z\"/></svg>\n\t\t\t\t\t<h3>Televisie</h3>\n\t\t\t\t</header>\n\n\t\t\t\t<table>\n\t\t\t\t\t<thead>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<th>Type TV</th>\n\t\t\t\t\t\t\t<th>".concat(this.pakket.pakTypeTV(), "</th\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<th>Aantal zenders</th>\n\t\t\t\t\t\t\t<th>").concat(z.totaal, "  ").concat(z.aantalUniekeZenderPakketten > 1 ? tooltipHTML : '', "</th\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<th>Aantal HD zenders</th>\n\t\t\t\t\t\t\t<th>").concat(z.hd, "</th\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t</thead>\n\t\t\t\t\t<tbody>\n\t\t\t\t\t\t").concat(this.televisieSectieTD('app', 'App'), "\n\t\t\t\t\t\t").concat(this.televisieSectieTD('opnemen', 'Opnemen'), "\n\t\t\t\t\t\t").concat(this.televisieSectieTD('replay', 'Replay'), "\n\t\t\t\t\t\t").concat(this.televisieSectieTD('begin-gemist', 'Begin gemist'), "\n\t\t\t\t\t\t").concat(this.televisieSectieTD('opnemen-replay-begin-gemist-samen', 'Opnemen, terugkijken, begin gemist'), "\n\t\t\t\t\t\t").concat(this.televisieBundels(), "\n\t\t\t\t\t<tbody>\n\n\t\t\t\t</table>\n\n\t\t\t\t<!--<footer class='provider-pakketten-vergelijking-sectie_footer'>\n\t\t\t\t\t<a href='#' class='blauwe-knop knop' data-kz-func='aantal-zenders-modal' data-pakket-id='").concat(this.pakket.ID, "'>meer over deze televisiebundel</a>\n\t\t\t\t</footer>-->\n\n\t\t\t</div>\n\t\t");
   },
   televisieBundels: function televisieBundels() {
-    var _this2 = this;
+    var _this3 = this;
 
     var s = String(this.pakket.pakHuidigeSnelheid()),
         families = ['plus', 'erotiek', 'foxsportseredivisie', 'foxsportsinternationaal', 'foxsportscompleet', 'ziggosporttotaal', 'film1'],
@@ -3111,9 +3041,9 @@ var kzRenderVergelijking = {
           n = n.join(' ');
           n = n.charAt(0).toUpperCase() + n.slice(1);
 
-          var _s = _this2.pakket.optieAantal(optieNaam) ? "<tr><td>".concat(n, "</td><td>").concat(_this2.pakket.optiePrijs(optieNaam, true), "</td></tr>") : '';
+          var _s2 = _this3.pakket.optieAantal(optieNaam) ? "<tr><td>".concat(n, "</td><td>").concat(_this3.pakket.optiePrijs(optieNaam, true), "</td></tr>") : '';
 
-          ret.push(_s);
+          ret.push(_s2);
         }
       });
     };
@@ -3131,7 +3061,7 @@ var kzRenderVergelijking = {
     return "\n\t\t\t<div class='provider-pakketten-vergelijking-sectie'>\n\n\t\t\t\t<header>\n\t\t\t\t\t<svg class='svg-installatie'  xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><style>.bc3ed8cd-2d3b-4536-a97d-59b790106817{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class=\"bc3ed8cd-2d3b-4536-a97d-59b790106817\" d=\"M51.54,90.63l4.31-1.78A4.52,4.52,0,0,0,58.3,83l-1.11-2.68a27.65,27.65,0,0,0,5.67-5.66l2.67,1.1a4.52,4.52,0,0,0,5.9-2.44L73.23,69a4.52,4.52,0,0,0-2.45-5.9l-4-1.63a1.74,1.74,0,0,0-1.32,3.22l4,1.64A1,1,0,0,1,70,67.63L68.23,72a1.08,1.08,0,0,1-.57.56,1,1,0,0,1-.79,0l-4-1.64a1.74,1.74,0,0,0-2.11.64,23.92,23.92,0,0,1-6.71,6.7,1.75,1.75,0,0,0-.65,2.12l1.63,4a1,1,0,0,1-.56,1.36L50.2,87.42a1,1,0,0,1-.8,0,1.06,1.06,0,0,1-.56-.56l-1.64-4a1.7,1.7,0,0,0-2-1,24.15,24.15,0,0,1-9.47,0,1.77,1.77,0,0,0-2,1l-1.63,4a1,1,0,0,1-1.36.56l-4.31-1.79a1.06,1.06,0,0,1-.57-.57,1.08,1.08,0,0,1,0-.79l1.64-4A1.74,1.74,0,0,0,27,78.2a23.82,23.82,0,0,1-6.71-6.71,1.75,1.75,0,0,0-2.12-.65l-4,1.63a1,1,0,0,1-.79,0,1,1,0,0,1-.56-.56L11,67.6a1,1,0,0,1,0-.79,1,1,0,0,1,.56-.57l4-1.64a1.72,1.72,0,0,0,1-1.95,24.34,24.34,0,0,1,0-9.47,1.77,1.77,0,0,0-1-2l-4-1.63A1,1,0,0,1,11,48.23l1.79-4.31a1.05,1.05,0,0,1,1.36-.57l4,1.64a1.73,1.73,0,0,0,2.11-.63A24,24,0,0,1,27,37.65a1.75,1.75,0,0,0,.65-2.12l-1.63-4a1,1,0,0,1,.56-1.35l4.31-1.78a1,1,0,0,1,.8,0,1.06,1.06,0,0,1,.56.56l1.64,4a1.74,1.74,0,0,0,3.22-1.32l-1.64-4A4.53,4.53,0,0,0,33,25.23a4.43,4.43,0,0,0-3.45,0L25.23,27a4.52,4.52,0,0,0-2.45,5.9l1.11,2.68a27.45,27.45,0,0,0-5.67,5.67l-2.67-1.11a4.51,4.51,0,0,0-5.9,2.45L7.83,46.91a4.52,4.52,0,0,0,2.45,5.9L13,53.92a27.57,27.57,0,0,0,0,8L10.28,63a4.54,4.54,0,0,0-2.45,2.44,4.6,4.6,0,0,0,0,3.46l1.78,4.31a4.53,4.53,0,0,0,2.45,2.45,4.58,4.58,0,0,0,3.45,0l2.68-1.11a27.45,27.45,0,0,0,5.67,5.67l-1.11,2.67a4.48,4.48,0,0,0,0,3.45,4.54,4.54,0,0,0,2.44,2.45l4.32,1.8a4.51,4.51,0,0,0,5.9-2.45l1.11-2.68a27.57,27.57,0,0,0,8,0l1.11,2.68a4.51,4.51,0,0,0,5.9,2.45Z\"/><path class=\"bc3ed8cd-2d3b-4536-a97d-59b790106817\" d=\"M26.36,58A14.19,14.19,0,0,0,40.53,72.11h.11A14.19,14.19,0,0,0,54.72,57.83,1.74,1.74,0,0,0,53,56.1h0a1.72,1.72,0,0,0-1.72,1.76,10.69,10.69,0,0,1-3.09,7.59,10.58,10.58,0,0,1-7.53,3.19h-.07a10.7,10.7,0,0,1-.07-21.4,1.72,1.72,0,0,0,1.72-1.76,1.74,1.74,0,0,0-1.74-1.72h0A14.18,14.18,0,0,0,26.36,58Z\"/><path class=\"bc3ed8cd-2d3b-4536-a97d-59b790106817\" d=\"M70,5.48h-3.4a3.77,3.77,0,0,0-3.76,3.77V11A20.22,20.22,0,0,0,58,13l-1.23-1.24a3.77,3.77,0,0,0-2.66-1.1,3.7,3.7,0,0,0-2.66,1.1L49,14.16a3.74,3.74,0,0,0,0,5.32l1.23,1.23a20,20,0,0,0-2,4.82H46.5a3.77,3.77,0,0,0-3.77,3.77v3.4a3.77,3.77,0,0,0,3.77,3.77h1.74a20,20,0,0,0,2,4.82L49,42.52a3.75,3.75,0,0,0-1.11,2.66A3.68,3.68,0,0,0,49,47.84l2.39,2.4a3.8,3.8,0,0,0,2.66,1.11,3.7,3.7,0,0,0,2.66-1.11L58,49a20.22,20.22,0,0,0,4.83,2v1.74a3.77,3.77,0,0,0,3.76,3.77H70a3.77,3.77,0,0,0,3.77-3.77V51a20.22,20.22,0,0,0,4.83-2l1.23,1.24a3.76,3.76,0,0,0,2.66,1.11,3.67,3.67,0,0,0,2.65-1.11l2.4-2.4a3.78,3.78,0,0,0,0-5.32l-1.23-1.23a19.56,19.56,0,0,0,2-4.82H90a3.77,3.77,0,0,0,3.77-3.77V29.3A3.77,3.77,0,0,0,90,25.53H88.26a19.56,19.56,0,0,0-2-4.82l1.23-1.23a3.78,3.78,0,0,0,0-5.32l-2.4-2.4a3.75,3.75,0,0,0-2.65-1.1,3.67,3.67,0,0,0-2.66,1.1L78.55,13a20.22,20.22,0,0,0-4.83-2V9.25A3.8,3.8,0,0,0,70,5.48Zm7.87,11.16a1.76,1.76,0,0,0,1,.3A1.69,1.69,0,0,0,80,16.43l2.2-2.2a.31.31,0,0,1,.2-.09.27.27,0,0,1,.19.09L85,16.62A.29.29,0,0,1,85,17l-2.2,2.2a1.73,1.73,0,0,0-.22,2.2,17,17,0,0,1,2.58,6.2A1.74,1.74,0,0,0,86.87,29H90a.27.27,0,0,1,.28.28v3.4A.27.27,0,0,1,90,33H86.87a1.72,1.72,0,0,0-1.7,1.41,17,17,0,0,1-2.58,6.2,1.76,1.76,0,0,0,.22,2.2L85,45a.29.29,0,0,1,0,.39l-2.4,2.39a.27.27,0,0,1-.19.09.31.31,0,0,1-.2-.09L80,45.54a1.73,1.73,0,0,0-2.2-.22,17.13,17.13,0,0,1-6.19,2.58,1.74,1.74,0,0,0-1.41,1.7v3.12a.28.28,0,0,1-.28.28h-3.4a.27.27,0,0,1-.28-.28V49.6a1.73,1.73,0,0,0-1.41-1.7,17.1,17.1,0,0,1-6.2-2.58,1.75,1.75,0,0,0-2.2.22l-2.2,2.2a.26.26,0,0,1-.2.08.25.25,0,0,1-.19-.08l-2.39-2.4a.24.24,0,0,1-.09-.19.27.27,0,0,1,.09-.2l2.2-2.2a1.74,1.74,0,0,0,.21-2.2,16.93,16.93,0,0,1-2.57-6.19A1.75,1.75,0,0,0,49.6,33H46.48a.28.28,0,0,1-.28-.29V29.27a.28.28,0,0,1,.28-.29H49.6a1.74,1.74,0,0,0,1.71-1.4,16.91,16.91,0,0,1,2.57-6.2,1.75,1.75,0,0,0-.21-2.2L51.47,17a.24.24,0,0,1-.09-.2.24.24,0,0,1,.09-.19l2.39-2.4a.25.25,0,0,1,.19-.08.26.26,0,0,1,.2.08l2.2,2.21a1.74,1.74,0,0,0,2.2.21A16.91,16.91,0,0,1,64.85,14a1.75,1.75,0,0,0,1.41-1.71V9.25A.27.27,0,0,1,66.54,9h3.4a.28.28,0,0,1,.28.28v3.11a1.74,1.74,0,0,0,1.41,1.71A16.93,16.93,0,0,1,77.82,16.64Z\"/><path class=\"bc3ed8cd-2d3b-4536-a97d-59b790106817\" d=\"M57.91,31A10.36,10.36,0,1,0,68.26,20.62,10.37,10.37,0,0,0,57.91,31Zm17.2,0a6.87,6.87,0,1,1-6.87-6.86A6.88,6.88,0,0,1,75.11,31Z\"/></svg>\n\t\t\t\t\t<h3>Installatie</h3>\n\t\t\t\t</header>\n\n\t\t\t\t<table>\n\t\t\t\t\t<tbody>\n\t\t\t\t\t\t".concat(this.installatieSectieTD('installatie-dhz', 'Doe het zelf'), "\n\t\t\t\t\t\t").concat(this.installatieSectieTD('installatie-basis', 'Basisinstallatie'), "\n\t\t\t\t\t\t").concat(this.installatieSectieTD('installatie-volledig', 'Volledige installatie'), "\n\t\t\t\t\t</tbody>\n\t\t\t\t</table>\n\n\t\t\t</div>\n\t\t");
   },
   kostenSectie: function kostenSectie() {
-    return "\n\t\t\t<div class='provider-pakketten-vergelijking-sectie'>\n\n\t\t\t\t<header>\n\t\t\t\t\t<svg\n\t\t\t\t\t\tclass='svg-kosten'\n\t\t\t\t\t\txmlns=\"http://www.w3.org/2000/svg\"\n\t\t\t\t\t\tviewBox=\"0 0 100 100\"><defs><style>.90a4297-b0d6-49b3-bfa6-51cb9d624468{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class=\"390a4297-b0d6-49b3-bfa6-51cb9d624468\" d=\"M64.64,54.26a2.18,2.18,0,0,0-.59,1.61,2.38,2.38,0,1,0,2.34-2.34A2.36,2.36,0,0,0,64.64,54.26Zm-5.27,8.63v-14H82.79v14ZM29.66,25.43l41.27-6.74,1,6.74ZM17.21,30.11H78.1v14H59.37a4.75,4.75,0,0,0-4.69,4.68v14a4.75,4.75,0,0,0,4.69,4.69H78.1v14H17.21Zm65.58,14v-14a4.75,4.75,0,0,0-4.69-4.68H76.64l-1.47-9.81a2.17,2.17,0,0,0-1-1.46,2.39,2.39,0,0,0-1.83-.44L21.46,22.06a2.3,2.3,0,0,0-1.46.88,2.18,2.18,0,0,0-.44,1.75l.14.74H17.21a4.5,4.5,0,0,0-3.29,1.39,4.47,4.47,0,0,0-1.39,3.29V81.63a4.47,4.47,0,0,0,1.39,3.29,4.5,4.5,0,0,0,3.29,1.39H78.1a4.75,4.75,0,0,0,4.69-4.68v-14a4.75,4.75,0,0,0,4.68-4.69v-14a4.75,4.75,0,0,0-4.68-4.68Z\"/></svg>\n\t\t\t\t\t<h3>Kosten</h3>\n\t\t\t\t</header>\n\n\t\t\t\t<table>\n\n\t\t\t\t\t<tbody>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td><strong>Borg apparatuur</strong></td>\n\t\t\t\t\t\t\t<td>".concat(this.pakket.optiePrijs('borg', true), "</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td><strong>Eenmalig totaal</strong></td>\n\t\t\t\t\t\t\t<td>").concat(this.pakket.eenmaligTotaal(true), "</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td><strong>Maandelijks totaal</strong></td>\n\t\t\t\t\t\t\t<td>").concat(this.pakket.maandelijksTotaal(true), "</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t<tbody>\n\n\t\t\t\t</table>\n\n\t\t\t</div>\n\t\t");
+    return "\n\t\t\t<div class='provider-pakketten-vergelijking-sectie'>\n\n\t\t\t\t<header>\n\t\t\t\t\t<svg\n\t\t\t\t\t\tclass='svg-kosten'\n\t\t\t\t\t\txmlns=\"http://www.w3.org/2000/svg\"\n\t\t\t\t\t\tviewBox=\"0 0 100 100\"><defs><style>.90a4297-b0d6-49b3-bfa6-51cb9d624468{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class=\"390a4297-b0d6-49b3-bfa6-51cb9d624468\" d=\"M64.64,54.26a2.18,2.18,0,0,0-.59,1.61,2.38,2.38,0,1,0,2.34-2.34A2.36,2.36,0,0,0,64.64,54.26Zm-5.27,8.63v-14H82.79v14ZM29.66,25.43l41.27-6.74,1,6.74ZM17.21,30.11H78.1v14H59.37a4.75,4.75,0,0,0-4.69,4.68v14a4.75,4.75,0,0,0,4.69,4.69H78.1v14H17.21Zm65.58,14v-14a4.75,4.75,0,0,0-4.69-4.68H76.64l-1.47-9.81a2.17,2.17,0,0,0-1-1.46,2.39,2.39,0,0,0-1.83-.44L21.46,22.06a2.3,2.3,0,0,0-1.46.88,2.18,2.18,0,0,0-.44,1.75l.14.74H17.21a4.5,4.5,0,0,0-3.29,1.39,4.47,4.47,0,0,0-1.39,3.29V81.63a4.47,4.47,0,0,0,1.39,3.29,4.5,4.5,0,0,0,3.29,1.39H78.1a4.75,4.75,0,0,0,4.69-4.68v-14a4.75,4.75,0,0,0,4.68-4.69v-14a4.75,4.75,0,0,0-4.68-4.68Z\"/></svg>\n\t\t\t\t\t<h3>Kosten</h3>\n\t\t\t\t</header>\n\n\t\t\t\t<table>\n\n\t\t\t\t\t<tbody>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td><strong>Borg apparatuur</strong></td>\n\t\t\t\t\t\t\t<td>".concat(this.pakket.formatteerPrijs(this.pakket.eigenschappen.borg.basis_borg.prijs), "</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td><strong>Eenmalige kosten</strong></td>\n\t\t\t\t\t\t\t<td>").concat(this.pakket.eenmaligTotaal(true), "</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td><strong>Maandelijks totaal</strong></td>\n\t\t\t\t\t\t\t<td>").concat(this.pakket.maandelijksTotaal(true), "</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t<tbody>\n\n\t\t\t\t</table>\n\n\t\t\t</div>\n\t\t");
   },
   aanvullendeSectie: function aanvullendeSectie() {
     if (!this.pakket.eigenschappen.teksten.aanvullende_informatie) return '';

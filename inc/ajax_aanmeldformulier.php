@@ -192,7 +192,7 @@ function keuzehulp_haal_aanmeldformulier() {
 		) .
 
 		keuzehulp_form_rij(
-			'<span class="veld-span">Eenmalige prijs</span>',
+			'<span class="veld-span">Eenmalige kosten</span>',
 			 "<span class='eenmalig-totaal veld-span'></span>"
 		) .
 
@@ -477,7 +477,9 @@ function keuzehulp_haal_aanmeldformulier() {
 								'waarde'	=> $p,
 								'func'		=> in_array($tv_pakket_naam, ['FoxSportsEredivisie', 'FoxSportsInternationaal', 'FoxSportsCompleet']) ? "fox-sports" : '',
 								'label'		=> $svgs,
-								'eclass'	=> 'tv-pakket'
+								'eclass'	=> 'tv-pakket',
+								'suboptietype'	=> $dit_pakket['suboptietype'],
+								'optienaam'	=> $dit_pakket['naam'],
 							)),
 							"<span class='veld-flex'><span>".ucfirst($dit_pakket['naam'])."</span><span>".kz_maak_geld_op($p)."</span>$tt</span>"
 						);
@@ -499,14 +501,20 @@ function keuzehulp_haal_aanmeldformulier() {
 	endif; //heeft TV
 
 	// zet de TV_inhoud in print
-	if ($tv_inhoud && $tv_inhoud !== '') {
-		$print .= keuzehulp_form_sectie(
-			'Televisie',
-			$tv_inhoud,
-			"<svg class='svg-tv' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><style>.\32 5a40c2a-e21f-4ff6-8508-46524cd51bfe{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class='25a40c2a-e21f-4ff6-8508-46524cd51bfe' d='M86.9,15.56v-.12H13.05v.12A4.89,4.89,0,0,0,8.6,19.94V68.47a4.71,4.71,0,0,0,.65,2.43,4.53,4.53,0,0,0,4.21,2.47H40.12V80.1H35.05a2.23,2.23,0,1,0,0,4.46H64.91a2.23,2.23,0,1,0,0-4.46H59.84V73.37H86.5a4.52,4.52,0,0,0,4.21-2.47,4.86,4.86,0,0,0,.69-2.43V19.94A5,5,0,0,0,86.9,15.56Zm0,4.78V68.47c0,.29-.12.41-.4.41h-73c-.28,0-.41-.12-.41-.41V19.94H86.9v.4Z'/></svg>",
-			'Jouw gekozen opties:'
-		);
+	if (
+		(!$op_iwwiw && ($keuzehulp['televisie'] === '2' || $keuzehulp['televisie'] === '3') )
+		|| ($op_iwwiw && ($keuzehulp['ik-weet-wat-ik-wil'] === '3' || $keuzehulp['ik-weet-wat-ik-wil'] === '4') )
+	) {
+		if ($tv_inhoud && $tv_inhoud !== '') {
+			$print .= keuzehulp_form_sectie(
+				'Televisie',
+				$tv_inhoud,
+				"<svg class='svg-tv' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><style>.\32 5a40c2a-e21f-4ff6-8508-46524cd51bfe{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class='25a40c2a-e21f-4ff6-8508-46524cd51bfe' d='M86.9,15.56v-.12H13.05v.12A4.89,4.89,0,0,0,8.6,19.94V68.47a4.71,4.71,0,0,0,.65,2.43,4.53,4.53,0,0,0,4.21,2.47H40.12V80.1H35.05a2.23,2.23,0,1,0,0,4.46H64.91a2.23,2.23,0,1,0,0-4.46H59.84V73.37H86.5a4.52,4.52,0,0,0,4.21-2.47,4.86,4.86,0,0,0,.69-2.43V19.94A5,5,0,0,0,86.9,15.56Zm0,4.78V68.47c0,.29-.12.41-.4.41h-73c-.28,0-.41-.12-.41-.41V19.94H86.9v.4Z'/></svg>",
+				'Jouw gekozen opties:'
+			);
+		}		
 	}
+
 
 
 
@@ -599,7 +607,7 @@ function keuzehulp_haal_aanmeldformulier() {
 						'label'		=> $svgs
 					)),
 					"<span class='veld-flex'><span>Nummerbehoud extra vast nummer</span></span>",
-					(!!kz_optie_aantal('extra-vast-nummer') ? '' : 'heeft-sub-rij sub-rij'),
+					(!!kz_optie_aantal('extra-vast-nummer', $eigenschappen) ? '' : 'heeft-sub-rij sub-rij'),
 					array(
 						keuzehulp_input (array(
 							'naam'		=> 'huidige_extra_nummer',
@@ -629,13 +637,22 @@ function keuzehulp_haal_aanmeldformulier() {
 
 
 	// zet bel inhoud op print HTML
-	if ($bel_inhoud && $bel_inhoud !== '') {
-		$print .= keuzehulp_form_sectie(
-			'Bellen',
-			$bel_inhoud,
-			"<svg class='svg-bellen' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><style>.e97ef855-384b-4714-91e0-2d37881c1420{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class='e97ef855-384b-4714-91e0-2d37881c1420' d='M70.94,58.25a7.15,7.15,0,0,0-5.18-2.38,7.43,7.43,0,0,0-5.24,2.36l-4.84,4.83-1.18-.61c-.55-.28-1.07-.54-1.52-.81a52.83,52.83,0,0,1-12.61-11.5,30.92,30.92,0,0,1-4.13-6.52c1.25-1.15,2.42-2.35,3.55-3.5.43-.42.86-.87,1.29-1.3,3.22-3.21,3.22-7.38,0-10.6L36.9,24c-.48-.48-1-1-1.43-1.46-.92-.95-1.88-1.93-2.88-2.85a7.24,7.24,0,0,0-5.13-2.25,7.5,7.5,0,0,0-5.21,2.25l0,0L17,25a11.18,11.18,0,0,0-3.32,7.12,26.84,26.84,0,0,0,2,11.37A65.89,65.89,0,0,0,27.37,63.06a72.09,72.09,0,0,0,24,18.8,37.2,37.2,0,0,0,13.48,4l1,0a11.54,11.54,0,0,0,8.84-3.8s0,0,.06-.07a34.89,34.89,0,0,1,2.69-2.78c.65-.62,1.33-1.28,2-2A7.68,7.68,0,0,0,81.71,72a7.36,7.36,0,0,0-2.36-5.26Zm5.48,16.13s0,0,0,0c-.59.65-1.21,1.23-1.86,1.87a39.39,39.39,0,0,0-3,3.07,7.4,7.4,0,0,1-5.76,2.43h-.71a33.14,33.14,0,0,1-11.95-3.59A68.15,68.15,0,0,1,30.57,60.44a62.05,62.05,0,0,1-11-18.37,21.8,21.8,0,0,1-1.72-9.59,7,7,0,0,1,2.12-4.55l5.22-5.23a3.5,3.5,0,0,1,2.33-1.08,3.27,3.27,0,0,1,2.24,1.07l0,0c.94.87,1.83,1.77,2.76,2.74L34,27l4.18,4.19c1.62,1.62,1.62,3.12,0,4.75-.45.44-.87.88-1.32,1.31C35.56,38.53,34.34,39.76,33,41c0,0-.07,0-.08.08a3.14,3.14,0,0,0-.8,3.48l0,.13a33.61,33.61,0,0,0,5,8.08h0A56.22,56.22,0,0,0,50.75,65.11c.63.4,1.27.72,1.88,1s1.07.54,1.52.81l.18.11a3.32,3.32,0,0,0,1.52.38,3.29,3.29,0,0,0,2.33-1l5.24-5.24A3.43,3.43,0,0,1,65.73,60a3.14,3.14,0,0,1,2.21,1.11l0,0,8.44,8.44C78,71.15,78,72.76,76.42,74.38Z'/><path class='e97ef855-384b-4714-91e0-2d37881c1420' d='M52.8,30.55A19.72,19.72,0,0,1,68.86,46.61a2,2,0,0,0,2,1.71,2.19,2.19,0,0,0,.36,0A2.08,2.08,0,0,0,73,45.9,23.88,23.88,0,0,0,53.52,26.47a2.09,2.09,0,0,0-2.39,1.69A2,2,0,0,0,52.8,30.55Z'/><path class='e97ef855-384b-4714-91e0-2d37881c1420' d='M86.08,45.3a39.3,39.3,0,0,0-32-32,2.07,2.07,0,1,0-.68,4.08A35.07,35.07,0,0,1,82,46a2.07,2.07,0,0,0,4.08-.68Z'/></svg>",
-			'Jouw gekozen opties:'
-		);
+
+
+
+
+	if (
+		(!$op_iwwiw && $keuzehulp['bellen'] !== '1') 
+		|| $op_iwwiw && ($keuzehulp['ik-weet-wat-ik-wil'] === '2' || $keuzehulp['ik-weet-wat-ik-wil'] === '4')
+	) {
+		if ($bel_inhoud && $bel_inhoud !== '') {
+			$print .= keuzehulp_form_sectie(
+				'Bellen',
+				$bel_inhoud,
+				"<svg class='svg-bellen' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><style>.e97ef855-384b-4714-91e0-2d37881c1420{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class='e97ef855-384b-4714-91e0-2d37881c1420' d='M70.94,58.25a7.15,7.15,0,0,0-5.18-2.38,7.43,7.43,0,0,0-5.24,2.36l-4.84,4.83-1.18-.61c-.55-.28-1.07-.54-1.52-.81a52.83,52.83,0,0,1-12.61-11.5,30.92,30.92,0,0,1-4.13-6.52c1.25-1.15,2.42-2.35,3.55-3.5.43-.42.86-.87,1.29-1.3,3.22-3.21,3.22-7.38,0-10.6L36.9,24c-.48-.48-1-1-1.43-1.46-.92-.95-1.88-1.93-2.88-2.85a7.24,7.24,0,0,0-5.13-2.25,7.5,7.5,0,0,0-5.21,2.25l0,0L17,25a11.18,11.18,0,0,0-3.32,7.12,26.84,26.84,0,0,0,2,11.37A65.89,65.89,0,0,0,27.37,63.06a72.09,72.09,0,0,0,24,18.8,37.2,37.2,0,0,0,13.48,4l1,0a11.54,11.54,0,0,0,8.84-3.8s0,0,.06-.07a34.89,34.89,0,0,1,2.69-2.78c.65-.62,1.33-1.28,2-2A7.68,7.68,0,0,0,81.71,72a7.36,7.36,0,0,0-2.36-5.26Zm5.48,16.13s0,0,0,0c-.59.65-1.21,1.23-1.86,1.87a39.39,39.39,0,0,0-3,3.07,7.4,7.4,0,0,1-5.76,2.43h-.71a33.14,33.14,0,0,1-11.95-3.59A68.15,68.15,0,0,1,30.57,60.44a62.05,62.05,0,0,1-11-18.37,21.8,21.8,0,0,1-1.72-9.59,7,7,0,0,1,2.12-4.55l5.22-5.23a3.5,3.5,0,0,1,2.33-1.08,3.27,3.27,0,0,1,2.24,1.07l0,0c.94.87,1.83,1.77,2.76,2.74L34,27l4.18,4.19c1.62,1.62,1.62,3.12,0,4.75-.45.44-.87.88-1.32,1.31C35.56,38.53,34.34,39.76,33,41c0,0-.07,0-.08.08a3.14,3.14,0,0,0-.8,3.48l0,.13a33.61,33.61,0,0,0,5,8.08h0A56.22,56.22,0,0,0,50.75,65.11c.63.4,1.27.72,1.88,1s1.07.54,1.52.81l.18.11a3.32,3.32,0,0,0,1.52.38,3.29,3.29,0,0,0,2.33-1l5.24-5.24A3.43,3.43,0,0,1,65.73,60a3.14,3.14,0,0,1,2.21,1.11l0,0,8.44,8.44C78,71.15,78,72.76,76.42,74.38Z'/><path class='e97ef855-384b-4714-91e0-2d37881c1420' d='M52.8,30.55A19.72,19.72,0,0,1,68.86,46.61a2,2,0,0,0,2,1.71,2.19,2.19,0,0,0,.36,0A2.08,2.08,0,0,0,73,45.9,23.88,23.88,0,0,0,53.52,26.47a2.09,2.09,0,0,0-2.39,1.69A2,2,0,0,0,52.8,30.55Z'/><path class='e97ef855-384b-4714-91e0-2d37881c1420' d='M86.08,45.3a39.3,39.3,0,0,0-32-32,2.07,2.07,0,1,0-.68,4.08A35.07,35.07,0,0,1,82,46a2.07,2.07,0,0,0,4.08-.68Z'/></svg>",
+				'Jouw gekozen opties:'
+			);
+		}
 	}
 
 
@@ -784,16 +801,9 @@ function keuzehulp_haal_aanmeldformulier() {
 			"<span class='eenmalig-totaal'></span>"
 		) .
 		keuzehulp_form_rij (
-			'Waarvan borg',
-			kz_maak_geld_op($eigenschappen['eenmalig']['borg']['prijs'])
-		) . ((float)$eigenschappen['eenmalig']['glasvezel_naar_huis']['prijs'] > 0.01
-			?
-				keuzehulp_form_rij (
-					'Waarvan kosten glasvezel naar huis doortrekken',
-					kz_maak_geld_op($eigenschappen['eenmalig']['glasvezel_naar_huis']['prijs'])
-				)
-			: ''
-		) .
+			'borg',
+			"<span class='borg-totaal'></span>"
+		) . 
 		keuzehulp_form_rij (
 			'Totaal maandelijks',
 			"<span class='maandelijks-totaal'></span>"

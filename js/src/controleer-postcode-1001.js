@@ -62,17 +62,12 @@ function postcodeAjaxCB(r) {
 
 		} else if (r.status === '0') {
 
-			kzRouting.ga(2);
 
-/*			if (r.provider_beschikbaar) {
-				kzModal(
-					kzTekst('succes_coax'),
-					2000,
-				);
-				kzRouting.ga(2);
+			if (r.provider_beschikbaar) {
+				kzRouting.ga(20);
 			} else {
 				logFouteSituatiePostcodeCheck(r);
-			} */
+			} 
 
 		} else {
 
@@ -146,7 +141,7 @@ function controleerPostcode() {
 	| 	herkent adhv of formulier bestaat of niet, dan wordt die persoon doorgestuurd naar /keuzehulp
 	| 	Dus bijvoorbeeld verversen in keuzehulp/nep-URI -> 404 -> /keuzehulp
 	|
-	|-----------------------------------------------------*/
+	|-----------------------------------------------------*/ 
 
 
 	const postcodeForm = doc.getElementById('keuze-postcodeform');

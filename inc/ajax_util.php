@@ -86,9 +86,12 @@ function keuzehulp_pakket_eigenschappen_basis_eenmalig_concreet($eenmalig, $gc_i
 
 	// nu waarde uit werk overschrijven met waarden die regiospecifiek zijn, als dit de huidige gc_id heeft.
 	foreach ($eenmalig as $e) {
-		if ($e['regio_specifiek'] and in_array($gc_id, $e['regio_specifiek'])) {
-			$werk = (float) $e['prijs'];
+		if (array_key_exists('regio_specifiek', $e)) {
+			if ($e['regio_specifiek'] and in_array($gc_id, $e['regio_specifiek'])) {
+				$werk = (float) $e['prijs'];
+			}
 		}
+
 	}
 
 	return $werk;
@@ -336,7 +339,16 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 			)
 		));
 
-		$return['eenmalig']['borg'] = new Kz_optie(array(
+/*((float)$eigenschappen['eenmalig']['glasvezel_naar_huis']['prijs'] > 0.01
+			?
+				keuzehulp_form_rij (
+					'Waarvan kosten glasvezel naar huis doortrekken',
+					kz_maak_geld_op($eigenschappen['eenmalig']['glasvezel_naar_huis']['prijs'])
+				)
+			: ''
+		) .*/		
+
+		$return['borg']['basis_borg'] = new Kz_optie(array(
 			'naam'		=> 'borg',
 			'aantal'	=> 1,
 			'prijs'		=> (float) $financieel['borg'],
@@ -448,9 +460,9 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 
 		//voorbewerken zenderuitzonderingen
 		$zo_verz = array();
-		foreach ($zender_uitzonderingen as $zo) {
+		if ($zender_uitzonderingen and count($zender_uitzonderingen)) : foreach ($zender_uitzonderingen as $zo) {
 			$zo_verz[(string)($zo['snelheid'])] = $zo['uitzondering_zenders'];
-		}
+		} endif;
 
 		foreach ($snelheden as $s){
 
@@ -629,8 +641,10 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 
 		}
 
-
-		$return['tv_type'] = wp_get_post_terms($p->ID, 'tv-type')[0]->name;
+		if ($p_tv_type = wp_get_post_terms($p->ID, 'tv-type')){
+			$return['tv_type'] = $p_tv_type[0]->name;
+		}
+		
 
 	}
 
@@ -814,6 +828,8 @@ function keuzehulp_input ($params = array()) {
 		'type'		=> 'checkbox',
 		'eclass'	=> '',
 		'label'		=> '',
+		'suboptietype'=> '',
+		'optienaam'=> '',
 	);
 	foreach ($terugval as $s => $w) {
 		if (!(array_key_exists($s, $params))) {
@@ -829,6 +845,8 @@ function keuzehulp_input ($params = array()) {
 	$type = $params['type'];		// text, number, etc
 	$class = !!$value ? 'actief' : ''; // checked unchecked
 	$eclass = $params['eclass'];	// zoals hidden
+	$suboptietype = $params['suboptietype'];	
+	$optienaam = $params['optienaam'];	
 
 	$tekst = $waarde !== '' ? kz_maak_geld_op($waarde) : '';
 
@@ -854,6 +872,8 @@ function keuzehulp_input ($params = array()) {
 				data-kz-vorige-value='$value'
 				data-kz-value='$value'
 				data-kz-func='update-hidden $func'
+				data-kz-suboptietype='$suboptietype'
+				data-kz-optienaam='$optienaam'
 				$v
 				$f
 			>
@@ -869,6 +889,8 @@ function keuzehulp_input ($params = array()) {
 				data-kz-waarde='$waarde'
 				data-kz-vorige-value='$value'
 				data-kz-value='$value'
+				data-kz-suboptietype='$suboptietype'
+				data-kz-optienaam='$optienaam'
 				>
 				<span class='label'>$label</span>
 			</div>";

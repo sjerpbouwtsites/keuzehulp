@@ -127,7 +127,7 @@ class Kz_knop_combi extends Kz_knop {
 	public function als_single_select_blauwe_knop (){
 		return in_array('multiselect', (explode(' ', $this->class)))
 		? ''
-		: "<span>DIT PAST BIJ MIJ</span>".file_get_contents (plugin_dir_path(__FILE__)."../iconen-nieuw/svg/dichtklappen.svg");
+		: "<span>KIES</span>".file_get_contents (plugin_dir_path(__FILE__)."../iconen-nieuw/svg/dichtklappen.svg");
 	}
 
 	public function maak_knop() {

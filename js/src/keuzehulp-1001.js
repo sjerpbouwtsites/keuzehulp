@@ -45,12 +45,6 @@ function kzInit() {
 	|
 	|-----------------------------------------------------*/
 
-
-	// alleen draaien op keuzehulp !
-	if (location.href.indexOf('keuzehulp') === -1) {
-		return false;
-	}
-
 	$ = jQuery;
 
 	// afhandeling van navigatie

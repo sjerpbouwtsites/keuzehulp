@@ -789,7 +789,7 @@ function postcodeAjaxCB(r) {
       }
     } else if (r.status === '0') {
       if (r.provider_beschikbaar) {
-        kzRouting.ga(20);
+        kzRouting.ga(2);
       } else {
         logFouteSituatiePostcodeCheck(r);
       }
@@ -1453,11 +1453,6 @@ function kzInit() {
   | 	Deze functie start alles op!
   |
   |-----------------------------------------------------*/
-  // alleen draaien op keuzehulp !
-  if (location.href.indexOf('keuzehulp') === -1) {
-    return false;
-  }
-
   $ = jQuery; // afhandeling van navigatie
 
   kzRouting.init(); // dispatcher zit op de body te luisteren en stuurt functies aan.
@@ -2004,6 +1999,7 @@ function VerrijktPakket(p) {
   };
 
   this.vindOptieSleutel = function (zoek) {
+    console.dir(zoek);
     var naam = zoek.naam,
         optietype = zoek.optietype,
         suboptietype = zoek.suboptietype,
@@ -2014,7 +2010,7 @@ function VerrijktPakket(p) {
           sleutel = _ref8[0],
           optie = _ref8[1];
 
-      return ![!naam || optie.naam === naam, !optietype || optie.optietype === optietype, !suboptietype || optie.suboptietype === suboptietype, !snelheid || optie.snelheid === snelheid].includes(false);
+      return ![!naam || optie.naam === naam, !optietype || optie.optietype === optietype, !suboptietype || optie.suboptietype === suboptietype, !snelheid || optie.snelheid == snelheid].includes(false);
     });
     return r[0];
   }; // doet niet meer dat de naam aangeeft.

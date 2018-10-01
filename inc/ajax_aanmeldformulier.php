@@ -269,7 +269,7 @@ function keuzehulp_haal_aanmeldformulier() {
 
 			$etp = kz_maak_geld_op_beide('extra-tv-ontvangers', $eigenschappen);
 
-			$veld2 ='<span class="veld-flex"><span>Extra TV ontvangers</span><span>'.$etp."</span>$tt</span>";
+			$veld2 ='<span class="veld-flex"><span>Extra TV ontvangers (per stuk)</span><span>'.$etp."</span>$tt</span>";
 
 			$tv_inhoud .= keuzehulp_form_rij ($veld1, $veld2, $koos_extra_tv ? "heeft-actieve-knop" : '');
 

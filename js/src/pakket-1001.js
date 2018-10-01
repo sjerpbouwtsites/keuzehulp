@@ -147,6 +147,8 @@ function VerrijktPakket(p) {
 
 	this.vindOptieSleutel = zoek => {
 
+		console.dir(zoek);
+
 		let {naam, optietype, suboptietype, snelheid} = zoek;
 		//als zoekopdracht niet meegegegeven, altijd ok.
 		const r = Object.entries(this.eigenschappen.maandelijks)
@@ -155,7 +157,7 @@ function VerrijktPakket(p) {
 				!naam || optie.naam === naam,
 				!optietype || optie.optietype === optietype,
 				!suboptietype || optie.suboptietype === suboptietype,
-				!snelheid || optie.snelheid === snelheid
+				!snelheid || optie.snelheid == snelheid
 			].includes(false);
 		});
 

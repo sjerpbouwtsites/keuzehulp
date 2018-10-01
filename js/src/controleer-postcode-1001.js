@@ -64,7 +64,7 @@ function postcodeAjaxCB(r) {
 
 
 			if (r.provider_beschikbaar) {
-				kzRouting.ga(20);
+				kzRouting.ga(2);
 			} else {
 				logFouteSituatiePostcodeCheck(r);
 			} 

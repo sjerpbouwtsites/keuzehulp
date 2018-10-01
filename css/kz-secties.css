@@ -29,6 +29,7 @@
 	}
 
 
+[data-kz-status="0"] .kz-sectie-2 .knoppendoos .kz-knop-combi:first-child, /* vergeljiking */
 [data-kz-status="0"] .kz-sectie-20 .knoppendoos .kz-knop-combi:last-child,
 [data-kz-status="0"] .kz-sectie-3 .knoppendoos .kz-knop-combi + .kz-knop-combi ~ .kz-knop-combi { /* zakelijk */
 	display: none;

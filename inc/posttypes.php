@@ -138,7 +138,7 @@ function Kz_registreer_posttypes() {
 
     $nieuw_pakket = new Kz_posttype_voorb('nieuw-pakket', 'nieuwe-pakketten');
     $nieuw_pakket->pas_args_aan(array( 'menu_icon'   => 'dashicons-cart', 'supports' => array( 'title' ) ));
-    $nieuw_pakket->maak_taxonomie('tv-type', 'tv-typen');
+//    $nieuw_pakket->maak_taxonomie('tv-type', 'tv-typen');
     $nieuw_pakket->maak_taxonomie('type', 'typen');
     $nieuw_pakket->registreer();
 
@@ -186,6 +186,33 @@ function Kz_registreer_posttypes() {
     );
 
     register_taxonomy( 'provider', array( 'telefonie-bundel', 'tv-bundel', 'nieuw-pakket', 'provider' ), $args );
+
+    //////////////////////
+
+    $labels = array(
+            'name'              => _x( 'TV-typen', 'taxonomy general name' ),
+            'singular_name'     => _x( 'TV-type', 'taxonomy singular name' ),
+            'search_items'      => __( 'Doorzoek tv-typen' ),
+            'all_items'         => __( 'Alle tv-typen' ),
+            'parent_item'       => __( 'Ouder tv-type' ),
+            'parent_item_colon' => __( 'Ouder tv-type:' ),
+            'edit_item'         => __( 'Bewerk tv-type' ),
+            'update_item'       => __( 'Vernieuw tv-type' ),
+            'add_new_item'      => __( 'Voeg nieuwe tv-type toe' ),
+            'new_item_name'     => __( 'Naam nieuwe tv-type' ),
+            'menu_name'         => __( 'TV-type' ),
+        );
+
+    $args = array(
+        'hierarchical'      => true,
+        'labels'            => $labels,
+        'show_ui'           => true,
+        'show_admin_column' => true,
+        'query_var'         => true,
+        'rewrite'           => array( 'slug' => 'tv-type' ),
+    );
+
+    register_taxonomy( 'tv-type', array('nieuw-pakket', 'tv-bundel' ), $args );
 
     //////////////////////
 

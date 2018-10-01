@@ -4,6 +4,13 @@ function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else i
 
 /* global doc, location, KzAjax, kzModal, kzTekst, gformInitDatepicker */
 function aanmeldformulierHaalWaardeUitRij(rij) {
+  /*--------------------------------------------------
+  |
+  |	Geeft de voor de 'rij' relevante waarde terug
+  |	Dit is verschillend voor tekstvelden, tv-pakketten, 
+  |	belpakketten, installaties
+  |
+  |**************************************************/
   var knop1 = rij.getElementsByClassName('knop')[0]; // is het een tekstveld, nummer oid?
 
   if (knop1.hasAttribute('type')) {
@@ -47,6 +54,14 @@ function aanmeldformulierHaalWaardeUitRij(rij) {
 }
 
 function kzMaakPrintMap() {
+  /*--------------------------------------------------
+  |
+  |	Creert object met daarin referenties van de aanmeldformulier 
+  | 	invoervelden naar de GF velden waarnaar geprint dient te worden
+  | 	Slaat dit object ter referentie op in een global; 
+  | 	maakt het maar één keer aan.
+  |
+  |**************************************************/
   if (window['kzPrintMappen']) return window['kzPrintMappen'];
 
   this.printMapInit = function (id) {
@@ -175,7 +190,8 @@ function haalPrintAanmeldformulier(knop) {
   |
   |-----------------------------------------------------*/
   // bereid pakket voor voor verzending
-  var pakket = window["kz-pakket-".concat(knop.getAttribute('kz-data-pakket-id'))];
+  var pakket = window["kz-pakket-".concat(knop.getAttribute('kz-data-pakket-id'))]; // zet veilig data-object op pakket met daarin de eigenschappen
+
   pakket.bereidJSONverzendingVoor();
   doc.getElementById('print-aanmeldformulier').innerHTML = '<p>Formulier wordt geladen...</p>';
   doc.getElementById('print-aanmeldformulier').setAttribute('data-pakket-id', pakket.ID);
@@ -195,8 +211,10 @@ function haalPrintAanmeldformulier(knop) {
       printPlek.innerHTML = '';
       $(printPlek).append($(r.print)); // de HTML van het formulier.
       // @TODO DYNAMISCH MAKEN
+      // het formulier kan proberen te printen naar een niet bestaande url
 
-      printPlek.getElementsByTagName('form')[0].setAttribute('action', "".concat(location.origin));
+      printPlek.getElementsByTagName('form')[0].setAttribute('action', "".concat(location.origin)); //@TODO DYNAMISCH MAKEN
+
       pakket = window["kz-pakket-".concat(r.id)]; // het zijn de click events die de verwerking van de data aanjagen..
 
       printPlek.addEventListener('change', function (e) {
@@ -239,12 +257,15 @@ function haalPrintAanmeldformulier(knop) {
       doc.getElementById('input_1_64').value = pakket.provider;
       doc.getElementById("input_1_81").value = JSON.parse(sessionStorage.getItem('kz-adres')).perceelcode; // schrijf opties naar GF
 
-      kzUpdateHidden();
-      kzInitialiseerGF(); // schrijf de user
+      kzUpdateHidden(); // oa de datepicker initialiseren
+
+      kzInitialiseerGF(); // schrijf de user naar de GF hidden fields
+      // kzUser wordt in een footer in PHP uitgedraaid
 
       if (kzUser && kzUser.data && kzUser.data.display_name) {
         doc.getElementById('input_1_80').value = kzUser.data.display_name;
-      }
+      } // controle van het mobiele nummer
+
 
       $('#input_1_30').on('blur', function () {
         var vastNummer = /^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$/,
@@ -267,7 +288,8 @@ function haalPrintAanmeldformulier(knop) {
           e.append($(t));
           clearInterval(vervangAlgemeneVoorwaarden);
         }
-      }, 500);
+      }, 500); // schrijft eenmalig & maandelijks naar hun totalen
+
       pakket.printPrijzen(); // op veranderen snelheid, opnieuw pakket versturen naar dit formulier.
 
       var schakelSnelheid = doc.getElementById('schakel-snelheid');
@@ -289,6 +311,12 @@ function haalPrintAanmeldformulier(knop) {
 }
 
 function kzInitialiseerGF() {
+  /*------------------------------------------------------
+  |
+  | 	Hulpfunctie voor haal aanmeldformulier op
+  |	Initialiseert de datumpicker en doet leeftijdsvalidatie.
+  |
+  |-----------------------------------------------------*/
   jQuery.datepicker.regional.nl = {
     closeText: 'Sluiten',
     prevText: '←',
@@ -309,6 +337,7 @@ function kzInitialiseerGF() {
   jQuery.datepicker.setDefaults(jQuery.datepicker.regional.nl); // date field interactief.
 
   gformInitDatepicker(); // valideert minimumleeftijd = 18 want je moet minstens in 2000 geboren zijn.
+  // @TODO is precies genoeg
 
   $('.datepicker_with_icon').on('change', function () {
     var v = this.value;
@@ -481,6 +510,13 @@ function kzSchakelRadio(knop) {
 }
 
 function kzFoxSchakel(knop) {
+  /*------------------------------------------------------
+  |
+  |	Sommige pakketten hebben eredivisie compleet. Dit is een kortingsbundel van 
+  | 	fox eredivisie en fox internationaal. Die sluiten elkaar uit
+  | 	schakelen elkaar. Dat wordt hier geregeld.
+  |
+  |-----------------------------------------------------*/
   // is dit de compleet knop of eredivisie / internationaal?
   var alleFox = Array.from(doc.querySelectorAll('[data-kz-func~="fox-sports"]'));
 
@@ -541,6 +577,11 @@ function kzSchakelNumber(knop) {
 }
 
 function KzAantalTvs(optellen) {
+  /*------------------------------------------------------
+  |
+  |	Middelware tussen number input aantal TVs en rest formulier / updateHidden
+  |
+  |-----------------------------------------------------*/
   var extraTVontvangers = document.getElementById('extra-tv-ontvangers');
 
   if (optellen) {
@@ -820,6 +861,13 @@ function postcodeAjaxCB(r) {
 }
 
 function logFouteSituatiePostcodeCheck(r) {
+  /*------------------------------------------------------
+  |
+  | 	Voor iedere postcode dienen er providers te zijn. Dit is een proxy voor pakketten. 
+  | 	De achterkant zoekt hiernaar tijdens de postcode check.
+  | 	Deze functie post naar de foutrapportage als er geen provider is voor deze postcode.
+  |
+  |-----------------------------------------------------*/
   kzModal(kzTekst('postcodecheck_fout'), 5000);
   var ajf = new KzAjax({
     ajaxData: {
@@ -1238,7 +1286,8 @@ function ikWeetWatIkWilPakkettenAjax() {
   |
   |	Haalt pakketten op van achterkant adhv type (internet, interet&bellen etc)
   | 	Laat het op prijs sorteren
-  | 	Print die vervolgens een voor een per provider
+  | 	Print die vervolgens een voor een per provider, per pakket.
+  | 	zie afzonderlijke functies
   |
   |-----------------------------------------------------*/
   // keuzehulp vullen met data installatie
@@ -1258,6 +1307,12 @@ function ikWeetWatIkWilPakkettenAjax() {
     terugval: function terugval(optie) {
       var _this = this;
 
+      /*------------------------------------------------------
+      |
+      |	Wordt aangeroepen als er geen pakketten zijn voor b.v. alleen internet
+      | 	Dan wordt voor alle typen pakketten apart ge-ajaxt via deze functie.
+      |
+      |-----------------------------------------------------*/
       var adres = JSON.parse(sessionStorage.getItem('kz-adres'));
       var printProviderPakketten = document.getElementById('print-provider-pakketten');
       jQuery.post("".concat(location.origin, "/wp-admin/admin-ajax.php"), {
@@ -1273,6 +1328,7 @@ function ikWeetWatIkWilPakkettenAjax() {
         var rr = JSON.parse(response);
 
         if (!rr.error) {
+          //@TODO dubbel op met vergelijkbare procedure in reguliere functie
           var printPakketten = '';
           Object.entries(rr.providers).forEach(function (_ref) {
             var _ref2 = _slicedToArray(_ref, 2),
@@ -1302,6 +1358,15 @@ function ikWeetWatIkWilPakkettenAjax() {
     cb: function cb(r) {
       var _this2 = this;
 
+      /*------------------------------------------------------
+      |
+      | 	callback van de Ajaxclass instance
+      |	als er providers zijn, dan printen, zo niet, terugval.
+      | 	sorteert op prijs
+      | 	Dit is de providerlijst.
+      | 	pakketten worden uitgedraaid via printPakkettenlijst reducer.
+      |
+      |-----------------------------------------------------*/
       var printProviderPakketten = document.getElementById('print-provider-pakketten');
       var printPakketten = '';
 
@@ -1316,7 +1381,9 @@ function ikWeetWatIkWilPakkettenAjax() {
         this.terugval('2');
         this.terugval('3');
         this.terugval('4');
-      }
+      } // @TODO gaat dit goed omdat de ajax hierna gerenderd pas wordt? Waarom 
+      // staat dit niet in een else
+
 
       printProviderPakketten.innerHTML = Object.entries(r.providers).map(function (_ref3) {
         var _ref4 = _slicedToArray(_ref3, 2),
@@ -1350,8 +1417,10 @@ function ikWeetWatIkWilPakkettenAjax() {
         return "<section class='provider-pakketten'>\n\n\t\t\t\t\t<header class='provider-pakketten-header'>\n\n\t\t\t\t\t\t<span class='provider-logo-contain'>".concat(pakketten[0].eigenschappen.provider_meta.thumb, "</span>\n\n\t\t\t\t\t\t").concat(pakketten.length !== 1 ? "<span class='provider-pakketten-header-pakkettental'>".concat(pakketten.length, " pakketten</span>") : '', "\n\n\t\t\t\t\t\t<span class='provider-pakketten-header-prijs prijs-bolletje iwwiw-bolletje'>\n\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs-bedrag '>\n\t\t\t\t\t\t\t\t<span>&euro;</span>").concat(providersLaagste.toFixed(2).replace('.', ','), "\n\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t<span class='provider-pakketten-header-prijs-vanaf'>Vanaf</span>\n\t\t\t\t\t\t</span>\n\n\t\t\t\t\t</header>\n\n\t\t\t\t\t<ul class='provider-pakketten-lijst'>\n\t\t\t\t\t\t").concat(pakketten.reduce(_this2.printPakkettenLijst, ''), "\n\t\t\t\t\t</ul>\n\n\t\t\t\t</section>");
       }).join('');
     },
-    draaiDoorProviders: function draaiDoorProviders(providers) {},
-    helemaalFout: function helemaalFout() {
+    draaiDoorProviders: function draaiDoorProviders(providers) {//@OTODO ongebruikt?
+    },
+    helemaalFout: function helemaalFout() {//@OTODO ongebruikt?
+
       /*				kzRouting.ga(21); // .
       
       				const ajf2 = new KzAjax({
@@ -1370,9 +1439,15 @@ function ikWeetWatIkWilPakkettenAjax() {
       				return;		*/
     },
     printPakkettenLijst: function printPakkettenLijst(pakketHTMLvoorraad, nieuwPakket) {
-      return "".concat(pakketHTMLvoorraad, "\n\t\t\t<li class='provider-pakketten-pakket'>\n\t\t\t\t<div class='provider-pakketten-pakket-links'>\n\t\t\t\t\t<h3 class='provider-pakketten-pakket-titel'><span class='provider-pakketten-pakket-titel_naam'>").concat(nieuwPakket.eigenschappen.pakket_type.includes('eigenlijk alleen tv') ? nieuwPakket.provider + " alleen TV " : nieuwPakket.naam_composiet, " ").concat(nieuwPakket.eigenschappen.pakket_type.includes('Internet en TV') || nieuwPakket.eigenschappen.pakket_type.includes('Alles in 1') ? ' - ' + nieuwPakket.eigenschappen.tv_type : "", "</span>\n\t\t\t\t\t<span class='provider-pakketten-pakket-titel_usp'>").concat(nieuwPakket.eigenschappen.teksten.usps, "</span>\n\t\t\t\t\t</h3>\n\t\t\t\t\t<span class='provider-pakketten-pakket-links-onder'>\n\n\t\t\t\t\t<strong>Beschikbare snelheden:</strong>\n\t\t\t\t\t").concat(nieuwPakket.eigenschappen.snelheden.reduce(function (snelheidPrijsHTMLvoorraad, nweSnelheid) {
-        return "".concat(snelheidPrijsHTMLvoorraad, "\n\t\t\t\t\t\t\n\t\t\t\t\t\t<span class='provider-pakketten-pakket-links-onder_snelheid'>\n\t\t\t\t\t\t\t<span class='provider-pakketten-pakket-snelheid'>\n\t\t\t\t\t\t\t\t").concat(Number(nweSnelheid) < 1 ? "alleen TV" : "".concat(nweSnelheid, " Mb/s "), "\n\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t<span class='provider-pakketten-pakket-prijs'>\n\t\t\t\t\t\t\t\tvoor ").concat(nieuwPakket.geefMaandtotaalVoorSnelheid(nweSnelheid), "\n\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t</span>\n\t\t\t\t\t\t");
-      }, ''), "\n\t\t\t\t\t\t\n\t\t\t\t\t</span>\n\t\t\t\t</div>\n\t\t\t\t<div class='provider-pakketten-pakket-rechts'>\n\t\t\t\t\t<a\n\t\t\t\t\t\tclass='knop blauwe-knop kz-bestelknop'\n\t\t\t\t\t\tdata-kz-func='toon-stap animeer aanmeldformulier'\n\t\t\t\t\t\thref='#100'\n\t\t\t\t\t\tkz-data-pakket-id='").concat(nieuwPakket.ID, "'\n\t\t\t\t\t\t>\n\n\t\t\t\t\t\t<svg version=\"1.1\" class='bestel-svg' xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\n\t\t\t\t\t\t\t viewBox=\"0 0 100 100\" style=\"enable-background:new 0 0 100 100;\" xml:space=\"preserve\">\n\t\t\t\t\t\t<path style=\"fill:#FFFFFF;\" d=\"M56.993,65.162L42.618,50.631L56.993,36.1c1.25-1.146,1.276-2.292,0.078-3.438\n\t\t\t\t\t\t\tc-1.198-1.146-2.37-1.146-3.516,0l-16.25,16.25c-0.521,0.417-0.781,0.99-0.781,1.719c0,0.729,0.26,1.302,0.781,1.719l16.25,16.25\n\t\t\t\t\t\t\tc1.146,1.146,2.318,1.146,3.516,0C58.269,67.454,58.243,66.308,56.993,65.162z\"/>\n\t\t\t\t\t\t</svg>\n\n\t\t\t\t\t</a>\n\t\t\t\t</div>\n\t\t\t</li>");
+      /*------------------------------------------------------
+      |
+      | 	reducer.
+      |	iedere iteratie is een pakket. 
+      |
+      |-----------------------------------------------------*/
+      return "".concat(pakketHTMLvoorraad, "\n\t\t\t\t<li class='provider-pakketten-pakket'>\n\t\t\t\t\t<div class='provider-pakketten-pakket-links'>\n\t\t\t\t\t\t<h3 class='provider-pakketten-pakket-titel'><span class='provider-pakketten-pakket-titel_naam'>").concat(nieuwPakket.eigenschappen.pakket_type.includes('eigenlijk alleen tv') ? nieuwPakket.provider + " alleen TV " : nieuwPakket.naam_composiet, " ").concat(nieuwPakket.eigenschappen.pakket_type.includes('Internet en TV') || nieuwPakket.eigenschappen.pakket_type.includes('Alles in 1') ? ' - ' + nieuwPakket.eigenschappen.tv_type : "", "</span>\n\t\t\t\t\t\t<span class='provider-pakketten-pakket-titel_usp'>").concat(nieuwPakket.eigenschappen.teksten.usps, "</span>\n\t\t\t\t\t\t</h3>\n\t\t\t\t\t\t<span class='provider-pakketten-pakket-links-onder'>\n\n\t\t\t\t\t\t<strong>Beschikbare snelheden:</strong>\n\t\t\t\t\t\t").concat(nieuwPakket.eigenschappen.snelheden.reduce(function (snelheidPrijsHTMLvoorraad, nweSnelheid) {
+        return "".concat(snelheidPrijsHTMLvoorraad, "\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<span class='provider-pakketten-pakket-links-onder_snelheid'>\n\t\t\t\t\t\t\t\t<span class='provider-pakketten-pakket-snelheid'>\n\t\t\t\t\t\t\t\t\t").concat(Number(nweSnelheid) < 1 ? "alleen TV" : "".concat(nweSnelheid, " Mb/s "), "\n\t\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t\t<span class='provider-pakketten-pakket-prijs'>\n\t\t\t\t\t\t\t\t\tvoor ").concat(nieuwPakket.geefMaandtotaalVoorSnelheid(nweSnelheid), "\n\t\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t");
+      }, ''), "\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t</span>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class='provider-pakketten-pakket-rechts'>\n\t\t\t\t\t\t<a\n\t\t\t\t\t\t\tclass='knop blauwe-knop kz-bestelknop'\n\t\t\t\t\t\t\tdata-kz-func='toon-stap animeer aanmeldformulier'\n\t\t\t\t\t\t\thref='#100'\n\t\t\t\t\t\t\tkz-data-pakket-id='").concat(nieuwPakket.ID, "'\n\t\t\t\t\t\t\t>\n\n\t\t\t\t\t\t\t<svg version=\"1.1\" class='bestel-svg' xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\n\t\t\t\t\t\t\t\t viewBox=\"0 0 100 100\" style=\"enable-background:new 0 0 100 100;\" xml:space=\"preserve\">\n\t\t\t\t\t\t\t<path style=\"fill:#FFFFFF;\" d=\"M56.993,65.162L42.618,50.631L56.993,36.1c1.25-1.146,1.276-2.292,0.078-3.438\n\t\t\t\t\t\t\t\tc-1.198-1.146-2.37-1.146-3.516,0l-16.25,16.25c-0.521,0.417-0.781,0.99-0.781,1.719c0,0.729,0.26,1.302,0.781,1.719l16.25,16.25\n\t\t\t\t\t\t\t\tc1.146,1.146,2.318,1.146,3.516,0C58.269,67.454,58.243,66.308,56.993,65.162z\"/>\n\t\t\t\t\t\t\t</svg>\n\n\t\t\t\t\t\t</a>\n\t\t\t\t\t</div>\n\t\t\t\t</li>");
     }
   });
   ajf.doeAjax();
@@ -1381,8 +1456,17 @@ function ikWeetWatIkWilPakkettenAjax() {
 
 /* LEGACY NAAM! */
 function kzZetNiveauKnop(knop) {
+  /*--------------------------------------------------
+  |
+  |	knoppen zijn keuzenmenuknoppen.
+  | 	de secties zijn de pagina's van de keuzehulp
+  | 	zodra naar een niveau wordt gegaan wordt de knop in de navigatie actief / klikbaar en krijgt
+  | 	het de waarde van de keuze eronder geprint.
+  |
+  |**************************************************/
   var kzSectie = kzVindSectie(knop);
-  var stap = kzSectie.dataset.keuzehulpStap; //uitsluiten bepaalde
+  var stap = kzSectie.dataset.keuzehulpStap; // uitsluiten bepaalde
+  // als array zodat makkelijk meer kunnen worden toegevoegd
 
   if (['2'].includes(stap)) return;
   var stappenLinksStap = doc.getElementById("stappen-links-".concat(stap));
@@ -1568,6 +1652,12 @@ function scrollCheck() {
   }, 100);
 }
 function kzAnimeerKnoppen(knop) {
+  /*------------------------------------------------------
+  |
+  | 	schakelt de klasse actief heen en weer voor knoppen
+  | 	verschil tussen of knoppen multiselect zijn of niet. 
+  |
+  |-----------------------------------------------------*/
   var sectie = kzVindSectie(knop);
   var dezeID = knop.dataset.knopId; // is dit multiselect? alleen deze knop actief togglen.
 
@@ -1591,11 +1681,19 @@ function kzAnimeerKnoppen(knop) {
   }
 }
 /* globals doc, location, KzAjax, kzModal, kzTekst, kzRouting, kzStickyKeuzes, teksten, KzAjaxKleineFormulieren  */
+//@TODO dit hoort niet in modal js
 window.onload = function () {
   kzInit();
 };
 
 function kzTekst(snede, invoeging) {
+  /*------------------------------------------------------
+  |
+  | 	kzModalTeksten is een global die PHP in de footer uitdraait
+  | 	invoeging wordt zoek-vervang op %s gedaan als het één waarde, als een string, is. 
+  | 	invoeging wordt recursief op %s1, %s2 etc gedaan als het een array is.
+  |
+  |-----------------------------------------------------*/
   if (!(snede in kzModalTeksten)) {
     console.error("".concat(snede, " komt niet voor in kzModalTeksten"));
     return '';
@@ -1619,6 +1717,17 @@ function kzTekst(snede, invoeging) {
 
 function kzModal(tekst) {
   var tijd = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  /*------------------------------------------------------
+  |
+  | 	maakt de HTML van de modal en plakt die achteraan de body.
+  | 	schrijft klasse naar body
+  | 	accepteert tekst als string of als object. 
+  | 	string -> modal zonder kop
+  | 	object -> verwacht keys kop en torso.
+  |	tijd variabele kan de modal automatisch laten verwijderen via kzVerwijderModal
+  |
+  |-----------------------------------------------------*/
   doc.body.className = "".concat(doc.body.className, " kz-modal-open");
   $modal = jQuery("<div class='kz-modal'></div>");
   $modalBinnen = jQuery("<div class='kz-modal-binnen'></div>");
@@ -1652,6 +1761,11 @@ function kzModal(tekst) {
 }
 
 function kzVerwijderModal() {
+  /*------------------------------------------------------
+  |
+  |	Verwijderd alle modals en de bijbehorende klassen op body.
+  |
+  |-----------------------------------------------------*/
   jQuery('.kz-modal-achtergrond').fadeOut(300, function () {
     jQuery('.kz-modal-achtergrond').remove();
   }); // in rare situaties kunnen er meerdere modals geopend zijn.
@@ -1662,6 +1776,11 @@ function kzVerwijderModal() {
 }
 
 document.onkeydown = function (evt) {
+  /*------------------------------------------------------
+  |
+  |	Op escape en enter, verwijder modals.
+  |
+  |-----------------------------------------------------*/
   evt = evt || window.event;
 
   if (evt.keyCode == 27 || evt.keyCode == 13) {
@@ -1705,6 +1824,12 @@ function naarStreepCase(snede) {
 }
 
 function uniek(waarde, index, lijst) {
+  /*------------------------------------------------------
+  |
+  |	Te gebruiken als array.filter(uniek)
+  | 	Geeft alleen unieke waarden terug
+  |
+  |-----------------------------------------------------*/
   return lijst.indexOf(waarde) === index;
 }
 
@@ -1760,6 +1885,7 @@ function kzEuro(bedrag) {
 function kzNietMin1ReturnZelfOfFalse(a) {
   /*----------------------------------
   |
+  | 	@LEGACY
   |	Onderdeel van het normaliseren van
   | 	data in de tabelmiddelware
   |
@@ -1770,6 +1896,7 @@ function kzNietMin1ReturnZelfOfFalse(a) {
 function kzMaakBestelKnop(pakket, eigenschappen, tekst) {
   /*----------------------------------
   |
+  | 	@LEGACY	
   |	Deze functie zou niet mogen bestaan.
   |
   |---------------------------------*/
@@ -1785,6 +1912,11 @@ function kzMaakBestelKnop(pakket, eigenschappen, tekst) {
 }
 
 function kzVindCombiKnop(knop) {
+  /*----------------------------------
+  |
+  | 	Itereert omhoog in de HTML totdat de combiknop is gevonden. 
+  |
+  |---------------------------------*/
   var k = knop;
   if (k.classList.contains('kz-knop-combi')) return k;
 
@@ -1802,6 +1934,11 @@ function kzVindCombiKnop(knop) {
 }
 
 function kzVindSectie(knop) {
+  /*----------------------------------
+  |
+  | 	Itereert omhoog in de HTML totdat keuzehulp sectie gevonden is. 
+  |
+  |---------------------------------*/
   var w = knop.parentNode;
 
   do {
@@ -1817,6 +1954,11 @@ function kzVindSectie(knop) {
 }
 
 function kzVindRij(knop) {
+  /*----------------------------------
+  |
+  | 	Itereert omhoog in de HTML totdat de rij gevonden is. 
+  |
+  |---------------------------------*/
   var w = knop.parentNode;
 
   do {
@@ -1835,11 +1977,12 @@ function _sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; 
 function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return _sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }
 
 /* globals doc, location, uniek, KzAjax, kzModal, kzTekst, kzRouting, kzStickyKeuzes, teksten, KzAjaxKleineFormulieren  */
-function log(a) {
-  console.log(a);
-}
-
 function kzPakPakket(getal) {
+  /*----------------------------------
+  |
+  | 	Wordt nergens gebruikt - louter voor tijdens debuggen direct in console
+  |
+  |---------------------------------*/
   return window["kz-pakket-".concat(getal)];
 }
 
@@ -1999,7 +2142,16 @@ function VerrijktPakket(p) {
   };
 
   this.vindOptieSleutel = function (zoek) {
-    console.dir(zoek);
+    /*------------------------------------------------------
+    |
+    | 	WAT EEN MOOIE FUNCTIE
+    | 	Zoekt door de **maandelijkse** opties en geeft de
+    | 	eerste hit terug die matcht op alle meegegeven 
+    | 	sleutels. Alle sleutels zijn facultatief.
+    | 	snelheid is niet hard op type omdat die niet consequent aan de 
+    | 	pakketten is meegegeven.
+    |
+    |-----------------------------------------------------*/
     var naam = zoek.naam,
         optietype = zoek.optietype,
         suboptietype = zoek.suboptietype,

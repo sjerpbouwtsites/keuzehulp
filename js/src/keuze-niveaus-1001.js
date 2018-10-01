@@ -2,12 +2,20 @@
 
 /* LEGACY NAAM! */
 function kzZetNiveauKnop(knop) {
-
+	/*--------------------------------------------------
+	|
+	|	knoppen zijn keuzenmenuknoppen.
+	| 	de secties zijn de pagina's van de keuzehulp
+	| 	zodra naar een niveau wordt gegaan wordt de knop in de navigatie actief / klikbaar en krijgt
+	| 	het de waarde van de keuze eronder geprint.
+	|
+	|**************************************************/
 	const kzSectie = kzVindSectie(knop);
 
 	const stap = kzSectie.dataset.keuzehulpStap;
 	
-	//uitsluiten bepaalde
+	// uitsluiten bepaalde
+	// als array zodat makkelijk meer kunnen worden toegevoegd
 	if (['2'].includes(stap)) return;	
 
 	const stappenLinksStap = doc.getElementById(`stappen-links-${stap}`);

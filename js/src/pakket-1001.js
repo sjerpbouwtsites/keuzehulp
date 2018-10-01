@@ -1,10 +1,12 @@
 /* globals doc, location, uniek, KzAjax, kzModal, kzTekst, kzRouting, kzStickyKeuzes, teksten, KzAjaxKleineFormulieren  */
 
-function log(a){
-	console.log(a);
-}
 
 function kzPakPakket(getal) {
+	/*----------------------------------
+	|
+	| 	Wordt nergens gebruikt - louter voor tijdens debuggen direct in console
+	|
+	|---------------------------------*/	
 	return window[`kz-pakket-${getal}`];
 }
 
@@ -146,9 +148,16 @@ function VerrijktPakket(p) {
 	};
 
 	this.vindOptieSleutel = zoek => {
-
-		console.dir(zoek);
-
+		/*------------------------------------------------------
+		|
+		| 	WAT EEN MOOIE FUNCTIE
+		| 	Zoekt door de **maandelijkse** opties en geeft de
+		| 	eerste hit terug die matcht op alle meegegeven 
+		| 	sleutels. Alle sleutels zijn facultatief.
+		| 	snelheid is niet hard op type omdat die niet consequent aan de 
+		| 	pakketten is meegegeven.
+		|
+		|-----------------------------------------------------*/
 		let {naam, optietype, suboptietype, snelheid} = zoek;
 		//als zoekopdracht niet meegegegeven, altijd ok.
 		const r = Object.entries(this.eigenschappen.maandelijks)

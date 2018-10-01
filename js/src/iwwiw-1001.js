@@ -4,7 +4,8 @@ function ikWeetWatIkWilPakkettenAjax() {
 	|
 	|	Haalt pakketten op van achterkant adhv type (internet, interet&bellen etc)
 	| 	Laat het op prijs sorteren
-	| 	Print die vervolgens een voor een per provider
+	| 	Print die vervolgens een voor een per provider, per pakket.
+	| 	zie afzonderlijke functies
 	|
 	|-----------------------------------------------------*/
 
@@ -26,6 +27,12 @@ function ikWeetWatIkWilPakkettenAjax() {
 			},
 		},
 		terugval(optie) {
+			/*------------------------------------------------------
+			|
+			|	Wordt aangeroepen als er geen pakketten zijn voor b.v. alleen internet
+			| 	Dan wordt voor alle typen pakketten apart ge-ajaxt via deze functie.
+			|
+			|-----------------------------------------------------*/			
 			const adres = JSON.parse(sessionStorage.getItem('kz-adres'));
 			const printProviderPakketten = document.getElementById('print-provider-pakketten');
 			jQuery.post(`${location.origin}/wp-admin/admin-ajax.php`, 
@@ -43,6 +50,7 @@ function ikWeetWatIkWilPakkettenAjax() {
 					let rr = JSON.parse(response);
 					if (!rr.error) {
 
+					//@TODO dubbel op met vergelijkbare procedure in reguliere functie
 					let printPakketten = '';
 					Object.entries(rr.providers).forEach(([provider, providerBundel]) => {
 						// maak de rekenklassen
@@ -51,7 +59,6 @@ function ikWeetWatIkWilPakkettenAjax() {
 						.map(pakket => iwwiwProcedure(pakket)),
 
 						// maak array met maandTotalen en zoek laagste op.
-
 						providersLaagste = pakketten
 						.map(pakket => pakket.maandelijksTotaal())
 						.reduce((nieuweWaarde, huidigeWaarde) => (
@@ -95,6 +102,15 @@ function ikWeetWatIkWilPakkettenAjax() {
 			);			
 		},
 		cb(r) {
+			/*------------------------------------------------------
+			|
+			| 	callback van de Ajaxclass instance
+			|	als er providers zijn, dan printen, zo niet, terugval.
+			| 	sorteert op prijs
+			| 	Dit is de providerlijst.
+			| 	pakketten worden uitgedraaid via printPakkettenlijst reducer.
+			|
+			|-----------------------------------------------------*/						
 			const printProviderPakketten = document.getElementById('print-provider-pakketten');
 
 			let printPakketten = '';
@@ -113,6 +129,8 @@ function ikWeetWatIkWilPakkettenAjax() {
 	
 			}
 
+			// @TODO gaat dit goed omdat de ajax hierna gerenderd pas wordt? Waarom 
+			// staat dit niet in een else
 			printProviderPakketten.innerHTML = Object.entries(r.providers)
 			.map(([provider, providerBundel]) => {
 
@@ -175,9 +193,10 @@ function ikWeetWatIkWilPakkettenAjax() {
 
 		},
 		draaiDoorProviders: providers => {
-
+			//@OTODO ongebruikt?
 		},
 		helemaalFout: () =>  {
+			//@OTODO ongebruikt?
 
 /*				kzRouting.ga(21); // .
 
@@ -196,61 +215,69 @@ function ikWeetWatIkWilPakkettenAjax() {
 				ajf2.doeAjax();				
 				return;		*/				
 		},
-		printPakkettenLijst: (pakketHTMLvoorraad, nieuwPakket) => `${pakketHTMLvoorraad}
-			<li class='provider-pakketten-pakket'>
-				<div class='provider-pakketten-pakket-links'>
-					<h3 class='provider-pakketten-pakket-titel'><span class='provider-pakketten-pakket-titel_naam'>${(
-							nieuwPakket.eigenschappen.pakket_type.includes('eigenlijk alleen tv')
-								? nieuwPakket.provider + " alleen TV "
-								: nieuwPakket.naam_composiet
-						)} ${
-						nieuwPakket.eigenschappen.pakket_type.includes('Internet en TV')
-						|| nieuwPakket.eigenschappen.pakket_type.includes('Alles in 1') 
-							? ' - '+ nieuwPakket.eigenschappen.tv_type
-							: ``
-					}</span>
-					<span class='provider-pakketten-pakket-titel_usp'>${nieuwPakket.eigenschappen.teksten.usps}</span>
-					</h3>
-					<span class='provider-pakketten-pakket-links-onder'>
+		printPakkettenLijst: (pakketHTMLvoorraad, nieuwPakket) => {
+			/*------------------------------------------------------
+			|
+			| 	reducer.
+			|	iedere iteratie is een pakket. 
+			|
+			|-----------------------------------------------------*/					
+			return `${pakketHTMLvoorraad}
+				<li class='provider-pakketten-pakket'>
+					<div class='provider-pakketten-pakket-links'>
+						<h3 class='provider-pakketten-pakket-titel'><span class='provider-pakketten-pakket-titel_naam'>${(
+								nieuwPakket.eigenschappen.pakket_type.includes('eigenlijk alleen tv')
+									? nieuwPakket.provider + " alleen TV "
+									: nieuwPakket.naam_composiet
+							)} ${
+							nieuwPakket.eigenschappen.pakket_type.includes('Internet en TV')
+							|| nieuwPakket.eigenschappen.pakket_type.includes('Alles in 1') 
+								? ' - '+ nieuwPakket.eigenschappen.tv_type
+								: ``
+						}</span>
+						<span class='provider-pakketten-pakket-titel_usp'>${nieuwPakket.eigenschappen.teksten.usps}</span>
+						</h3>
+						<span class='provider-pakketten-pakket-links-onder'>
 
-					<strong>Beschikbare snelheden:</strong>
-					${nieuwPakket.eigenschappen.snelheden.reduce((snelheidPrijsHTMLvoorraad, nweSnelheid) => `${snelheidPrijsHTMLvoorraad}
-						
-						<span class='provider-pakketten-pakket-links-onder_snelheid'>
-							<span class='provider-pakketten-pakket-snelheid'>
-								${(
-									Number(nweSnelheid) < 1
-									? `alleen TV`
-									: `${nweSnelheid} Mb/s `
-								)}
+						<strong>Beschikbare snelheden:</strong>
+						${nieuwPakket.eigenschappen.snelheden.reduce((snelheidPrijsHTMLvoorraad, nweSnelheid) => `${snelheidPrijsHTMLvoorraad}
+							
+							<span class='provider-pakketten-pakket-links-onder_snelheid'>
+								<span class='provider-pakketten-pakket-snelheid'>
+									${(
+										Number(nweSnelheid) < 1
+										? `alleen TV`
+										: `${nweSnelheid} Mb/s `
+									)}
+								</span>
+								<span class='provider-pakketten-pakket-prijs'>
+									voor ${nieuwPakket.geefMaandtotaalVoorSnelheid(nweSnelheid)}
+								</span>
 							</span>
-							<span class='provider-pakketten-pakket-prijs'>
-								voor ${nieuwPakket.geefMaandtotaalVoorSnelheid(nweSnelheid)}
-							</span>
+							`
+						,'')}
+							
 						</span>
-						`
-					,'')}
-						
-					</span>
-				</div>
-				<div class='provider-pakketten-pakket-rechts'>
-					<a
-						class='knop blauwe-knop kz-bestelknop'
-						data-kz-func='toon-stap animeer aanmeldformulier'
-						href='#100'
-						kz-data-pakket-id='${nieuwPakket.ID}'
-						>
+					</div>
+					<div class='provider-pakketten-pakket-rechts'>
+						<a
+							class='knop blauwe-knop kz-bestelknop'
+							data-kz-func='toon-stap animeer aanmeldformulier'
+							href='#100'
+							kz-data-pakket-id='${nieuwPakket.ID}'
+							>
 
-						<svg version="1.1" class='bestel-svg' xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-							 viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">
-						<path style="fill:#FFFFFF;" d="M56.993,65.162L42.618,50.631L56.993,36.1c1.25-1.146,1.276-2.292,0.078-3.438
-							c-1.198-1.146-2.37-1.146-3.516,0l-16.25,16.25c-0.521,0.417-0.781,0.99-0.781,1.719c0,0.729,0.26,1.302,0.781,1.719l16.25,16.25
-							c1.146,1.146,2.318,1.146,3.516,0C58.269,67.454,58.243,66.308,56.993,65.162z"/>
-						</svg>
+							<svg version="1.1" class='bestel-svg' xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+								 viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">
+							<path style="fill:#FFFFFF;" d="M56.993,65.162L42.618,50.631L56.993,36.1c1.25-1.146,1.276-2.292,0.078-3.438
+								c-1.198-1.146-2.37-1.146-3.516,0l-16.25,16.25c-0.521,0.417-0.781,0.99-0.781,1.719c0,0.729,0.26,1.302,0.781,1.719l16.25,16.25
+								c1.146,1.146,2.318,1.146,3.516,0C58.269,67.454,58.243,66.308,56.993,65.162z"/>
+							</svg>
 
-					</a>
-				</div>
-			</li>`,
+						</a>
+					</div>
+				</li>`;
+		},
 
 	});
 

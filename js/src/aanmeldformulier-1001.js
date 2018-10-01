@@ -1,6 +1,14 @@
 /* global doc, location, KzAjax, kzModal, kzTekst, gformInitDatepicker */
 
 function aanmeldformulierHaalWaardeUitRij(rij) {
+	/*--------------------------------------------------
+	|
+	|	Geeft de voor de 'rij' relevante waarde terug
+	|	Dit is verschillend voor tekstvelden, tv-pakketten, 
+	|	belpakketten, installaties
+	|
+	|**************************************************/
+
 	const knop1 = rij.getElementsByClassName('knop')[0];
 
 	// is het een tekstveld, nummer oid?
@@ -25,16 +33,25 @@ function aanmeldformulierHaalWaardeUitRij(rij) {
 		return '';
 	}
 
-		// checkbox stijl
+	// checkbox stijl
 
-		// IF ACTIEF!!!
-		if (knop1.classList.contains('actief')) {
-			return 'Ja';
-		}
-			return '';
+	// IF ACTIEF!!!
+	if (knop1.classList.contains('actief')) {
+		return 'Ja';
+	}
+		return '';
 }
 
 function kzMaakPrintMap(){
+	/*--------------------------------------------------
+	|
+	|	Creert object met daarin referenties van de aanmeldformulier 
+	| 	invoervelden naar de GF velden waarnaar geprint dient te worden
+	| 	Slaat dit object ter referentie op in een global; 
+	| 	maakt het maar één keer aan.
+	|
+	|**************************************************/	
+
 	if (window['kzPrintMappen']) return window['kzPrintMappen'];
 
 	this.printMapInit = id => {
@@ -179,6 +196,7 @@ function haalPrintAanmeldformulier(knop) {
 	// bereid pakket voor voor verzending
 	let pakket = window[`kz-pakket-${knop.getAttribute('kz-data-pakket-id')}`];
 
+	// zet veilig data-object op pakket met daarin de eigenschappen
 	pakket.bereidJSONverzendingVoor();
 
 	doc.getElementById('print-aanmeldformulier').innerHTML = '<p>Formulier wordt geladen...</p>';
@@ -201,9 +219,10 @@ function haalPrintAanmeldformulier(knop) {
 			$(printPlek).append($(r.print)); // de HTML van het formulier.
 
 			// @TODO DYNAMISCH MAKEN
-
+			// het formulier kan proberen te printen naar een niet bestaande url
 			printPlek.getElementsByTagName('form')[0].setAttribute('action', `${location.origin}`);
 
+			//@TODO DYNAMISCH MAKEN
 			pakket = window[`kz-pakket-${r.id}`];
 
 			// het zijn de click events die de verwerking van de data aanjagen..
@@ -255,13 +274,16 @@ function haalPrintAanmeldformulier(knop) {
 			// schrijf opties naar GF
 			kzUpdateHidden();
 
+			// oa de datepicker initialiseren
 			kzInitialiseerGF();
 
-			// schrijf de user
+			// schrijf de user naar de GF hidden fields
+			// kzUser wordt in een footer in PHP uitgedraaid
 			if (kzUser && kzUser.data && kzUser.data.display_name) {
 				doc.getElementById('input_1_80').value = kzUser.data.display_name;
 			}
 
+			// controle van het mobiele nummer
 			$('#input_1_30').on('blur', function () {
 				const vastNummer = /^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$/,
 				mobielNummer = /^(((\\+31|0|0031)6){1}[1-9]{1}[0-9]{7})$/i;
@@ -272,9 +294,7 @@ function haalPrintAanmeldformulier(knop) {
 			});
 
 			// is er misschien via ajax een nieuwe ingezet en heeft die %PRINT_ALGEMENE_VOORWAARDEN%?
-
 			// @TODO LELIJKE HACK
-
 			const vervangAlgemeneVoorwaarden = setInterval(() => {
 				const e = $('#field_1_72'),
 				tekstFaal = e.text().indexOf('%PRINT_ALGEMENE_VOORWAARDEN%') !== -1;
@@ -289,6 +309,7 @@ function haalPrintAanmeldformulier(knop) {
 				}
 			}, 500);
 
+			// schrijft eenmalig & maandelijks naar hun totalen
 			pakket.printPrijzen();
 
 			// op veranderen snelheid, opnieuw pakket versturen naar dit formulier.
@@ -296,9 +317,7 @@ function haalPrintAanmeldformulier(knop) {
 			if (schakelSnelheid) {
 				doc.getElementById('schakel-snelheid').addEventListener('change', () => {
 					pakket.veranderSnelheid(doc.getElementById('schakel-snelheid').value);
-
 					doc.getElementById('print-aanmeldformulier').innerHTML = '<p>Formulier wordt geladen...</p>';
-
 					pakket.bereidJSONverzendingVoor();
 					this.ajaxData.pakket = pakket.klaarVoorJSON;
 					this.doeAjax();
@@ -313,6 +332,12 @@ function haalPrintAanmeldformulier(knop) {
 }
 
 function kzInitialiseerGF() {
+	/*------------------------------------------------------
+	|
+	| 	Hulpfunctie voor haal aanmeldformulier op
+	|	Initialiseert de datumpicker en doet leeftijdsvalidatie.
+	|
+	|-----------------------------------------------------*/
 
 	jQuery.datepicker.regional.nl = {
 		closeText: 'Sluiten',
@@ -340,6 +365,7 @@ function kzInitialiseerGF() {
 	gformInitDatepicker();
 
 	// valideert minimumleeftijd = 18 want je moet minstens in 2000 geboren zijn.
+	// @TODO is precies genoeg
 	$('.datepicker_with_icon').on('change', function () {
 		const v = this.value;
 
@@ -543,6 +569,14 @@ function kzSchakelRadio(knop) {
 }
 
 function kzFoxSchakel(knop) {
+	/*------------------------------------------------------
+	|
+	|	Sommige pakketten hebben eredivisie compleet. Dit is een kortingsbundel van 
+	| 	fox eredivisie en fox internationaal. Die sluiten elkaar uit
+	| 	schakelen elkaar. Dat wordt hier geregeld.
+	|
+	|-----------------------------------------------------*/
+
 	// is dit de compleet knop of eredivisie / internationaal?
 	const alleFox = Array.from(doc.querySelectorAll('[data-kz-func~="fox-sports"]'));
 	if (knop.id.includes('compleet')) {
@@ -594,8 +628,12 @@ function kzSchakelNumber(knop) {
 }
 
 function KzAantalTvs(optellen) {
+	/*------------------------------------------------------
+	|
+	|	Middelware tussen number input aantal TVs en rest formulier / updateHidden
+	|
+	|-----------------------------------------------------*/	
 	let extraTVontvangers = document.getElementById('extra-tv-ontvangers');
-
 	if (optellen) {
 		extraTVontvangers.value = Number(extraTVontvangers.value) + 1;
 	} else if (Number(extraTVontvangers.value)) { // is niet 0

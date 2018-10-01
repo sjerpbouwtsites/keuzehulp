@@ -1,4 +1,10 @@
 function kzAnimeerKnoppen(knop) {
+	/*------------------------------------------------------
+	|
+	| 	schakelt de klasse actief heen en weer voor knoppen
+	| 	verschil tussen of knoppen multiselect zijn of niet. 
+	|
+	|-----------------------------------------------------*/
 	
 	const sectie = kzVindSectie(knop);
 	const dezeID = knop.dataset.knopId;

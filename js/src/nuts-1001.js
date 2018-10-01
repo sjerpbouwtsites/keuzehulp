@@ -38,6 +38,12 @@ function naarStreepCase(snede) {
 }
 
 function uniek(waarde, index, lijst) { 
+	/*------------------------------------------------------
+	|
+	|	Te gebruiken als array.filter(uniek)
+	| 	Geeft alleen unieke waarden terug
+	|
+	|-----------------------------------------------------*/			
     return lijst.indexOf(waarde) === index;
 }
 
@@ -95,6 +101,7 @@ function kzEuro(bedrag) {
 function kzNietMin1ReturnZelfOfFalse(a) {
 	/*----------------------------------
 	|
+	| 	@LEGACY
 	|	Onderdeel van het normaliseren van
 	| 	data in de tabelmiddelware
 	|
@@ -108,6 +115,7 @@ function kzNietMin1ReturnZelfOfFalse(a) {
 function kzMaakBestelKnop(pakket, eigenschappen, tekst) {
 	/*----------------------------------
 	|
+	| 	@LEGACY	
 	|	Deze functie zou niet mogen bestaan.
 	|
 	|---------------------------------*/
@@ -126,7 +134,11 @@ function kzMaakBestelKnop(pakket, eigenschappen, tekst) {
 }
 
 function kzVindCombiKnop(knop){
-
+	/*----------------------------------
+	|
+	| 	Itereert omhoog in de HTML totdat de combiknop is gevonden. 
+	|
+	|---------------------------------*/
 	let k = knop;
 
 	if (k.classList.contains('kz-knop-combi')) return k;
@@ -145,6 +157,11 @@ function kzVindCombiKnop(knop){
 }
 
 function kzVindSectie(knop) {
+	/*----------------------------------
+	|
+	| 	Itereert omhoog in de HTML totdat keuzehulp sectie gevonden is. 
+	|
+	|---------------------------------*/	
 	let w = knop.parentNode;
 	do {
 	  w = w.parentNode;
@@ -159,6 +176,11 @@ function kzVindSectie(knop) {
 }
 
 function kzVindRij(knop) {
+	/*----------------------------------
+	|
+	| 	Itereert omhoog in de HTML totdat de rij gevonden is. 
+	|
+	|---------------------------------*/		
 	let w = knop.parentNode;
 	do {
 	  w = w.parentNode;

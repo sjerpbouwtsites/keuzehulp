@@ -104,7 +104,13 @@ function postcodeAjaxCB(r) {
 
 
 function logFouteSituatiePostcodeCheck(r){
-
+	/*------------------------------------------------------
+	|
+	| 	Voor iedere postcode dienen er providers te zijn. Dit is een proxy voor pakketten. 
+	| 	De achterkant zoekt hiernaar tijdens de postcode check.
+	| 	Deze functie post naar de foutrapportage als er geen provider is voor deze postcode.
+	|
+	|-----------------------------------------------------*/
 	kzModal(
 		kzTekst('postcodecheck_fout'),
 		5000

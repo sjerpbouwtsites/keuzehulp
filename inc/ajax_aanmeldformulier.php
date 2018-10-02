@@ -69,17 +69,32 @@ function kz_maak_tooltip ($arg = array()){
 
 //kz_tv_pakketten($tv_pakket_naam, $eigenschappen, $gekozen_snelheid);
 
-function kz_tv_pakketten($tv_pakket, $e, $s) {
+function kz_tv_pakketten($tv_pakket, $e, $s, $tv_type) {
 
 	// geeft array terug van alle tv pakketten binnen die bundel, zoals alle plus pakket opties.
 
-	$r = array();
-
 	foreach ($e['maandelijks'] as $naam => $v) {
 
-		if ($v['suboptietype'] === $tv_pakket && $s == $v['snelheid']) {
-			$r[] = $v;
+		if($v['optietype'] === 'televisie-bundel') {
+			if ($v['suboptietype'] === $tv_pakket) {
+				if (strpos($v['tv_typen'], $tv_type) !== false) {
+
+					if ($v['snelheid'] === '') {
+						$r[] = $v;
+					} elseif ($v['snelheid'] === $s) {
+						$r[] = $v;
+					}
+				}
+			}
 		}
+
+/*		if (
+			$v['suboptietype'] === $tv_pakket 
+			&& $s == $v['snelheid']
+			&& $tv_type == $v['tv_typen']
+		) {*/
+			//$r[] = $v;
+		//}
 
 	}
 
@@ -445,7 +460,7 @@ function keuzehulp_haal_aanmeldformulier() {
 
 		foreach ($tv_pakket_namen as $tv_pakket_naam) {
 
-			$deze_pakketten = kz_tv_pakketten($tv_pakket_naam, $eigenschappen, $gekozen_snelheid);
+			$deze_pakketten = kz_tv_pakketten($tv_pakket_naam, $eigenschappen, $gekozen_snelheid, $eigenschappen['tv_type']);
 
 			if (count($deze_pakketten) > 0) :
 				$naam_teller = 0;
@@ -457,13 +472,7 @@ function keuzehulp_haal_aanmeldformulier() {
 						'sleutel'	=> $dit_pakket['naam'],
 						'titel'		=> ucfirst($dit_pakket['naam'])
 					));
-/*
-					ob_start();
-					echo "<pre>";
-					var_dump($dit_pakket);
-					echo "</pre>";
-					$print .= ob_get_clean();
-*/
+
 					$naar_id = str_replace('-', '', slugify($dit_pakket['suboptietype'])) . "-" . str_replace('-', '', slugify($dit_pakket['naam']));
 
 					if ( (float) $dit_pakket['prijs'] > 0.01) {

@@ -392,7 +392,8 @@ function kzUpdatePrijs(knop) {
       naam: knop.dataset.kzOptienaam,
       snelheid: pakket.huidige_snelheid,
       optietype: 'televisie-bundel',
-      suboptietype: knop.dataset.kzSuboptietype
+      suboptietype: knop.dataset.kzSuboptietype,
+      tvType: pakket.eigenschappen.tv_type
     });
     pakket.mutatie(sleutel, hoeveelheid);
   } else {
@@ -2150,21 +2151,31 @@ function VerrijktPakket(p) {
     | 	sleutels. Alle sleutels zijn facultatief.
     | 	snelheid is niet hard op type omdat die niet consequent aan de 
     | 	pakketten is meegegeven.
+    | 	tv type is ook facultatief, maar kan ook stomweg null zijn en dient in beide gevallen true
+    | 	te zijn. Als het niet null is dan is het ITV, DTV of DTV-ITV.
     |
     |-----------------------------------------------------*/
     var naam = zoek.naam,
         optietype = zoek.optietype,
         suboptietype = zoek.suboptietype,
-        snelheid = zoek.snelheid; //als zoekopdracht niet meegegegeven, altijd ok.
+        snelheid = zoek.snelheid,
+        tvType = zoek.tvType; //als zoekopdracht niet meegegegeven, altijd ok.
 
     var r = Object.entries(_this.eigenschappen.maandelijks).find(function (_ref7) {
       var _ref8 = _slicedToArray(_ref7, 2),
           sleutel = _ref8[0],
           optie = _ref8[1];
 
-      return ![!naam || optie.naam === naam, !optietype || optie.optietype === optietype, !suboptietype || optie.suboptietype === suboptietype, !snelheid || optie.snelheid == snelheid].includes(false);
+      return ![!naam || optie.naam === naam, !optietype || optie.optietype === optietype, !suboptietype || optie.suboptietype === suboptietype, !snelheid || optie.snelheid == snelheid, !tvType || !optie.tv_typen || optie.tv_typen.includes(tvType)].includes(false);
     });
-    return r[0];
+
+    if (!r) {
+      console.warn('geen optiesleutel gevonden met:');
+      console.table(zoek);
+      return false;
+    }
+
+    return r[0]; // de sleutel
   }; // doet niet meer dat de naam aangeeft.
 
 

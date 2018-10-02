@@ -125,13 +125,19 @@ function keuzehulp_televisie_bundels($provider_naam = '') {
 		)
 	));
 
-	foreach ($bundels as $b) {
-		$b->pakketten = get_field('pakketten', $b->ID);
-		$b->snelheid = get_field('snelheid', $b->ID);
-		$b->tekst = get_field('tekst', $b->ID);
-	}
+	return array_map(function($b){ 
+		return (object) array(
+			'ID'			=> $b->ID,
+			'titel'			=> $b->post_title,
+			'pakketten' 	=> get_field('pakketten', $b->ID),
+			'snelheid' 		=> get_field('snelheid', $b->ID),
+			'tekst' 		=> get_field('tekst', $b->ID),
+			'tv_typen' 		=> array_map(function($tv_type){
+				return $tv_type->name;
+			}, wp_get_post_terms($b->ID, 'tv-type'))
+		);
+	}, $bundels);
 
-	return $bundels;
 }
 
 class Kz_optie {
@@ -142,12 +148,13 @@ class Kz_optie {
 		// indien sleutels niet voorkomen, wordt terugval gebruikt.
 
 		$tv = array(
-			'aantal'		=> 0,
-			'prijs'			=> null,
-			'optietype' 	=> null,
-			'suboptietype'  => null,
-			'snelheid'		=> null,
-			'naam'			=> ''
+			'aantal'			=> 0,
+			'prijs'				=> null,
+			'optietype' 		=> null,
+			'suboptietype'  	=> null,
+			'snelheid'			=> null,
+			'naam'				=> '',
+			'tv_typen'			=> null,
 		);
 
 		foreach ($tv as $s => $w) {
@@ -494,52 +501,124 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100')  {
 
 		$televisie_bundels = keuzehulp_televisie_bundels($provider_post->post_name);
 
-		// zijn de bundels voor specifieke snelheden?
-		// dat is zo als er meer dan één bundel is.
-		// we zetten het voor alle snelheden er in.
 
-		if (count($televisie_bundels) > 1) {
-			$return['test'] = 'optie 1';
+
+		$return['televisie-bundels'] = $televisie_bundels;
+
+		$televisie_snelheden = array_map(function($tb){
+			return $tb->snelheid;
+		}, $televisie_bundels);
+
+		$verschillende_televisie_snelheden = array_unique($televisie_snelheden);
+
+		// kan binnenkomen als:
+		// geen verschillende snelheden;
+		// verschillende snelheden en allemaal een getal
+		// verschillende snelheden en niet alles een getal
+		// bijvoorbeeld een combinatie snelheidsafhankelijke ITV pakketten met een rekam DTV pakket.
+
+		if (count($verschillende_televisie_snelheden) > 1) {
 			foreach ($televisie_bundels as $tv_bundel) {
-				foreach ($tv_bundel->pakketten as $pakketgroep) {
-					foreach ($pakketgroep['opties'] as $optie) {
-						$str = $pakketgroep['pakket_naam'] . '-' . $optie['publieke_naam'] . '-' . $tv_bundel->snelheid;
-						$prijs = (float) $optie['prijs'];
 
-						$slugje = slugify($str);
+				$tv_typen = implode('-', $tv_bundel->tv_typen);
 
-						$return['maandelijks'][($slugje)] = new Kz_optie(array(
-							'naam'			=> $optie['publieke_naam'],
-							'optietype' 	=> 'televisie-bundel',
-							'suboptietype'	=> $pakketgroep['pakket_naam'],
-							'snelheid'		=> $tv_bundel->snelheid,
-							'aantal' 		=> $prijs < 0.01 ? 1 : 0, //gratis bundels staan aan!
-							'prijs' 		=> $prijs
-						));
+				// nu kan een snelheid gespecificeerd zijn of niet.
+				if ($tv_bundel->snelheid !== '') {
+					foreach ($tv_bundel->pakketten as $pakketgroep) {
+						foreach ($pakketgroep['opties'] as $optie) {
+							$str = implode('-', array(
+								$pakketgroep['pakket_naam'],
+								$optie['publieke_naam'],
+								$tv_bundel->titel,
+								$tv_bundel->snelheid,
+								$tv_typen
+							));
 
-						$return['teksten'][($slugje)] = $optie['tekst'];
+							$prijs = (float) $optie['prijs'];
+
+							$slugje = slugify($str);
+
+							$return['maandelijks'][($slugje)] = new Kz_optie(array(
+								'naam'			=> $optie['publieke_naam'],
+								'optietype' 	=> 'televisie-bundel',
+								'bundel_typen'	=> $bundel_typen,
+								'tv_typen'		=> $tv_typen,
+								'suboptietype'	=> $pakketgroep['pakket_naam'],
+								'snelheid'		=> $tv_bundel->snelheid,
+								'aantal' 		=> $prijs < 0.01 ? 1 : 0, //gratis bundels staan aan!
+								'prijs' 		=> $prijs
+							));
+
+							$return['teksten'][($slugje)] = $optie['tekst'];
+						}
+					}
+				} else {
+					foreach ($snelheden as $snelheid) {
+						foreach ($tv_bundel->pakketten as $pakketgroep) {
+							foreach ($pakketgroep['opties'] as $optie) {
+								$str = implode('-', array(
+									$pakketgroep['pakket_naam'],
+									$optie['publieke_naam'],
+									$tv_bundel->titel,
+									$snelheid,
+									$tv_typen
+								));
+
+								$prijs = (float) $optie['prijs'];
+
+								$slugje = slugify($str);
+
+								$return['maandelijks'][($slugje)] = new Kz_optie(array(
+									'naam'			=> $optie['publieke_naam'],
+									'optietype' 	=> 'televisie-bundel',
+									'bundel_typen'	=> $bundel_typen,
+									'tv_typen'		=> $tv_typen,
+									'suboptietype'	=> $pakketgroep['pakket_naam'],
+									'snelheid'		=> $snelheid,
+									'aantal' 		=> $prijs < 0.01 ? 1 : 0, //gratis bundels staan aan!
+									'prijs' 		=> $prijs
+								));
+
+								$return['teksten'][($slugje)] = $optie['tekst'];
+							}
+						}						
 					}
 				}
+
+
 			}
 		} else {
-			$return['test'] = 'optie 2';
-			foreach ($televisie_bundels[0]->pakketten as $pakketgroep) {
-				foreach ($pakketgroep['opties'] as $optie) {
-					foreach ($snelheden as $snelheid) {
-						$str = $pakketgroep['pakket_naam'] . '-' . $optie['publieke_naam'] . '-' . $snelheid;
-						$prijs = (float) $optie['prijs'];
-						$slugje = slugify($str);
+			
+			foreach ($televisie_bundels as $tv_bundel) {
+				$tv_typen = implode('-', $tv_bundel->tv_typen);
+				foreach ($tv_bundel->pakketten as $pakketgroep) {
+					foreach ($pakketgroep['opties'] as $optie) {
+						foreach ($snelheden as $snelheid) {
 
-						$return['maandelijks'][($slugje)] = new Kz_optie(array(
-							'naam'			=> $optie['publieke_naam'],
-							'optietype' 	=> 'televisie-bundel',
-							'suboptietype'	=> $pakketgroep['pakket_naam'],
-							'snelheid'		=> $snelheid,
-							'aantal' 		=> $prijs < 0.01 ? 1 : 0,
-							'prijs' 		=> $prijs
-						));
+							$str = implode('-', array(
+								$pakketgroep['pakket_naam'],
+								$optie['publieke_naam'],
+								$tv_bundel->post_title,
+								$snelheid,
+								$tv_typen
+							));
 
-						$return['teksten'][($slugje)] = $optie['tekst'];
+							$prijs = (float) $optie['prijs'];
+							$slugje = slugify($str);
+
+							$return['maandelijks'][($slugje)] = new Kz_optie(array(
+								'naam'			=> $optie['publieke_naam'],
+								'optietype' 	=> 'televisie-bundel',
+								'suboptietype'	=> $pakketgroep['pakket_naam'],
+								'bundel_typen'	=> $bundel_typen,
+								'tv_typen'		=> $tv_typen,							
+								'snelheid'		=> $snelheid,
+								'aantal' 		=> $prijs < 0.01 ? 1 : 0,
+								'prijs' 		=> $prijs
+							));
+
+							$return['teksten'][($slugje)] = $optie['tekst'];
+						}
 					}
 				}
 			}

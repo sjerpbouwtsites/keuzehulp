@@ -156,9 +156,11 @@ function VerrijktPakket(p) {
 		| 	sleutels. Alle sleutels zijn facultatief.
 		| 	snelheid is niet hard op type omdat die niet consequent aan de 
 		| 	pakketten is meegegeven.
+		| 	tv type is ook facultatief, maar kan ook stomweg null zijn en dient in beide gevallen true
+		| 	te zijn. Als het niet null is dan is het ITV, DTV of DTV-ITV.
 		|
 		|-----------------------------------------------------*/
-		let {naam, optietype, suboptietype, snelheid} = zoek;
+		let {naam, optietype, suboptietype, snelheid, tvType} = zoek;
 		//als zoekopdracht niet meegegegeven, altijd ok.
 		const r = Object.entries(this.eigenschappen.maandelijks)
 			.find( ([sleutel, optie]) => {
@@ -166,13 +168,19 @@ function VerrijktPakket(p) {
 				!naam || optie.naam === naam,
 				!optietype || optie.optietype === optietype,
 				!suboptietype || optie.suboptietype === suboptietype,
-				!snelheid || optie.snelheid == snelheid
+				!snelheid || optie.snelheid == snelheid,
+				!tvType || !optie.tv_typen || optie.tv_typen.includes(tvType)
 			].includes(false);
 		});
-
-		return r[0];
-
+		if (!r) {
+			console.warn('geen optiesleutel gevonden met:');
+			console.table(zoek);
+			return false;
+		} 
+			return r[0]; // de sleutel
 	};
+
+
 
 
 	// doet niet meer dat de naam aangeeft.

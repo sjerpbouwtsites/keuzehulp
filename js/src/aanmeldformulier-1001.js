@@ -422,7 +422,8 @@ function kzUpdatePrijs(knop) {
 			naam: knop.dataset.kzOptienaam,
 			snelheid: pakket.huidige_snelheid,
 			optietype: 'televisie-bundel',
-			suboptietype: knop.dataset.kzSuboptietype
+			suboptietype: knop.dataset.kzSuboptietype,
+			tvType: pakket.eigenschappen.tv_type
 		});
 
 		pakket.mutatie(sleutel, hoeveelheid);

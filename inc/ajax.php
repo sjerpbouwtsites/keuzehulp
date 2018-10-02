@@ -390,7 +390,8 @@ function finalizeer_verzenden_pakketten($arg = array()) {
 			$arg['pakketten'], $toegestane_providers, $arg['postfix'], $arg['status'], $arg['ajax_data']
 		);
 
-		$console['reg_filter'] = $reg_filter;
+//		$console['reg_filter'] = $reg_filter;
+		$console = $reg_filter['providers'];
 
 		echo json_encode(array(
 			'providers' 	=> $reg_filter['providers'],

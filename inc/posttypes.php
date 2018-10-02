@@ -131,11 +131,6 @@ function Kz_registreer_posttypes() {
     $provider->pas_args_aan(array( 'menu_icon'  => 'dashicons-admin-site', 'supports'  => array( 'title', 'thumbnail' ) ));
     $provider->registreer();
 
-/*    $pakket = new Kz_posttype_voorb('pakket', 'pakketten');
-    $pakket->pas_args_aan(array( 'menu_icon' => 'dashicons-thumbs-down', 'supports'  => array( 'title', 'editor' ) ));
-    $pakket->maak_taxonomie('type', 'typen');
-    $pakket->registreer();*/
-
     $nieuw_pakket = new Kz_posttype_voorb('nieuw-pakket', 'nieuwe-pakketten');
     $nieuw_pakket->pas_args_aan(array( 'menu_icon'   => 'dashicons-cart', 'supports' => array( 'title' ) ));
 //    $nieuw_pakket->maak_taxonomie('tv-type', 'tv-typen');
@@ -162,111 +157,55 @@ function Kz_registreer_posttypes() {
 
     //////////////////////
 
-    $labels = array(
-            'name'              => _x( 'Providers', 'taxonomy general name' ),
-            'singular_name'     => _x( 'Provider', 'taxonomy singular name' ),
-            'search_items'      => __( 'Doorzoek providers' ),
-            'all_items'         => __( 'Alle providers' ),
-            'parent_item'       => __( 'Ouder provider' ),
-            'parent_item_colon' => __( 'Ouder provider:' ),
-            'edit_item'         => __( 'Bewerk provider' ),
-            'update_item'       => __( 'Vernieuw provider' ),
-            'add_new_item'      => __( 'Voeg nieuwe provider toe' ),
-            'new_item_name'     => __( 'Naam nieuwe provider' ),
-            'menu_name'         => __( 'Provider' ),
-        );
-
-    $args = array(
-        'hierarchical'      => true,
-        'labels'            => $labels,
-        'show_ui'           => true,
-        'show_admin_column' => true,
-        'query_var'         => true,
-        'rewrite'           => array( 'slug' => 'provider' ),
+    register_taxonomy( 
+        'provider', 
+        array( 'telefonie-bundel', 'tv-bundel', 'nieuw-pakket', 'provider' ), 
+        kz_taxonomie_args('provider', 'providers') 
     );
 
-    register_taxonomy( 'provider', array( 'telefonie-bundel', 'tv-bundel', 'nieuw-pakket', 'provider' ), $args );
-
-    //////////////////////
-
-    $labels = array(
-            'name'              => _x( 'TV-typen', 'taxonomy general name' ),
-            'singular_name'     => _x( 'TV-type', 'taxonomy singular name' ),
-            'search_items'      => __( 'Doorzoek tv-typen' ),
-            'all_items'         => __( 'Alle tv-typen' ),
-            'parent_item'       => __( 'Ouder tv-type' ),
-            'parent_item_colon' => __( 'Ouder tv-type:' ),
-            'edit_item'         => __( 'Bewerk tv-type' ),
-            'update_item'       => __( 'Vernieuw tv-type' ),
-            'add_new_item'      => __( 'Voeg nieuwe tv-type toe' ),
-            'new_item_name'     => __( 'Naam nieuwe tv-type' ),
-            'menu_name'         => __( 'TV-type' ),
-        );
-
-    $args = array(
-        'hierarchical'      => true,
-        'labels'            => $labels,
-        'show_ui'           => true,
-        'show_admin_column' => true,
-        'query_var'         => true,
-        'rewrite'           => array( 'slug' => 'tv-type' ),
+    register_taxonomy( 
+        'tv-type', 
+        array('nieuw-pakket', 'tv-bundel' ), 
+        kz_taxonomie_args('tv-type', 'tv-typen') 
     );
 
-    register_taxonomy( 'tv-type', array('nieuw-pakket', 'tv-bundel' ), $args );
-
-    //////////////////////
-
-    $labels = array(
-            'name'              => _x( 'Regios', 'taxonomy general name' ),
-            'singular_name'     => _x( 'Regio', 'taxonomy singular name' ),
-            'search_items'      => __( 'Doorzoek regios' ),
-            'all_items'         => __( 'Alle regios' ),
-            'parent_item'       => __( 'Ouder regio' ),
-            'parent_item_colon' => __( 'Ouder regio:' ),
-            'edit_item'         => __( 'Bewerk regio' ),
-            'update_item'       => __( 'Vernieuw regio' ),
-            'add_new_item'      => __( 'Voeg nieuwe regio toe' ),
-            'new_item_name'     => __( 'Naam nieuwe regio' ),
-            'menu_name'         => __( 'Regio' ),
-        );
-
-    $args = array(
-        'hierarchical'      => true,
-        'labels'            => $labels,
-        'show_ui'           => true,
-        'show_admin_column' => true,
-        'query_var'         => true,
-        'rewrite'           => array( 'slug' => 'regio' ),
+    register_taxonomy( 
+        'regio', 
+        array('provider', 'zakelijke-provider' ), 
+        kz_taxonomie_args('regio', 'regios') 
     );
 
-    register_taxonomy( 'regio', array('provider', 'zakelijke-provider' ), $args );
-
-    ////////////////////
-
-    $labels = array(
-            'name'              => _x( 'Statussen', 'taxonomy general name' ),
-            'singular_name'     => _x( 'Status', 'taxonomy singular name' ),
-            'search_items'      => __( 'Doorzoek statussen' ),
-            'all_items'         => __( 'Alle statussen' ),
-            'parent_item'       => __( 'Ouder status' ),
-            'parent_item_colon' => __( 'Ouder status:' ),
-            'edit_item'         => __( 'Bewerk status' ),
-            'update_item'       => __( 'Vernieuw status' ),
-            'add_new_item'      => __( 'Voeg nieuwe status toe' ),
-            'new_item_name'     => __( 'Naam nieuwe status' ),
-            'menu_name'         => __( 'Status' ),
-        );
-
-    $args = array(
-        'hierarchical'      => true,
-        'labels'            => $labels,
-        'show_ui'           => true,
-        'show_admin_column' => true,
-        'query_var'         => true,
-        'rewrite'           => array( 'slug' => 'status' ),
+    register_taxonomy( 
+        'status', 
+        array('nieuw-pakket', 'status' ), 
+        kz_taxonomie_args('status', 'statussen') 
     );
-
-    register_taxonomy( 'status', array('nieuw-pakket', 'status' ), $args );
 
 }
 
+function kz_taxonomie_args($enkelvoud, $meervoud) {
+
+    $labels = array(
+            'name'              => _x( ucfirst($meervoud), 'taxonomy general name' ),
+            'singular_name'     => _x( ucfirst($enkelvoud), 'taxonomy singular name' ),
+            'search_items'      => __( 'Doorzoek '.$meervoud ),
+            'all_items'         => __( 'Alle '.$meervoud ),
+            'parent_item'       => __( 'Ouder '.$enkelvoud ),
+            'parent_item_colon' => __( 'Ouder '.$enkelvoud.':' ),
+            'edit_item'         => __( 'Bewerk '.$enkelvoud ),
+            'update_item'       => __( 'Vernieuw '.$enkelvoud ),
+            'add_new_item'      => __( 'Voeg nieuwe '.$enkelvoud.' toe' ),
+            'new_item_name'     => __( 'Naam nieuwe '.$enkelvoud ),
+            'menu_name'         => __( ucfirst($enkelvoud) ),
+        );
+
+    return array(
+        'hierarchical'      => true,
+        'labels'            => $labels,
+        'show_ui'           => true,
+        'show_admin_column' => true,
+        'query_var'         => true,
+        'rewrite'           => array( 'slug' => $enkelvoud ),
+    );
+
+}

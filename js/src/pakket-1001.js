@@ -188,6 +188,42 @@ function VerrijktPakket(p) {
 			
 	};
 
+	// oei dubbel op //
+	this.vindOpties = zoek => {
+		/*------------------------------------------------------
+		|
+		| 	WAT EEN MOOIE FUNCTIE
+		| 	Zoekt door de **maandelijkse** opties en geeft de
+		| 	eerste hit terug die matcht op alle meegegeven 
+		| 	sleutels. Alle sleutels zijn facultatief.
+		| 	snelheid is niet hard op type omdat die niet consequent aan de 
+		| 	pakketten is meegegeven.
+		| 	tv type is ook facultatief, maar kan ook stomweg null zijn en dient in beide gevallen true
+		| 	te zijn. Als het niet null is dan is het ITV, DTV of DTV-ITV.
+		|
+		|-----------------------------------------------------*/
+		let {naam, optietype, suboptietype, snelheid, tvType} = zoek;
+		//als zoekopdracht niet meegegegeven, altijd ok.
+		const r = Object.entries(this.eigenschappen.maandelijks)
+			.filter( ([sleutel, optie]) => {
+			return ![
+				!naam || optie.naam === naam,
+				!optietype || optie.optietype === optietype,
+				!suboptietype || optie.suboptietype === suboptietype,
+				!snelheid || optie.snelheid == snelheid,
+				!tvType || !optie.tv_typen || optie.tv_typen.includes(tvType)
+			].includes(false);
+		});
+		if (!r) {
+			console.warn('geen optiesleutel gevonden met:');
+			console.table(zoek);
+			return false;
+		} 
+
+		return r;
+			
+	};
+
 	this.vindOptieSleutel = zoek => this.vindOptie(zoek, 'sleutel'); 
 	this.vindOptieZelf = zoek => this.vindOptie(zoek, 'optie');
 

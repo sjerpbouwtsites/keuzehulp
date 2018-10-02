@@ -2142,7 +2142,9 @@ function VerrijktPakket(p) {
     if (e.maandelijks[optie]) e.maandelijks[optie].aantal = aantal;
   };
 
-  this.vindOptieSleutel = function (zoek) {
+  this.vindOptie = function (zoek) {
+    var antwoord = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'alles';
+
     /*------------------------------------------------------
     |
     | 	WAT EEN MOOIE FUNCTIE
@@ -2175,8 +2177,80 @@ function VerrijktPakket(p) {
       return false;
     }
 
-    return r[0]; // de sleutel
-  }; // doet niet meer dat de naam aangeeft.
+    if (antwoord === 'alles') {
+      return r;
+    } else if (antwoord === 'sleutel') {
+      return r[0]; // de sleutel		
+    } else {
+      return r[1];
+    }
+  }; // oei dubbel op //
+
+
+  this.vindOpties = function (zoek) {
+    /*------------------------------------------------------
+    |
+    | 	WAT EEN MOOIE FUNCTIE
+    | 	Zoekt door de **maandelijkse** opties en geeft de
+    | 	eerste hit terug die matcht op alle meegegeven 
+    | 	sleutels. Alle sleutels zijn facultatief.
+    | 	snelheid is niet hard op type omdat die niet consequent aan de 
+    | 	pakketten is meegegeven.
+    | 	tv type is ook facultatief, maar kan ook stomweg null zijn en dient in beide gevallen true
+    | 	te zijn. Als het niet null is dan is het ITV, DTV of DTV-ITV.
+    |
+    |-----------------------------------------------------*/
+    var naam = zoek.naam,
+        optietype = zoek.optietype,
+        suboptietype = zoek.suboptietype,
+        snelheid = zoek.snelheid,
+        tvType = zoek.tvType; //als zoekopdracht niet meegegegeven, altijd ok.
+
+    var r = Object.entries(_this.eigenschappen.maandelijks).filter(function (_ref9) {
+      var _ref10 = _slicedToArray(_ref9, 2),
+          sleutel = _ref10[0],
+          optie = _ref10[1];
+
+      return ![!naam || optie.naam === naam, !optietype || optie.optietype === optietype, !suboptietype || optie.suboptietype === suboptietype, !snelheid || optie.snelheid == snelheid, !tvType || !optie.tv_typen || optie.tv_typen.includes(tvType)].includes(false);
+    });
+
+    if (!r) {
+      console.warn('geen optiesleutel gevonden met:');
+      console.table(zoek);
+      return false;
+    }
+
+    return r;
+  };
+
+  this.vindOptieSleutel = function (zoek) {
+    return _this.vindOptie(zoek, 'sleutel');
+  };
+
+  this.vindOptieZelf = function (zoek) {
+    return _this.vindOptie(zoek, 'optie');
+  };
+  /*	this.vindOptieSleutel = zoek => {
+  		let {naam, optietype, suboptietype, snelheid, tvType} = zoek;
+  		//als zoekopdracht niet meegegegeven, altijd ok.
+  		const r = Object.entries(this.eigenschappen.maandelijks)
+  			.find( ([sleutel, optie]) => {
+  			return ![
+  				!naam || optie.naam === naam,
+  				!optietype || optie.optietype === optietype,
+  				!suboptietype || optie.suboptietype === suboptietype,
+  				!snelheid || optie.snelheid == snelheid,
+  				!tvType || !optie.tv_typen || optie.tv_typen.includes(tvType)
+  			].includes(false);
+  		});
+  		if (!r) {
+  			console.warn('geen optiesleutel gevonden met:');
+  			console.table(zoek);
+  			return false;
+  		} 
+  			return r[0]; // de sleutel
+  	};*/
+  // doet niet meer dat de naam aangeeft.
 
 
   this.optieBestaat = function () {
@@ -2202,31 +2276,31 @@ function VerrijktPakket(p) {
 
   this.zoekSubOptie = function () {
     var suboptietype = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    var mOpties = Object.entries(_this.eigenschappen.maandelijks).filter(function (_ref9) {
-      var _ref10 = _slicedToArray(_ref9, 2),
-          sleutel = _ref10[0],
-          optie = _ref10[1];
-
-      return optie.suboptietype === suboptietype;
-    }).map(function (_ref11) {
+    var mOpties = Object.entries(_this.eigenschappen.maandelijks).filter(function (_ref11) {
       var _ref12 = _slicedToArray(_ref11, 2),
           sleutel = _ref12[0],
           optie = _ref12[1];
+
+      return optie.suboptietype === suboptietype;
+    }).map(function (_ref13) {
+      var _ref14 = _slicedToArray(_ref13, 2),
+          sleutel = _ref14[0],
+          optie = _ref14[1];
 
       return Object.assign({
         sleutel: sleutel
       }, optie);
     }),
-        eOpties = Object.entries(_this.eigenschappen.eenmalig).filter(function (_ref13) {
-      var _ref14 = _slicedToArray(_ref13, 2),
-          sleutel = _ref14[0],
-          optie = _ref14[1];
-
-      return optie.suboptietype === suboptietype;
-    }).map(function (_ref15) {
+        eOpties = Object.entries(_this.eigenschappen.eenmalig).filter(function (_ref15) {
       var _ref16 = _slicedToArray(_ref15, 2),
           sleutel = _ref16[0],
           optie = _ref16[1];
+
+      return optie.suboptietype === suboptietype;
+    }).map(function (_ref17) {
+      var _ref18 = _slicedToArray(_ref17, 2),
+          sleutel = _ref18[0],
+          optie = _ref18[1];
 
       return Object.assign({
         sleutel: sleutel
@@ -2241,31 +2315,31 @@ function VerrijktPakket(p) {
 
   this.zoekOptieType = function () {
     var optietype = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    var mOpties = Object.entries(_this.eigenschappen.maandelijks).filter(function (_ref17) {
-      var _ref18 = _slicedToArray(_ref17, 2),
-          sleutel = _ref18[0],
-          optie = _ref18[1];
-
-      return optie.optietype === optietype;
-    }).map(function (_ref19) {
+    var mOpties = Object.entries(_this.eigenschappen.maandelijks).filter(function (_ref19) {
       var _ref20 = _slicedToArray(_ref19, 2),
           sleutel = _ref20[0],
           optie = _ref20[1];
+
+      return optie.optietype === optietype;
+    }).map(function (_ref21) {
+      var _ref22 = _slicedToArray(_ref21, 2),
+          sleutel = _ref22[0],
+          optie = _ref22[1];
 
       return Object.assign({
         sleutel: sleutel
       }, optie);
     }),
-        eOpties = Object.entries(_this.eigenschappen.eenmalig).filter(function (_ref21) {
-      var _ref22 = _slicedToArray(_ref21, 2),
-          sleutel = _ref22[0],
-          optie = _ref22[1];
-
-      return optie.optietype === optietype;
-    }).map(function (_ref23) {
+        eOpties = Object.entries(_this.eigenschappen.eenmalig).filter(function (_ref23) {
       var _ref24 = _slicedToArray(_ref23, 2),
           sleutel = _ref24[0],
           optie = _ref24[1];
+
+      return optie.optietype === optietype;
+    }).map(function (_ref25) {
+      var _ref26 = _slicedToArray(_ref25, 2),
+          sleutel = _ref26[0],
+          optie = _ref26[1];
 
       return Object.assign({
         sleutel: sleutel
@@ -2321,10 +2395,10 @@ function VerrijktPakket(p) {
 
   this.huidigeTelefonieBundel = function () {
     var gevonden = false;
-    Object.entries(_this.eigenschappen.telefonie_bundels).forEach(function (_ref25) {
-      var _ref26 = _slicedToArray(_ref25, 2),
-          bundelNaam = _ref26[0],
-          bundels = _ref26[1];
+    Object.entries(_this.eigenschappen.telefonie_bundels).forEach(function (_ref27) {
+      var _ref28 = _slicedToArray(_ref27, 2),
+          bundelNaam = _ref28[0],
+          bundels = _ref28[1];
 
       bundels.forEach(function (bundel) {
         if (_this.eigenschappen.maandelijks[bundel.slug].aantal > 0) {
@@ -2340,10 +2414,10 @@ function VerrijktPakket(p) {
   };
 
   this.alleTelefonieBundelsUit = function () {
-    Object.entries(_this.eigenschappen.maandelijks).forEach(function (_ref27) {
-      var _ref28 = _slicedToArray(_ref27, 2),
-          optieNaam = _ref28[0],
-          optieWaarden = _ref28[1];
+    Object.entries(_this.eigenschappen.maandelijks).forEach(function (_ref29) {
+      var _ref30 = _slicedToArray(_ref29, 2),
+          optieNaam = _ref30[0],
+          optieWaarden = _ref30[1];
 
       if (optieWaarden.optietype === 'telefonie-bundel') {
         _this.mutatie(optieNaam, 0);
@@ -2376,16 +2450,16 @@ function VerrijktPakket(p) {
   };
 
   this.pakZenders = function () {
-    var aantalUniekeZenderPakketten = Object.entries(_this.eigenschappen).filter(function (_ref29) {
-      var _ref30 = _slicedToArray(_ref29, 2),
-          sleutel = _ref30[0],
-          object = _ref30[1];
+    var aantalUniekeZenderPakketten = Object.entries(_this.eigenschappen).filter(function (_ref31) {
+      var _ref32 = _slicedToArray(_ref31, 2),
+          sleutel = _ref32[0],
+          object = _ref32[1];
 
       return sleutel.includes('zender');
-    }).map(function (_ref31) {
-      var _ref32 = _slicedToArray(_ref31, 2),
-          s = _ref32[0],
-          o = _ref32[1];
+    }).map(function (_ref33) {
+      var _ref34 = _slicedToArray(_ref33, 2),
+          s = _ref34[0],
+          o = _ref34[1];
 
       return o.totaal + o.hd;
     }).filter(uniek).length;
@@ -3148,6 +3222,9 @@ var kzRenderVergelijking = {
     return !!Object.entries(this.providers);
   },
   printPakkettenLijst: function printPakkettenLijst(pakket, providerTal) {
+    // hallo opvolger!
+    // ze wilden niet luisteren toen ik zei: dit loopt helemaal uit de hand
+    // doe het niet.
     this.pakket = pakket;
     var ds = pakket.pakHuidigeSnelheid(),
         us = pakket.pakHuidigeUploadSnelheid();
@@ -3187,31 +3264,19 @@ var kzRenderVergelijking = {
   televisieBundels: function televisieBundels() {
     var _this3 = this;
 
-    var s = String(this.pakket.pakHuidigeSnelheid()),
-        families = ['plus', 'erotiek', 'foxsportseredivisie', 'foxsportsinternationaal', 'foxsportscompleet', 'ziggosporttotaal', 'film1'],
-        ret = [];
+    return this.pakket.vindOpties({
+      optietype: 'televisie-bundel',
+      snelheid: this.pakket.pakHuidigeSnelheid(),
+      tv_typen: this.pakket.eigenschappen.tv_type
+    }).map(function (_ref4) {
+      var _ref5 = _slicedToArray(_ref4, 2),
+          sleutel = _ref5[0],
+          _ref5$ = _ref5[1],
+          naam = _ref5$.naam,
+          prijs = _ref5$.prijs;
 
-    var _loop = function _loop(optieNaam) {
-      families.forEach(function (fam) {
-        if (optieNaam.indexOf(fam) !== -1 && optieNaam.indexOf(s) !== -1) {
-          var n = optieNaam.split('-');
-          n.shift();
-          n.pop();
-          n = n.join(' ');
-          n = n.charAt(0).toUpperCase() + n.slice(1);
-
-          var _s2 = _this3.pakket.optieAantal(optieNaam) ? "<tr><td>".concat(n, "</td><td>").concat(_this3.pakket.optiePrijs(optieNaam, true), "</td></tr>") : '';
-
-          ret.push(_s2);
-        }
-      });
-    };
-
-    for (var optieNaam in this.pakket.eigenschappen.maandelijks) {
-      _loop(optieNaam);
-    }
-
-    return ret.join('');
+      return "<tr><td>".concat(naam, "</td><td>").concat(_this3.pakket.formatteerPrijs(prijs), "</td></tr>");
+    }).join('');
   },
   installatieSectieTD: function installatieSectieTD(sleutel, naam) {
     return this.pakket.optieAantal(sleutel) ? "<tr><td>".concat(naam, "</td><td>").concat(this.pakket.optiePrijs(sleutel, true), "</td></tr>") : '';

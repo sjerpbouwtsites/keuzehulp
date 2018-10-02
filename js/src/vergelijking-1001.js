@@ -134,6 +134,11 @@ const kzRenderVergelijking = {
 			return !!Object.entries(this.providers);
 	},
 	printPakkettenLijst(pakket, providerTal) {
+
+		// hallo opvolger!
+		// ze wilden niet luisteren toen ik zei: dit loopt helemaal uit de hand
+		// doe het niet.
+
 		this.pakket = pakket;
 
 		const ds = pakket.pakHuidigeSnelheid(),
@@ -349,28 +354,13 @@ const kzRenderVergelijking = {
 		`;
 	},
 	televisieBundels() {
-		const s = String(this.pakket.pakHuidigeSnelheid()),
-		 families = ['plus', 'erotiek', 'foxsportseredivisie', 'foxsportsinternationaal', 'foxsportscompleet', 'ziggosporttotaal', 'film1'],
-
-		 ret = [];
-		for (const optieNaam in this.pakket.eigenschappen.maandelijks) {
-			families.forEach((fam) => {
-				if (optieNaam.indexOf(fam) !== -1 && optieNaam.indexOf(s) !== -1) {
-					let n = optieNaam.split('-');
-					n.shift();
-					n.pop();
-					n = n.join(' ');
-					n = n.charAt(0).toUpperCase() + n.slice(1);
-
-					const s = this.pakket.optieAantal(optieNaam)
-						? `<tr><td>${n}</td><td>${this.pakket.optiePrijs(optieNaam, true)}</td></tr>`
-						: '';
-
-					ret.push(s);
-				}
-			});
-		}
-		return ret.join('');
+		return this.pakket.vindOpties({
+			optietype: 'televisie-bundel',
+			snelheid: this.pakket.pakHuidigeSnelheid(),
+			tv_typen: this.pakket.eigenschappen.tv_type
+		}).map(([sleutel, {naam, prijs}]) => {
+			return `<tr><td>${naam}</td><td>${this.pakket.formatteerPrijs(prijs)}</td></tr>`
+		}).join('');
 	},
 	installatieSectieTD(sleutel, naam) {
 		return this.pakket.optieAantal(sleutel)

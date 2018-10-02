@@ -147,7 +147,7 @@ function VerrijktPakket(p) {
 		if (e.maandelijks[optie]) e.maandelijks[optie].aantal = aantal;
 	};
 
-	this.vindOptieSleutel = zoek => {
+	this.vindOptie = (zoek, antwoord = 'alles') => {
 		/*------------------------------------------------------
 		|
 		| 	WAT EEN MOOIE FUNCTIE
@@ -177,8 +177,40 @@ function VerrijktPakket(p) {
 			console.table(zoek);
 			return false;
 		} 
-			return r[0]; // de sleutel
+
+		if (antwoord === 'alles') {
+			return r;
+		} else if (antwoord === 'sleutel') {
+			return r[0]; // de sleutel		
+		} else {
+			return r[1];
+		}
+			
 	};
+
+	this.vindOptieSleutel = zoek => this.vindOptie(zoek, 'sleutel'); 
+	this.vindOptieZelf = zoek => this.vindOptie(zoek, 'optie');
+
+/*	this.vindOptieSleutel = zoek => {
+		let {naam, optietype, suboptietype, snelheid, tvType} = zoek;
+		//als zoekopdracht niet meegegegeven, altijd ok.
+		const r = Object.entries(this.eigenschappen.maandelijks)
+			.find( ([sleutel, optie]) => {
+			return ![
+				!naam || optie.naam === naam,
+				!optietype || optie.optietype === optietype,
+				!suboptietype || optie.suboptietype === suboptietype,
+				!snelheid || optie.snelheid == snelheid,
+				!tvType || !optie.tv_typen || optie.tv_typen.includes(tvType)
+			].includes(false);
+		});
+		if (!r) {
+			console.warn('geen optiesleutel gevonden met:');
+			console.table(zoek);
+			return false;
+		} 
+			return r[0]; // de sleutel
+	};*/
 
 
 

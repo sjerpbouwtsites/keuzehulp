@@ -2,7 +2,7 @@
 
 /* template name: bedankt */
 
-$provider = $_GET['prov'];
+$provider = array_key_exists('prov', $_GET) ? $_GET['prov'] : '';
 $afb_pad = plugins_url( '../iconen-nieuw/png-rekam/', __FILE__ );
 require 'header.php';
 

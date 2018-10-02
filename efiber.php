@@ -96,15 +96,6 @@ function Kz_scripts_in_rij() {
     wp_register_script( 'base64', plugins_url('gravityformssignature/includes/super_signature/base64.js'), array(), null, true );
     wp_enqueue_script( 'base64' );
 
-
-
-
-
-
-    // POLYFILL.IO
-
-    //wp_enqueue_script( 'polyfill-io', 'https://cdn.polyfill.io/v2/polyfill.min.js', array(), null, true );
-
 }
 
 function Kz_init () {
@@ -257,52 +248,6 @@ class PageTemplater {
 add_action( 'plugins_loaded', array( 'PageTemplater', 'get_instance' ) );
 
 
-
-add_filter('gform_pre_render_2', 'zakelijke_providers_dynamisch');
-
-function zakelijke_providers_dynamisch ($form) {
-
-  $gebiedscode = strtolower($_POST['data']['gebiedscode']);
-
-  foreach ($form['fields'] as &$field) :
-
-    if ($field->id != 64) {
-      continue;
-    }
-
-    $providers = get_posts(array(
-      'posts_per_page'  => -1,
-      'post_type'       => 'zakelijke-provider',
-      'tax_query' => array(
-          array(
-            'taxonomy' => 'regio',
-            'field'    => 'slug',
-            'terms'    => $gebiedscode,
-          ),
-        ),
-    ));
-
-    $keuzes = array(array(
-      'text'      => 'Geen voorkeur',
-      'value'     => 'geen-voorkeur',
-      'isSelected'=> true
-    ));
-
-    foreach ($providers as $p) {
-      $keuzes[] = array(
-        'text'      => $p->post_title,
-        'value'     => $p->post_name,
-        'isSelected'=> false
-      );
-    }
-
-    $field->choices = $keuzes;
-
-  endforeach;
-
-  return $form;
-
-}
 
 function slugify($str) {
   // Convert to lowercase and remove whitespace

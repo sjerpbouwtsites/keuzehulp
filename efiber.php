@@ -338,3 +338,32 @@ function my_body_classes( $classes ) {
     return $classes;
      
 }
+
+
+
+add_filter("gform_field_validation_1_32", "dob_validate", 10, 4);
+
+function dob_validate($result, $value, $form, $field){
+    //Check if dob field matches required age
+    if ($result["is_valid"]){
+        // this the minimum age requirement we are validating
+        $minimum_age = 18;
+
+        // calculate age in years like a human, not a computer, based on the same birth date every year
+        $age = date('Y') - substr($value, 6, 4);
+        if (strtotime(date('Y-m-d')) - strtotime(date('Y') . '-' . substr($value, 0, 2) . '-' . substr($value, 3, 2)) < 0) {
+            $age--;
+        }
+
+        if( $age < $minimum_age ){
+            $result["is_valid"] = false;
+            $result["message"] = "Sorry, je moet minstens $minimum_age jaar oud zijn. Jij bent $age jaar oud.";
+        }
+    }
+    //Check if dob field is empty
+    if(empty($value)){
+        $result["is_valid"] = false;
+        $result["message"] = "Dit veld is vereist.";
+    }
+    return $result;
+}

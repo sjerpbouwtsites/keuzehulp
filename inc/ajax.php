@@ -120,6 +120,10 @@ function keuzehulp_controleer_postcode() {
 	// zet de mysql verbinding klaar
 	$con = getdb();
 
+	//eerst toegang log schrijven. 
+
+	$result = mysqli_query($con, "INSERT INTO `toegang_log` (`postcode`) VALUES ('{$ajax_data['postcode']}'); ");
+
    	$sql = "SELECT * FROM postcodes WHERE postcode='{$ajax_data['postcode']}' AND huisnummer='{$ajax_data['huisnummer']}' AND toevoeging='{$ajax_data['toevoeging']}' AND kamer='{$ajax_data['kamer']}'";
 
     $result = mysqli_query($con, $sql);

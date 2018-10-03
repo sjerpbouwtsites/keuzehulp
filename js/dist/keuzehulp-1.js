@@ -341,23 +341,7 @@ function kzInitialiseerGF() {
   };
   jQuery.datepicker.setDefaults(jQuery.datepicker.regional.nl); // date field interactief.
 
-  gformInitDatepicker(); // valideert minimumleeftijd = 18 want je moet minstens in 2000 geboren zijn.
-  // @TODO is precies genoeg
-
-  $('.datepicker_with_icon').on('change', function () {
-    var v = this.value;
-
-    if (v.length > 5) {
-      var is18 = Number(v.split('/')[2]) - 2000 < 0;
-
-      if (!is18) {
-        kzModal(kzTekst('minimum_18'), 2000);
-        $('#gform_submit_button_1').hide();
-      } else {
-        $('#gform_submit_button_1').show();
-      }
-    }
-  });
+  gformInitDatepicker();
 }
 
 function kzUpdatePrijs(knop) {

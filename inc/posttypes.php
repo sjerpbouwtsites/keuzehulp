@@ -171,7 +171,7 @@ function Kz_registreer_posttypes() {
 
     register_taxonomy( 
         'regio', 
-        array('provider', 'zakelijke-provider' ), 
+        array('provider', 'zakelijke-provider', 'nieuw-pakket' ), 
         kz_taxonomie_args('regio', 'regios') 
     );
 

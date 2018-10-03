@@ -354,6 +354,21 @@ function keuzehulp_vergelijking() {
 	    'terms' => 'status-'.$status,
 	);
 
+
+
+	// om de bepalen in welke gebiedscode niet gezocht dient te worden maken we eerst een vollige uitsluitingslijst
+	// en halen we daar de huidige gebiedscode uit.
+	$regio_terms = array_map(function($rt){
+		return ($rt->slug !== $_POST['data']['adres']['gebiedscode'] ? $rt->slug : 'null');
+	}, get_terms( 'regio', array('hide_empty' => true,) ));
+
+	$tax_query[] = array(
+        'taxonomy' => 'regio',
+        'field'    => 'slug',
+        'terms'    => $regio_terms,
+        'operator' => 'NOT IN',
+    );
+
 	$pakketten = get_posts(array(
 		'posts_per_page'	=> -1,
 		'post_type'			=> 'nieuw-pakket',
@@ -455,6 +470,15 @@ function keuzehulp_ik_weet_wat_ik_wil_pakketten() {
 	$type_slug = $slug_ar[($keuzehulp['ik-weet-wat-ik-wil'])];
 //	$console['type_slug'] = $type_slug;
 
+
+	// om de bepalen in welke gebiedscode niet gezocht dient te worden maken we eerst een vollige uitsluitingslijst
+	// en halen we daar de huidige gebiedscode uit.
+	$regio_terms = array_map(function($rt){
+		return ($rt->slug !== $_POST['data']['adres']['gebiedscode'] ? $rt->slug : 'null');
+	}, get_terms( 'regio', array('hide_empty' => true,) ));
+
+
+
 	$pakken_query_args = array(
         'posts_per_page' => -1,
         'post_type' => 'nieuw-pakket',
@@ -469,13 +493,18 @@ function keuzehulp_ik_weet_wat_ik_wil_pakketten() {
                 'field' => 'slug',
                 'terms' => 'status-'.$status,
             ),
+            array(
+	            'taxonomy' => 'regio',
+	            'field'    => 'slug',
+	            'terms'    => $regio_terms,
+	            'operator' => 'NOT IN',
+            )
         )
     );
 
 	//$console['paketten_query'] = $pakken_query_args;
 
 	$pakketten = get_posts($pakken_query_args);
-//	$console['pakketten-rauw'] = $pakketten;
 
 	$postfix = $naam_ar[($keuzehulp['ik-weet-wat-ik-wil'])]; // DTV of ITV in JS
 

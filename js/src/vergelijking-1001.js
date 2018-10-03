@@ -33,13 +33,7 @@ const kzRenderVergelijking = {
 
 			printVergelijking.innerHTML = Object.entries(r.providers)
 			.map(this.hoofdMap1)
-			.sort((a, b) => {
-			  if (a.providersLaagste < b.providersLaagste)
-			    return -1;
-			  if (a.providersLaagste > b.providersLaagste)
-			    return 1;
-			  return 0;				
-			})
+			.sort(kzProvidersLaagNaarHoog)
 			.map(({pakketten, providersLaagste}, providerTal) => {
 				//providerInfoBundel
 

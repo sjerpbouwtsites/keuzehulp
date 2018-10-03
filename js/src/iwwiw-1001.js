@@ -154,13 +154,7 @@ function ikWeetWatIkWilPakkettenAjax() {
 				};
 
 			})
-			.sort((a, b) => {
-			  if (a.providersLaagste < b.providersLaagste)
-			    return -1;
-			  if (a.providersLaagste > b.providersLaagste)
-			    return 1;
-			  return 0;				
-			})
+			.sort(kzProvidersLaagNaarHoog)
 			.map(({pakketten, providersLaagste}) => {
 				//providerInfoBundel
 				return `<section class='provider-pakketten'>

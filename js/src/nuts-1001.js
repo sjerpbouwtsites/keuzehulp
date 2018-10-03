@@ -47,6 +47,19 @@ function uniek(waarde, index, lijst) {
     return lijst.indexOf(waarde) === index;
 }
 
+function kzProvidersLaagNaarHoog(a, b) {
+	/*------------------------------------------------------
+	|
+	| 	Wordt gebruikt in vergelijking en in iwwiw
+	|
+	|-----------------------------------------------------*/				
+ if (a.providersLaagste < b.providersLaagste)
+    return -1;
+  if (a.providersLaagste > b.providersLaagste)
+    return 1;
+  return 0;		
+}
+
 function kzVindKnop(t, klasse) {
 	/*----------------------------------
 	|

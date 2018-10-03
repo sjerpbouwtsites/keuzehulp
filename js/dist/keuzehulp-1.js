@@ -1407,11 +1407,7 @@ function ikWeetWatIkWilPakkettenAjax() {
           providersLaagste: providersLaagste,
           pakketten: pakketten
         };
-      }).sort(function (a, b) {
-        if (a.providersLaagste < b.providersLaagste) return -1;
-        if (a.providersLaagste > b.providersLaagste) return 1;
-        return 0;
-      }).map(function (_ref5) {
+      }).sort(kzProvidersLaagNaarHoog).map(function (_ref5) {
         var pakketten = _ref5.pakketten,
             providersLaagste = _ref5.providersLaagste;
         //providerInfoBundel
@@ -1832,6 +1828,17 @@ function uniek(waarde, index, lijst) {
   |
   |-----------------------------------------------------*/
   return lijst.indexOf(waarde) === index;
+}
+
+function kzProvidersLaagNaarHoog(a, b) {
+  /*------------------------------------------------------
+  |
+  | 	Wordt gebruikt in vergelijking en in iwwiw
+  |
+  |-----------------------------------------------------*/
+  if (a.providersLaagste < b.providersLaagste) return -1;
+  if (a.providersLaagste > b.providersLaagste) return 1;
+  return 0;
 }
 
 function kzVindKnop(t, klasse) {
@@ -3153,11 +3160,7 @@ var kzRenderVergelijking = {
         printVergelijking.classList.add("minder-dan-drie");
       }
 
-      printVergelijking.innerHTML = Object.entries(r.providers).map(this.hoofdMap1).sort(function (a, b) {
-        if (a.providersLaagste < b.providersLaagste) return -1;
-        if (a.providersLaagste > b.providersLaagste) return 1;
-        return 0;
-      }).map(function (_ref, providerTal) {
+      printVergelijking.innerHTML = Object.entries(r.providers).map(this.hoofdMap1).sort(kzProvidersLaagNaarHoog).map(function (_ref, providerTal) {
         var pakketten = _ref.pakketten,
             providersLaagste = _ref.providersLaagste;
         //providerInfoBundel

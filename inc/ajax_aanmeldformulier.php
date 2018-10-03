@@ -80,9 +80,9 @@ function kz_tv_pakketten($tv_pakket, $e, $s, $tv_type) {
 				if (strpos($v['tv_typen'], $tv_type) !== false) {
 
 					if ($v['snelheid'] === '') {
-						$r[] = $v;
+						$r[] = array($naam, $v);
 					} elseif ($v['snelheid'] === $s) {
-						$r[] = $v;
+						$r[] = array($naam, $v);
 					}
 				}
 			}
@@ -469,35 +469,35 @@ function keuzehulp_haal_aanmeldformulier() {
 
 					$tt = kz_maak_tooltip(array(
 						'e'			=> $eigenschappen,
-						'sleutel'	=> $dit_pakket['naam'],
-						'titel'		=> ucfirst($dit_pakket['naam'])
+						'sleutel'	=> $dit_pakket[0],
+						'titel'		=> ucfirst($dit_pakket[1]['naam'])
 					));
 
-					$naar_id = str_replace('-', '', slugify($dit_pakket['suboptietype'])) . "-" . str_replace('-', '', slugify($dit_pakket['naam']));
+					$naar_id = str_replace('-', '', slugify($dit_pakket[1]['suboptietype'])) . "-" . str_replace('-', '', slugify($dit_pakket[1]['naam']));
 
-					if ( (float) $dit_pakket['prijs'] > 0.01) {
-						$p = $dit_pakket['prijs'];
+					if ( (float) $dit_pakket[1]['prijs'] > 0.01) {
+						$p = $dit_pakket[1]['prijs'];
 
 						$tv_inhoud .= keuzehulp_form_rij (
 							keuzehulp_input (array(
 								'naam'		=> $naar_id,
 								'type'		=> "radio",
-								'value'		=> $dit_pakket['aantal'],
+								'value'		=> $dit_pakket[1]['aantal'],
 								'waarde'	=> $p,
 								'func'		=> in_array($tv_pakket_naam, ['FoxSportsEredivisie', 'FoxSportsInternationaal', 'FoxSportsCompleet']) ? "fox-sports" : '',
 								'label'		=> $svgs,
 								'eclass'	=> 'tv-pakket',
-								'suboptietype'	=> $dit_pakket['suboptietype'],
-								'optienaam'	=> $dit_pakket['naam'],
+								'suboptietype'	=> $dit_pakket[1]['suboptietype'],
+								'optienaam'	=> $dit_pakket[1]['naam'],
 							)),
-							"<span class='veld-flex'><span>".ucfirst($dit_pakket['naam'])."</span><span>".kz_maak_geld_op($p)."</span>$tt</span>"
+							"<span class='veld-flex'><span>".ucfirst($dit_pakket[1]['naam'])."</span><span>".kz_maak_geld_op($p)."</span>$tt</span>"
 						);
 
 					} else { // gratis optie
 
 						$tv_inhoud .= keuzehulp_form_rij (
 							'<span class="ovaal">Ja</span>',
-							"<span class='veld-flex'><span>".$dit_pakket['naam']."</span>$tt</span>",
+							"<span class='veld-flex'><span>".$dit_pakket[1]['naam']."</span>$tt</span>",
 							'heeft-actieve-knop'
 						);
 					}

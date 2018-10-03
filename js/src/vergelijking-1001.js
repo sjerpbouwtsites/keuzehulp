@@ -351,7 +351,8 @@ const kzRenderVergelijking = {
 		return this.pakket.vindOpties({
 			optietype: 'televisie-bundel',
 			snelheid: this.pakket.pakHuidigeSnelheid(),
-			tv_typen: this.pakket.eigenschappen.tv_type
+			tvType: this.pakket.eigenschappen.tv_type,
+			aantal: 1
 		}).map(([sleutel, {naam, prijs}]) => {
 			return `<tr><td>${naam}</td><td>${this.pakket.formatteerPrijs(prijs)}</td></tr>`
 		}).join('');

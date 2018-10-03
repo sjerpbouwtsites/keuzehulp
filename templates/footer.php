@@ -6,6 +6,7 @@
 	echo "<script>
 		const kzModalTeksten = ".json_encode($modal_teksten).";
 		const kzUser = ".json_encode(wp_get_current_user()).";
+		const kzBasisUrl = `".site_url()."`;
 	</script>";
 
 

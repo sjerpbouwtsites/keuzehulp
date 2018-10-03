@@ -210,12 +210,10 @@ function haalPrintAanmeldformulier(knop) {
       var printPlek = doc.getElementById('print-aanmeldformulier');
       printPlek.innerHTML = '';
       $(printPlek).append($(r.print)); // de HTML van het formulier.
-      // @TODO DYNAMISCH MAKEN
       // het formulier kan proberen te printen naar een niet bestaande url
 
-      printPlek.getElementsByTagName('form')[0].setAttribute('action', "".concat(location.origin)); //@TODO DYNAMISCH MAKEN
-
-      pakket = window["kz-pakket-".concat(r.id)]; // het zijn de click events die de verwerking van de data aanjagen..
+      printPlek.getElementsByTagName('form')[0].setAttribute('action', kzBasisUrl);
+      pakket = kzPakPakket(r.id); // het zijn de click events die de verwerking van de data aanjagen..
 
       printPlek.addEventListener('change', function (e) {
         var t = e.target,
@@ -283,7 +281,14 @@ function haalPrintAanmeldformulier(knop) {
 
         if (tekstFaal) {
           e.empty();
-          var t = r.pakket.eigenschappen.pakket_meta.provider.ik_ga_akkoord_met;
+          var t = null;
+
+          if (r.pakket) {
+            t = r.pakket.eigenschappen.teksten.ik_ga_akkoord_met;
+          } else {
+            t = kzPakPakket(doc.getElementById('print-aanmeldformulier').dataset.pakketId).eigenschappen.teksten.ik_ga_akkoord_met;
+          }
+
           t = t.replace(/\\\//g, '/');
           e.append($(t));
           clearInterval(vervangAlgemeneVoorwaarden);
@@ -2208,17 +2213,19 @@ function VerrijktPakket(p) {
     |
     |-----------------------------------------------------*/
     var naam = zoek.naam,
+        aantal = zoek.aantal,
         optietype = zoek.optietype,
         suboptietype = zoek.suboptietype,
         snelheid = zoek.snelheid,
-        tvType = zoek.tvType; //als zoekopdracht niet meegegegeven, altijd ok.
+        tvType = zoek.tvType;
+    console.log('tvType ', tvType); //als zoekopdracht niet meegegegeven, altijd ok.
 
     var r = Object.entries(_this.eigenschappen.maandelijks).filter(function (_ref9) {
       var _ref10 = _slicedToArray(_ref9, 2),
           sleutel = _ref10[0],
           optie = _ref10[1];
 
-      return ![!naam || optie.naam === naam, !optietype || optie.optietype === optietype, !suboptietype || optie.suboptietype === suboptietype, !snelheid || optie.snelheid == snelheid, !tvType || !optie.tv_typen || optie.tv_typen.includes(tvType)].includes(false);
+      return ![!naam || optie.naam === naam, !optietype || optie.optietype === optietype, !suboptietype || optie.suboptietype === suboptietype, !snelheid || optie.snelheid == snelheid, !aantal || optie.aantal == aantal, !tvType || !optie.tv_typen || optie.tv_typen.includes(tvType)].includes(false);
     });
 
     if (!r) {
@@ -3270,7 +3277,8 @@ var kzRenderVergelijking = {
     return this.pakket.vindOpties({
       optietype: 'televisie-bundel',
       snelheid: this.pakket.pakHuidigeSnelheid(),
-      tv_typen: this.pakket.eigenschappen.tv_type
+      tvType: this.pakket.eigenschappen.tv_type,
+      aantal: 1
     }).map(function (_ref4) {
       var _ref5 = _slicedToArray(_ref4, 2),
           sleutel = _ref5[0],

@@ -218,12 +218,10 @@ function haalPrintAanmeldformulier(knop) {
 			printPlek.innerHTML = '';
 			$(printPlek).append($(r.print)); // de HTML van het formulier.
 
-			// @TODO DYNAMISCH MAKEN
 			// het formulier kan proberen te printen naar een niet bestaande url
-			printPlek.getElementsByTagName('form')[0].setAttribute('action', `${location.origin}`);
+			printPlek.getElementsByTagName('form')[0].setAttribute('action', kzBasisUrl);
 
-			//@TODO DYNAMISCH MAKEN
-			pakket = window[`kz-pakket-${r.id}`];
+			pakket = kzPakPakket(r.id);
 
 			// het zijn de click events die de verwerking van de data aanjagen..
 			printPlek.addEventListener('change', (e) => {
@@ -301,7 +299,13 @@ function haalPrintAanmeldformulier(knop) {
 
 				if (tekstFaal) {
 					e.empty();
-					let t = r.pakket.eigenschappen.pakket_meta.provider.ik_ga_akkoord_met;
+					let t = null;
+					if (r.pakket) {
+						t = r.pakket.eigenschappen.teksten.ik_ga_akkoord_met;
+					} else {
+						t = kzPakPakket(doc.getElementById('print-aanmeldformulier').dataset.pakketId).eigenschappen.teksten.ik_ga_akkoord_met
+					}
+					
 					t = t.replace(/\\\//g, '/');
 					e.append($(t));
 

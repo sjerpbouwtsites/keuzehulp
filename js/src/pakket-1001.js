@@ -202,7 +202,8 @@ function VerrijktPakket(p) {
 		| 	te zijn. Als het niet null is dan is het ITV, DTV of DTV-ITV.
 		|
 		|-----------------------------------------------------*/
-		let {naam, optietype, suboptietype, snelheid, tvType} = zoek;
+		let {naam, aantal, optietype, suboptietype, snelheid, tvType} = zoek;
+		console.log('tvType ', tvType);
 		//als zoekopdracht niet meegegegeven, altijd ok.
 		const r = Object.entries(this.eigenschappen.maandelijks)
 			.filter( ([sleutel, optie]) => {
@@ -211,6 +212,7 @@ function VerrijktPakket(p) {
 				!optietype || optie.optietype === optietype,
 				!suboptietype || optie.suboptietype === suboptietype,
 				!snelheid || optie.snelheid == snelheid,
+				!aantal || optie.aantal == aantal,
 				!tvType || !optie.tv_typen || optie.tv_typen.includes(tvType)
 			].includes(false);
 		});

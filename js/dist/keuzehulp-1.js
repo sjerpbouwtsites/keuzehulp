@@ -575,7 +575,20 @@ function KzAantalTvs(optellen) {
   var extraTVontvangers = document.getElementById('extra-tv-ontvangers');
 
   if (optellen) {
-    extraTVontvangers.value = Number(extraTVontvangers.value) + 1;
+    if (extraTVontvangers.max) {
+      var n = Number(extraTVontvangers.value) + 1;
+
+      if (n > Number(extraTVontvangers.max)) {
+        kzModal({
+          kop: 'Maximum bereikt',
+          torso: kzTekst('maximum_tv_ontvangers', extraTVontvangers.max)
+        });
+      } else {
+        extraTVontvangers.value = n;
+      }
+    } else {
+      extraTVontvangers.value = Number(extraTVontvangers.value) + 1;
+    }
   } else if (Number(extraTVontvangers.value)) {
     // is niet 0
     extraTVontvangers.value = Number(extraTVontvangers.value) - 1;

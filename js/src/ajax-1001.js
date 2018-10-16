@@ -17,10 +17,12 @@ function KzAjax(params) {
 	this.verwerkResponse = (response) => {
 		const r = JSON.parse(response);
 
-		// @TODO zoek naar 'error' in r zo ja, afbreken.
-
 		if ('console' in r && r.console) {
 			console.dir(r.console);
+		}
+
+		if ('error' in r && r.error) {
+			console.error(new Error(r.error));
 		}
 
 		return r;

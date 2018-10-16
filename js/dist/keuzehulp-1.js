@@ -723,10 +723,14 @@ function KzAjax(params) {
   });
 
   this.verwerkResponse = function (response) {
-    var r = JSON.parse(response); // @TODO zoek naar 'error' in r zo ja, afbreken.
+    var r = JSON.parse(response);
 
     if ('console' in r && r.console) {
       console.dir(r.console);
+    }
+
+    if ('error' in r && r.error) {
+      console.error(new Error(r.error));
     }
 
     return r;

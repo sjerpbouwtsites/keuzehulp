@@ -2,7 +2,6 @@
 echo "<style>";
 include_once plugin_dir_path( __FILE__ ) . "../css/kz-admin.css" ;
 echo "</style>";
-// https://www.cloudways.com/blog/import-export-csv-using-php-and-mysql/
 
 set_time_limit(6000);
 
@@ -37,6 +36,24 @@ function kz_naar_statuscode($rekam_code = '') {
 	}
 
 	return $r;
+}
+
+function kz_tekens_toegelaten($s) {
+	return preg_replace('/[^\w-]/', '', $s);
+}
+
+
+function kz_pc_naar_gc($pc){
+
+	$ss = (int) substr($pc, 0, 4);
+
+	if ($ss > 2800 && $ss < 2810) {
+		return "gouda";
+	} else {
+		return "buiten-gouda";
+	}
+
+	
 }
 
 
@@ -78,18 +95,18 @@ function keuzehulp_insert() {
 
 			$postcode_cols = "perceelcode, postcode, huisnummer, toevoeging, kamer, straatnaam, plaatsnaam, gemeentenaam, gebiedscode, aanvraag_gedaan, provider, status";
 			$waardes = 
-				 "'".addslashes($getData[0])."','". //perceelcode
-				 addslashes($getData[4])."','".		//postcode
-				 addslashes($getData[2])."','".		//huisnummer
-				 addslashes($getData[3])."','".		//toevoeging
+				 "'".kz_tekens_toegelaten(addslashes($getData[0]))."','". //perceelcode
+				 kz_tekens_toegelaten(addslashes($getData[4]))."','".		//postcode
+				 kz_tekens_toegelaten(addslashes($getData[2]))."','".		//huisnummer
+				 kz_tekens_toegelaten(addslashes($getData[3]))."','".		//toevoeging
 				 ""."','".							//kamer		
-				 addslashes($getData[1])."','".		//straatnaam
-				 addslashes($getData[5])."','".		//plaatsnaam
-				 addslashes($getData[5])."','".		//gemeentenaam
-				 "rekam"."','".						//gebiedscode
+				 kz_tekens_toegelaten(addslashes($getData[1]))."','".		//straatnaam
+				 kz_tekens_toegelaten(addslashes($getData[5]))."','".		//plaatsnaam
+				 kz_tekens_toegelaten(addslashes($getData[5]))."','".		//gemeentenaam
+				 kz_tekens_toegelaten(kz_pc_naar_gc(addslashes($getData[6])))."','".						//gebiedscode
 				 "0"."','".							//aanvraag_gedaan
 				 "0','".							//provider
-				  kz_naar_statuscode(addslashes($getData[6]))."'";		//status
+				  kz_tekens_toegelaten(kz_naar_statuscode(addslashes($getData[6])))."'";		//status
 
 
 
@@ -140,7 +157,7 @@ function keuzehulp_delete($gebiedscode) {
 	if ($result) :
 		$notificatie = array(
 			'status' => "success",
-			'tekst' => "gebiedscode $gebeidscode succesvol verwijderd. SQL: $sql",
+			'tekst' => "gebiedscode $gebiedscode succesvol verwijderd. SQL: $sql",
 		);		
 	else : 
 		$notificatie = array(
@@ -187,6 +204,7 @@ function csv_fieldset_print($str) { ?>
 	    </table>
     </fieldset>	
 <?php }
+
 
 ?>
 

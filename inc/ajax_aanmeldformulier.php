@@ -272,7 +272,8 @@ function keuzehulp_haal_aanmeldformulier() {
 					'type'		=> "number",
 					'value'		=> $koos_extra_tv ? "1" : "0", // als gekozen voor extra TV, initialiseer dan met waarde 1
 					'func'		=> 'aanmelding-schakel',
-					'waarde'	=> $p
+					'waarde'	=> $p,
+					'e_attr'	=> "max='5'"
 				)
 			);
 

@@ -909,6 +909,7 @@ function keuzehulp_input ($params = array()) {
 		'label'		=> '',
 		'suboptietype'=> '',
 		'optienaam'=> '',
+		'e-attr'=> '',
 	);
 	foreach ($terugval as $s => $w) {
 		if (!(array_key_exists($s, $params))) {
@@ -926,6 +927,7 @@ function keuzehulp_input ($params = array()) {
 	$eclass = $params['eclass'];	// zoals hidden
 	$suboptietype = $params['suboptietype'];	
 	$optienaam = $params['optienaam'];	
+	$e_attr = $params['e_attr'];	
 
 	$tekst = $waarde !== '' ? kz_maak_geld_op($waarde) : '';
 
@@ -955,6 +957,7 @@ function keuzehulp_input ($params = array()) {
 				data-kz-optienaam='$optienaam'
 				$v
 				$f
+				$e_attr
 			>
 			$label_html
 			";

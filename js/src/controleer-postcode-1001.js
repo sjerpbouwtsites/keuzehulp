@@ -167,11 +167,14 @@ function controleerPostcode() {
 
 		// minimaal vereist: postcode en huisnummer
 		if (getVars.huisnummer && getVars.postcode) {
+
+			const pc = getVars.postcode.replace('%20', '');
+
 			const ajf = new KzAjax({
 				ajaxData: {
 					action: 'keuzehulp_controleer_postcode',
 					data: {
-						postcode: getVars.postcode,
+						postcode: pc,
 						huisnummer: getVars.huisnummer,
 						toevoeging: getVars.toevoeging || '',
 						kamer: getVars.kamer || '',

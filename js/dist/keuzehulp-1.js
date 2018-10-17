@@ -921,11 +921,12 @@ function controleerPostcode() {
     }); // minimaal vereist: postcode en huisnummer
 
     if (getVars.huisnummer && getVars.postcode) {
+      var pc = getVars.postcode.replace('%20', '');
       var ajf = new KzAjax({
         ajaxData: {
           action: 'keuzehulp_controleer_postcode',
           data: {
-            postcode: getVars.postcode,
+            postcode: pc,
             huisnummer: getVars.huisnummer,
             toevoeging: getVars.toevoeging || '',
             kamer: getVars.kamer || ''

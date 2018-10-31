@@ -2219,8 +2219,7 @@ function VerrijktPakket(p) {
         optietype = zoek.optietype,
         suboptietype = zoek.suboptietype,
         snelheid = zoek.snelheid,
-        tvType = zoek.tvType;
-    console.log('tvType ', tvType); //als zoekopdracht niet meegegegeven, altijd ok.
+        tvType = zoek.tvType; //als zoekopdracht niet meegegegeven, altijd ok.
 
     var r = Object.entries(_this.eigenschappen.maandelijks).filter(function (_ref9) {
       var _ref10 = _slicedToArray(_ref9, 2),
@@ -2505,6 +2504,9 @@ function VerrijktPakket(p) {
     _this.klaarVoorJSON = verz;
   };
 }
+function _sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return _sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }
 
 function iwwiwProcedure(pakket) {
   // zet opties voor in iwwiwprocedure
@@ -2608,21 +2610,49 @@ function vergelijkingsProcedure(pakket, keuzehulp) {
 
   if (keuzehulp['televisie-opties']) {
     var telOpts = keuzehulp['televisie-opties'],
-        film1Fam = pakket.zoekSubOptie('Film1'),
-        PlusFam = pakket.zoekSubOptie('Plus'),
-        ZiggoSportFam = pakket.zoekSubOptie('ZiggoSportTotaal');
-    var fsEdOptieFam = pakket.zoekSubOptie('FoxSportsEredivisie'),
-        fsIntOptieFam = pakket.zoekSubOptie('FoxSportsInternationaal'),
-        fsComplOptieFam = pakket.zoekSubOptie('FoxSportsCompleet');
+        film1Fam = pakket.vindOpties({
+      suboptietype: 'Film1',
+      tvType: pakket.eigenschappen.tv_type,
+      snelheid: gekozenSnelheid
+    }),
+        PlusFam = pakket.vindOpties({
+      suboptietype: 'Plus',
+      tvType: pakket.eigenschappen.tv_type,
+      snelheid: gekozenSnelheid
+    }),
+        ZiggoSportFam = pakket.vindOpties({
+      suboptietype: 'ZiggoSportTotaal',
+      tvType: pakket.eigenschappen.tv_type,
+      snelheid: gekozenSnelheid
+    });
+    var fsEdOptieFam = pakket.vindOpties({
+      suboptietype: 'FoxSportsEredivisie',
+      tvType: pakket.eigenschappen.tv_type,
+      snelheid: gekozenSnelheid
+    }),
+        fsIntOptieFam = pakket.vindOpties({
+      suboptietype: 'FoxSportsInternationaal',
+      tvType: pakket.eigenschappen.tv_type,
+      snelheid: gekozenSnelheid
+    }),
+        fsComplOptieFam = pakket.vindOpties({
+      suboptietype: 'FoxSportsCompleet',
+      tvType: pakket.eigenschappen.tv_type,
+      snelheid: gekozenSnelheid
+    });
     var telOptMap = [fsEdOptieFam, ZiggoSportFam, fsIntOptieFam, PlusFam, film1Fam]; // aanname: alleen maandelijks
 
     telOptMap.forEach(function (familie, nummer) {
       var telOptNr = nummer + 1;
 
       if (telOpts.includes(telOptNr.toString())) {
-        familie.mOpties.forEach(function (optie) {
-          return pakket.mutatie(optie.sleutel, 1);
-        });
+        familie.forEach(function (_ref) {
+          var _ref2 = _slicedToArray(_ref, 2),
+              sleutel = _ref2[0],
+              optie = _ref2[1];
+
+          return pakket.mutatie(sleutel, 1);
+        }); //familie.mOpties.forEach(optie => pakket.mutatie(optie.sleutel, 1));
       }
     });
 
@@ -2637,15 +2667,11 @@ function vergelijkingsProcedure(pakket, keuzehulp) {
     // aanname: maar één opties binnen al die pakketten.
 
 
-    fsEdOptieFam = pakket.zoekSubOptie('FoxSportsEredivisie');
-    fsIntOptieFam = pakket.zoekSubOptie('FoxSportsInternationaal');
-    fsComplOptieFam = pakket.zoekSubOptie('FoxSportsCompleet');
-
-    if (fsEdOptieFam.bestaat && fsIntOptieFam.bestaat && fsComplOptieFam.bestaat) {
-      if (fsEdOptieFam.mOpties[0].aantal && fsIntOptieFam.mOpties[0].aantal) {
-        pakket.mutatie(fsEdOptieFam.mOpties[0].sleutel, 0);
-        pakket.mutatie(fsIntOptieFam.mOpties[0].sleutel, 0);
-        pakket.mutatie(fsComplOptieFam.mOpties[0].sleutel, 1);
+    if (fsEdOptieFam.length && fsIntOptieFam.length && fsComplOptieFam.length) {
+      if (fsEdOptieFam[0][1].aantal && fsIntOptieFam[0][1].aantal) {
+        pakket.mutatie(fsEdOptieFam[0][0], 0);
+        pakket.mutatie(fsIntOptieFam[0][0], 0);
+        pakket.mutatie(fsComplOptieFam[0][0], 1);
       }
     }
   }

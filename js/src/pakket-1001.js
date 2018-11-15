@@ -160,7 +160,7 @@ function VerrijktPakket(p) {
 		| 	te zijn. Als het niet null is dan is het ITV, DTV of DTV-ITV.
 		|
 		|-----------------------------------------------------*/
-		let {naam, optietype, suboptietype, snelheid, tvType} = zoek;
+		let {naam, optietype, suboptietype, snelheid, tvType, aantal} = zoek;
 		//als zoekopdracht niet meegegegeven, altijd ok.
 		const r = Object.entries(this.eigenschappen.maandelijks)
 			.find( ([sleutel, optie]) => {
@@ -168,13 +168,14 @@ function VerrijktPakket(p) {
 				!naam || optie.naam === naam,
 				!optietype || optie.optietype === optietype,
 				!suboptietype || optie.suboptietype === suboptietype,
+				!aantal || optie.aantal == aantal,
 				!snelheid || optie.snelheid == snelheid,
 				!tvType || !optie.tv_typen || optie.tv_typen.includes(tvType)
 			].includes(false);
 		});
 		if (!r) {
-			console.warn('geen optiesleutel gevonden met:');
-			console.table(zoek);
+			//console.warn(`geen optiesleutel in ${this.provider} ${this.naam_composiet} gevonden met:`);
+			//console.table(zoek);
 			return false;
 		} 
 
@@ -203,6 +204,7 @@ function VerrijktPakket(p) {
 		|
 		|-----------------------------------------------------*/
 		let {naam, aantal, optietype, suboptietype, snelheid, tvType} = zoek;
+
 		//als zoekopdracht niet meegegegeven, altijd ok.
 		const r = Object.entries(this.eigenschappen.maandelijks)
 			.filter( ([sleutel, optie]) => {
@@ -351,19 +353,29 @@ function VerrijktPakket(p) {
 	this.tabelletje = eigenschap => console.table(this.eigenschappen[eigenschap]);
 
 	this.huidigeTelefonieBundel = () => {
-		let gevonden = false;
-		Object.entries(this.eigenschappen.telefonie_bundels)
-			.forEach(([bundelNaam, bundels]) => {
-				bundels.forEach((bundel) => {
-					if (this.eigenschappen.maandelijks[bundel.slug].aantal > 0) {
-						gevonden = bundel;
-					}
-				});
-			});
-		return gevonden;
+
+		const actieveOptie = this.vindOptie({
+			aantal: 1,
+			optietype: 'telefonie-bundel',
+		});
+
+		if (!actieveOptie || !actieveOptie[1]) {
+			return false;
+		}
+
+		const actieveOptieData = actieveOptie[1];
+
+		const gevondenBundel =  this.eigenschappen.telefonie_bundels[actieveOptieData.suboptietype]
+			.find(bundel => bundel.slug === actieveOptieData.naam);
+
+		return gevondenBundel;
 	};
 
-	this.heeftTelefonieBereik = bereik => !!this.eigenschappen.telefonie_bundels[bereik];
+	this.heeftTelefonieBereik = bereik => !!this.vindOptie({
+			optietype: 'telefonie-bundel',
+			snelheid: this.huidige_snelheid,
+			suboptietype: bereik
+		});
 
 	this.alleTelefonieBundelsUit = () => {
 		Object.entries(this.eigenschappen.maandelijks)
@@ -380,12 +392,20 @@ function VerrijktPakket(p) {
 		// alles eerst uitzetten
 		this.alleTelefonieBundelsUit();
 
-		const b = this.eigenschappen.telefonie_bundels[bereik];
-		if (!b) {
-			console.error('type telefonie bundel bestaat niet ', b, arguments);
+		// console.log(this.huidige_snelheid, bereik);
+
+		const telBundelSleutel = this.vindOptie({
+			optietype: 'telefonie-bundel',
+			snelheid: this.huidige_snelheid,
+			suboptietype: bereik
+		})[0];
+
+		if (!telBundelSleutel) {
+			console.error('type telefonie bundel bestaat niet ', bereik);
 			return false;
 		}
-		this.mutatie(this.eigenschappen.telefonie_bundels[bereik][0].slug, 1);
+		this.mutatie(telBundelSleutel, 1);
+
 	};
 
 	this.maakTelefonieTarievenLijst = () => {

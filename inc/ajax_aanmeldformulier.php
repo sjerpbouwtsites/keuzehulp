@@ -548,7 +548,10 @@ function keuzehulp_haal_aanmeldformulier() {
 						'titel'		=> $tb['naam']
 					));
 
-					$n = slugify($tb['naam']);
+					$n = slugify($tb['naam']) . "-" . $gekozen_snelheid;
+
+					//$print .= "<br>$n";
+
 					$p = kz_optie_prijs($n, $eigenschappen);
 					$label =
 					"<span class='radio-naam-en-prijs veld-flex'>

@@ -62,8 +62,7 @@ function kzMaakPrintMap() {
   | 	maakt het maar één keer aan.
   |
   |**************************************************/
-  if (window['kzPrintMappen']) return window['kzPrintMappen'];
-
+  //if (window['kzPrintMappen']) return window['kzPrintMappen'];
   this.printMapInit = function (id) {
     return {
       printEl: document.getElementById(id),
@@ -95,8 +94,8 @@ function kzMaakPrintMap() {
     nummerbehoud: this.printMapInit('input_1_39'),
     opnemen: this.printMapInit('input_1_51'),
     replay: this.printMapInit('input_1_52')
-  };
-  window.kzPrintMappen = printMappen;
+  }; //window.kzPrintMappen = printMappen; @TODO TERUGOPTIMALISEREN
+
   return printMappen;
 }
 
@@ -109,6 +108,7 @@ function kzUpdateHidden() {
   |
   |-----------------------------------------------------*/
   var printMappen = kzMaakPrintMap();
+  console.log(printMappen);
   var aanmeldformulier = doc.getElementById('print-aanmeldformulier');
   var inputs = aanmeldformulier.querySelectorAll('[data-kz-waarde]');
   var rijen = Array.from(inputs, function (input) {
@@ -2002,8 +2002,7 @@ function kzPakPakket(getal) {
 }
 
 function VerrijktPakket(p) {
-  var _this = this,
-      _arguments = arguments;
+  var _this = this;
 
   /*------------------------------------------------------
   |
@@ -2175,19 +2174,20 @@ function VerrijktPakket(p) {
         optietype = zoek.optietype,
         suboptietype = zoek.suboptietype,
         snelheid = zoek.snelheid,
-        tvType = zoek.tvType; //als zoekopdracht niet meegegegeven, altijd ok.
+        tvType = zoek.tvType,
+        aantal = zoek.aantal; //als zoekopdracht niet meegegegeven, altijd ok.
 
     var r = Object.entries(_this.eigenschappen.maandelijks).find(function (_ref7) {
       var _ref8 = _slicedToArray(_ref7, 2),
           sleutel = _ref8[0],
           optie = _ref8[1];
 
-      return ![!naam || optie.naam === naam, !optietype || optie.optietype === optietype, !suboptietype || optie.suboptietype === suboptietype, !snelheid || optie.snelheid == snelheid, !tvType || !optie.tv_typen || optie.tv_typen.includes(tvType)].includes(false);
+      return ![!naam || optie.naam === naam, !optietype || optie.optietype === optietype, !suboptietype || optie.suboptietype === suboptietype, !aantal || optie.aantal == aantal, !snelheid || optie.snelheid == snelheid, !tvType || !optie.tv_typen || optie.tv_typen.includes(tvType)].includes(false);
     });
 
     if (!r) {
-      console.warn('geen optiesleutel gevonden met:');
-      console.table(zoek);
+      //console.warn(`geen optiesleutel in ${this.provider} ${this.naam_composiet} gevonden met:`);
+      //console.table(zoek);
       return false;
     }
 
@@ -2409,30 +2409,37 @@ function VerrijktPakket(p) {
   };
 
   this.huidigeTelefonieBundel = function () {
-    var gevonden = false;
-    Object.entries(_this.eigenschappen.telefonie_bundels).forEach(function (_ref27) {
-      var _ref28 = _slicedToArray(_ref27, 2),
-          bundelNaam = _ref28[0],
-          bundels = _ref28[1];
-
-      bundels.forEach(function (bundel) {
-        if (_this.eigenschappen.maandelijks[bundel.slug].aantal > 0) {
-          gevonden = bundel;
-        }
-      });
+    var actieveOptie = _this.vindOptie({
+      aantal: 1,
+      optietype: 'telefonie-bundel'
     });
-    return gevonden;
+
+    if (!actieveOptie || !actieveOptie[1]) {
+      return false;
+    }
+
+    var actieveOptieData = actieveOptie[1];
+
+    var gevondenBundel = _this.eigenschappen.telefonie_bundels[actieveOptieData.suboptietype].find(function (bundel) {
+      return bundel.slug === actieveOptieData.naam;
+    });
+
+    return gevondenBundel;
   };
 
   this.heeftTelefonieBereik = function (bereik) {
-    return !!_this.eigenschappen.telefonie_bundels[bereik];
+    return !!_this.vindOptie({
+      optietype: 'telefonie-bundel',
+      snelheid: _this.huidige_snelheid,
+      suboptietype: bereik
+    });
   };
 
   this.alleTelefonieBundelsUit = function () {
-    Object.entries(_this.eigenschappen.maandelijks).forEach(function (_ref29) {
-      var _ref30 = _slicedToArray(_ref29, 2),
-          optieNaam = _ref30[0],
-          optieWaarden = _ref30[1];
+    Object.entries(_this.eigenschappen.maandelijks).forEach(function (_ref27) {
+      var _ref28 = _slicedToArray(_ref27, 2),
+          optieNaam = _ref28[0],
+          optieWaarden = _ref28[1];
 
       if (optieWaarden.optietype === 'telefonie-bundel') {
         _this.mutatie(optieNaam, 0);
@@ -2443,16 +2450,21 @@ function VerrijktPakket(p) {
   this.zetTelefonieBereikAan = function (bereik) {
     // voorkantje voor mutatie functie voor in vergelijkingsprocedure.
     // alles eerst uitzetten
-    _this.alleTelefonieBundelsUit();
+    _this.alleTelefonieBundelsUit(); // console.log(this.huidige_snelheid, bereik);
 
-    var b = _this.eigenschappen.telefonie_bundels[bereik];
 
-    if (!b) {
-      console.error('type telefonie bundel bestaat niet ', b, _arguments);
+    var telBundelSleutel = _this.vindOptie({
+      optietype: 'telefonie-bundel',
+      snelheid: _this.huidige_snelheid,
+      suboptietype: bereik
+    })[0];
+
+    if (!telBundelSleutel) {
+      console.error('type telefonie bundel bestaat niet ', bereik);
       return false;
     }
 
-    _this.mutatie(_this.eigenschappen.telefonie_bundels[bereik][0].slug, 1);
+    _this.mutatie(telBundelSleutel, 1);
   };
 
   this.maakTelefonieTarievenLijst = function () {// JE BENT HIER!!!!
@@ -2465,16 +2477,16 @@ function VerrijktPakket(p) {
   };
 
   this.pakZenders = function () {
-    var aantalUniekeZenderPakketten = Object.entries(_this.eigenschappen).filter(function (_ref31) {
-      var _ref32 = _slicedToArray(_ref31, 2),
-          sleutel = _ref32[0],
-          object = _ref32[1];
+    var aantalUniekeZenderPakketten = Object.entries(_this.eigenschappen).filter(function (_ref29) {
+      var _ref30 = _slicedToArray(_ref29, 2),
+          sleutel = _ref30[0],
+          object = _ref30[1];
 
       return sleutel.includes('zender');
-    }).map(function (_ref33) {
-      var _ref34 = _slicedToArray(_ref33, 2),
-          s = _ref34[0],
-          o = _ref34[1];
+    }).map(function (_ref31) {
+      var _ref32 = _slicedToArray(_ref31, 2),
+          s = _ref32[0],
+          o = _ref32[1];
 
       return o.totaal + o.hd;
     }).filter(uniek).length;
@@ -2538,12 +2550,41 @@ function vergelijkingsProcedure(pakket, keuzehulp) {
   if (typeof keuzehulp === 'undefined') {
     console.warn('keuzehulp undefined!');
     keuzehulp = JSON.parse(sessionStorage.getItem('kz-keuzehulp'));
-  } // schrijf de bel & nummer keuze.
+  } // schrijf de snelheid naar het pakket.
+
+
+  var snelheden = pakket.eigenschappen.snelheden;
+  var gekozenSnelheid = false;
+  snelheden.forEach(function (snelheid) {
+    var s = Number(snelheid);
+
+    if (!gekozenSnelheid) {
+      if (keuzehulp.internet === '1' && s < 251 || keuzehulp.internet === '2' && s < 501 || (keuzehulp.internet === '3' || keuzehulp.internet === '4') && s > 501) {
+        gekozenSnelheid = snelheid;
+      }
+    }
+  }); // dan met de hand toewijzen.
+
+  if (!gekozenSnelheid) {
+    if (keuzehulp.internet.includes('1')) {
+      gekozenSnelheid = snelheden[0];
+    } else if (keuzehulp.internet.includes('2')) {
+      if (snelheden.length > 1) {
+        gekozenSnelheid = snelheden[1];
+      } else {
+        gekozenSnelheid = snelheden[0];
+      }
+    } else {
+      gekozenSnelheid = snelheden[snelheden.length - 1];
+    }
+  }
+
+  var ss = gekozenSnelheid.toString();
+  pakket.veranderSnelheid(ss); // schrijf de bel & nummer keuze.
   // bellen = 1 							-> niet bellen.
   // bellen = 2 							-> basispakket.
   // bellen = 3 							-> NL pakket.
   // bellen = 3 + '2' in nummers-array 	-> Internationaal pakket.
-
 
   if (keuzehulp.bellen === '1') {
     pakket.alleTelefonieBundelsUit();
@@ -2576,37 +2617,8 @@ function vergelijkingsProcedure(pakket, keuzehulp) {
     pakket.mutatie('extra-vast-nummer', 1);
   } else {
     pakket.mutatie('extra-vast-nummer', 0);
-  } // schrijf de snelheid naar het pakket.
+  } // schrijf TV opties.
 
-
-  var snelheden = pakket.eigenschappen.snelheden;
-  var gekozenSnelheid = false;
-  snelheden.forEach(function (snelheid) {
-    var s = Number(snelheid);
-
-    if (!gekozenSnelheid) {
-      if (keuzehulp.internet === '1' && s < 251 || keuzehulp.internet === '2' && s < 501 || (keuzehulp.internet === '3' || keuzehulp.internet === '4') && s > 501) {
-        gekozenSnelheid = snelheid;
-      }
-    }
-  }); // dan met de hand toewijzen.
-
-  if (!gekozenSnelheid) {
-    if (keuzehulp.internet.includes('1')) {
-      gekozenSnelheid = snelheden[0];
-    } else if (keuzehulp.internet.includes('2')) {
-      if (snelheden.length > 1) {
-        gekozenSnelheid = snelheden[1];
-      } else {
-        gekozenSnelheid = snelheden[0];
-      }
-    } else {
-      gekozenSnelheid = snelheden[snelheden.length - 1];
-    }
-  }
-
-  var ss = gekozenSnelheid.toString();
-  pakket.veranderSnelheid(ss); // schrijf TV opties.
 
   if (keuzehulp['televisie-opties']) {
     var telOpts = keuzehulp['televisie-opties'],
@@ -3284,7 +3296,12 @@ var kzRenderVergelijking = {
       return;
     }
 
-    return "\n\t\t\t<div class='provider-pakketten-vergelijking-sectie'>\n\n\t\t\t\t<header>\n\t\t\t\t\t<svg class='svg-bellen' xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><style>.e97ef855-384b-4714-91e0-2d37881c1420{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class=\"e97ef855-384b-4714-91e0-2d37881c1420\" d=\"M70.94,58.25a7.15,7.15,0,0,0-5.18-2.38,7.43,7.43,0,0,0-5.24,2.36l-4.84,4.83-1.18-.61c-.55-.28-1.07-.54-1.52-.81a52.83,52.83,0,0,1-12.61-11.5,30.92,30.92,0,0,1-4.13-6.52c1.25-1.15,2.42-2.35,3.55-3.5.43-.42.86-.87,1.29-1.3,3.22-3.21,3.22-7.38,0-10.6L36.9,24c-.48-.48-1-1-1.43-1.46-.92-.95-1.88-1.93-2.88-2.85a7.24,7.24,0,0,0-5.13-2.25,7.5,7.5,0,0,0-5.21,2.25l0,0L17,25a11.18,11.18,0,0,0-3.32,7.12,26.84,26.84,0,0,0,2,11.37A65.89,65.89,0,0,0,27.37,63.06a72.09,72.09,0,0,0,24,18.8,37.2,37.2,0,0,0,13.48,4l1,0a11.54,11.54,0,0,0,8.84-3.8s0,0,.06-.07a34.89,34.89,0,0,1,2.69-2.78c.65-.62,1.33-1.28,2-2A7.68,7.68,0,0,0,81.71,72a7.36,7.36,0,0,0-2.36-5.26Zm5.48,16.13s0,0,0,0c-.59.65-1.21,1.23-1.86,1.87a39.39,39.39,0,0,0-3,3.07,7.4,7.4,0,0,1-5.76,2.43h-.71a33.14,33.14,0,0,1-11.95-3.59A68.15,68.15,0,0,1,30.57,60.44a62.05,62.05,0,0,1-11-18.37,21.8,21.8,0,0,1-1.72-9.59,7,7,0,0,1,2.12-4.55l5.22-5.23a3.5,3.5,0,0,1,2.33-1.08,3.27,3.27,0,0,1,2.24,1.07l0,0c.94.87,1.83,1.77,2.76,2.74L34,27l4.18,4.19c1.62,1.62,1.62,3.12,0,4.75-.45.44-.87.88-1.32,1.31C35.56,38.53,34.34,39.76,33,41c0,0-.07,0-.08.08a3.14,3.14,0,0,0-.8,3.48l0,.13a33.61,33.61,0,0,0,5,8.08h0A56.22,56.22,0,0,0,50.75,65.11c.63.4,1.27.72,1.88,1s1.07.54,1.52.81l.18.11a3.32,3.32,0,0,0,1.52.38,3.29,3.29,0,0,0,2.33-1l5.24-5.24A3.43,3.43,0,0,1,65.73,60a3.14,3.14,0,0,1,2.21,1.11l0,0,8.44,8.44C78,71.15,78,72.76,76.42,74.38Z\"/><path class=\"e97ef855-384b-4714-91e0-2d37881c1420\" d=\"M52.8,30.55A19.72,19.72,0,0,1,68.86,46.61a2,2,0,0,0,2,1.71,2.19,2.19,0,0,0,.36,0A2.08,2.08,0,0,0,73,45.9,23.88,23.88,0,0,0,53.52,26.47a2.09,2.09,0,0,0-2.39,1.69A2,2,0,0,0,52.8,30.55Z\"/><path class=\"e97ef855-384b-4714-91e0-2d37881c1420\" d=\"M86.08,45.3a39.3,39.3,0,0,0-32-32,2.07,2.07,0,1,0-.68,4.08A35.07,35.07,0,0,1,82,46a2.07,2.07,0,0,0,4.08-.68Z\"/></svg>\n\t\t\t\t\t<h3>Bellen</h3>\n\t\t\t\t</header>\n\n\t\t\t\t<table>\n\t\t\t\t\t<thead>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<th>".concat(telBundel.naam, "</th>\n\t\t\t\t\t\t\t<th>").concat(this.pakket.optiePrijs(telBundel.slug, true), "</th\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<th>Bundeltype: ").concat(telBundel.bereik, "</th>\n\t\t\t\t\t\t\t<th></th>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t</thead>\n\t\t\t\t\t<tbody>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td>Start vast</td>\n\t\t\t\t\t\t\t<td>").concat(this.telefonieSectiePrijsTD(telBundel.data.vast.nederland.start), "</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td>Vast p/m</td>\n\t\t\t\t\t\t\t<td>").concat(this.telefonieSectiePrijsTD(telBundel.data.vast.nederland.per_minuut), "</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td>Mobiel start</td>\n\t\t\t\t\t\t\t<td>").concat(this.telefonieSectiePrijsTD(telBundel.data.mobiel.nederland.start), "</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td>Mobiel p/m</td>\n\t\t\t\t\t\t\t<td>").concat(this.telefonieSectiePrijsTD(telBundel.data.mobiel.nederland.per_minuut), "</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t").concat(this.pakket.optieAantal('extra-vast-nummer') ? "<tr>\n\t\t\t\t\t\t\t\t\t\t<td>Extra vast nummer</td>\n\t\t\t\t\t\t\t\t\t\t<td>".concat(this.pakket.optiePrijs('extra-vast-nummer', true), "</td>\n\t\t\t\t\t\t\t\t\t</td>") : '', "\n\t\t\t\t\t<tbody>\n\n\t\t\t\t</table>\n\n\t\t\t\t<footer class='provider-pakketten-vergelijking-sectie_footer'>\n\t\t\t\t\t<a href='#' class='knop blauwe-knop' data-kz-func='telefonie-modal' data-pakket-id='").concat(this.pakket.ID, "'>Meer over deze telefoniebundel</a>\n\t\t\t\t</footer>\n\n\t\t\t</div>\n\t\t");
+    var tb = this.pakket.vindOptie({
+      aantal: 1,
+      optietype: 'telefonie-bundel'
+    })[1];
+    var maandPrijsTelBundel = this.pakket.formatteerPrijs(tb.prijs);
+    return "\n\t\t\t<div class='provider-pakketten-vergelijking-sectie'>\n\n\t\t\t\t<header>\n\t\t\t\t\t<svg class='svg-bellen' xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><style>.e97ef855-384b-4714-91e0-2d37881c1420{fill:#159a3c;}</style></defs><title>Rekam icons groen</title><path class=\"e97ef855-384b-4714-91e0-2d37881c1420\" d=\"M70.94,58.25a7.15,7.15,0,0,0-5.18-2.38,7.43,7.43,0,0,0-5.24,2.36l-4.84,4.83-1.18-.61c-.55-.28-1.07-.54-1.52-.81a52.83,52.83,0,0,1-12.61-11.5,30.92,30.92,0,0,1-4.13-6.52c1.25-1.15,2.42-2.35,3.55-3.5.43-.42.86-.87,1.29-1.3,3.22-3.21,3.22-7.38,0-10.6L36.9,24c-.48-.48-1-1-1.43-1.46-.92-.95-1.88-1.93-2.88-2.85a7.24,7.24,0,0,0-5.13-2.25,7.5,7.5,0,0,0-5.21,2.25l0,0L17,25a11.18,11.18,0,0,0-3.32,7.12,26.84,26.84,0,0,0,2,11.37A65.89,65.89,0,0,0,27.37,63.06a72.09,72.09,0,0,0,24,18.8,37.2,37.2,0,0,0,13.48,4l1,0a11.54,11.54,0,0,0,8.84-3.8s0,0,.06-.07a34.89,34.89,0,0,1,2.69-2.78c.65-.62,1.33-1.28,2-2A7.68,7.68,0,0,0,81.71,72a7.36,7.36,0,0,0-2.36-5.26Zm5.48,16.13s0,0,0,0c-.59.65-1.21,1.23-1.86,1.87a39.39,39.39,0,0,0-3,3.07,7.4,7.4,0,0,1-5.76,2.43h-.71a33.14,33.14,0,0,1-11.95-3.59A68.15,68.15,0,0,1,30.57,60.44a62.05,62.05,0,0,1-11-18.37,21.8,21.8,0,0,1-1.72-9.59,7,7,0,0,1,2.12-4.55l5.22-5.23a3.5,3.5,0,0,1,2.33-1.08,3.27,3.27,0,0,1,2.24,1.07l0,0c.94.87,1.83,1.77,2.76,2.74L34,27l4.18,4.19c1.62,1.62,1.62,3.12,0,4.75-.45.44-.87.88-1.32,1.31C35.56,38.53,34.34,39.76,33,41c0,0-.07,0-.08.08a3.14,3.14,0,0,0-.8,3.48l0,.13a33.61,33.61,0,0,0,5,8.08h0A56.22,56.22,0,0,0,50.75,65.11c.63.4,1.27.72,1.88,1s1.07.54,1.52.81l.18.11a3.32,3.32,0,0,0,1.52.38,3.29,3.29,0,0,0,2.33-1l5.24-5.24A3.43,3.43,0,0,1,65.73,60a3.14,3.14,0,0,1,2.21,1.11l0,0,8.44,8.44C78,71.15,78,72.76,76.42,74.38Z\"/><path class=\"e97ef855-384b-4714-91e0-2d37881c1420\" d=\"M52.8,30.55A19.72,19.72,0,0,1,68.86,46.61a2,2,0,0,0,2,1.71,2.19,2.19,0,0,0,.36,0A2.08,2.08,0,0,0,73,45.9,23.88,23.88,0,0,0,53.52,26.47a2.09,2.09,0,0,0-2.39,1.69A2,2,0,0,0,52.8,30.55Z\"/><path class=\"e97ef855-384b-4714-91e0-2d37881c1420\" d=\"M86.08,45.3a39.3,39.3,0,0,0-32-32,2.07,2.07,0,1,0-.68,4.08A35.07,35.07,0,0,1,82,46a2.07,2.07,0,0,0,4.08-.68Z\"/></svg>\n\t\t\t\t\t<h3>Bellen</h3>\n\t\t\t\t</header>\n\n\t\t\t\t<table>\n\t\t\t\t\t<thead>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<th>".concat(telBundel.naam, "</th>\n\t\t\t\t\t\t\t<th>").concat(maandPrijsTelBundel, "</th\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<th>Bundeltype: ").concat(telBundel.bereik, "</th>\n\t\t\t\t\t\t\t<th></th>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t</thead>\n\t\t\t\t\t<tbody>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td>Start vast</td>\n\t\t\t\t\t\t\t<td>").concat(this.telefonieSectiePrijsTD(telBundel.data.vast.nederland.start), "</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td>Vast p/m</td>\n\t\t\t\t\t\t\t<td>").concat(this.telefonieSectiePrijsTD(telBundel.data.vast.nederland.per_minuut), "</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td>Mobiel start</td>\n\t\t\t\t\t\t\t<td>").concat(this.telefonieSectiePrijsTD(telBundel.data.mobiel.nederland.start), "</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td>Mobiel p/m</td>\n\t\t\t\t\t\t\t<td>").concat(this.telefonieSectiePrijsTD(telBundel.data.mobiel.nederland.per_minuut), "</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t").concat(this.pakket.optieAantal('extra-vast-nummer') ? "<tr>\n\t\t\t\t\t\t\t\t\t\t<td>Extra vast nummer</td>\n\t\t\t\t\t\t\t\t\t\t<td>".concat(this.pakket.optiePrijs('extra-vast-nummer', true), "</td>\n\t\t\t\t\t\t\t\t\t</td>") : '', "\n\t\t\t\t\t<tbody>\n\n\t\t\t\t</table>\n\n\t\t\t\t<footer class='provider-pakketten-vergelijking-sectie_footer'>\n\t\t\t\t\t<a href='#' class='knop blauwe-knop' data-kz-func='telefonie-modal' data-pakket-id='").concat(this.pakket.ID, "'>Meer over deze telefoniebundel</a>\n\t\t\t\t</footer>\n\n\t\t\t</div>\n\t\t");
   },
   televisieSectieTD: function televisieSectieTD(sleutel, naam) {
     return this.pakket.optieAantal(sleutel) ? "<tr><td>".concat(naam, "</td><td>").concat(this.pakket.optiePrijs(sleutel, true), "</td>") : '';

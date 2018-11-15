@@ -438,6 +438,7 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100', $ajax_dat
 
 		$telefonie_bundels = array();
 
+		$return['aaa'] = array();
 
 		foreach ($telefonie_bundel_posts as $tpb) {
 
@@ -451,50 +452,27 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100', $ajax_dat
 			}
 
 			$basis_maandbedrag = get_field('maandbedrag', $tpb->ID);
-			if ($maandbedrag_uitzonderingen = get_field('maandbedrag_uitzonderingen', $tpb->ID)) {
 
-				
-				if (array_key_exists('ik-weet-wat-ik-wil', $ajax_data['keuzehulp'])) {
+			// eerst voor alle snelheden er in zetten; 
+			// dan overschrijven met uitzonderingen (indien toepasbaar)
+			foreach ($snelheden as $s) {
 
-					
-					foreach($maandbedrag_uitzonderingen as $uitzondering){
-						if ($uitzondering['type_pakket'][0]->term_id == $ajax_data['keuzehulp']['ik-weet-wat-ik-wil']) {
-							$gevonden_uitzondering = $uitzondering['prijs'];
-						}
-					}
+				$ss = $slug . "-" . $s;
 
-					if (isset($gevonden_uitzondering)) {
-						$maandbedrag = $gevonden_uitzondering;
-					} else {
-						$maandbedrag = $basis_maandbedrag;
-					}
-
-				} else {
-
-					foreach($maandbedrag_uitzonderingen as $uitzondering){
-						if ($uitzondering['type_pakket'][0]->term_id == $pakket_type_nummer) {
-							$gevonden_uitzondering = $uitzondering['prijs'];
-						}
-					}
-
-					if (isset($gevonden_uitzondering)) {
-						$maandbedrag = $gevonden_uitzondering;
-					} else {
-						$maandbedrag = $basis_maandbedrag;
-					}
-
-				}
-
-			} else {
-				$maandbedrag = $basis_maandbedrag;
+				$return['maandelijks'][$ss] = new Kz_optie(array(
+					'naam'			=> $slug,
+					'optietype' 	=> 'telefonie-bundel',
+					'suboptietype'  => $bereik,
+					'aantal'		=> 0,
+					'prijs'			=> (float) $basis_maandbedrag,
+					'snelheid'		=> (float) $s
+				));				
 			}
-
+			
 			$telefonie_bundels[$bereik][] = array(
 				'naam'			=> $tpb->post_title,
 				'slug'			=> $slug,
 				'data'			=> array(
-					'uitzonderingen'			=> $maandbedrag_uitzonderingen,
-					'maandbedrag'				=> $maandbedrag,
 					'vast'						=> get_field('vast', $tpb->ID),
 					'mobiel'					=> get_field('mobiel', $tpb->ID),
 					'maximum_minuten'			=> get_field('maximum_minuten', $tpb->ID)
@@ -502,13 +480,42 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100', $ajax_dat
 				'bereik'		=> $bereik
 			);
 
-			$return['maandelijks'][$slug] = new Kz_optie(array(
-				'naam'			=> $slug,
-				'optietype' 	=> 'telefonie-bundel',
-				'suboptietype'  => $bereik,
-				'aantal'		=> 0,
-				'prijs'			=> (float) $maandbedrag,
-			));
+			if ($maandbedrag_uitzonderingen = get_field('maandbedrag_uitzonderingen', $tpb->ID)) {
+
+				foreach($maandbedrag_uitzonderingen as $uitzondering){
+
+					$gevonden_uitzondering = false;
+
+					$return['aaa'][] = $uitzondering;
+
+					foreach ($uitzondering['type_pakket'] as $type_pakket) {
+						if ($type_pakket->term_id == $pakket_type_nummer) {
+							
+							$gevonden_uitzondering = $uitzondering;
+						}						
+					}
+					
+					$snelheden_waarvoor_uitzondering_geld = explode(";", $gevonden_uitzondering['snelheid']);
+
+					foreach ($snelheden_waarvoor_uitzondering_geld as $s) {
+
+						$ss = $slug . "-" . $s;
+
+						$return['maandelijks'][$ss] = new Kz_optie(array(
+							'naam'			=> $slug,
+							'optietype' 	=> 'telefonie-bundel',
+							'suboptietype'  => $bereik,
+							'aantal'		=> 0,
+							'prijs'			=> (float) $gevonden_uitzondering['prijs'],
+							'snelheid'		=> (float) $s
+						));				
+					}					
+
+				}
+			
+			}
+
+
 
 			$return['teksten'][$tpb->post_title] = apply_filters('the_content', get_field('tekst', $tpb->ID));
 		}
@@ -867,21 +874,14 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100', $ajax_dat
 
 	$installatie_namen = array('DHZ', 'basis', 'volledig');
 
-	$return['aa_werkinstallatie'] = array();
-	$return['apkket_type'] = array();
-
 	foreach ($installatie_namen as $installatie_naam) {
 		if (array_key_exists($installatie_naam, $installatie_verz)) {
-
-			$werk_installatie = $installatie_verz[$installatie_naam];
-			$return['aa_werkinstallatie'][] = $werk_installatie;
-			$return['apkket_type'][] = $pakket_type_nummer;
 
 			$return['eenmalig']['installatie-'.strtolower($installatie_naam)] = new Kz_optie(array(
 				'naam'		=> $installatie_naam,
 				'optietype'	=> 'installatie',
 				'aantal' 	=> 0,
-				'prijs'		=> (float) $werk_installatie[$pakket_type_nummer]['prijs'],
+				'prijs'		=> (float) $installatie_verz[$installatie_naam][$pakket_type_nummer]['prijs'],
 			));
 		}
 	}

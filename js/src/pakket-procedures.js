@@ -38,45 +38,6 @@ function vergelijkingsProcedure(pakket, keuzehulp) {
 		keuzehulp = JSON.parse(sessionStorage.getItem('kz-keuzehulp'));
 	}
 
-	// schrijf de bel & nummer keuze.
-	// bellen = 1 							-> niet bellen.
-	// bellen = 2 							-> basispakket.
-	// bellen = 3 							-> NL pakket.
-	// bellen = 3 + '2' in nummers-array 	-> Internationaal pakket.
-
-	if (keuzehulp.bellen === '1') {
-		pakket.alleTelefonieBundelsUit();
-	} else if (keuzehulp.bellen === '2') {
-		// zou altijd basispakket moeten hebben,
-		// anders zijn verkeerde pakketten in PHP meegegeven!
-		if (pakket.heeftTelefonieBereik('basis')) {
-			pakket.zetTelefonieBereikAan('basis');
-		}
-	} else if (keuzehulp.bellen === '3') {
-		if (keuzehulp.nummers && keuzehulp.nummers.indexOf('2') !== -1) {
-			if (pakket.heeftTelefonieBereik('internationaal')) {
-				pakket.zetTelefonieBereikAan('internationaal');
-			} else if (pakket.heeftTelefonieBereik('nederland')) {
-				pakket.zetTelefonieBereikAan('nederland');
-			} else if (pakket.heeftTelefonieBereik('basis')) {
-				pakket.zetTelefonieBereikAan('basis');
-			}
-		} else if (pakket.heeftTelefonieBereik('nederland')) {
-				pakket.zetTelefonieBereikAan('nederland');
-			} else if (pakket.heeftTelefonieBereik('basis')) {
-				pakket.zetTelefonieBereikAan('basis');
-			}
-	} else {
-		console.warn('onvoorziene situatie telefonie afhandeling vergelijkingsprocedure');
-		pakket.alleTelefonieBundelsUit();
-	}
-
-	if (keuzehulp.nummers && keuzehulp.nummers.indexOf('1') !== -1) {
-		pakket.mutatie('extra-vast-nummer', 1);
-	} else {
-		pakket.mutatie('extra-vast-nummer', 0);
-	}
-
 	// schrijf de snelheid naar het pakket.
 	const snelheden = pakket.eigenschappen.snelheden;
 	let gekozenSnelheid = false;
@@ -115,6 +76,45 @@ function vergelijkingsProcedure(pakket, keuzehulp) {
 	const ss = gekozenSnelheid.toString();
 
 	pakket.veranderSnelheid(ss);
+
+	// schrijf de bel & nummer keuze.
+	// bellen = 1 							-> niet bellen.
+	// bellen = 2 							-> basispakket.
+	// bellen = 3 							-> NL pakket.
+	// bellen = 3 + '2' in nummers-array 	-> Internationaal pakket.
+
+	if (keuzehulp.bellen === '1') {
+		pakket.alleTelefonieBundelsUit();
+	} else if (keuzehulp.bellen === '2') {
+		// zou altijd basispakket moeten hebben,
+		// anders zijn verkeerde pakketten in PHP meegegeven!
+		if (pakket.heeftTelefonieBereik('basis')) {
+			pakket.zetTelefonieBereikAan('basis');
+		}
+	} else if (keuzehulp.bellen === '3') {
+		if (keuzehulp.nummers && keuzehulp.nummers.indexOf('2') !== -1) {
+			if (pakket.heeftTelefonieBereik('internationaal')) {
+				pakket.zetTelefonieBereikAan('internationaal');
+			} else if (pakket.heeftTelefonieBereik('nederland')) {
+				pakket.zetTelefonieBereikAan('nederland');
+			} else if (pakket.heeftTelefonieBereik('basis')) {
+				pakket.zetTelefonieBereikAan('basis');
+			}
+		} else if (pakket.heeftTelefonieBereik('nederland')) {
+				pakket.zetTelefonieBereikAan('nederland');
+			} else if (pakket.heeftTelefonieBereik('basis')) {
+				pakket.zetTelefonieBereikAan('basis');
+			}
+	} else {
+		console.warn('onvoorziene situatie telefonie afhandeling vergelijkingsprocedure');
+		pakket.alleTelefonieBundelsUit();
+	}
+
+	if (keuzehulp.nummers && keuzehulp.nummers.indexOf('1') !== -1) {
+		pakket.mutatie('extra-vast-nummer', 1);
+	} else {
+		pakket.mutatie('extra-vast-nummer', 0);
+	}	
 
 	// schrijf TV opties.
 	if (keuzehulp['televisie-opties']) {

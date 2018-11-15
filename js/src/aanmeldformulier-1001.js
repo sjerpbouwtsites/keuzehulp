@@ -52,7 +52,7 @@ function kzMaakPrintMap(){
 	|
 	|**************************************************/	
 
-	if (window['kzPrintMappen']) return window['kzPrintMappen'];
+	//if (window['kzPrintMappen']) return window['kzPrintMappen'];
 
 	this.printMapInit = id => {
 		return {
@@ -87,7 +87,7 @@ function kzMaakPrintMap(){
 		replay: 							this.printMapInit('input_1_52'),
 	};
 
-	window.kzPrintMappen = printMappen;
+	//window.kzPrintMappen = printMappen; @TODO TERUGOPTIMALISEREN
 	return printMappen;
 }
 
@@ -101,6 +101,8 @@ function kzUpdateHidden() {
 	|-----------------------------------------------------*/
 
 	const printMappen = kzMaakPrintMap();
+
+	console.log(printMappen);
 
 	const aanmeldformulier = doc.getElementById('print-aanmeldformulier');
 	const inputs = aanmeldformulier.querySelectorAll('[data-kz-waarde]');

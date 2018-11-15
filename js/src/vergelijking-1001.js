@@ -212,6 +212,7 @@ const kzRenderVergelijking = {
 	},
 	telefonieSectiePrijsTD(a) { return (isNaN(Number(a)) ? a : this.pakket.formatteerPrijs(a)); },
 	telefonieSectie() {
+
 		const telBundel = this.pakket.huidigeTelefonieBundel();
 
 		if (!telBundel) {
@@ -223,6 +224,13 @@ const kzRenderVergelijking = {
 			console.log(telBundel);
 			return;
 		}
+
+		const tb = this.pakket.vindOptie({
+			aantal: 1,
+			optietype: 'telefonie-bundel',
+		})[1]
+
+		const maandPrijsTelBundel = this.pakket.formatteerPrijs(tb.prijs);
 
 		return `
 			<div class='provider-pakketten-vergelijking-sectie'>
@@ -236,7 +244,7 @@ const kzRenderVergelijking = {
 					<thead>
 						<tr>
 							<th>${telBundel.naam}</th>
-							<th>${this.pakket.optiePrijs(telBundel.slug, true)}</th
+							<th>${maandPrijsTelBundel}</th
 						</tr>
 						<tr>
 							<th>Bundeltype: ${telBundel.bereik}</th>

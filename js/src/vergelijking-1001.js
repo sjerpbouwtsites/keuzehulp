@@ -449,6 +449,7 @@ function kzTelefonieModal(knop) {
 
 	 belPakket = pakket.huidigeTelefonieBundel();
 
+	 // lokale nutsfunctie; printen als string ('gratis') of prijs 
 	this.cel = prijs => (isNaN(Number(prijs))
 			? prijs
 			: pakket.formatteerPrijs(prijs));
@@ -456,9 +457,9 @@ function kzTelefonieModal(knop) {
 
 	const html = `
 
-		<p>${isNaN(Number(belPakket.data.maandbedrag))
+		<p>${isNaN(Number(belPakket.optieData.prijs))
 			? belPakket.data.maandbedrag
-			: `Abonnementsprijs: ${pakket.formatteerPrijs(belPakket.data.maandbedrag)}`
+			: `Abonnementsprijs: ${pakket.formatteerPrijs(belPakket.optieData.prijs)}`
 		}</p>
 
 		<p><strong>Maximum minuten binnen bundel: </strong> ${belPakket.data.maximum_minuten ? belPakket.data.maximum_minuten : 'geen'}</p>

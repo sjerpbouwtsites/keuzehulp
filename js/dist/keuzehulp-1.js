@@ -2424,6 +2424,7 @@ function VerrijktPakket(p) {
       return bundel.slug === actieveOptieData.naam;
     });
 
+    gevondenBundel.optieData = actieveOptieData;
     return gevondenBundel;
   };
 
@@ -3351,13 +3352,13 @@ var kzRenderVergelijking = {
 
 function kzTelefonieModal(knop) {
   var pakket = window["kz-pakket-".concat(knop.getAttribute('data-pakket-id'))],
-      belPakket = pakket.huidigeTelefonieBundel();
+      belPakket = pakket.huidigeTelefonieBundel(); // lokale nutsfunctie; printen als string ('gratis') of prijs 
 
   this.cel = function (prijs) {
     return isNaN(Number(prijs)) ? prijs : pakket.formatteerPrijs(prijs);
   };
 
-  var html = "\n\n\t\t<p>".concat(isNaN(Number(belPakket.data.maandbedrag)) ? belPakket.data.maandbedrag : "Abonnementsprijs: ".concat(pakket.formatteerPrijs(belPakket.data.maandbedrag)), "</p>\n\n\t\t<p><strong>Maximum minuten binnen bundel: </strong> ").concat(belPakket.data.maximum_minuten ? belPakket.data.maximum_minuten : 'geen', "</p>\n\n\t\t<table>\n\t\t\t<thead>\n\t\t\t\t<tr>\n\t\t\t\t\t<th></th>\n\t\t\t\t\t<th></th>\n\t\t\t\t\t<th>Start</th>\n\t\t\t\t\t<th>Minuut</th>\n\t\t\t\t</tr>\n\t\t\t</thead>\n\t\t\t<tbody>\n\t\t\t\t<tr>\n\t\t\t\t\t<td>NL</td>\n\t\t\t\t\t<td>Vast</td>\n\t\t\t\t\t<td>").concat(this.cel(belPakket.data.vast.nederland.start), "</td>\n\t\t\t\t\t<td>").concat(this.cel(belPakket.data.vast.nederland.per_minuut), "</td>\n\t\t\t\t</tr>\n\t\t\t\t<tr>\n\t\t\t\t\t<td>NL</td>\n\t\t\t\t\t<td>Mobiel</td>\n\t\t\t\t\t<td>").concat(this.cel(belPakket.data.mobiel.nederland.start), "</td>\n\t\t\t\t\t<td>").concat(this.cel(belPakket.data.mobiel.nederland.per_minuut), "</td>\n\t\t\t\t</tr>\n\t\t\t\t<tr>\n\t\t\t\t\t<td>Buitenland</td>\n\t\t\t\t\t<td>Vast</td>\n\t\t\t\t\t<td>").concat(this.cel(belPakket.data.vast.buitenland.start), "</td>\n\t\t\t\t\t<td>").concat(this.cel(belPakket.data.vast.buitenland.per_minuut), "</td>\n\t\t\t\t</tr>\n\t\t\t\t<tr>\n\t\t\t\t\t<td>Buitenland</td>\n\t\t\t\t\t<td>Mobiel</td>\n\t\t\t\t\t<td>").concat(this.cel(belPakket.data.mobiel.buitenland.start), "</td>\n\t\t\t\t\t<td>").concat(this.cel(belPakket.data.mobiel.buitenland.per_minuut), "</td>\n\t\t\t\t</tr>\n\n\t\t\t</tbody>\n\t\t</table>\n\t");
+  var html = "\n\n\t\t<p>".concat(isNaN(Number(belPakket.optieData.prijs)) ? belPakket.data.maandbedrag : "Abonnementsprijs: ".concat(pakket.formatteerPrijs(belPakket.optieData.prijs)), "</p>\n\n\t\t<p><strong>Maximum minuten binnen bundel: </strong> ").concat(belPakket.data.maximum_minuten ? belPakket.data.maximum_minuten : 'geen', "</p>\n\n\t\t<table>\n\t\t\t<thead>\n\t\t\t\t<tr>\n\t\t\t\t\t<th></th>\n\t\t\t\t\t<th></th>\n\t\t\t\t\t<th>Start</th>\n\t\t\t\t\t<th>Minuut</th>\n\t\t\t\t</tr>\n\t\t\t</thead>\n\t\t\t<tbody>\n\t\t\t\t<tr>\n\t\t\t\t\t<td>NL</td>\n\t\t\t\t\t<td>Vast</td>\n\t\t\t\t\t<td>").concat(this.cel(belPakket.data.vast.nederland.start), "</td>\n\t\t\t\t\t<td>").concat(this.cel(belPakket.data.vast.nederland.per_minuut), "</td>\n\t\t\t\t</tr>\n\t\t\t\t<tr>\n\t\t\t\t\t<td>NL</td>\n\t\t\t\t\t<td>Mobiel</td>\n\t\t\t\t\t<td>").concat(this.cel(belPakket.data.mobiel.nederland.start), "</td>\n\t\t\t\t\t<td>").concat(this.cel(belPakket.data.mobiel.nederland.per_minuut), "</td>\n\t\t\t\t</tr>\n\t\t\t\t<tr>\n\t\t\t\t\t<td>Buitenland</td>\n\t\t\t\t\t<td>Vast</td>\n\t\t\t\t\t<td>").concat(this.cel(belPakket.data.vast.buitenland.start), "</td>\n\t\t\t\t\t<td>").concat(this.cel(belPakket.data.vast.buitenland.per_minuut), "</td>\n\t\t\t\t</tr>\n\t\t\t\t<tr>\n\t\t\t\t\t<td>Buitenland</td>\n\t\t\t\t\t<td>Mobiel</td>\n\t\t\t\t\t<td>").concat(this.cel(belPakket.data.mobiel.buitenland.start), "</td>\n\t\t\t\t\t<td>").concat(this.cel(belPakket.data.mobiel.buitenland.per_minuut), "</td>\n\t\t\t\t</tr>\n\n\t\t\t</tbody>\n\t\t</table>\n\t");
   kzModal({
     kop: belPakket.naam,
     torso: html

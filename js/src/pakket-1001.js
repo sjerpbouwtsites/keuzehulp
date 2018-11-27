@@ -367,6 +367,7 @@ function VerrijktPakket(p) {
 
 		const gevondenBundel =  this.eigenschappen.telefonie_bundels[actieveOptieData.suboptietype]
 			.find(bundel => bundel.slug === actieveOptieData.naam);
+		gevondenBundel.optieData = actieveOptieData;
 
 		return gevondenBundel;
 	};

@@ -137,6 +137,7 @@ const kzRenderVergelijking = {
 
 		const ds = pakket.pakHuidigeSnelheid(),
 		us = pakket.pakHuidigeUploadSnelheid();
+		const keuzehulp = JSON.parse(sessionStorage.getItem('kz-keuzehulp'));
 
 		return `
 		<li class='provider-pakketten-pakket'>
@@ -189,7 +190,12 @@ const kzRenderVergelijking = {
 
 				${this.telefonieSectie()}
 
-				${this.televisieSectie()}
+				${
+					keuzehulp.televisie == 3 
+					|| keuzehulp.televisie == 2
+						? this.televisieSectie()
+						: ''
+				}
 
 				${this.installatieSectie()}
 
@@ -293,6 +299,9 @@ const kzRenderVergelijking = {
 			: '';
 	},
 	televisieSectie() {
+
+
+
 		const z = this.pakket.pakZenders();
 
 		if (!z.totaal) {

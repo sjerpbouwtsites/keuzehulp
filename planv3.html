@@ -7,6 +7,8 @@
 
 		:root {
 		  --zwart: #111;
+		  --grijs: #333;
+		  --achtergrond: #ededed;
 		}
 
 		h1 {
@@ -25,7 +27,7 @@
 
 		body {
 			padding: 30px;
-			background-color: #ededed;
+			background-color: var(--achtergrond);
 			font-family: "Georgia";
 			max-width: 760px;
 			margin: 0 auto;
@@ -58,21 +60,38 @@
 		}
 		li li {
 			font-size: .8em;
-			opacity: .85;
+			opacity: 1;
+			color: var(--grijs);
 		}
 		a {
 			color: var(--zwart);
-			font-weight: bold;
 		}
 
-		span {
+		span.link {
 			padding-left: 0px;
-			border-left: 0px solid var(--zwart);
-			transition: 0.3s ease-in-out 0.3s;
+			border-left: 0px solid var(--achtergrond);
+			transition: 0.3s ease-out 0.3s;
 		}
-			span.focus {
+			span.link.focus {
 				padding-left: 5px;
-				border-left: 3px solid var(--zwart);				
+				border-left: 5px solid var(--achtergrond);				
+				transition: 0.3s ease-in 0.3s;
+			}
+
+		.flex {
+			flex-direction: row;
+			display: flex;
+		}
+
+			.flex-links {
+				flex-basis: 100%;
+			}
+			.flex-rechts {
+				margin-left: 60px;
+				min-width: 100px;
+				font-size: 1rem;
+				color: var(--zwart);
+				opacity: 1;
 			}
 
 	</style>
@@ -81,31 +100,123 @@
 	
 
 	<h1>Plan keuzehulp 3.0 - licentie versie</h1>
+	
+	<p>Dit is een levend document dat wordt bijgehouden op <a href='https://github.com/sjerpbouwtsites/keuzehulp/blob/master/planv3.html' target='_blank'>Github</a>.
+		<br>Ga voor de laatste versie naar deze url en sla die lokaal op.
+		<br><br>
+		Uurinschattingen zijn dit niet - louter een gevoel.
+	</p>
+
 
 	<section>
 		<h2>Wat in deze stap beter moet aan de kern</h2>
 		<ol>
 			<li>
-				<span>CSV exports</span>
+				<span class='link' id='csv-exports'>CSV exports</span>
 				<ul>
-					<li>Eigen systeem opwaarderen van terugval/noodsysteem naar volwaardig qua data en formattering.</li>
-					<li>Beveiligde web-toegang realiseren: aanmaken lage-rechten gebruikersomgeving waarbinnen CSV met muiskliks geladen kunnen worden.</li>
-					<li>SFTP-toegang realiseren: andere API, zelfde systeem als ^</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>Eigen systeem opwaarderen van terugval/noodsysteem naar volwaardig qua data en formattering.</span>
+							<span class='flex-rechts'>2 uur</span>
+						</span>
+					</li>
+
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>Beveiligde web-toegang realiseren: aanmaken lage-rechten gebruikersomgeving waarbinnen CSV met muiskliks geladen kunnen worden.</span>
+							<span class='flex-rechts'>4 uur</span>
+						</span>
+					</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>SFTP-toegang realiseren: andere API, zelfde systeem als ^</span>
+							<span class='flex-rechts'>1.5 uur</span>
+						</span>
+					</li>
 				</ul>
 			</li>
-			<li>Hosting - Savvii lijkt ongeschikt. Bepalen waar wel @ vergo 2 jan. Zie ook: <a href='#multisite'>multisite</a> en CSV exports</li>			
 			<li>
-				Bekende bugs oplossen uit V2 zoals php waarschuwingen, dubbel laden zakelijke / lead formulier
+				<span class='flex'>
+					<span class='flex-links link' id='hosting'>Hosting - Savvii lijkt ongeschikt. Bepalen waar wel @ vergo 2 jan. Zie ook: <a href='#multisite'>multisite</a> en <a href='#csv-exports'>CSV exports</a></span>
+					<span class='flex-rechts'>? ? ? </span>
+				</span>
+			</li>			
+			<li>
+				<span class='flex'>
+					<span class='flex-links'>Bekende bugs oplossen uit V2 zoals php waarschuwingen, dubbel laden zakelijke / lead formulier</span>
+					<span class='flex-rechts'>6 uur</span>
 			</li>
 			<li>
 				<span>Prestaties</span>
 				<ul>
-					<li>Hosting ^</li>
-					<li>Pakketinformatie statisch als JSON cachen ipv dynamisch genereren</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'><a href='#hosting'>Hosting</a></span>
+							<span class='flex-rechts'> ? ? ? </span>
+						</span>
+					</li>
+					<li>
+						<span>JSON caching pakketinformatie</span>
+						<ul>
+							<li>
+								
+								<span class='flex'>
+									<span class='flex-links'>Pakketinformatie statisch cachen + cacheinvalidatie</span>
+									<span class='flex-rechts'>5 uur</span>
+								</span>								
+							</li>
+							<li>
+								<span class='flex'>
+									<span class='flex-links'>Statische JSON laden</span>
+									<span class='flex-rechts'>1,5 uur</span>
+								</span>								
+							</li>							
+						</ul>
+					</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>Onderzoek naar verdere ernstig vertragende factoren + oplossen</span>
+							<span class='flex-rechts'> ? ? ? </span>
+						</span>
+					</li>					
 				</ul>
 			</li>
-			<li>Duidelijker onderscheid 'achterkant' van voorkant en voorkant van voorkant dwz dataverwerking respectievelijk afdrukken</li>
-			<li>Les API bouwen toepassen: niet direct in object grijpen maar via methoden beschikbaar stellen bv. in pakketten klasse</li>
+			<li>
+				<span class='flex'>
+					<span class='flex-links'>Les API bouwen toepassen: niet direct in object grijpen maar via methoden beschikbaar stellen bv. in pakketten klasse, aldaar ook subklassen bouwen</span>
+					<span class='flex-rechts'>6 uur</span>
+				</span>
+			</li>
+			<li>
+				<span>Levenscyclus code</span>
+				<ul>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>Versiecontrole voor geheel en modules. Zie ook <a href='#git'>Git</a></span>
+							<span class='flex-rechts'>4 uur</span>
+						</span>
+					</li>
+				</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>Lokale dev omgevingen (Sjerp, Alex, Hans-Peter) via Docker</span>
+							<span class='flex-rechts'>2 uur</span>
+						</span>
+					</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>Na interne oplevering push naar staging via git hooks</span>
+							<span class='flex-rechts'>4 uur</span>
+						</span>
+					</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>Na externe oplevering push naar live</span>
+							<span class='flex-rechts'>2 uur</span>
+						</span>
+					</li>
+				</ul>
+			</li>
 		</ol>
 	</section>
 
@@ -113,33 +224,76 @@
 		<h2>Licentie</h2>
 		<ol>
 			<li>
-				<span>Haken / acties</span>
+				<span>Haken / acties / filters voorkant</span>
 				<ul>
-					<li>Techniek uitkristalliseren (was onbekend)</li>
-					<li>Onderdelen verplaatsen naar haken / acties</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>Techniek uitkristalliseren (was onbekend)</span>
+							<span class='flex-rechts'>3 uur</span>
+						</span>
+					</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>Onderdelen verplaatsen naar haken / acties</span>
+							<span class='flex-rechts'>6 uur</span>
+						</span>
+					</li>
 				</ul>
 			</li>
 			<li>
 				<span>Voorkant modules</span>
 				<ul>
-					<li>Parcel onderzoeken + configureren</li>
-					<li>Module systeem optuigen via haken / acties / parcel</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>Parcel onderzoeken + configureren</span>
+							<span class='flex-rechts'>2 uur</span>
+						</span>
+					</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>Module systeem optuigen via haken / acties / parcel ten behoeve van eigen HTML en JS functionaliteiten</span>
+							<span class='flex-rechts'>6 uur</span>
+						</span>
+					</li>
 				</ul>
 			</li>
 			<li>
 				<span>Achterkant modules</span>
 				<ul>
-					<li>(Automatische) databankintegraties postcodeverzorgers</li>
-					<li>Haken / acties maken voor achterkantmodules</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>(Automatische) databankintegraties postcodeverzorgers</span>
+							<span class='flex-rechts'>0 uur</span>
+						</span>
+					</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>Haken / acties / filters maken voor achterkantmodules voor voorkant van achterkant (itintie&euml;l gedrukte HTML / CSS) achterkant van achterkant (dataverwerking)</span>
+							<span class='flex-rechts'>8 uur</span>
+						</span>
+					</li>
 				</ul>
 			</li>
 			<li>
 				<span>Stijling</span>
 				<ul>
-					<li>Omzetten naar SASS</li>
-					<li>Kleuren, lettertypen, marges afsplitsen naar variabelen</li>
 					<li>
-						<span>Overschrijvingen-map met:</span>
+						<span class='flex'>
+							<span class='flex-links'>Omzetten naar SASS</span>
+							<span class='flex-rechts'>2 uur</span>
+						</span>
+					</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>Kleuren, lettertypen, marges afsplitsen naar variabelen</span>
+							<span class='flex-rechts'>3 uur</span>
+						</span>
+					</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>Overschrijvingen-map met:</span>
+							<span class='flex-rechts'>6 uur</span>
+						</span>
 						<ul>
 							<li>Eigen variabelen voor ^</li>
 							<li>Eigen stijling voor kernelementen</li>
@@ -149,10 +303,26 @@
 				</ul>
 			</li>
 			<li>
-				<span id='multisite'>Multisite: 1 server, vele keuzehulpen</a>
+				<span class='link' id='multisite'>Multisite: 1 server, vele keuzehulpen</a>
 				<ul>
-					<li>Uitzoeken basis multisite</li>
-					<li>Uitzoeken multisite URLs naar 1 server</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>Uitzoeken basis multisite</span>
+							<span class='flex-rechts'>6 uur</span>
+						</span>
+					</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>Uitzoeken multisite URLs naar 1 server</span>
+							<span class='flex-rechts'>3 uur</span>
+						</span>
+					</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>Koppeling multisites -> activering modules</span>
+							<span class='flex-rechts'>4 uur</span>
+						</span>
+					</li>					
 				</ul>
 			</li>
 		</ol>
@@ -160,21 +330,70 @@
 	</section>
 
 	<section>
+		<h2>Gebruiksgemak CMS</h2>		
+		<ol>
+			<li>
+				<span class='flex'>
+					<span class='flex-links'>Onderzoeken waar nu precies de knelpunten liggen</span>
+					<span class='flex-rechts'>? ? ?</span>
+				</span>
+			</li>
+			<li>
+				<span class='flex'>
+					<span class='flex-links'>Ontwerpen nieuw CMS</span>
+					<span class='flex-rechts'>? ? ?</span>
+				</span>
+			</li>
+			<li>
+				<span class='flex'>
+					<span class='flex-links'>Implementeren nieuw vertaalslag CMS - voorkant</span>
+					<span class='flex-rechts'>? ? ?</span>
+				</span>
+			</li>
+		</ol>
+	</section>
+
+	<section>
 		<h2>Team</h2>
 		<ol>
 			<li>
-				<span>Git</span>
+				<span class='link' id='git'>Git</span>
 				<ul>
-					<li>Uitzoeken & delen: branches</li>
-					<li>Uitzoeken & delen: pull requests</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>Uitzoeken & delen: branches</span>
+							<span class='flex-rechts'>1.5 uur</span>
+						</span>
+					</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>Uitzoeken & delen: pull requests</span>
+							<span class='flex-rechts'>3 uur</span>
+						</span>
+					</li>
 				</ul>
 			</li>
 			<li>
 				<span>Kennisdeling</span>
 				<ul>
-					<li>ES5</li>
-					<li>ES6-9</li>
-					<li>php-verzamelingsmethoden</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>ES5</span>
+							<span class='flex-rechts'>16 uur</span>
+						</span>
+					</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>ES6-9</span>
+							<span class='flex-rechts'>20 uur</span>
+						</span>
+					</li>
+					<li>
+						<span class='flex'>
+							<span class='flex-links'>php-verzamelingsmethoden</span>
+							<span class='flex-rechts'>1.5 uur</span>
+						</span>
+					</li>
 				</ul>
 			</li>
 		</ol>

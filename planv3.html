@@ -83,30 +83,29 @@
 	<h1>Plan keuzehulp 3.0 - licentie versie</h1>
 
 	<section>
-		<h2>Wat eigenlijk beter moet</h2>
+		<h2>Wat in deze stap beter moet aan de kern</h2>
 		<ol>
 			<li>
 				<span>CSV exports</span>
 				<ul>
-					<li>Eigen systeem opwaarderen van terugval/noodsysteem naar volwaardig. Data / formattering.</li>
+					<li>Eigen systeem opwaarderen van terugval/noodsysteem naar volwaardig qua data en formattering.</li>
+					<li>Beveiligde web-toegang realiseren: aanmaken lage-rechten gebruikersomgeving waarbinnen CSV met muiskliks geladen kunnen worden.</li>
+					<li>SFTP-toegang realiseren: andere API, zelfde systeem als ^</li>
 				</ul>
 			</li>
-			<li>Hosting - Savvii is niet geschikt. Bepalen waar wel @ vergo 2 jan. Zie ook: <a href='#multisite'>multisite</a></li>			
-		</ol>
-	</section>
-
-	<section>
-		<h2>Team</h2>
-		<ol>
-			<li>Git</li>
+			<li>Hosting - Savvii lijkt ongeschikt. Bepalen waar wel @ vergo 2 jan. Zie ook: <a href='#multisite'>multisite</a> en CSV exports</li>			
 			<li>
-				<span>Kennisdeling</span>
+				Bekende bugs oplossen uit V2 zoals php waarschuwingen, dubbel laden zakelijke / lead formulier
+			</li>
+			<li>
+				<span>Prestaties</span>
 				<ul>
-					<li>ES5</li>
-					<li>ES6-9</li>
-					<li>php-verzamelingsmethoden</li>
+					<li>Hosting ^</li>
+					<li>Pakketinformatie statisch als JSON cachen ipv dynamisch genereren</li>
 				</ul>
 			</li>
+			<li>Duidelijker onderscheid 'achterkant' van voorkant en voorkant van voorkant dwz dataverwerking respectievelijk afdrukken</li>
+			<li>Les API bouwen toepassen: niet direct in object grijpen maar via methoden beschikbaar stellen bv. in pakketten klasse</li>
 		</ol>
 	</section>
 
@@ -130,7 +129,8 @@
 			<li>
 				<span>Achterkant modules</span>
 				<ul>
-					<li>(automatische) databankintegraties postcodeverzorgers</li>
+					<li>(Automatische) databankintegraties postcodeverzorgers</li>
+					<li>Haken / acties maken voor achterkantmodules</li>
 				</ul>
 			</li>
 			<li>
@@ -149,17 +149,36 @@
 				</ul>
 			</li>
 			<li>
-				<span id='multisite'>Multisite</a>
+				<span id='multisite'>Multisite: 1 server, vele keuzehulpen</a>
 				<ul>
-					<li>
-						??
-					</li>
+					<li>Uitzoeken basis multisite</li>
+					<li>Uitzoeken multisite URLs naar 1 server</li>
 				</ul>
 			</li>
 		</ol>
 
 	</section>
 
+	<section>
+		<h2>Team</h2>
+		<ol>
+			<li>
+				<span>Git</span>
+				<ul>
+					<li>Uitzoeken & delen: branches</li>
+					<li>Uitzoeken & delen: pull requests</li>
+				</ul>
+			</li>
+			<li>
+				<span>Kennisdeling</span>
+				<ul>
+					<li>ES5</li>
+					<li>ES6-9</li>
+					<li>php-verzamelingsmethoden</li>
+				</ul>
+			</li>
+		</ol>
+	</section>
 
 	<script>
 		document.body.addEventListener('click', function(e){

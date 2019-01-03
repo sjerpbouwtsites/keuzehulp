@@ -102,8 +102,6 @@ function kzUpdateHidden() {
 
 	const printMappen = kzMaakPrintMap();
 
-	console.log(printMappen);
-
 	const aanmeldformulier = doc.getElementById('print-aanmeldformulier');
 	const inputs = aanmeldformulier.querySelectorAll('[data-kz-waarde]');
 	const rijen = Array
@@ -268,7 +266,11 @@ function haalPrintAanmeldformulier(knop) {
 			});
 
 			// schrijf pakket naam en provider naar formulier
-			doc.getElementById('input_1_66').value = `${pakket.naam_composiet} ${pakket.huidige_snelheid}`;
+
+
+			// afkomstig vanaf IWWIW dan hier nog eens apart tv type schrijven
+			const vanafIWWIW = JSON.parse(sessionStorage.getItem('kz-keuzehulp')).hasOwnProperty('ik-weet-wat-ik-wil');
+			doc.getElementById('input_1_66').value = `${pakket.naam_composiet} ${vanafIWWIW ? pakket.eigenschappen.tv_type : ''} ${pakket.huidige_snelheid}`;
 			doc.getElementById('input_1_64').value = pakket.provider;
 			doc.getElementById("input_1_81").value = JSON.parse(sessionStorage.getItem('kz-adres')).perceelcode;
 			// schrijf opties naar GF

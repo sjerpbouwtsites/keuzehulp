@@ -201,10 +201,7 @@ function keuzehulp_haal_aanmeldformulier() {
 //			)
 //		) .
 
-		keuzehulp_form_rij (
-			!in_array('eigenlijk alleen tv', $eigenschappen['pakket_type']) ? $pakket['naam_composiet'] : $pakket['titel'],
-			""
-		) .
+		keuzehulp_form_rij ($pakket['naam_composiet']) .
 
 		keuzehulp_form_rij(
 			'<span class="veld-span">Eenmalige kosten</span>',

@@ -18,6 +18,8 @@ function VerrijktPakket(p) {
 	|
 	|-----------------------------------------------------*/
 
+	// procedurele code die draait bij initialisatie (new Verrijktpakket)
+
 	Object.entries(p).forEach(([k, w]) => {
 		this[k] = w;
 	});
@@ -450,4 +452,21 @@ function VerrijktPakket(p) {
 		}
 		this.klaarVoorJSON = verz;
 	};
+
+	this.pakVoucherCodes = () => {
+		return this.eigenschappen.vouchercodes;
+	}
+
+	this.zoekVoucherCode = codePoging => {
+
+		const vcs = this.pakVoucherCodes();
+		const res = vcs.find(vc => vc.code === codePoging);
+
+		return !!res
+			? res
+			: false;
+
+	};
+
+
 }

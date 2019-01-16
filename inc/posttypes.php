@@ -141,6 +141,10 @@ function Kz_registreer_posttypes() {
     $tv_bundel->pas_args_aan(array( 'menu_icon'  => 'dashicons-video-alt3', 'supports'  => array( 'title' ) ));
     $tv_bundel->registreer();
 
+    $voucher_code = new Kz_posttype_voorb('vouchercode', 'vouchercodes');
+    $voucher_code->pas_args_aan(array( 'menu_icon'  => 'dashicons-tickets-alt', 'supports'  => array( 'title' ) ));
+    $voucher_code->registreer();
+
     $telefonie_bundel = new Kz_posttype_voorb('telefonie-bundel', 'telefonie-bundels');
     $telefonie_bundel->pas_args_aan(array( 'menu_icon'  => 'dashicons-phone', 'supports'  => array( 'title' ) ));
     $telefonie_bundel->maak_taxonomie('bereik', 'bereiken');

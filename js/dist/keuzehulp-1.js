@@ -177,6 +177,36 @@ function kzUpdateHidden() {
   });
 }
 
+function kz_controleer_pak_vouchercode() {
+  var huidigePakketNummer = document.getElementById('print-aanmeldformulier').getAttribute('data-pakket-id');
+  var huidigPakket = kzPakPakket(huidigePakketNummer);
+  var vc = huidigPakket.zoekVoucherCode(this.value);
+  var lijstMetVCPrint = document.getElementById('field_1_86');
+  var voucherIDInput = document.getElementById('input_1_83');
+  var voucherPrijsInput = document.getElementById('input_1_84');
+  var voucherTitelInput = document.getElementById('input_1_85');
+
+  if (vc) {
+    if (lijstMetVCPrint.classList.contains('onzichtbaar')) {
+      lijstMetVCPrint.classList.remove('onzichtbaar');
+    }
+
+    document.getElementById('vouchercodetekst').innerHTML = huidigPakket.formatteerPrijs(vc.korting);
+    voucherIDInput.value = vc.id;
+    voucherPrijsInput.value = vc.korting;
+    voucherTitelInput.value = vc.titel;
+  } else {
+    if (!lijstMetVCPrint.classList.contains('onzichtbaar')) {
+      lijstMetVCPrint.classList.add('onzichtbaar');
+    }
+
+    document.getElementById('vouchercodetekst').innerHTML = '';
+    voucherIDInput.value = '';
+    voucherPrijsInput.value = '';
+    voucherTitelInput.value = '';
+  }
+}
+
 function haalPrintAanmeldformulier(knop) {
   /*------------------------------------------------------
   |
@@ -273,7 +303,10 @@ function haalPrintAanmeldformulier(knop) {
         if (!(vastNummer.test(this.value) || mobielNummer.test(this.value))) {
           kzModal(kzTekst('correct_tel'), 1500);
         }
-      }); // is er misschien via ajax een nieuwe ingezet en heeft die %PRINT_ALGEMENE_VOORWAARDEN%?
+      });
+      var voucherCodeInput = document.getElementById('input_1_82');
+      voucherCodeInput.addEventListener('change', kz_controleer_pak_vouchercode);
+      voucherCodeInput.addEventListener('blur', kz_controleer_pak_vouchercode); // is er misschien via ajax een nieuwe ingezet en heeft die %PRINT_ALGEMENE_VOORWAARDEN%?
       // @TODO LELIJKE HACK
 
       var vervangAlgemeneVoorwaarden = setInterval(function () {
@@ -2011,6 +2044,7 @@ function VerrijktPakket(p) {
   | 	Maakt er een soort kassasysteem van.
   |
   |-----------------------------------------------------*/
+  // procedurele code die draait bij initialisatie (new Verrijktpakket)
   Object.entries(p).forEach(function (_ref) {
     var _ref2 = _slicedToArray(_ref, 2),
         k = _ref2[0],
@@ -2516,6 +2550,19 @@ function VerrijktPakket(p) {
     }
 
     _this.klaarVoorJSON = verz;
+  };
+
+  this.pakVoucherCodes = function () {
+    return _this.eigenschappen.vouchercodes;
+  };
+
+  this.zoekVoucherCode = function (codePoging) {
+    var vcs = _this.pakVoucherCodes();
+
+    var res = vcs.find(function (vc) {
+      return vc.code === codePoging;
+    });
+    return !!res ? res : false;
   };
 }
 function _sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }

@@ -180,6 +180,36 @@ function kzUpdateHidden() {
 
 }
 
+function kz_controleer_pak_vouchercode(){
+
+	const huidigePakketNummer = document.getElementById('print-aanmeldformulier').getAttribute('data-pakket-id');
+	const huidigPakket = kzPakPakket(huidigePakketNummer);
+	const vc = huidigPakket.zoekVoucherCode(this.value);
+	const lijstMetVCPrint = document.getElementById('field_1_86');
+	const voucherIDInput = document.getElementById('input_1_83');
+	const voucherPrijsInput = document.getElementById('input_1_84');
+	const voucherTitelInput = document.getElementById('input_1_85');
+
+	if (vc) {
+		if (lijstMetVCPrint.classList.contains('onzichtbaar')) {
+			lijstMetVCPrint.classList.remove('onzichtbaar');
+		}
+		document.getElementById('vouchercodetekst').innerHTML = huidigPakket.formatteerPrijs(vc.korting);
+		voucherIDInput.value = vc.id;
+		voucherPrijsInput.value = vc.korting;
+		voucherTitelInput.value = vc.titel;
+	} else {
+		if (!lijstMetVCPrint.classList.contains('onzichtbaar')) {
+			lijstMetVCPrint.classList.add('onzichtbaar');
+		}	
+		document.getElementById('vouchercodetekst').innerHTML = '';	
+		voucherIDInput.value = '';
+		voucherPrijsInput.value = '';
+		voucherTitelInput.value = '';		
+	}
+
+}
+
 function haalPrintAanmeldformulier(knop) {
 	/*------------------------------------------------------
 	|
@@ -294,6 +324,11 @@ function haalPrintAanmeldformulier(knop) {
 					kzModal(kzTekst('correct_tel'), 1500);
 				}
 			});
+
+			const voucherCodeInput = document.getElementById('input_1_82');
+
+			voucherCodeInput.addEventListener('change', kz_controleer_pak_vouchercode);
+			voucherCodeInput.addEventListener('blur', kz_controleer_pak_vouchercode);
 
 			// is er misschien via ajax een nieuwe ingezet en heeft die %PRINT_ALGEMENE_VOORWAARDEN%?
 			// @TODO LELIJKE HACK

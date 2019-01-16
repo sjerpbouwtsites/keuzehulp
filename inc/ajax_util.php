@@ -294,6 +294,29 @@ function keuzehulp_pakket_eigenschappen($p, $gc = '', $status = '100', $ajax_dat
 
     }
 
+
+	/////////////////////////////////////////////////////
+	// - - - - - - - - - - - - - - - - - - - - - - - - //
+	/////////////////////////////////////////////////////
+
+    // VOUCHERCODES
+
+    $vcs_posts = get_posts(array(
+    	'post_type'		=> 'vouchercode',
+    	'posts_per_page'=> '-1',
+    ));
+
+    $vcs_data = array_map(function($code_post){
+
+    	$r = get_fields($code_post->ID);
+    	$r['titel'] = $code_post->post_title;
+    	return $r;
+
+    }, $vcs_posts);
+
+    $return['vouchercodes'] = $vcs_data;
+
+
 	/////////////////////////////////////////////////////
 	// - - - - - - - - - - - - - - - - - - - - - - - - //
 	/////////////////////////////////////////////////////

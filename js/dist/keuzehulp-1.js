@@ -400,7 +400,7 @@ function kzUpdatePrijs(knop) {
     optie = knop.id;
     hoeveelheid = knop.value;
   } else if (knop.classList.contains('belpakket')) {
-    optie = knop.id.replace('belpakket-keuze-', '');
+    optie = knop.id.replace('belpakket-keuze-', '') + '-' + pakket.pakHuidigeSnelheid();
     hoeveelheid = kzPakKnopValue(knop);
   } else if (knop.classList.contains('installatie')) {
     optie = knop.id.replace('keuze-', '');
